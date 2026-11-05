@@ -1,0 +1,274 @@
+{
+  "status": "sealed_awaiting_independent_review",
+  "independent_review_available": false,
+  "model_evaluated_on_packet": false,
+  "labels_present": false,
+  "records": [
+    {
+      "review_id": "R001",
+      "url_sha256": "2e9da23b074c8040f006f255405cba6c287c3f681a4370f12aa5b16b2c7f8ab7",
+      "employer_title_sha256": "66e82480da0921c3f2950ac7340cc693e999928e451d605e949bd3fb6fa79ee8",
+      "description_sha256": "3878344d049464ea7c19e1fb001cbf19781a792568c8bfa187b38334fc5acfc7"
+    },
+    {
+      "review_id": "R002",
+      "url_sha256": "4690426ddaf6355edc9fd04519046e363f4d706b42c52e0da0db37b5e4011051",
+      "employer_title_sha256": "e3d9078856c36e14218245814a97b1ab521d438a562b2729545c38e77bc15b29",
+      "description_sha256": "b875655b1c4582de0db0214a71664b2c38fd5bf7c40c7bc7cb92bdf1441da9f4"
+    },
+    {
+      "review_id": "R003",
+      "url_sha256": "8dd91d3e0ce000dcceedd576e219259266529f0ddaed66270f3423f96409093c",
+      "employer_title_sha256": "15e2e7e2867ec4f528d656f73f98a05185cf97db7529ea37e99188bf7b5c4d61",
+      "description_sha256": "7a687f207a7eec4d6efd3a8fa506d6b29a11d88b015c7c3eb1e82a155480af81"
+    },
+    {
+      "review_id": "R004",
+      "url_sha256": "b558d5430cb6cedb6fc2ac0b911c16834198ce5d147698796444d5c92bdca441",
+      "employer_title_sha256": "7219509cf766d83df1e5bfa2d3e8577d699eafd8a1cbbe7c439f6b490b4d7004",
+      "description_sha256": "9bd1bb949c6b1ef8229ac22b582dbda9eedf60aa7508cb240b21d506bd4e8547"
+    },
+    {
+      "review_id": "R005",
+      "url_sha256": "0cbf986b4f752af593f6ed0c8e98db7d1e315dec9bc9f000051f913eb51969db",
+      "employer_title_sha256": "9b6ea01181023882dadf8cdc192c7fbad68738f9e5d600b9b7523502168ffaa2",
+      "description_sha256": "215912014f516e650dc6b7d443d2fe9828e6cfa8df5ce3ce4ea90e60672a14a3"
+    },
+    {
+      "review_id": "R006",
+      "url_sha256": "9620cf9af329de8307ad0983444e13c413ee21577267cf39bf92fefb7e710a89",
+      "employer_title_sha256": "ef4ab3c33889ce1daf487e5dad821e0612fcb98006e5861c3af570e3b65a12c6",
+      "description_sha256": "bc3038f97ea38d890c0c2710d9405b31b70641a7fe9de11fe210031b3acc050a"
+    },
+    {
+      "review_id": "R007",
+      "url_sha256": "015c681210bff844ac4fd20f3d818a2d42192a6f89672de5b4cdb929b9a2ff8d",
+      "employer_title_sha256": "a77e869d24f71ff801f71ebb92a3ef4316dcdff696ecb534c1c06e0f6acb90ba",
+      "description_sha256": "5169ad41b49ba61eb9f5f619393f776a49f45fc838d02154e107d6efa87dabe2"
+    },
+    {
+      "review_id": "R008",
+      "url_sha256": "bdac6e135b2d350fc0f8494ad2f7f61ae105ab624c68a987d7da35dcab127024",
+      "employer_title_sha256": "2434e13237870e0f0abdf77c8d3b72e498b8c3a6306d39e69689a0faa573bb9e",
+      "description_sha256": "ec30f3723e50f2ab11f3941ad7b10f1ff408bf6b81ba9765619545458991d037"
+    },
+    {
+      "review_id": "R009",
+      "url_sha256": "d2a3aecb6319bd4c878f7cd868162337435b5cac23e6eabcb4b86db2fa57751f",
+      "employer_title_sha256": "d79e8dcf3541614218783ccbe096bab2f680dde710b31a14856d26f5bd8e7e83",
+      "description_sha256": "c568ab9fa642fdbdac26cf8267f37dcf8b3bc207585c9ea2411489124ca06b86"
+    },
+    {
+      "review_id": "R010",
+      "url_sha256": "f20bec60e6ed0bcd2443fe1a459265cb4f991d8580b36e9b20f23e521088099b",
+      "employer_title_sha256": "bb29b73e11306b6320cdd78aa1202ec2bacf4127d73d585345b5d1806d46e24e",
+      "description_sha256": "3b55ca07e22cec8ecc962a8eaab40d461bcb20429d832801372027c5d7ed6f45"
+    },
+    {
+      "review_id": "R011",
+      "url_sha256": "ff32a7f41024b1ff9a1fe0577ed8183ca62dbe0315a58080fc556a4a67eb27f4",
+      "employer_title_sha256": "b0ae7d88a952db2921c0a2c27b5ee55bd4e2b5a3d0a98a04e4650729779600c3",
+      "description_sha256": "872781e8f22a78d1c024a9429a93043f982458f0d57f9352244a08dc63eb45a0"
+    },
+    {
+      "review_id": "R012",
+      "url_sha256": "2965d137925db16223241de86317949f133a2ed1f08fa575be81e464645a1263",
+      "employer_title_sha256": "8ef1173d627a085336ced52799eb3e9bd0ed0d482ba95c66bb87c1319be33d1d",
+      "description_sha256": "3645ebe6ac4948efd3d74e205497260ea0785fa74ba9cf90fca250e083171e83"
+    },
+    {
+      "review_id": "R013",
+      "url_sha256": "f4c41317784ff2e07a7796d305de85ab34eb79e8a5be3516bceab282f0d8c75b",
+      "employer_title_sha256": "92ef26ff8fb85b50417c40c025bfd6f7477407665c3dc12a9c9cdd15845f016d",
+      "description_sha256": "03370f88de2c12bd305246b58b1cd1f618a6439f6cbceec67fd0e66109dd0634"
+    },
+    {
+      "review_id": "R014",
+      "url_sha256": "581c4a296eeea8eb30146fb399c2b1b3691b78a361a10828d9c3d41b9e501641",
+      "employer_title_sha256": "3596168561c8a459620d01b18c394cb509ea2ddc70a660bc5cab372d4bd0b4e2",
+      "description_sha256": "cd3c4eac2299d4d695786210b633033c0a3c8fb9e1cc9dbcb6f7279530f264a5"
+    },
+    {
+      "review_id": "R015",
+      "url_sha256": "da335359de553fd90a0e542614f0f7be236e63687589715ea6e366c3050ec4d1",
+      "employer_title_sha256": "13325b6e14bae94a976459e334e3f180801b7d5b658fcef884168cd4e82ee7b0",
+      "description_sha256": "ea3c16f08fdeb71abf5eb63949003681478d749ef1ba1ab076413e47af4e45d9"
+    },
+    {
+      "review_id": "R016",
+      "url_sha256": "7ca471ad70a050efd9666af04f981b9b9a7adab47f71f386149ac326267e9015",
+      "employer_title_sha256": "8bbe877a51c177f27882097a1cdc621c1c30ee36a2fba80955fcd884957f1d16",
+      "description_sha256": "01c5f47123e05dbe1252ce0905829c476321079395a7fd672c7c10da9011b8fd"
+    },
+    {
+      "review_id": "R017",
+      "url_sha256": "f0d2f3118c42a155b9588044cbc5eb34bffe314ad4900257df74711e573b7ad7",
+      "employer_title_sha256": "1cb892b7e07ebbb66ce624f8bb56d1d5cba73d6d62c7da9885e917514e0aabbb",
+      "description_sha256": "996ff95f6e586748f916b7f3182ec12b6fcb1be163b9ebafdb969e34410ed2ee"
+    },
+    {
+      "review_id": "R018",
+      "url_sha256": "aa477cd337fd3b3382fc756301fced093b9c902ab34c243d5038516fbf5c5af9",
+      "employer_title_sha256": "8ebddd2b979821372d191c83a17d74dc65654c624b532b1e8e23050bf68d9017",
+      "description_sha256": "61356597625cad0a8f8cdaa5f762a02b39f30b5d3774684ffd66d9f99ea725bd"
+    },
+    {
+      "review_id": "R019",
+      "url_sha256": "c0c423b6b712d74bda50988ea0e5362bc24369ac4bdc221c663d74dbf68e246b",
+      "employer_title_sha256": "b9ba282f757907e05f01167019bba0033618b4844466b93553e492514871bb78",
+      "description_sha256": "52bc910e6d2ed3ad645a245bd1af74819e6abd97bb134f7763955720639875c7"
+    },
+    {
+      "review_id": "R020",
+      "url_sha256": "0b8872b0f2c6301fe9ce3e93c16aef6f0f920b8f06cda52fa4884c3e14d28724",
+      "employer_title_sha256": "d2647faa03b4352b09dd6abb8031dd348c46b37f4a950dbcac2032c929a966d9",
+      "description_sha256": "1039d95e68f1438fe52f66bbafc575a79a9f209f435e6baa58349e2ca276971c"
+    },
+    {
+      "review_id": "R021",
+      "url_sha256": "dc2a37133ce440db9486d1540c7975a328fc032d263c21cb1da28a43d9fe3467",
+      "employer_title_sha256": "647022bce15f394bf7de0c0e074bebd4c78c2a985f40f948ded692015ce1bce8",
+      "description_sha256": "4ed07044ae19f54a16dd6c23b9dfe1e1028bfb8639d458e48e33b740b18a4c6f"
+    },
+    {
+      "review_id": "R022",
+      "url_sha256": "961344b055ee9e92d3b89eaaac7c5d21e98756309553abcaadee22fbde558fdf",
+      "employer_title_sha256": "c3b8d43ff09f8f93d0e9803078efec859881411db26ce27aa791a36786260c07",
+      "description_sha256": "130d4f1588bb9bc95ef58d82dbae3ecabe29f7bb4d796fcad3f22ca8664033f5"
+    },
+    {
+      "review_id": "R023",
+      "url_sha256": "b49f7f592174aff58f375cc4564204c433166cd9f0660a54a6e4462dee344ce6",
+      "employer_title_sha256": "be362d26c7856f9faf0325da9685e7ed6f28e18bf0b5a21a5fda513aae965b0c",
+      "description_sha256": "3eb660375e159fcb26999c3e6be40399835486a3b4570b763c8aeeeb662ff293"
+    },
+    {
+      "review_id": "R024",
+      "url_sha256": "e6009849e3250c9a5d4614f6afc3470fda5f61728c922f247db590cbe6b4f0ff",
+      "employer_title_sha256": "752e359a26016336f5030afd6cec39a47442ba597e8b61957fab41b16361d504",
+      "description_sha256": "c1e01f5ea3cf468f08af091381e943e9f8377fd74fa2d0d4ba14a68aa2c236bb"
+    },
+    {
+      "review_id": "R025",
+      "url_sha256": "3a83f74dff3c65dde57a34844f149202ab4c284382d5afe92dbaa43a6651a27c",
+      "employer_title_sha256": "9a3550aeeaa937d3defe6a80c8cf77095d29bdd7ea0916fa8be9a62791063c1f",
+      "description_sha256": "2ae8f86e1e99c2be0b589b9e36af2e0854a5401afc7383b894ee15f92c200e70"
+    },
+    {
+      "review_id": "R026",
+      "url_sha256": "5c6b10b74fbda9c2149550b31494be7f2292b21080f276dc69b5e4093764933b",
+      "employer_title_sha256": "2990734655d4246c96d49c48b3424ca87590ecb556a3bc86b3486bace35a8bc5",
+      "description_sha256": "6d4dd53d28d81166d7adc7e7deeaf3e8e3b7b13ce723f725159efcfbe15d9532"
+    },
+    {
+      "review_id": "R027",
+      "url_sha256": "a47dae6dce2acfc48dd111e2c140acc41276fe30ca7b8fee0c4030ea68e48f6a",
+      "employer_title_sha256": "57c917d8ccbe6b104a4b2472025662b4da691b10120a5e6439dfa24291df95c8",
+      "description_sha256": "68f2e0e574c0cba74c4c80f0906d78eeb644d4716b30acc8b1cbd702b5f41c98"
+    },
+    {
+      "review_id": "R028",
+      "url_sha256": "f31a5f4d27f99c956c2b6d4537da2be6757a98ff5e0213f89fd1d4d47b0ce01b",
+      "employer_title_sha256": "55c534ef3be46e6d3487c1e90c0653010854ef03a1379e6ad461a9d0aff45d50",
+      "description_sha256": "63936099b7226cc13321e7a4dbd4d212cae46b1ab75d97bdb6b8829f0578cb86"
+    },
+    {
+      "review_id": "R029",
+      "url_sha256": "c2577186de4538f1891be1913768039b3cb16df770c17bf2ed2d6d36965bb9aa",
+      "employer_title_sha256": "ae6785f0460855f969c8b959a66d77ea39d3b8c60fde5c7dec30876e09eff44d",
+      "description_sha256": "0c4cd953fb9c30c209497573850c0e88634fbb15cd34e679a326fc844a9bd6ba"
+    },
+    {
+      "review_id": "R030",
+      "url_sha256": "3802a3088300e30d3cadfa5ed7e16791ae0cbbd09ad8faeec2bdf42fa74d418f",
+      "employer_title_sha256": "bfb87bcc734e1fcf175b7f7a06aade73c780f065597abcd841a883231be05599",
+      "description_sha256": "91533f15c59c3cc9c60fca855ee8ad7a934d29bf771db5e4b6ecfe94729fd55c"
+    },
+    {
+      "review_id": "R031",
+      "url_sha256": "8d4020b410f736f9163a341aea877d2594744286571d9e692cfb2233bad7d8c8",
+      "employer_title_sha256": "3a7b0e06f5d5a232c2900da5d18cf71a930946a407bc2789033061fd86a1bee9",
+      "description_sha256": "e90a0d160a7c5dc57f5bc0f0c2dbfdff97f2ec926d387e76163889d4b63a6cef"
+    },
+    {
+      "review_id": "R032",
+      "url_sha256": "0f41885b0ff2070f7068d89b6eb0469a02bd9d3f5a2942e6c19d6f6bf113101d",
+      "employer_title_sha256": "1eadbc02ff0a0282a8718051008a06df57623af07ff594f290bf66a6d1950641",
+      "description_sha256": "057dbe98bf398f9b6844e9895ce6667efd5a394d8cc73574f7e16ec6ffa392de"
+    },
+    {
+      "review_id": "R033",
+      "url_sha256": "e5747e033da9d419e6739d5b2f5f4dac9a7e50b08eaa8faf24f802d9656c95e4",
+      "employer_title_sha256": "42fa98ecac20be7526be050304fde0658938e5a8d894382905947cb1b3af35f1",
+      "description_sha256": "c1680632c1b6f4ca32af980d336bbb2bdb931df4b244c0eda52e4f3e679eac1d"
+    },
+    {
+      "review_id": "R034",
+      "url_sha256": "f44b35e47089c7f9f429e0f9978272c504c4fb4f31acb1ca725a5cf5d7bd14be",
+      "employer_title_sha256": "2d155c6d7572b5ca5103ba85152e7e914f85876eac0d8c4dffc3df152fd0f6df",
+      "description_sha256": "971176b5acf97eaa198d137c0bda334bfeae980c748484917dbe26bd05d798aa"
+    },
+    {
+      "review_id": "R035",
+      "url_sha256": "1a0546090381d9596ee43d43b6028ff65e4ffeac9484d2662b3fee433561d0bb",
+      "employer_title_sha256": "cbe477b79c8d1710c2f801282f20b555f79e84517fe1e5897cc9e6d1bd0a7f08",
+      "description_sha256": "fadba2408d4076155577d0fbfe8339a29662f890cf744ef29a88d22cc62b4f59"
+    },
+    {
+      "review_id": "R036",
+      "url_sha256": "c6086e58c57b4eb4acdba1ef3c5360874de73bad9fdf1703241f0e08fa7bb06e",
+      "employer_title_sha256": "0c72364f1394ff96af785ff7bf24aba68f689d3ac25a18b2732861dafb245a52",
+      "description_sha256": "33cb240b077be11dd2adbb91f52897b221257526883ec8347bffdc40692e3cc2"
+    },
+    {
+      "review_id": "R037",
+      "url_sha256": "d7440e866c1ce43589041737290a60803901563ed62fa99166ffcdba16335742",
+      "employer_title_sha256": "acde7fbdb8f0685ff15ed4bf90071a379e19c375fa191331846e05c6949d3589",
+      "description_sha256": "849fad2d7215f0e0966a90edbf4426988d5e720bfae87bd6f83093de6240ee93"
+    },
+    {
+      "review_id": "R038",
+      "url_sha256": "b72b30ae55d10158097d1c49fcb1099435f78ab623f8c36ba5a5f0ad43b4b2a7",
+      "employer_title_sha256": "950fdce6ce13e39a180a324e23a785576dd40753209ba38401a41e78a146aaca",
+      "description_sha256": "2e05d62989b7fd6ccef331acc929175844dc604dd00a5c3bbad86474cf251d88"
+    },
+    {
+      "review_id": "R039",
+      "url_sha256": "f6b8940df829ac480f6a7ad3758f8635bc42f65b492874a5404059494412d8e3",
+      "employer_title_sha256": "3398c013dbc82eb3f0e057664877e23ead4520d59672f9acf248a6201013212f",
+      "description_sha256": "1e05bc9f50ffc1a33a30b50560ef123c2de28d023145b97f4a44aa4fa5ebef7e"
+    },
+    {
+      "review_id": "R040",
+      "url_sha256": "816867dde368c0bcd829c008974197a5b693aa63c56a68434c2cef5028a0cb8e",
+      "employer_title_sha256": "55badf43aa37f272c62140825de9aa09426f93709455ca20d4c9b8a2e71b908a",
+      "description_sha256": "058b78e3100920c432c4348854ac087b0f81c68e1963c177076efde63cd2468c"
+    }
+  ],
+  "packet_file_sha256": {
+    "PACKET.md": "1141618e99ad6d0eb853dc16402a534daeac6d7646795ce1c075355093be6dbe",
+    "reviewer-attestation.json": "8d4416273784106c307aff936c5e9df0816df74e0ca156b478905b954c9d39f9",
+    "labels.csv": "568287a1154e4923cb27cc4580ecbd54462ee86bb31d37ce1a9b48caa8d6428e",
+    "packet.json": "3b421727a2559fb1649c193435a6bc7262b816a884deaff0d7a1f656e77bf8b9"
+  },
+  "role": "Primary current-public-ATS blinded human review; no labels or model outputs",
+  "revision": 2,
+  "revision_reason": "Three location-variant aliases overlapped diagnostic employer/title pairs; those review entries were withdrawn and replaced using previously unsampled public API records before any human review.",
+  "previous_packet_seal_sha256": "8e59801f4de7763497dab3bbec164395782dba6908bf5d88c1aa06048b35ebc1",
+  "capture_sha256": "4e633f463d256e0bea898b8f243fb64d930409b778a794ee39a6f1e9d461c922",
+  "prior_sha256": "041da98081f72ee8d8a6fe70cd2fef20958f5a490df755fba05390fe244cb8f1",
+  "summary": {
+    "initial_frame": 81,
+    "prior_excluded": 1,
+    "related_review_variants_withdrawn": 3,
+    "new_unsampled_replacements": 3,
+    "primary_blinded": 40,
+    "diagnostic": 40,
+    "review_diagnostic_url_and_pair_overlap": 0
+  },
+  "ranker_frozen_before_evaluation": {
+    "base_commit": "1b9674abf05f757863e59f6cd3231c931f9aeb63",
+    "triage_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266",
+    "rule_changes_for_issue9": false
+  }
+}

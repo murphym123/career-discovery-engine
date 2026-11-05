@@ -63,12 +63,17 @@ def write_outputs(result,output):
     fields=['identity','decision','title','company','location','url','source','sources','review_priority','geography',
             'evidence_confidence','inspection_route','verification','terms','career_relevance','qualifications',
             'supported_experience','competitive_advantage','uncertainty','possible_duplicate','source_id','index_url','discovery_urls','source_evidence']
+    if result.get('experimental'): fields+=['experimental','validation_status']
     for path,rows in [(output.with_name(output.stem+'-audit.csv'),result['audit']),
                       (output.with_name(output.stem+'-shortlist.csv'),[byid[k] for k in result['shortlist']])]:
         with path.open('w',encoding='utf-8',newline='') as f:
             w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
             for r in rows:
-                w.writerow({k:json.dumps(r[k],ensure_ascii=False) if isinstance(r.get(k),(dict,list)) else r.get(k,'') for k in fields})
+                row={}
+                for key in fields:
+                    value=result.get(key,r.get(key,'')) if key in ('experimental','validation_status') else r.get(key,'')
+                    row[key]=json.dumps(value,ensure_ascii=False) if isinstance(value,(dict,list)) else value
+                w.writerow(row)
 
 
 def main(argv=None):

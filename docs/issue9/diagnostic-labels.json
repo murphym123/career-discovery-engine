@@ -1,0 +1,288 @@
+{
+  "kind": "ASSISTANT DIAGNOSTIC JUDGMENTS; NOT INDEPENDENT HUMAN VALIDATION",
+  "reviewer_kind": "model_author_assistant",
+  "labels_frozen_before_diagnostic_model_outputs": true,
+  "ranking_rule_changes": false,
+  "records": [
+    {
+      "identity": "greenhouse_public_validation:5272571007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Fifteen-plus advisory years and senior capital-markets leadership; flexible DC work locations in body do not cure experience mismatch.",
+      "source_url": "https://job-boards.greenhouse.io/breakwaterstrategy/jobs/5272571007"
+    },
+    {
+      "identity": "greenhouse_public_validation:8304016",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Ten to fifteen-plus healthcare-consulting years and client/team leadership expected, not an early-career strategy role.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8304016"
+    },
+    {
+      "identity": "greenhouse_public_validation:8121839",
+      "partition": "diagnostic",
+      "label": "plausible",
+      "rationale": "Any-discipline BA and zero to two years including internships align with research/campaign project work; life-sciences commercial depth and Fall 2027 start need review.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8121839"
+    },
+    {
+      "identity": "greenhouse_public_validation:8318161",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five to seven years healthcare-consulting experience and team leadership exceed documented profile; MBA is preferred, not mandatory.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8318161"
+    },
+    {
+      "identity": "greenhouse_public_validation:8290495",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Advanced degree is an alternative, not compulsory: BA plus one to three life-sciences consulting/biopharma years allowed. That specialized experience is not evidenced.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8290495"
+    },
+    {
+      "identity": "greenhouse_public_validation:8043436",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "PhD title does not establish a mandatory doctorate: BA plus one to three specialized years is an alternative. Scientific/industry experience is the substantial gap.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8043436"
+    },
+    {
+      "identity": "greenhouse_public_validation:7615396",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Three to five project/consulting years, science/health/business concentration and team leadership create major gaps; healthcare experience and advanced degree are preferences.",
+      "source_url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/7615396"
+    },
+    {
+      "identity": "greenhouse_public_validation:5147833007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five-plus software-engineering years and enterprise architecture/tooling not established.",
+      "source_url": "https://boards.greenhouse.io/capitaltg/jobs/5147833007?gh_jid=5147833007"
+    },
+    {
+      "identity": "greenhouse_public_validation:5203110007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five to seven-plus federal BD/capture years and record winning awards required; research/CRM overlap is insufficient.",
+      "source_url": "https://boards.greenhouse.io/capitaltg/jobs/5203110007?gh_jid=5203110007"
+    },
+    {
+      "identity": "greenhouse_public_validation:5231546007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Accounting or related degree required; political-science degree and general administration do not establish accounting background. Worksite is Silver Spring, Maryland.",
+      "source_url": "https://boards.greenhouse.io/capitaltg/jobs/5231546007?gh_jid=5231546007"
+    },
+    {
+      "identity": "greenhouse_public_validation:5285293007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Ten relevant years, five large IT-program leadership years, active PMP and management of a $150m-plus program exceed profile.",
+      "source_url": "https://boards.greenhouse.io/capitaltg/jobs/5285293007?gh_jid=5285293007"
+    },
+    {
+      "identity": "greenhouse_public_validation:5271397007",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Nine-plus software-engineering years and senior architecture skills not established.",
+      "source_url": "https://boards.greenhouse.io/capitaltg/jobs/5271397007?gh_jid=5271397007"
+    },
+    {
+      "identity": "greenhouse_public_validation:4430277009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five years business analysis and advanced elicitation/validation expertise required, not generic policy analysis.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4430277009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4459742009",
+      "partition": "diagnostic",
+      "label": "stretch",
+      "rationale": "Two CRM/AMS or data-analytics years can relate to reported Salesforce administration; specialized degree, BI/reporting depth and duration require verification.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4459742009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4338184009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Seven to ten product-management years, three supervisory years and complex budgets exceed profile.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4338184009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4459762009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five years association membership/communications experience expected; generic outreach alone is insufficient.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4459762009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4411582009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Minimum five progressive meeting-planning years plus independent budgets/contracts and event technology required.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4411582009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4467283009",
+      "partition": "diagnostic",
+      "label": "plausible",
+      "rationale": "Bachelor degree and two related years; educational program, event and administrative experience transfers. Exact duration and independent program responsibilities need checking.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4467283009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4466720009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Minimum five political/grassroots engagement years and advocacy-event experience required; relevant interest and internships do not meet duration.",
+      "source_url": "https://job-boards.greenhouse.io/acog/jobs/4466720009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4352666009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Eight-plus federal government-affairs years and established Senate relationships exceed documented profile.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4352666009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4342935009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five-plus federal government-affairs years and House legislative network exceed documented profile.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4342935009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4356962009",
+      "partition": "diagnostic",
+      "label": "plausible",
+      "rationale": "Entry-level AI-policy research, operational and administrative support; political-science BA or equivalence fits. Technical expertise is not inferred from policy interest.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4356962009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4353544009",
+      "partition": "diagnostic",
+      "label": "stretch",
+      "rationale": "Three to seven-plus years and building a grassroots digital program from scratch required; organizing and writing transfer but leadership/platform evidence needs review.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4353544009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4353638009",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Five-plus operational/decision-support leadership years such as chief of staff or campaign manager are not established.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4353638009"
+    },
+    {
+      "identity": "greenhouse_public_validation:4357637009",
+      "partition": "diagnostic",
+      "label": "unknown",
+      "rationale": "General-interest/prospect submission, not a defined vacancy with assessable requirements. Do not confuse with a currently open particular job.",
+      "source_url": "https://job-boards.greenhouse.io/aipn/jobs/4357637009"
+    },
+    {
+      "identity": "greenhouse_public_validation:5454689008",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Masters or higher plus five clinical infant/early-childhood mental-health years and specialist training experience required.",
+      "source_url": "https://job-boards.greenhouse.io/zerotothree/jobs/5454689008"
+    },
+    {
+      "identity": "greenhouse_public_validation:5461148008",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Minimum five years early-childhood content/curriculum or technical-assistance systems experience not established.",
+      "source_url": "https://job-boards.greenhouse.io/zerotothree/jobs/5461148008"
+    },
+    {
+      "identity": "greenhouse_public_validation:5293378008",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "JD, active state bar and fifteen legislative/executive years required; unsupported credentials and level.",
+      "source_url": "https://job-boards.greenhouse.io/alliancedefendingfreedom/jobs/5293378008?gh_jid=5293378008"
+    },
+    {
+      "identity": "greenhouse_public_validation:5031347008",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "JD, active state bar and ten complex-litigation years required; unsupported credentials and level.",
+      "source_url": "https://job-boards.greenhouse.io/alliancedefendingfreedom/jobs/5031347008?gh_jid=5031347008"
+    },
+    {
+      "identity": "greenhouse_public_validation:5312470",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Three to five related years, EDRM and advanced Relativity administration expected; public-records research is not proof of eDiscovery production proficiency.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312470"
+    },
+    {
+      "identity": "greenhouse_public_validation:7983867",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Senior AI/digital-product and agile delivery expertise, not general AI-policy writing; professional product-management evidence absent.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/7983867"
+    },
+    {
+      "identity": "greenhouse_public_validation:5592096",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Desired finance/accounting education, three to five relevant years and financial valuation/quantitative skills not established; preferences still materially affect competitiveness.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5592096"
+    },
+    {
+      "identity": "greenhouse_public_validation:585839",
+      "partition": "diagnostic",
+      "label": "stretch",
+      "rationale": "Up to three years and potential Analyst level for recent graduates; economics/quantitative methods, statistical software and dataset construction require portfolio verification.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/585839"
+    },
+    {
+      "identity": "greenhouse_public_validation:3040262",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Specialist digital-forensics leadership, device acquisition and expert-client responsibilities are not established by general research.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/3040262"
+    },
+    {
+      "identity": "greenhouse_public_validation:5312426",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "One to three years and technical education/Relativity-Nuix production skills desired; not mandatory licensure, but a large specialist-scope gap.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312426"
+    },
+    {
+      "identity": "greenhouse_public_validation:251474",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Desired six to ten finance/accounting/economic years and project leadership create substantial competitiveness gaps; CPA/CFA only beneficial.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/251474"
+    },
+    {
+      "identity": "greenhouse_public_validation:5360688",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Desired ten-plus financial/economic years, client origination and team leadership far exceed profile; advanced degree and certification are preferences.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5360688"
+    },
+    {
+      "identity": "greenhouse_public_validation:8130646",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Three to five years hands-on incident response, enterprise security platforms and scripting expected; general investigative research is insufficient.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8130646"
+    },
+    {
+      "identity": "greenhouse_public_validation:8243522",
+      "partition": "diagnostic",
+      "label": "ineligible",
+      "rationale": "Explicit must-be-graduating requirement for Summer/Fall 2027 and campus quantitative focus; candidate already holds BA. Locations also outside target market.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8243522"
+    },
+    {
+      "identity": "greenhouse_public_validation:8126524",
+      "partition": "diagnostic",
+      "label": "unlikely",
+      "rationale": "Toronto worksite and specialized life-sciences/medical strategy consulting do not establish a suitable DC/eligible-remote opportunity.",
+      "source_url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8126524"
+    }
+  ]
+}

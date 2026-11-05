@@ -4,9 +4,14 @@ on:
     inputs:
       source_mode:
         type: choice
-        description: "DC is an unranked public-board audit; free uses other feeds/APIs; Brave may charge"
+        description: "DC preserves the full unranked board audit; other modes use existing feeds/APIs"
         options: [dc, free, remotive, jobicy, muse, reliefweb, usajobs, brave, both]
         default: dc
+        required: true
+      experimental_ranking:
+        type: boolean
+        description: "DC only: add an EXPERIMENTAL, unvalidated shortlist beside the full audit"
+        default: false
         required: true
       query_budget:
         type: number
@@ -109,6 +114,15 @@ jobs:
             paid_args+=(--allow-paid-search)
           fi
           python -m career_engine --sources "$sources" --source-pages "$SOURCE_PAGES" --query-budget "$BUDGET" --max-extract "$EXTRACT_BUDGET" "${paid_args[@]}" --db data/live.db --output output/live_brief.md
+      - name: Publish experimental ranking from the existing DC audit
+        if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' && inputs.experimental_ranking }}
+        env:
+          INSPECTION_SEED: ${{ inputs.inspection_seed }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m tools.publish_experimental --input output/dc-source-audit.json --output-dir output/experimental-ranking --seed "$INSPECTION_SEED"
+          cat output/experimental-ranking/README.md >> "$GITHUB_STEP_SUMMARY"
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
@@ -122,6 +136,7 @@ jobs:
             output/dc-source-audit.json
             output/dc-source-audit.csv
             output/dc-source-audit.md
+            output/experimental-ranking/
           if-no-files-found: warn
           retention-days: 30
       - name: Save history
