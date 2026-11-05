@@ -1,0 +1,849 @@
+{
+  "as_of": "2026-11-05T07:58:27+00:00",
+  "input_count": 327,
+  "description_count": 95,
+  "input_representation": "Use input manifest: committed paired benchmark uses analyst abstracts; raw-capture diagnostic uses original descriptions.",
+  "baseline": "Main at 078c1fc165972c81589e6fc3f5408fa29e2c9111: score/select/screening_hold/dedup unchanged; threshold22; given date.",
+  "labels": {
+    "holdout": 55,
+    "development": 27
+  },
+  "results": {
+    "old_top15": {
+      "identities": [
+        "senate:1279",
+        "globaljobs:52190",
+        "globaljobs:52042",
+        "onthinktanks:energy-policy-analyst",
+        "unionjobs:31623",
+        "globaljobs:52087",
+        "globaljobs:52215",
+        "globaljobs:52208",
+        "globaljobs:52105",
+        "globaljobs:52025",
+        "senate:1288",
+        "globaljobs:52101",
+        "unionjobs:31604",
+        "senate:1293",
+        "unionjobs:31407"
+      ],
+      "all_review_labels": {
+        "selected": 15,
+        "judged": 14,
+        "unjudged": 1,
+        "labels": {
+          "stretch": 7,
+          "plausible": 5,
+          "ineligible": 1,
+          "unknown": 1
+        },
+        "plausible_or_stretch": 12,
+        "judged_nonunknown": 13,
+        "relevance_proxy_judged_nonunknown": 0.9231,
+        "conservative_positive_fraction_of_all_selected": 0.8,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      },
+      "holdout_only": {
+        "selected": 15,
+        "judged": 7,
+        "unjudged": 8,
+        "labels": {
+          "stretch": 4,
+          "plausible": 1,
+          "ineligible": 1,
+          "unknown": 1
+        },
+        "plausible_or_stretch": 5,
+        "judged_nonunknown": 6,
+        "relevance_proxy_judged_nonunknown": 0.8333,
+        "conservative_positive_fraction_of_all_selected": 0.3333,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      }
+    },
+    "new_top15": {
+      "identities": [
+        "globaljobs:52025",
+        "unionjobs:31180",
+        "unionjobs:31588",
+        "globaljobs:52072",
+        "globaljobs:52210",
+        "unionjobs:31604",
+        "senate:1288",
+        "globaljobs:52172",
+        "senate:1299",
+        "globaljobs:52190",
+        "unionjobs:31407",
+        "unionjobs:31535",
+        "globaljobs:52105",
+        "globaljobs:52182",
+        "globaljobs:52088"
+      ],
+      "all_review_labels": {
+        "selected": 15,
+        "judged": 14,
+        "unjudged": 1,
+        "labels": {
+          "plausible": 8,
+          "ineligible": 2,
+          "unlikely": 1,
+          "stretch": 3
+        },
+        "plausible_or_stretch": 11,
+        "judged_nonunknown": 14,
+        "relevance_proxy_judged_nonunknown": 0.7857,
+        "conservative_positive_fraction_of_all_selected": 0.7333,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      },
+      "holdout_only": {
+        "selected": 15,
+        "judged": 7,
+        "unjudged": 8,
+        "labels": {
+          "ineligible": 2,
+          "unlikely": 1,
+          "stretch": 3,
+          "plausible": 1
+        },
+        "plausible_or_stretch": 4,
+        "judged_nonunknown": 7,
+        "relevance_proxy_judged_nonunknown": 0.5714,
+        "conservative_positive_fraction_of_all_selected": 0.2667,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      }
+    },
+    "old_top30": {
+      "identities": [
+        "senate:1279",
+        "globaljobs:52190",
+        "globaljobs:52042",
+        "onthinktanks:energy-policy-analyst",
+        "unionjobs:31623",
+        "globaljobs:52087",
+        "globaljobs:52215",
+        "globaljobs:52208",
+        "globaljobs:52105",
+        "globaljobs:52025",
+        "senate:1288",
+        "globaljobs:52101",
+        "unionjobs:31604",
+        "senate:1293",
+        "unionjobs:31407",
+        "globaljobs:52132",
+        "globaljobs:52058",
+        "senate:1283",
+        "senate:1281",
+        "unionjobs:31348",
+        "globaljobs:52134",
+        "globaljobs:52126",
+        "globaljobs:52125",
+        "globaljobs:52093",
+        "globaljobs:52051",
+        "workfornonprofits:b76bf793af7548e9bb3aa9366eff1fa4",
+        "unionjobs:31588",
+        "senate:1276",
+        "globaljobs:52193",
+        "globaljobs:52172"
+      ],
+      "all_review_labels": {
+        "selected": 30,
+        "judged": 20,
+        "unjudged": 10,
+        "labels": {
+          "stretch": 7,
+          "plausible": 8,
+          "ineligible": 1,
+          "unknown": 4
+        },
+        "plausible_or_stretch": 15,
+        "judged_nonunknown": 16,
+        "relevance_proxy_judged_nonunknown": 0.9375,
+        "conservative_positive_fraction_of_all_selected": 0.5,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      },
+      "holdout_only": {
+        "selected": 30,
+        "judged": 10,
+        "unjudged": 20,
+        "labels": {
+          "stretch": 4,
+          "plausible": 3,
+          "ineligible": 1,
+          "unknown": 2
+        },
+        "plausible_or_stretch": 7,
+        "judged_nonunknown": 8,
+        "relevance_proxy_judged_nonunknown": 0.875,
+        "conservative_positive_fraction_of_all_selected": 0.2333,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      }
+    },
+    "new_top30": {
+      "identities": [
+        "globaljobs:52025",
+        "unionjobs:31180",
+        "unionjobs:31588",
+        "globaljobs:52072",
+        "globaljobs:52210",
+        "unionjobs:31604",
+        "senate:1288",
+        "globaljobs:52172",
+        "senate:1299",
+        "globaljobs:52190",
+        "unionjobs:31407",
+        "unionjobs:31535",
+        "globaljobs:52105",
+        "globaljobs:52182",
+        "globaljobs:52088",
+        "globaljobs:52092",
+        "senate:1283",
+        "unionjobs:31563",
+        "unionjobs:31623",
+        "senate:1281",
+        "unionjobs:31609",
+        "unionjobs:28720",
+        "unionjobs:31420",
+        "unionjobs:31608",
+        "workfornonprofits:1433846a65ff4e6aab61ff90ebf5d421",
+        "unionjobs:29867",
+        "globaljobs:52215",
+        "onthinktanks:program-manager-cato-courses",
+        "globaljobs:52058",
+        "workfornonprofits:21d28aab9d9d468d83dcd6c446c18bc6"
+      ],
+      "all_review_labels": {
+        "selected": 30,
+        "judged": 27,
+        "unjudged": 3,
+        "labels": {
+          "plausible": 14,
+          "ineligible": 4,
+          "unlikely": 1,
+          "stretch": 7,
+          "unknown": 1
+        },
+        "plausible_or_stretch": 21,
+        "judged_nonunknown": 26,
+        "relevance_proxy_judged_nonunknown": 0.8077,
+        "conservative_positive_fraction_of_all_selected": 0.7,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      },
+      "holdout_only": {
+        "selected": 30,
+        "judged": 12,
+        "unjudged": 18,
+        "labels": {
+          "ineligible": 4,
+          "unlikely": 1,
+          "stretch": 4,
+          "plausible": 3
+        },
+        "plausible_or_stretch": 7,
+        "judged_nonunknown": 12,
+        "relevance_proxy_judged_nonunknown": 0.5833,
+        "conservative_positive_fraction_of_all_selected": 0.2333,
+        "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+      }
+    }
+  },
+  "false_negatives": {
+    "development": {
+      "labeled_positive_total": 18,
+      "old_missed_top30": [
+        "unionjobs:31535",
+        "unionjobs:31609",
+        "unionjobs:31420",
+        "unionjobs:28720",
+        "globaljobs:52182",
+        "globaljobs:52072",
+        "globaljobs:52032",
+        "onthinktanks:program-manager-cato-courses",
+        "workfornonprofits:3dfc7540d81a421b878d372431df62b5",
+        "workfornonprofits:21d28aab9d9d468d83dcd6c446c18bc6"
+      ],
+      "new_missed_top30": [
+        {
+          "identity": "globaljobs:52208",
+          "decision": "stretch",
+          "route": "all_available_descriptions"
+        },
+        {
+          "identity": "globaljobs:52032",
+          "decision": "stretch",
+          "route": "all_available_descriptions"
+        },
+        {
+          "identity": "onthinktanks:energy-policy-analyst",
+          "decision": "stretch",
+          "route": "all_available_descriptions"
+        },
+        {
+          "identity": "workfornonprofits:3dfc7540d81a421b878d372431df62b5",
+          "decision": "investigate",
+          "route": "all_available_descriptions"
+        }
+      ],
+      "new_qualification_gap_false_negatives": []
+    },
+    "holdout": {
+      "labeled_positive_total": 10,
+      "old_missed_top30": [
+        "unionjobs:29867",
+        "unionjobs:31269",
+        "globaljobs:52088"
+      ],
+      "new_missed_top30": [
+        {
+          "identity": "senate:1279",
+          "decision": "stretch",
+          "route": "all_available_descriptions"
+        },
+        {
+          "identity": "unionjobs:31269",
+          "decision": "qualification_gap",
+          "route": "all_available_descriptions"
+        },
+        {
+          "identity": "globaljobs:52042",
+          "decision": "stretch",
+          "route": "all_available_descriptions"
+        }
+      ],
+      "new_qualification_gap_false_negatives": [
+        "unionjobs:31269"
+      ]
+    }
+  },
+  "all_holdout_decisions": [
+    {
+      "identity": "senate:1291",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "senate:1288",
+      "label": "plausible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": true,
+      "in_new_top30": true,
+      "rationale": "Research, writing and constituent engagement align; Hill experience and Delaware ties preferred. Defense/appropriations depth requires review."
+    },
+    {
+      "identity": "senate:1289",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "At least five operations years including financial management/procurement exceed documented early-career range."
+    },
+    {
+      "identity": "senate:1290",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Research/communications internship functions align, Mandarin not required. Academic eligibility, compensation and fellowship terms unclear."
+    },
+    {
+      "identity": "senate:1293",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": true,
+      "in_new_top30": false,
+      "rationale": "Multi-position recruitment pool without one defined requisition/level; broad functions relevant but cannot establish a specific suitable opening."
+    },
+    {
+      "identity": "senate:1297",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "senate:1299",
+      "label": "ineligible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "Significant experience representing parties in criminal proceedings is mandatory and unsupported."
+    },
+    {
+      "identity": "senate:1283",
+      "label": "plausible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": true,
+      "in_new_top30": true,
+      "rationale": "Front-office, tours, communication and organizational duties align. Hill internship, IQ and state ties are preferences."
+    },
+    {
+      "identity": "senate:1285",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "senate:1281",
+      "label": "plausible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": true,
+      "in_new_top30": true,
+      "rationale": "Administrative duties, proofreading and learning tax context align; two administrative or equivalent professional years need duration verification."
+    },
+    {
+      "identity": "senate:1278",
+      "label": "unlikely",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Specialized verbatim stenography is central, not generic political writing; no stenographic skill documented."
+    },
+    {
+      "identity": "senate:1277",
+      "label": "unlikely",
+      "new_decision": "adjacent_review",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Executive Senate budget leadership and enterprise financial planning, not early-career operations."
+    },
+    {
+      "identity": "senate:1279",
+      "label": "stretch",
+      "new_decision": "stretch",
+      "in_old_top30": true,
+      "in_new_top30": false,
+      "rationale": "Political science BA and research align; prior congressional experience, specialist legal databases and archival knowledge are not established; MLIS is only preferred."
+    },
+    {
+      "identity": "senate:1271",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Law degree and prior legislative/agency experience expressly required; legal credential absent from documented profile."
+    },
+    {
+      "identity": "senate:1272",
+      "label": "unlikely",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Executive-level security leadership, staffing and strategic oversight exceed documented responsibilities; no numeric minimum supplied."
+    },
+    {
+      "identity": "unionjobs:31348",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": true,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "unionjobs:31407",
+      "label": "stretch",
+      "new_decision": "reasonable_application",
+      "in_old_top30": true,
+      "in_new_top30": true,
+      "rationale": "Strong admin/events match but demonstrated elected-leader/executive-office support required; exact depth and required skills tests need verification."
+    },
+    {
+      "identity": "unionjobs:31599",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Five to ten government-relations years; higher degree is preferred, not the principal blocker."
+    },
+    {
+      "identity": "unionjobs:31053",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "JD and bar admission required, not evidenced."
+    },
+    {
+      "identity": "unionjobs:31440",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Ten relevant years and management experience or substantial equivalence; early-career teaching is insufficient."
+    },
+    {
+      "identity": "unionjobs:29867",
+      "label": "stretch",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "One to two labor-movement years required, not generic campaign research; writing and political research transfer."
+    },
+    {
+      "identity": "unionjobs:31269",
+      "label": "plausible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Organizing, campaign planning and data/communication skills align. Nursing qualification is not required; license/car and direct organizing depth need verification."
+    },
+    {
+      "identity": "unionjobs:31503",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Seven organizing years, five campaign-management years and four supervisory years exceed profile."
+    },
+    {
+      "identity": "unionjobs:31539",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "unionjobs:30669",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "unionjobs:31120",
+      "label": "ineligible",
+      "new_decision": "adjacent_review",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Accounting education/progressive accounting alternative is unsupported; administrative CRM work is insufficient."
+    },
+    {
+      "identity": "unionjobs:31180",
+      "label": "ineligible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "Three grassroots years plus four to six organizing/fundraising years required; broad political skill overlap insufficient."
+    },
+    {
+      "identity": "unionjobs:31530",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "JD, bar and five labor-law years required."
+    },
+    {
+      "identity": "unionjobs:31604",
+      "label": "stretch",
+      "new_decision": "reasonable_application",
+      "in_old_top30": true,
+      "in_new_top30": true,
+      "rationale": "Administrative, event and database work transfer; three administrative years and autonomous executive support need verification."
+    },
+    {
+      "identity": "globaljobs:52210",
+      "label": "unlikely",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "Ten years and masters are desired rather than mandatory; personnel/program leadership and publishing expectations still make competitiveness weak."
+    },
+    {
+      "identity": "globaljobs:52185",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Ten progressively responsible fundraising years including senior leadership required."
+    },
+    {
+      "identity": "globaljobs:52140",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "globaljobs:52101",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": true,
+      "in_new_top30": false,
+      "rationale": "Current TS clearance/SCI access and multiple counterintelligence requirements not established."
+    },
+    {
+      "identity": "globaljobs:52097",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "globaljobs:52092",
+      "label": "ineligible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "Seven digital-fundraising years required; CRM overlap cannot establish qualification."
+    },
+    {
+      "identity": "globaljobs:52088",
+      "label": "stretch",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "GS07/09/11 alternatives and education equivalence merit review; grade-specific specialized experience, hiring eligibility and certification remain unresolved."
+    },
+    {
+      "identity": "globaljobs:52061",
+      "label": "unlikely",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Professional reporting track record, source network and breaking-news portfolio are substantial gaps. Board date conflicts with June priority text; active status unresolved."
+    },
+    {
+      "identity": "globaljobs:52042",
+      "label": "stretch",
+      "new_decision": "stretch",
+      "in_old_top30": true,
+      "in_new_top30": false,
+      "rationale": "Political-science BA and analysis transfer; required analytical tradecraft, threat-assessment expertise and scalable intelligence processes are not established. Three years and masters preferred."
+    },
+    {
+      "identity": "globaljobs:52014",
+      "label": "unknown",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status."
+    },
+    {
+      "identity": "onthinktanks:curriculum-lead-sphere-education-initiatives",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Five curriculum-development/publication years required; teaching experience alone does not establish this."
+    },
+    {
+      "identity": "onthinktanks:director-tax-policy",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Seven relevant professional years plus tax-policy research and quantitative expertise exceed profile. Potential overlap with another BPC listing."
+    },
+    {
+      "identity": "onthinktanks:senior-fellow-energy-and-environment-2",
+      "label": "unlikely",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Deep environmental-policy expertise and legislative/regulatory testimony not documented."
+    },
+    {
+      "identity": "onthinktanks:director-tax-policy-2",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Seven relevant professional years plus tax-policy research and quantitative expertise exceed profile."
+    },
+    {
+      "identity": "onthinktanks:peope-operations-lead",
+      "label": "unlikely",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "US HR compliance, benefits administration and end-to-end recruiting ownership required; campus recruitment is not equivalent HR leadership."
+    },
+    {
+      "identity": "onthinktanks:senior-fellow-finance-and-insurance",
+      "label": "unlikely",
+      "new_decision": "stretch",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "High-level financial-regulatory expertise is expected; policy interest and political writing are insufficient."
+    },
+    {
+      "identity": "onthinktanks:echidna-global-scholar-5",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Masters, ten professional years, substantial Global South ties and return plans required; not a generic early-career fellowship."
+    },
+    {
+      "identity": "onthinktanks:chief-financial-and-operating-officer-institute-for-womens-policy-research",
+      "label": "ineligible",
+      "new_decision": "closed_by_source_date",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Ten finance/operations-management years required; masters has equivalence and CPA is preferred."
+    },
+    {
+      "identity": "workfornonprofits:8781567fc5e14c95a2fa94612fd3e997",
+      "label": "unlikely",
+      "new_decision": "investigate",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Deep nonprofit-governance subject-matter expertise and curriculum leadership expected; formal qualifications missing from export. NPAG is recruiter; actual employer BoardSource."
+    },
+    {
+      "identity": "workfornonprofits:c2f9bbf77ee94642be6778eb9012a474",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Twelve to fifteen compliance years required. Bar is a plus for this role; generic all-lawyer boilerplate must not become a universal JD requirement."
+    },
+    {
+      "identity": "workfornonprofits:1433846a65ff4e6aab61ff90ebf5d421",
+      "label": "ineligible",
+      "new_decision": "reasonable_application",
+      "in_old_top30": false,
+      "in_new_top30": true,
+      "rationale": "Seven operational/project-management years required despite superficially transferable coordination duties."
+    },
+    {
+      "identity": "workfornonprofits:d132ff5d22ef49cb88e9a9e316b68843",
+      "label": "ineligible",
+      "new_decision": "adjacent_review",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Ten leadership years required; AI-policy interest does not qualify for AI studio leadership."
+    },
+    {
+      "identity": "workfornonprofits:d9ef3b1eca194762a5b995fd6bb638c0",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Active CPA and ten financial-leadership years required."
+    },
+    {
+      "identity": "workfornonprofits:a4c273ced78a4a7dbd69f7bcbba96805",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Seven to ten fundraising years required; entry-level donations describes a gift channel, not seniority."
+    },
+    {
+      "identity": "workfornonprofits:d6159e7266494340bbf8ccb5298d8677",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Eight to ten nonprofit-fundraising years and major/principal-gift record required."
+    },
+    {
+      "identity": "workfornonprofits:9571edc6bda24a618f53f7423472abb4",
+      "label": "ineligible",
+      "new_decision": "qualification_gap",
+      "in_old_top30": false,
+      "in_new_top30": false,
+      "rationale": "Ten corporate-partnership years and technology-sector executive relationships required."
+    }
+  ],
+  "new_counts": {
+    "received": 327,
+    "retained": 327,
+    "descriptions_available": 95,
+    "detailed_analyses": 95,
+    "shortlisted": 30,
+    "review_sample": 20,
+    "decisions": {
+      "qualification_gap": 34,
+      "investigate": 105,
+      "reasonable_application": 25,
+      "stretch": 15,
+      "adjacent_review": 5,
+      "location_review": 142,
+      "closed_by_source_date": 1
+    },
+    "sources": {
+      "senate": 25,
+      "unionjobs": 56,
+      "globaljobs": 209,
+      "onthinktanks": 15,
+      "workfornonprofits": 22
+    },
+    "shortlist_sources": {
+      "globaljobs": 11,
+      "unionjobs": 12,
+      "senate": 4,
+      "workfornonprofits": 2,
+      "onthinktanks": 1
+    },
+    "shortlist_families": {
+      "policy_legislative": 10,
+      "research_consulting": 13,
+      "programs_operations": 18,
+      "advocacy_campaigns": 9,
+      "development_associations": 3,
+      "education_adjacent": 7,
+      "communications": 14
+    }
+  },
+  "limitations": [
+    "Same analyst and source snapshot; not blind or representative.",
+    "Holdout selected before evaluator implementation; development examples informed rules.",
+    "Stratified retrieval/inspection and incomplete labels prevent market recall or whole-corpus precision estimates.",
+    "Top-K relevance proxy includes stretches, not only fully qualified applications.",
+    "Unjudged and unknown records have explicit denominators. No performance inference from synthetic stress data."
+  ],
+  "input_sha256": "aae87b30fe1f0d5c9073f6b6aef2a3fea5102e0d53afc36f8d3b3c864f8a004d",
+  "label_sha256": "cfb3067029fb194677b58cbc9c516f67e1007f137a4a9bf4f3b0931fb62108e8",
+  "stress": [
+    {
+      "records": 327,
+      "seconds": 0.0354,
+      "detailed_budget": 200,
+      "analyzed": 95,
+      "retained": 327,
+      "cost": {
+        "network_calls": 0,
+        "model_calls": 0,
+        "paid_services_enabled": false
+      },
+      "data_kind": "Repeated actual metadata with synthetic unique identities; scalability only, not accuracy."
+    },
+    {
+      "records": 5000,
+      "seconds": 0.2142,
+      "detailed_budget": 200,
+      "analyzed": 200,
+      "retained": 5000,
+      "cost": {
+        "network_calls": 0,
+        "model_calls": 0,
+        "paid_services_enabled": false
+      },
+      "data_kind": "Repeated actual metadata with synthetic unique identities; scalability only, not accuracy."
+    },
+    {
+      "records": 20000,
+      "seconds": 0.7213,
+      "detailed_budget": 200,
+      "analyzed": 200,
+      "retained": 20000,
+      "cost": {
+        "network_calls": 0,
+        "model_calls": 0,
+        "paid_services_enabled": false
+      },
+      "data_kind": "Repeated actual metadata with synthetic unique identities; scalability only, not accuracy."
+    }
+  ],
+  "evaluation_status": "Archived initial first pass on then-held-out labels. Historical result, not reproduced by current corrected evaluator. No claim of blinded independent-human validation."
+}
