@@ -1,0 +1,82 @@
+name: DC career discovery
+on:
+  workflow_dispatch:
+    inputs:
+      source_mode:
+        type: choice
+        description: "Public source; Brave requires a repository secret"
+        options: [remotive, brave, both]
+        default: remotive
+        required: true
+      query_budget:
+        type: number
+        description: "Brave queries (1–20)"
+        default: 6
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: dc-career-discovery
+  cancel-in-progress: false
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install packages
+        run: python -m pip install -r requirements.txt
+      - name: Restore prior history when available
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data output
+          while read -r previous_id; do
+            if gh run download "$previous_id" -R "$GITHUB_REPOSITORY" -n career-history -D data >/dev/null 2>&1; then
+              echo "Restored history"
+              exit 0
+            fi
+          done < <(gh run list --workflow discovery.yml --status success --limit 15 --json databaseId --jq '.[].databaseId')
+          echo "No prior history artifact"
+      - name: Run discovery
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          MODE: ${{ inputs.source_mode }}
+          BUDGET: ${{ inputs.query_budget }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$BUDGET" =~ ^[0-9]+$ ]] && (( BUDGET >= 1 && BUDGET <= 20 )) || exit 2
+          case "$MODE" in
+            remotive) sources=remotive ;;
+            brave) sources=brave ;;
+            both) sources=brave,remotive ;;
+            *) exit 2 ;;
+          esac
+          if [[ "$sources" == *brave* && -z "$BRAVE_API_KEY" ]]; then
+            echo "BRAVE_API_KEY secret missing"; exit 2
+          fi
+          python -m career_engine --sources "$sources" --query-budget "$BUDGET" --db data/live.db --output output/live_brief.md
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: career-report-${{ github.run_id }}
+          path: |
+            output/live_brief.md
+            output/live_brief.csv
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Save history
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: career-history
+          path: data/live.db
+          if-no-files-found: error
+          retention-days: 90
