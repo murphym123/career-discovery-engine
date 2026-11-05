@@ -70,6 +70,7 @@ jobs:
           path: |
             output/live_brief.md
             output/live_brief.csv
+            output/screening_audit.csv
           if-no-files-found: warn
           retention-days: 30
       - name: Save history
