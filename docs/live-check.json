@@ -1,0 +1,66 @@
+{
+  "kind": "LIVE CONNECTIVITY + OFFLINE REPLAY OF CAPTURED FIRST RESPONSES; NOT VERIFIED VACANCIES OR MARKET RECALL",
+  "checked_on_user_local_date": "2026-11-04",
+  "recorded_at_utc": "2026-11-05T06:27:56+00:00",
+  "network_calls": 3,
+  "paid_api_calls": 0,
+  "independently_verified_open_jobs": 0,
+  "reliefweb": "not live-tested: approved appname not configured",
+  "usajobs": "not live-tested: credentials not configured",
+  "muse": "One anonymous request for integration testing only. Registration required for ongoing use. Offline replay uses a synthetic key and makes no requests.",
+  "responses": {
+    "remotive": {
+      "http_status": 200,
+      "records": 11
+    },
+    "jobicy": {
+      "http_status": 200,
+      "records": 100,
+      "has_more": true
+    },
+    "muse": {
+      "http_status": 200,
+      "records": 20,
+      "reported_page_count": 400
+    }
+  },
+  "replay_cases": {
+    "old_remotive": {
+      "exit_code": 0,
+      "received": 11,
+      "unique": 11,
+      "above_threshold": 0,
+      "shortlisted": 0,
+      "shortlisted_lanes": 0,
+      "exploration_review": 0,
+      "seniority_or_specialist_review": 0,
+      "replayed_source_responses": 1,
+      "errors": []
+    },
+    "new_no_credentials": {
+      "exit_code": 0,
+      "received": 111,
+      "unique": 111,
+      "above_threshold": 7,
+      "shortlisted": 7,
+      "shortlisted_lanes": 4,
+      "exploration_review": 5,
+      "seniority_or_specialist_review": 70,
+      "replayed_source_responses": 2,
+      "errors": []
+    },
+    "new_plus_muse_test_response": {
+      "exit_code": 0,
+      "received": 131,
+      "unique": 131,
+      "above_threshold": 8,
+      "shortlisted": 8,
+      "shortlisted_lanes": 4,
+      "exploration_review": 5,
+      "seniority_or_specialist_review": 88,
+      "replayed_source_responses": 3,
+      "errors": []
+    }
+  },
+  "limits": "Non-simultaneous first pages only; arbitrary sample sizes and source biases; page_count is provider metadata, not a measured total of unique, relevant or open jobs. No live data snapshots committed."
+}

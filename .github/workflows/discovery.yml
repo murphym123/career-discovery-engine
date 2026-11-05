@@ -4,9 +4,9 @@ on:
     inputs:
       source_mode:
         type: choice
-        description: "Public source; Brave requires a repository secret"
-        options: [remotive, brave, both]
-        default: remotive
+        description: "Free uses public feeds plus configured free APIs; Brave may charge"
+        options: [free, remotive, jobicy, muse, reliefweb, usajobs, brave, both]
+        default: free
         required: true
       query_budget:
         type: number
@@ -17,6 +17,16 @@ on:
         type: number
         description: "Max public HTML pages to inspect (0–30; zero by default)"
         default: 0
+        required: true
+      source_pages:
+        type: number
+        description: "Max requests per added free API (1–20)"
+        default: 6
+        required: true
+      allow_paid_search:
+        type: boolean
+        description: "Explicitly authorize possible Brave charges (leave false for free runs)"
+        default: false
         required: true
 permissions:
   contents: read
@@ -51,24 +61,35 @@ jobs:
       - name: Run discovery
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          MUSE_API_KEY: ${{ secrets.MUSE_API_KEY }}
+          RELIEFWEB_APPNAME: ${{ secrets.RELIEFWEB_APPNAME }}
+          USAJOBS_API_KEY: ${{ secrets.USAJOBS_API_KEY }}
+          USAJOBS_USER_AGENT: ${{ secrets.USAJOBS_USER_AGENT }}
           MODE: ${{ inputs.source_mode }}
           BUDGET: ${{ inputs.query_budget }}
           EXTRACT_BUDGET: ${{ inputs.extract_budget }}
+          SOURCE_PAGES: ${{ inputs.source_pages }}
+          ALLOW_PAID_SEARCH: ${{ inputs.allow_paid_search }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$BUDGET" =~ ^[0-9]+$ ]] && (( BUDGET >= 1 && BUDGET <= 20 )) || exit 2
           [[ "$EXTRACT_BUDGET" =~ ^[0-9]+$ ]] && (( EXTRACT_BUDGET >= 0 && EXTRACT_BUDGET <= 30 )) || exit 2
+          [[ "$SOURCE_PAGES" =~ ^[0-9]+$ ]] && (( SOURCE_PAGES >= 1 && SOURCE_PAGES <= 20 )) || exit 2
           case "$MODE" in
+            free|jobicy|muse|reliefweb|usajobs) sources="$MODE" ;;
             remotive) sources=remotive ;;
             brave) sources=brave ;;
             both) sources=brave,remotive ;;
             *) exit 2 ;;
           esac
-          if [[ "$sources" == *brave* && -z "$BRAVE_API_KEY" ]]; then
-            echo "BRAVE_API_KEY secret missing"; exit 2
+          paid_args=()
+          if [[ "$sources" == *brave* ]]; then
+            [[ "$ALLOW_PAID_SEARCH" == true ]] || { echo "Brave charges not authorized"; exit 2; }
+            [[ -n "$BRAVE_API_KEY" ]] || { echo "BRAVE_API_KEY secret missing"; exit 2; }
+            paid_args+=(--allow-paid-search)
           fi
-          python -m career_engine --sources "$sources" --query-budget "$BUDGET" --max-extract "$EXTRACT_BUDGET" --db data/live.db --output output/live_brief.md
+          python -m career_engine --sources "$sources" --source-pages "$SOURCE_PAGES" --query-budget "$BUDGET" --max-extract "$EXTRACT_BUDGET" "${paid_args[@]}" --db data/live.db --output output/live_brief.md
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
@@ -78,6 +99,7 @@ jobs:
             output/live_brief.md
             output/live_brief.csv
             output/screening_audit.csv
+            output/discovery_metrics.json
           if-no-files-found: warn
           retention-days: 30
       - name: Save history
@@ -88,3 +110,4 @@ jobs:
           path: data/live.db
           if-no-files-found: error
           retention-days: 90
+

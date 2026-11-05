@@ -1,0 +1,691 @@
+{
+  "_notice": "SYNTHETIC TEST DATA. No records are real vacancies. Schemas follow official documentation; page sizes are intentionally small.",
+  "roles": [
+    {
+      "title": "Research Associate",
+      "family": "research"
+    },
+    {
+      "title": "Policy Analyst",
+      "family": "policy"
+    },
+    {
+      "title": "Government Affairs Coordinator",
+      "family": "government_affairs"
+    },
+    {
+      "title": "Coalition Associate",
+      "family": "advocacy"
+    },
+    {
+      "title": "Strategy Analyst",
+      "family": "consulting"
+    },
+    {
+      "title": "Editorial Assistant",
+      "family": "communications"
+    },
+    {
+      "title": "Events Coordinator",
+      "family": "operations"
+    },
+    {
+      "title": "Donor Relations Associate",
+      "family": "development"
+    },
+    {
+      "title": "Special Assistant, Strategic Initiatives",
+      "family": "executive_support"
+    },
+    {
+      "title": "Democracy Fellow",
+      "family": "exploration"
+    },
+    {
+      "title": "Partnerships Navigator",
+      "family": "exploration"
+    },
+    {
+      "title": "Research Associate",
+      "family": "research"
+    },
+    {
+      "title": "Research Associate",
+      "family": "off_market"
+    },
+    {
+      "title": "Senior Director, Government Affairs",
+      "family": "senior"
+    },
+    {
+      "title": "Programme Support Officer",
+      "family": "operations"
+    },
+    {
+      "title": "Grants Assistant",
+      "family": "off_market"
+    },
+    {
+      "title": "Legislative Correspondent",
+      "family": "policy"
+    },
+    {
+      "title": "Management and Program Analyst",
+      "family": "operations"
+    },
+    {
+      "title": "Executive Assistant",
+      "family": "executive_support"
+    },
+    {
+      "title": "Policy Associate",
+      "family": "expired"
+    }
+  ],
+  "remotive": [
+    {
+      "jobs": [
+        {
+          "id": 1,
+          "title": "Research Associate",
+          "company_name": "Capitol Evidence Lab",
+          "candidate_required_location": "USA",
+          "url": "https://example.org/jobs/0?utm_source=remotive",
+          "category": "Writing",
+          "description": "<p>Policy research and writing</p>",
+          "publication_date": "2026-11-03"
+        },
+        {
+          "id": 6,
+          "title": "Editorial Assistant",
+          "company_name": "Civic Press",
+          "candidate_required_location": "USA",
+          "url": "https://example.org/jobs/5?utm_source=remotive",
+          "category": "Writing",
+          "description": "<p>Communications writing editorial</p>",
+          "publication_date": "2026-11-03"
+        },
+        {
+          "id": 13,
+          "title": "Research Associate",
+          "company_name": "West Coast Lab",
+          "candidate_required_location": "Germany",
+          "url": "https://example.org/jobs/12?utm_source=remotive",
+          "category": "Writing",
+          "description": "<p>Policy research</p>",
+          "publication_date": "2026-11-03"
+        }
+      ]
+    }
+  ],
+  "jobicy": [
+    {
+      "jobs": [
+        {
+          "id": 200,
+          "jobTitle": "Research Associate",
+          "companyName": "Capitol Evidence Lab",
+          "jobGeo": "USA",
+          "url": "https://example.org/jobs/0",
+          "jobDescription": "<p>Policy research and writing</p>",
+          "jobExcerpt": "Policy research and writing",
+          "jobIndustry": [
+            "Nonprofit"
+          ],
+          "pubDate": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 205,
+          "jobTitle": "Editorial Assistant",
+          "companyName": "Civic Press",
+          "jobGeo": "USA",
+          "url": "https://example.org/jobs/5",
+          "jobDescription": "<p>Communications writing editorial</p>",
+          "jobExcerpt": "Communications writing editorial",
+          "jobIndustry": [
+            "Nonprofit"
+          ],
+          "pubDate": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 299,
+          "jobTitle": "Partnerships Navigator",
+          "companyName": "Neighborhood Futures",
+          "jobGeo": "Europe",
+          "url": "https://example.org/jobs/remote-unknown",
+          "jobDescription": "<p>Connect people and organizations</p>",
+          "jobExcerpt": "Connect people and organizations",
+          "jobIndustry": [
+            "Nonprofit"
+          ],
+          "pubDate": "2026-11-03T12:00:00Z"
+        },
+        null,
+        {
+          "id": 999,
+          "jobTitle": "Broken record"
+        }
+      ],
+      "nextCursor": "opaque page 2/+=",
+      "hasMore": true
+    },
+    {
+      "jobs": [
+        {
+          "id": 207,
+          "jobTitle": "Donor Relations Associate",
+          "companyName": "Community Trust",
+          "jobGeo": "USA",
+          "url": "https://example.org/jobs/7",
+          "jobDescription": "<p>Development fundraising membership</p>",
+          "jobExcerpt": "Development fundraising membership",
+          "jobIndustry": [
+            "Nonprofit"
+          ],
+          "pubDate": "2026-11-03T12:00:00Z"
+        }
+      ],
+      "nextCursor": null,
+      "hasMore": false
+    }
+  ],
+  "muse": [
+    {
+      "results": [
+        {
+          "id": 100,
+          "name": "Research Associate",
+          "company": {
+            "id": 0,
+            "name": "Capitol Evidence Lab"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/0"
+          },
+          "contents": "<p>Policy research and writing</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 101,
+          "name": "Policy Analyst",
+          "company": {
+            "id": 1,
+            "name": "Public Institutions Forum"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/1"
+          },
+          "contents": "<p>Legislative policy analysis</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 102,
+          "name": "Government Affairs Coordinator",
+          "company": {
+            "id": 2,
+            "name": "Civic Industry Council"
+          },
+          "locations": [
+            {
+              "name": "Arlington, VA"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/2"
+          },
+          "contents": "<p>Government affairs outreach</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 103,
+          "name": "Coalition Associate",
+          "company": {
+            "id": 3,
+            "name": "Neighborhood Voice"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/3"
+          },
+          "contents": "<p>Advocacy coalition organizing</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 104,
+          "name": "Strategy Analyst",
+          "company": {
+            "id": 4,
+            "name": "District Advisory"
+          },
+          "locations": [
+            {
+              "name": "Alexandria, VA"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/4"
+          },
+          "contents": "<p>Consulting research and strategy</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 105,
+          "name": "Editorial Assistant",
+          "company": {
+            "id": 5,
+            "name": "Civic Press"
+          },
+          "locations": [
+            {
+              "name": "Bethesda, MD"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/5"
+          },
+          "contents": "<p>Communications writing editorial</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 106,
+          "name": "Events Coordinator",
+          "company": {
+            "id": 6,
+            "name": "Public Exchange"
+          },
+          "locations": [
+            {
+              "name": "Silver Spring, MD"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/6"
+          },
+          "contents": "<p>Program events operations</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 108,
+          "name": "Special Assistant, Strategic Initiatives",
+          "company": {
+            "id": 8,
+            "name": "Institutional Futures"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/8"
+          },
+          "contents": "<p>Executive support and events</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 109,
+          "name": "Democracy Fellow",
+          "company": {
+            "id": 9,
+            "name": "Common Ground Project"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/9"
+          },
+          "contents": "<p>Support civic learning and public deliberation</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 110,
+          "name": "Partnerships Navigator",
+          "company": {
+            "id": 10,
+            "name": "Neighborhood Futures"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/10"
+          },
+          "contents": "<p>Connect people and organizations</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 111,
+          "name": "Research Associate",
+          "company": {
+            "id": 11,
+            "name": "Capitol Evidence Lab"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/11"
+          },
+          "contents": "<p>Policy research for a second distinct requisition</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 112,
+          "name": "Research Associate",
+          "company": {
+            "id": 12,
+            "name": "West Coast Lab"
+          },
+          "locations": [
+            {
+              "name": "Seattle, Washington"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/12"
+          },
+          "contents": "<p>Policy research</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        },
+        {
+          "id": 113,
+          "name": "Senior Director, Government Affairs",
+          "company": {
+            "id": 13,
+            "name": "Senior Council"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/13"
+          },
+          "contents": "<p>10 years of experience required</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        }
+      ],
+      "page_count": 1
+    },
+    {
+      "results": [
+        {
+          "id": 100,
+          "name": "Research Associate",
+          "company": {
+            "id": 0,
+            "name": "Capitol Evidence Lab"
+          },
+          "locations": [
+            {
+              "name": "Washington, DC"
+            }
+          ],
+          "refs": {
+            "landing_page": "https://example.org/jobs/0"
+          },
+          "contents": "<p>Policy research and writing</p>",
+          "categories": [
+            {
+              "name": "Public Service"
+            }
+          ],
+          "publication_date": "2026-11-03T12:00:00Z"
+        }
+      ],
+      "page_count": 1
+    },
+    {
+      "results": [],
+      "page_count": 0
+    },
+    {
+      "results": [],
+      "page_count": 0
+    },
+    {
+      "results": [],
+      "page_count": 0
+    },
+    {
+      "results": [],
+      "page_count": 0
+    }
+  ],
+  "reliefweb": [
+    {
+      "data": [
+        {
+          "id": 314,
+          "fields": {
+            "title": "Programme Support Officer",
+            "source": [
+              {
+                "name": "Relief Example"
+              }
+            ],
+            "city": [
+              {
+                "name": "Washington, DC"
+              }
+            ],
+            "country": [
+              {
+                "name": "United States of America"
+              }
+            ],
+            "url_alias": "https://example.org/jobs/14",
+            "body-html": "<p>Operations and international development</p>",
+            "date": {
+              "created": "2026-11-03T12:00:00Z",
+              "closing": "2099-12-31T23:59:59Z"
+            }
+          }
+        },
+        {
+          "id": 315,
+          "fields": {
+            "title": "Grants Assistant",
+            "source": [
+              {
+                "name": "Relief Support"
+              }
+            ],
+            "city": [
+              {
+                "name": "New York, NY"
+              }
+            ],
+            "country": [
+              {
+                "name": "United States of America"
+              }
+            ],
+            "url_alias": "https://example.org/jobs/15",
+            "body-html": "<p>Fundraising and development</p>",
+            "date": {
+              "created": "2026-11-03T12:00:00Z",
+              "closing": "2099-12-31T23:59:59Z"
+            }
+          }
+        },
+        {
+          "id": 319,
+          "fields": {
+            "title": "Policy Associate",
+            "source": [
+              {
+                "name": "Expired Example"
+              }
+            ],
+            "city": [
+              {
+                "name": "Washington, DC"
+              }
+            ],
+            "country": [
+              {
+                "name": "United States of America"
+              }
+            ],
+            "url_alias": "https://example.org/jobs/19",
+            "body-html": "<p>Policy analysis and writing</p>",
+            "date": {
+              "created": "2026-11-03T12:00:00Z",
+              "closing": "2000-01-01T00:00:00Z"
+            }
+          }
+        }
+      ],
+      "totalCount": 3
+    }
+  ],
+  "usajobs": [
+    {
+      "SearchResult": {
+        "SearchResultItems": [
+          {
+            "MatchedObjectId": "416",
+            "MatchedObjectDescriptor": {
+              "PositionTitle": "Legislative Correspondent",
+              "OrganizationName": "Public Office Example",
+              "PositionLocationDisplay": "Washington, District of Columbia",
+              "PositionURI": "https://example.org/jobs/16",
+              "PublicationStartDate": "2026-11-03",
+              "ApplicationCloseDate": "2099-12-31",
+              "QualificationSummary": "Bachelor degree; experience requirements vary",
+              "UserArea": {
+                "Details": {
+                  "JobSummary": "Policy and legislative research"
+                }
+              }
+            }
+          },
+          {
+            "MatchedObjectId": "417",
+            "MatchedObjectDescriptor": {
+              "PositionTitle": "Management and Program Analyst",
+              "OrganizationName": "Example Federal Bureau",
+              "PositionLocationDisplay": "Washington, District of Columbia",
+              "PositionURI": "https://example.org/jobs/17",
+              "PublicationStartDate": "2026-11-03",
+              "ApplicationCloseDate": "2099-12-31",
+              "QualificationSummary": "Bachelor degree; experience requirements vary",
+              "UserArea": {
+                "Details": {
+                  "JobSummary": "Program operations analysis"
+                }
+              }
+            }
+          },
+          {
+            "MatchedObjectId": "418",
+            "MatchedObjectDescriptor": {
+              "PositionTitle": "Executive Assistant",
+              "OrganizationName": "Example Federal Commission",
+              "PositionLocationDisplay": "Washington, District of Columbia",
+              "PositionURI": "https://example.org/jobs/18",
+              "PublicationStartDate": "2026-11-03",
+              "ApplicationCloseDate": "2099-12-31",
+              "QualificationSummary": "Bachelor degree; experience requirements vary",
+              "UserArea": {
+                "Details": {
+                  "JobSummary": "Support office of the president"
+                }
+              }
+            }
+          }
+        ],
+        "SearchResultCount": 3,
+        "SearchResultCountAll": 3
+      }
+    }
+  ]
+}

@@ -1,53 +1,118 @@
 # DC Career Discovery Engine
 
-Private, discovery-first job search prototype. Its objective is to discover unfamiliar DC-area and US-remote roles across research, policy, government affairs, advocacy, communications, political work, consulting-adjacent roles and operations—not merely monitor a preselected employer list.
+Discovery-first job search across unfamiliar employers in Washington, DC, the
+nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
+primary; no employer allowlist is required. Scores are triage heuristics and do
+not establish qualifications, job availability or interview probabilities.
 
-## Current GitHub deployment
+## Free discovery
 
-This is a **small cloud-compatible implementation** of the earlier local Release 1, not a complete file-for-file migration. It supports:
+```sh
+python -m pip install -r requirements.txt
+python -m career_engine --sources free --source-pages 6
+```
 
-- Brave Search (general-web discovery, requires the `BRAVE_API_KEY` repository secret)
-- Remotive (no API key, limited remote-work coverage; attribution preserved)
-- CSV import when run locally
-- SQLite history across GitHub Actions runs when history artifacts remain available
-- Relevance heuristics, coarse geographic and seniority screening, conservative deduplication, and a Markdown + CSV ranked report
-- Automated unit and offline pipeline tests via GitHub Actions
-- Optional bounded HTML extraction using public schema.org JobPosting metadata, with robots checks and extraction status tracking
+`free` uses Remotive and Jobicy without credentials, and automatically includes
+The Muse, ReliefWeb and USAJOBS only when their free access is configured.
+It never selects Brave, even if `BRAVE_API_KEY` exists. None of the new adapters
+uses a paid API, paid fallback, commercial Jobicy key, or employer list.
 
-The broader local prototype also has optional Adzuna/USAJOBS feeds, full-page HTML extraction, more extensive ranking and source configurations; those are **not yet ported into this GitHub cloud runner**. Scores are triage heuristics, not predictions of interviews or offers. Neither version guarantees a posting remains open.
+| Source | Setup | Coverage and limits |
+|---|---|---|
+| Remotive | None | Remote board; one unfiltered request, source links retained; delayed 24 hours |
+| Jobicy | None | Broad US-eligible remote jobs; 100 per page, opaque cursor pagination, recent seven-day window |
+| The Muse | `MUSE_API_KEY` | Registered free API; all roles, rotating DC, Arlington, Alexandria, Bethesda, Silver Spring and flexible/remote partitions; 20 per page |
+| ReliefWeb | `RELIEFWEB_APPNAME` | Approved application name required; US humanitarian/nonprofit jobs, 100 per page; includes non-DC jobs for geographic review |
+| USAJOBS | `USAJOBS_API_KEY`, `USAJOBS_USER_AGENT` | Free key and registered email; all federal job families within 35 miles of DC, 100 per page; eligibility needs review |
 
-## Running from GitHub (no Terminal)
+Use the providers' official setup and terms links in [the coverage report](docs/COVERAGE.md).
+The Muse allows anonymous integration testing but requires registration beyond
+testing. ReliefWeb requires an approved application name; do not invent or borrow
+one. Missing optional setup is reported, not silently counted as coverage.
 
-1. Open the [Actions page](https://github.com/murphym123/career-discovery-engine/actions).
-2. Select **DC career discovery** in the left sidebar.
-3. Click **Run workflow** and choose `remotive` for a free source connectivity test.
-4. Open the finished workflow run and download the `career-report-...` artifact. Open `live_brief.md` or the accompanying CSV.
+`--source-pages` caps requests **per added API**, not per employer or per location
+(default 6, allowed 1–20). A configured free run makes at most 25 source requests
+at the default cap: one Remotive request plus six per added API. Muse rotates
+geographic partitions before revisiting later pages; six requests are only one
+page per partition. Reports flag caps, failures, malformed records and source
+yield. Earlier pages survive later failures. HTTP errors stop a source; there is
+no automatic retry. Respect each provider's polling limits; Remotive recommends
+at most four refreshes daily and Jobicy hourly. No scheduler is enabled.
 
-The first run may find few compelling DC jobs: Remotive is not a DC policy job board.
+## Run manually on GitHub
 
-## Enabling open-web search
+1. Open **Actions → DC career discovery → Run workflow**.
+2. Keep `source_mode=free` and `allow_paid_search=false`.
+3. Download the report artifact from the completed run.
 
-In the repository go to **Settings → Secrets and variables → Actions → New repository secret**. Add the name `BRAVE_API_KEY` and its value from the Brave Search API dashboard. Do **not** paste it into source code or ChatGPT.
+Optional credentials belong in repository secrets with the names above. This PR
+does not create credentials, alter account settings, run discovery workflows, or
+activate scheduled searches. Existing `remotive`, `brave` and `both` workflow
+modes remain available; Brave now requires explicit cost authorization.
 
-Then run **DC career discovery** using `source_mode=brave` (or `both`). The default `query_budget=6` requests up to six search queries, capped at 20 returned results each. Brave may charge according to your account. No workflow is scheduled automatically.
+## Open-web exploration (optional, may cost money)
 
-An optional `extract_budget` input controls how many public search-result pages are inspected for schema.org JobPosting metadata. Default is **0**; for a small experiment, use 5–10. The feature respects robots directives, declines private/non-HTTPS URLs, limits redirects, and records failures. It does not bypass site access restrictions or confirm that a job is still accepting applications. Search results without job metadata are shown separately as **unverified web leads**, not confirmed vacancies. Many genuine jobs lack structured metadata; the extraction stage is deliberately incomplete.
+Brave remains supported but requires `BRAVE_API_KEY` **and** the explicit CLI
+`--allow-paid-search` flag (or workflow `allow_paid_search=true`). No Brave
+requests were made for this change. Example, only after authorizing charges:
 
-## Data and limitations
+```sh
+python -m career_engine --sources brave --allow-paid-search --query-budget 6
+```
 
-- Reports are workflow artifacts retained for 30 days. SQLite history is carried across successful runs by downloading the latest `career-history` artifact; history artifacts expire after 90 days. This is not a durable production database.
-- Source matching is imperfect, especially for search results without structured employer or location data.
-- The extraction stage reads only a bounded number of public HTML pages and uses JobPosting metadata; it does not traverse entire sites or independently verify that jobs are still open.
-- This prototype **does not** produce full competitive-advantage assessments, sync Notion, auto-apply, or trigger recurring paid API calls.
-- The project does not contain personal resumes or private application tracking records.
-- Respect source licensing, robots directives and API quotas. Do not bypass login, paywall or anti-bot restrictions.
+Query families cover research, policy, government affairs, advocacy, consulting,
+communications, operations, development, executive support and an unrestricted
+wildcard. Six-query budgets rotate through all ten families over two runs using
+SQLite history, rather than repeating the same prefix. Subsequent blocks explore
+DMV locations and US-remote work, then alternative wording. Use `--query-offset`
+for reproducible overrides. The budget remains 1–20 queries, each capped at 20
+results; diversification does not silently increase search charges.
 
-## Development priorities
+`--max-extract 0` keeps optional HTML inspection off by default. Opt-in extraction
+is capped at 30 pages, respects robots rules and URL/redirect restrictions, and
+uses schema.org JobPosting metadata. Unverified search hits remain a separate
+lead list, never confirmed job records. No login or anti-bot bypass is attempted.
 
-1. Verify broad Brave search yield against the weak Remotive-only benchmark.
-2. Expand beyond schema.org metadata to robust extraction and reintegrate Adzuna/USAJOBS and specialty-policy job-board adapters from the local prototype.
-3. Add applied-history deduplication, source-yield reports and false-negative sampling.
-4. Introduce local semantic reranking and then deeper competitive-fit reviews.
-5. Replace artifact-only persistence with durable storage and only then add schedules.
+## Review outputs and history
 
-The full earlier project package remains available from the ChatGPT conversation as `career_discovery_engine_github_ready.zip`; it has not yet been fully reproduced here.
+- `output/live_brief.md`: shortlist, unverified search leads, score-independent
+  exploration queue, per-source coverage and screening reasons.
+- `output/live_brief.csv`: shortlisted structured job records.
+- `output/screening_audit.csv`: **every normalized unique candidate**, including
+  unusual, low-score, senior/specialist, expired-by-date and off-market records.
+- `output/discovery_metrics.json`: source requests/yield, caps, failures, decision
+  counts and query plan. Source received counts include malformed entries;
+  the run's received count includes records emitted for normalization.
+- `data/live.db`: SQLite history and query rotation. Existing job history remains
+  compatible; canonical URLs also identify previously seen records after identity
+  changes. GitHub history artifacts expire after 90 days; reports after 30 days.
+
+Provider IDs preserve distinct same-title requisitions. Canonical URLs merge
+cross-source duplicates with provenance; uncertain cross-board matches remain
+separate. The shortlist retains diversity caps. A separate default five-slot
+exploration sample surfaces unusual/uncertain records below the threshold without
+labeling them recommendations. Senior/specialist title flags route to review,
+and the full audit permits recovery of false negatives. CSV import remains:
+
+```sh
+python -m career_engine --sources csv --import-csv candidates.csv
+```
+
+This does not synchronize Notion, submit applications, or claim comprehensive
+DC labor-market coverage. Without registered sources the default covers two
+remote boards, not the on-site DC market. Hill, association, consulting, advocacy,
+think-tank and small-employer vacancies often remain outside these feeds.
+
+## Validation and measurable comparison
+
+```sh
+python -m unittest discover -s tests -v
+git show f1ce56c5cf4fdebeb490a447cc73e89a04037f2e:career_engine/__main__.py > /tmp/career-baseline.py
+python -m tools.benchmark_discovery --baseline-engine /tmp/career-baseline.py --output docs/benchmark.json
+```
+
+All tests run offline. Fixtures are explicitly **synthetic**, use `example.org`
+links and do not represent real vacancies. The benchmark runs the actual prior
+implementation and current runner on controlled fixtures. [Coverage assessment](docs/COVERAGE.md),
+[fixture measurements](docs/benchmark.json), and [live connectivity/replay counts](docs/live-check.json)
+separate test recall from real feed retrieval; neither measures market recall.
