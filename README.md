@@ -5,6 +5,22 @@ nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
 primary; no employer allowlist is required. Scores are triage heuristics and do
 not establish qualifications, job availability or interview probabilities.
 
+## Current: optional experimental ranking in the manual GitHub workflow
+
+The manual DC workflow preserves its full unranked audit. After this change is
+merged, an explicit **experimental_ranking** checkbox (default **false**) adds
+an **EXPERIMENTAL — NOT INDEPENDENTLY VALIDATED** shortlist, full ranked audit
+and review queue to the same report artifact. It ranks the already retrieved
+JSON with zero extra source or model calls. Other modes and paid-search guards
+are unchanged; no schedule is enabled.
+
+Read the [issue #9 assessment and cloud instructions](docs/issue9/ASSESSMENT.md).
+A genuinely new 40-record diagnostic finds more promising cases but many false
+positives. A separate 40-record original-text packet remains blinded, unlabeled
+and outside development/tests for later independent review. No human reviewer
+is currently available; **the ranking system is not validated**. The unranked
+audit remains the source of truth.
+
 ## Current: evidence-backed candidate triage (diagnostic)
 
 Use the new source-independent offline evaluator after broad retrieval:
@@ -121,7 +137,7 @@ at most four refreshes daily and Jobicy hourly. No scheduler is enabled.
 ## Run manually on GitHub
 
 1. Open **Actions → DC career discovery → Run workflow**.
-2. Keep `source_mode=dc` and `allow_paid_search=false` for an unranked DC source audit; choose `free` explicitly for the earlier remote/registered-source mode.
+2. Keep `source_mode=dc` and `allow_paid_search=false`. Leave `experimental_ranking=false` for only the full unranked audit, or explicitly check it to add the unvalidated ranking. Choose `free` explicitly for the earlier remote/registered-source mode.
 3. Download the report artifact from the completed run.
 
 Optional credentials belong in repository secrets with the names above. This PR

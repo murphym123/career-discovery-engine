@@ -1,0 +1,816 @@
+{
+  "kind": "DIAGNOSTIC ONLY \u2014 NOT INDEPENDENT VALIDATION",
+  "independent_review_available": false,
+  "validation_status": "pending_independent_review",
+  "model_rules_changed": false,
+  "as_of": "2026-11-05T22:00:22+00:00",
+  "input_count": 40,
+  "label_counts": {
+    "ineligible": 21,
+    "plausible": 3,
+    "unlikely": 12,
+    "stretch": 3,
+    "unknown": 1
+  },
+  "results": {
+    "old_top15": {
+      "requested_top": 15,
+      "identities": [
+        "greenhouse_public_validation:8121839",
+        "greenhouse_public_validation:5592096",
+        "greenhouse_public_validation:5312470",
+        "greenhouse_public_validation:8043436",
+        "greenhouse_public_validation:4430277009",
+        "greenhouse_public_validation:4356962009",
+        "greenhouse_public_validation:4357637009",
+        "greenhouse_public_validation:4459742009",
+        "greenhouse_public_validation:5461148008"
+      ],
+      "selected": 9,
+      "judged": 9,
+      "unjudged": 0,
+      "labels": {
+        "plausible": 2,
+        "unlikely": 3,
+        "ineligible": 2,
+        "unknown": 1,
+        "stretch": 1
+      },
+      "plausible_or_stretch": 3,
+      "judged_nonunknown": 8,
+      "relevance_proxy_judged_nonunknown": 0.375,
+      "conservative_positive_fraction_of_all_selected": 0.3333,
+      "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+    },
+    "new_top15": {
+      "requested_top": 15,
+      "identities": [
+        "greenhouse_public_validation:4467283009",
+        "greenhouse_public_validation:4357637009",
+        "greenhouse_public_validation:4459742009",
+        "greenhouse_public_validation:585839",
+        "greenhouse_public_validation:8130646",
+        "greenhouse_public_validation:4356962009",
+        "greenhouse_public_validation:5203110007",
+        "greenhouse_public_validation:5312470",
+        "greenhouse_public_validation:4338184009",
+        "greenhouse_public_validation:5231546007",
+        "greenhouse_public_validation:4353544009",
+        "greenhouse_public_validation:7615396",
+        "greenhouse_public_validation:8121839",
+        "greenhouse_public_validation:5592096",
+        "greenhouse_public_validation:251474"
+      ],
+      "selected": 15,
+      "judged": 15,
+      "unjudged": 0,
+      "labels": {
+        "plausible": 3,
+        "unknown": 1,
+        "stretch": 3,
+        "unlikely": 5,
+        "ineligible": 3
+      },
+      "plausible_or_stretch": 6,
+      "judged_nonunknown": 14,
+      "relevance_proxy_judged_nonunknown": 0.4286,
+      "conservative_positive_fraction_of_all_selected": 0.4,
+      "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+    },
+    "old_top30": {
+      "requested_top": 30,
+      "identities": [
+        "greenhouse_public_validation:8121839",
+        "greenhouse_public_validation:5592096",
+        "greenhouse_public_validation:5312470",
+        "greenhouse_public_validation:8043436",
+        "greenhouse_public_validation:4430277009",
+        "greenhouse_public_validation:4356962009",
+        "greenhouse_public_validation:4357637009",
+        "greenhouse_public_validation:4459742009",
+        "greenhouse_public_validation:5461148008"
+      ],
+      "selected": 9,
+      "judged": 9,
+      "unjudged": 0,
+      "labels": {
+        "plausible": 2,
+        "unlikely": 3,
+        "ineligible": 2,
+        "unknown": 1,
+        "stretch": 1
+      },
+      "plausible_or_stretch": 3,
+      "judged_nonunknown": 8,
+      "relevance_proxy_judged_nonunknown": 0.375,
+      "conservative_positive_fraction_of_all_selected": 0.3333,
+      "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+    },
+    "new_top30": {
+      "requested_top": 30,
+      "identities": [
+        "greenhouse_public_validation:4467283009",
+        "greenhouse_public_validation:4357637009",
+        "greenhouse_public_validation:4459742009",
+        "greenhouse_public_validation:585839",
+        "greenhouse_public_validation:8130646",
+        "greenhouse_public_validation:4356962009",
+        "greenhouse_public_validation:5203110007",
+        "greenhouse_public_validation:5312470",
+        "greenhouse_public_validation:4338184009",
+        "greenhouse_public_validation:5231546007",
+        "greenhouse_public_validation:4353544009",
+        "greenhouse_public_validation:7615396",
+        "greenhouse_public_validation:8121839",
+        "greenhouse_public_validation:5592096",
+        "greenhouse_public_validation:251474",
+        "greenhouse_public_validation:7983867",
+        "greenhouse_public_validation:5360688"
+      ],
+      "selected": 17,
+      "judged": 17,
+      "unjudged": 0,
+      "labels": {
+        "plausible": 3,
+        "unknown": 1,
+        "stretch": 3,
+        "unlikely": 7,
+        "ineligible": 3
+      },
+      "plausible_or_stretch": 6,
+      "judged_nonunknown": 16,
+      "relevance_proxy_judged_nonunknown": 0.375,
+      "conservative_positive_fraction_of_all_selected": 0.3529,
+      "note": "Plausible/stretch analyst review is a relevance proxy, not verified qualification, market precision or hiring probability. Unknown/unjudged are not silently counted as negative."
+    }
+  },
+  "false_negatives": {
+    "labeled_positive_total": 6,
+    "old_outside_top30": [
+      "greenhouse_public_validation:4467283009",
+      "greenhouse_public_validation:4353544009",
+      "greenhouse_public_validation:585839"
+    ],
+    "new_outside_top30": []
+  },
+  "suspicious_new_top30": [
+    {
+      "identity": "greenhouse_public_validation:4357637009",
+      "title": "General Interest",
+      "company": "The AI Policy Network",
+      "location": "United States (Washington, DC or Bay Area preferred)",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4357637009",
+      "decision": "reasonable_application",
+      "analyst_label": "unknown",
+      "rationale": "General-interest/prospect submission, not a defined vacancy with assessable requirements. Do not confuse with a currently open particular job."
+    },
+    {
+      "identity": "greenhouse_public_validation:8130646",
+      "title": "Consulting Associate/Recovery Services (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8130646",
+      "decision": "reasonable_application",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five years hands-on incident response, enterprise security platforms and scripting expected; general investigative research is insufficient."
+    },
+    {
+      "identity": "greenhouse_public_validation:5203110007",
+      "title": "Senior Capture Manager",
+      "company": "Capital Technology Group",
+      "location": "Hybrid (Washington, DC - USA)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5203110007?gh_jid=5203110007",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Five to seven-plus federal BD/capture years and record winning awards required; research/CRM overlap is insufficient."
+    },
+    {
+      "identity": "greenhouse_public_validation:5312470",
+      "title": "Consulting Associate/eDiscovery (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312470",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five related years, EDRM and advanced Relativity administration expected; public-records research is not proof of eDiscovery production proficiency."
+    },
+    {
+      "identity": "greenhouse_public_validation:5592096",
+      "title": "Consulting Associate (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5592096",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired finance/accounting education, three to five relevant years and financial valuation/quantitative skills not established; preferences still materially affect competitiveness."
+    },
+    {
+      "identity": "greenhouse_public_validation:251474",
+      "title": "Senior Associate (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/251474",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired six to ten finance/accounting/economic years and project leadership create substantial competitiveness gaps; CPA/CFA only beneficial."
+    },
+    {
+      "identity": "greenhouse_public_validation:7983867",
+      "title": "Product Manager/Agile Master, AI and Digital Products",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/7983867",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Senior AI/digital-product and agile delivery expertise, not general AI-policy writing; professional product-management evidence absent."
+    },
+    {
+      "identity": "greenhouse_public_validation:4338184009",
+      "title": "Director, Product Development and Content Strategy",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4338184009",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Seven to ten product-management years, three supervisory years and complex budgets exceed profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:5231546007",
+      "title": "Staff Accountant (Hybrid Role - Silver Spring, Maryland)",
+      "company": "Capital Technology Group",
+      "location": "Hybrid - Silver Spring, Maryland",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5231546007?gh_jid=5231546007",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Accounting or related degree required; political-science degree and general administration do not establish accounting background. Worksite is Silver Spring, Maryland."
+    },
+    {
+      "identity": "greenhouse_public_validation:5360688",
+      "title": "Principal (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5360688",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired ten-plus financial/economic years, client origination and team leadership far exceed profile; advanced degree and certification are preferences."
+    },
+    {
+      "identity": "greenhouse_public_validation:7615396",
+      "title": "Engagement Lead, Life Sciences Strategy Consulting",
+      "company": "BGBx Consulting",
+      "location": "Washington D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/7615396",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five project/consulting years, science/health/business concentration and team leadership create major gaps; healthcare experience and advanced degree are preferences."
+    }
+  ],
+  "random_not_shortlisted_sample": [
+    {
+      "identity": "greenhouse_public_validation:5272571007",
+      "title": "Head of Advisory, Capital Markets ",
+      "company": "Breakwater Strategy",
+      "location": "New York",
+      "url": "https://job-boards.greenhouse.io/breakwaterstrategy/jobs/5272571007",
+      "decision": "location_review",
+      "analyst_label": "ineligible",
+      "rationale": "Fifteen-plus advisory years and senior capital-markets leadership; flexible DC work locations in body do not cure experience mismatch."
+    },
+    {
+      "identity": "greenhouse_public_validation:4352666009",
+      "title": "Vice President of Government Affairs",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4352666009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Eight-plus federal government-affairs years and established Senate relationships exceed documented profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:3040262",
+      "title": "Associate Principal/Digital Forensics (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/3040262",
+      "decision": "qualification_gap",
+      "analyst_label": "unlikely",
+      "rationale": "Specialist digital-forensics leadership, device acquisition and expert-client responsibilities are not established by general research."
+    },
+    {
+      "identity": "greenhouse_public_validation:5461148008",
+      "title": "Content Strategist",
+      "company": "ZERO TO THREE",
+      "location": "Remote - USA",
+      "url": "https://job-boards.greenhouse.io/zerotothree/jobs/5461148008",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Minimum five years early-childhood content/curriculum or technical-assistance systems experience not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:5285293007",
+      "title": "Program Manager",
+      "company": "Capital Technology Group",
+      "location": "Remote",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5285293007?gh_jid=5285293007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Ten relevant years, five large IT-program leadership years, active PMP and management of a $150m-plus program exceed profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:5031347008",
+      "title": "Senior Counsel, Life",
+      "company": "Alliance Defending Freedom",
+      "location": "Lansdowne, VA; Dallas, TX",
+      "url": "https://job-boards.greenhouse.io/alliancedefendingfreedom/jobs/5031347008?gh_jid=5031347008",
+      "decision": "location_review",
+      "analyst_label": "ineligible",
+      "rationale": "JD, active state bar and ten complex-litigation years required; unsupported credentials and level."
+    },
+    {
+      "identity": "greenhouse_public_validation:5454689008",
+      "title": "Sr. Professional Development Specialist",
+      "company": "ZERO TO THREE",
+      "location": "Remote - USA",
+      "url": "https://job-boards.greenhouse.io/zerotothree/jobs/5454689008",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Masters or higher plus five clinical infant/early-childhood mental-health years and specialist training experience required."
+    },
+    {
+      "identity": "greenhouse_public_validation:5147833007",
+      "title": "Full Stack Engineer ",
+      "company": "Capital Technology Group",
+      "location": "Remote (US)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5147833007?gh_jid=5147833007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five-plus software-engineering years and enterprise architecture/tooling not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:5312426",
+      "title": "Associate/eDiscovery (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312426",
+      "decision": "investigate",
+      "analyst_label": "unlikely",
+      "rationale": "One to three years and technical education/Relativity-Nuix production skills desired; not mandatory licensure, but a large specialist-scope gap."
+    },
+    {
+      "identity": "greenhouse_public_validation:5271397007",
+      "title": "Technical Lead",
+      "company": "Capital Technology Group",
+      "location": "Remote (US)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5271397007?gh_jid=5271397007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Nine-plus software-engineering years and senior architecture skills not established."
+    }
+  ],
+  "all_diagnostic_decisions": [
+    {
+      "identity": "greenhouse_public_validation:4467283009",
+      "title": "Program Administrator, Education, Workforce & Well-Being",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4467283009",
+      "decision": "reasonable_application",
+      "analyst_label": "plausible",
+      "rationale": "Bachelor degree and two related years; educational program, event and administrative experience transfers. Exact duration and independent program responsibilities need checking."
+    },
+    {
+      "identity": "greenhouse_public_validation:4357637009",
+      "title": "General Interest",
+      "company": "The AI Policy Network",
+      "location": "United States (Washington, DC or Bay Area preferred)",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4357637009",
+      "decision": "reasonable_application",
+      "analyst_label": "unknown",
+      "rationale": "General-interest/prospect submission, not a defined vacancy with assessable requirements. Do not confuse with a currently open particular job."
+    },
+    {
+      "identity": "greenhouse_public_validation:4459742009",
+      "title": "Membership Data Specialist",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4459742009",
+      "decision": "reasonable_application",
+      "analyst_label": "stretch",
+      "rationale": "Two CRM/AMS or data-analytics years can relate to reported Salesforce administration; specialized degree, BI/reporting depth and duration require verification."
+    },
+    {
+      "identity": "greenhouse_public_validation:585839",
+      "title": "Associate (Financial Economics practice)",
+      "company": "Charles River Associates",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/585839",
+      "decision": "reasonable_application",
+      "analyst_label": "stretch",
+      "rationale": "Up to three years and potential Analyst level for recent graduates; economics/quantitative methods, statistical software and dataset construction require portfolio verification."
+    },
+    {
+      "identity": "greenhouse_public_validation:8130646",
+      "title": "Consulting Associate/Recovery Services (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8130646",
+      "decision": "reasonable_application",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five years hands-on incident response, enterprise security platforms and scripting expected; general investigative research is insufficient."
+    },
+    {
+      "identity": "greenhouse_public_validation:4356962009",
+      "title": "Junior Associate",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4356962009",
+      "decision": "stretch",
+      "analyst_label": "plausible",
+      "rationale": "Entry-level AI-policy research, operational and administrative support; political-science BA or equivalence fits. Technical expertise is not inferred from policy interest."
+    },
+    {
+      "identity": "greenhouse_public_validation:5203110007",
+      "title": "Senior Capture Manager",
+      "company": "Capital Technology Group",
+      "location": "Hybrid (Washington, DC - USA)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5203110007?gh_jid=5203110007",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Five to seven-plus federal BD/capture years and record winning awards required; research/CRM overlap is insufficient."
+    },
+    {
+      "identity": "greenhouse_public_validation:5312470",
+      "title": "Consulting Associate/eDiscovery (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312470",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five related years, EDRM and advanced Relativity administration expected; public-records research is not proof of eDiscovery production proficiency."
+    },
+    {
+      "identity": "greenhouse_public_validation:5592096",
+      "title": "Consulting Associate (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5592096",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired finance/accounting education, three to five relevant years and financial valuation/quantitative skills not established; preferences still materially affect competitiveness."
+    },
+    {
+      "identity": "greenhouse_public_validation:251474",
+      "title": "Senior Associate (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/251474",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired six to ten finance/accounting/economic years and project leadership create substantial competitiveness gaps; CPA/CFA only beneficial."
+    },
+    {
+      "identity": "greenhouse_public_validation:7983867",
+      "title": "Product Manager/Agile Master, AI and Digital Products",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/7983867",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Senior AI/digital-product and agile delivery expertise, not general AI-policy writing; professional product-management evidence absent."
+    },
+    {
+      "identity": "greenhouse_public_validation:4338184009",
+      "title": "Director, Product Development and Content Strategy",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4338184009",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Seven to ten product-management years, three supervisory years and complex budgets exceed profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:5231546007",
+      "title": "Staff Accountant (Hybrid Role - Silver Spring, Maryland)",
+      "company": "Capital Technology Group",
+      "location": "Hybrid - Silver Spring, Maryland",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5231546007?gh_jid=5231546007",
+      "decision": "stretch",
+      "analyst_label": "ineligible",
+      "rationale": "Accounting or related degree required; political-science degree and general administration do not establish accounting background. Worksite is Silver Spring, Maryland."
+    },
+    {
+      "identity": "greenhouse_public_validation:5360688",
+      "title": "Principal (Intellectual Property practice)",
+      "company": "Charles River Associates",
+      "location": "Chicago, IL, United States; Houston, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5360688",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Desired ten-plus financial/economic years, client origination and team leadership far exceed profile; advanced degree and certification are preferences."
+    },
+    {
+      "identity": "greenhouse_public_validation:4353544009",
+      "title": "Director of Digital Organizing",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4353544009",
+      "decision": "stretch",
+      "analyst_label": "stretch",
+      "rationale": "Three to seven-plus years and building a grassroots digital program from scratch required; organizing and writing transfer but leadership/platform evidence needs review."
+    },
+    {
+      "identity": "greenhouse_public_validation:7615396",
+      "title": "Engagement Lead, Life Sciences Strategy Consulting",
+      "company": "BGBx Consulting",
+      "location": "Washington D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/7615396",
+      "decision": "stretch",
+      "analyst_label": "unlikely",
+      "rationale": "Three to five project/consulting years, science/health/business concentration and team leadership create major gaps; healthcare experience and advanced degree are preferences."
+    },
+    {
+      "identity": "greenhouse_public_validation:8121839",
+      "title": "Fall 2027 Associate Consultant, Life Sciences Strategy",
+      "company": "BGBx Consulting",
+      "location": "Washington D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8121839",
+      "decision": "stretch",
+      "analyst_label": "plausible",
+      "rationale": "Any-discipline BA and zero to two years including internships align with research/campaign project work; life-sciences commercial depth and Fall 2027 start need review."
+    },
+    {
+      "identity": "greenhouse_public_validation:5312426",
+      "title": "Associate/eDiscovery (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; New York, NY, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/5312426",
+      "decision": "investigate",
+      "analyst_label": "unlikely",
+      "rationale": "One to three years and technical education/Relativity-Nuix production skills desired; not mandatory licensure, but a large specialist-scope gap."
+    },
+    {
+      "identity": "greenhouse_public_validation:4459762009",
+      "title": "Engagement Manager",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4459762009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five years association membership/communications experience expected; generic outreach alone is insufficient."
+    },
+    {
+      "identity": "greenhouse_public_validation:4411582009",
+      "title": "Meeting Manager",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4411582009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Minimum five progressive meeting-planning years plus independent budgets/contracts and event technology required."
+    },
+    {
+      "identity": "greenhouse_public_validation:4466720009",
+      "title": "Advocacy Engagement Manager",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4466720009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Minimum five political/grassroots engagement years and advocacy-event experience required; relevant interest and internships do not meet duration."
+    },
+    {
+      "identity": "greenhouse_public_validation:4342935009",
+      "title": "Director of Government Affairs",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4342935009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five-plus federal government-affairs years and House legislative network exceed documented profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:4353638009",
+      "title": "Chief of Staff",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4353638009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five-plus operational/decision-support leadership years such as chief of staff or campaign manager are not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:5454689008",
+      "title": "Sr. Professional Development Specialist",
+      "company": "ZERO TO THREE",
+      "location": "Remote - USA",
+      "url": "https://job-boards.greenhouse.io/zerotothree/jobs/5454689008",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Masters or higher plus five clinical infant/early-childhood mental-health years and specialist training experience required."
+    },
+    {
+      "identity": "greenhouse_public_validation:4352666009",
+      "title": "Vice President of Government Affairs",
+      "company": "The AI Policy Network",
+      "location": "Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/aipn/jobs/4352666009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Eight-plus federal government-affairs years and established Senate relationships exceed documented profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:4430277009",
+      "title": "Business Analyst",
+      "company": "American College of Obstetricians and Gynecologists",
+      "location": "Washington, DC",
+      "url": "https://job-boards.greenhouse.io/acog/jobs/4430277009",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five years business analysis and advanced elicitation/validation expertise required, not generic policy analysis."
+    },
+    {
+      "identity": "greenhouse_public_validation:5461148008",
+      "title": "Content Strategist",
+      "company": "ZERO TO THREE",
+      "location": "Remote - USA",
+      "url": "https://job-boards.greenhouse.io/zerotothree/jobs/5461148008",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Minimum five years early-childhood content/curriculum or technical-assistance systems experience not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:3040262",
+      "title": "Associate Principal/Digital Forensics (Forensic Services practice)",
+      "company": "Charles River Associates",
+      "location": "Boston, MA, United States; Chicago, IL, United States; Dallas, Texas, United States; Houston, Texas, United States; New York, NY, United States; Oakland, CA, United States; Washington, DC, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/3040262",
+      "decision": "qualification_gap",
+      "analyst_label": "unlikely",
+      "rationale": "Specialist digital-forensics leadership, device acquisition and expert-client responsibilities are not established by general research."
+    },
+    {
+      "identity": "greenhouse_public_validation:5293378008",
+      "title": "Sr. Counsel, Vice President of Government Affairs",
+      "company": "Alliance Defending Freedom",
+      "location": "Lansdowne, VA; Washington, D.C.",
+      "url": "https://job-boards.greenhouse.io/alliancedefendingfreedom/jobs/5293378008?gh_jid=5293378008",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "JD, active state bar and fifteen legislative/executive years required; unsupported credentials and level."
+    },
+    {
+      "identity": "greenhouse_public_validation:5147833007",
+      "title": "Full Stack Engineer ",
+      "company": "Capital Technology Group",
+      "location": "Remote (US)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5147833007?gh_jid=5147833007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five-plus software-engineering years and enterprise architecture/tooling not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:5271397007",
+      "title": "Technical Lead",
+      "company": "Capital Technology Group",
+      "location": "Remote (US)",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5271397007?gh_jid=5271397007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Nine-plus software-engineering years and senior architecture skills not established."
+    },
+    {
+      "identity": "greenhouse_public_validation:5285293007",
+      "title": "Program Manager",
+      "company": "Capital Technology Group",
+      "location": "Remote",
+      "url": "https://boards.greenhouse.io/capitaltg/jobs/5285293007?gh_jid=5285293007",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Ten relevant years, five large IT-program leadership years, active PMP and management of a $150m-plus program exceed profile."
+    },
+    {
+      "identity": "greenhouse_public_validation:8043436",
+      "title": "Consultant, Life Sciences Strategy (PhD Campus Hire)",
+      "company": "BGBx Consulting",
+      "location": "Washington D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8043436",
+      "decision": "qualification_gap",
+      "analyst_label": "unlikely",
+      "rationale": "PhD title does not establish a mandatory doctorate: BA plus one to three specialized years is an alternative. Scientific/industry experience is the substantial gap."
+    },
+    {
+      "identity": "greenhouse_public_validation:8290495",
+      "title": "Senior Consultant, Life Sciences Strategy",
+      "company": "BGBx Consulting",
+      "location": "Washington, D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8290495",
+      "decision": "qualification_gap",
+      "analyst_label": "unlikely",
+      "rationale": "Advanced degree is an alternative, not compulsory: BA plus one to three life-sciences consulting/biopharma years allowed. That specialized experience is not evidenced."
+    },
+    {
+      "identity": "greenhouse_public_validation:8304016",
+      "title": "Senior Vice President, Life Sciences Strategy",
+      "company": "BGBx Consulting",
+      "location": "Washington, D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8304016",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Ten to fifteen-plus healthcare-consulting years and client/team leadership expected, not an early-career strategy role."
+    },
+    {
+      "identity": "greenhouse_public_validation:8318161",
+      "title": "Principal, Life Sciences Strategy Consulting",
+      "company": "BGBx Consulting",
+      "location": "Washington, D.C./Boston/New York",
+      "url": "https://job-boards.greenhouse.io/bgbxconsulting/jobs/8318161",
+      "decision": "qualification_gap",
+      "analyst_label": "ineligible",
+      "rationale": "Five to seven years healthcare-consulting experience and team leadership exceed documented profile; MBA is preferred, not mandatory."
+    },
+    {
+      "identity": "greenhouse_public_validation:8126524",
+      "title": "Consulting Associate/Strategy & Medical Affairs (Life Sciences)",
+      "company": "Charles River Associates",
+      "location": "Toronto, ON, Canada",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8126524",
+      "decision": "location_review",
+      "analyst_label": "unlikely",
+      "rationale": "Toronto worksite and specialized life-sciences/medical strategy consulting do not establish a suitable DC/eligible-remote opportunity."
+    },
+    {
+      "identity": "greenhouse_public_validation:8243522",
+      "title": "Analyst Intern (Labor & Employment practice) - Winter/Spring 2027",
+      "company": "Charles River Associates",
+      "location": "College Station, TX, United States; Tallahassee, FL, United States",
+      "url": "https://job-boards.greenhouse.io/charlesriverassociates/jobs/8243522",
+      "decision": "location_review",
+      "analyst_label": "ineligible",
+      "rationale": "Explicit must-be-graduating requirement for Summer/Fall 2027 and campus quantitative focus; candidate already holds BA. Locations also outside target market."
+    },
+    {
+      "identity": "greenhouse_public_validation:5031347008",
+      "title": "Senior Counsel, Life",
+      "company": "Alliance Defending Freedom",
+      "location": "Lansdowne, VA; Dallas, TX",
+      "url": "https://job-boards.greenhouse.io/alliancedefendingfreedom/jobs/5031347008?gh_jid=5031347008",
+      "decision": "location_review",
+      "analyst_label": "ineligible",
+      "rationale": "JD, active state bar and ten complex-litigation years required; unsupported credentials and level."
+    },
+    {
+      "identity": "greenhouse_public_validation:5272571007",
+      "title": "Head of Advisory, Capital Markets ",
+      "company": "Breakwater Strategy",
+      "location": "New York",
+      "url": "https://job-boards.greenhouse.io/breakwaterstrategy/jobs/5272571007",
+      "decision": "location_review",
+      "analyst_label": "ineligible",
+      "rationale": "Fifteen-plus advisory years and senior capital-markets leadership; flexible DC work locations in body do not cure experience mismatch."
+    }
+  ],
+  "counts": {
+    "received": 40,
+    "retained": 40,
+    "descriptions_available": 40,
+    "detailed_analyses": 40,
+    "shortlisted": 17,
+    "review_sample": 10,
+    "decisions": {
+      "location_review": 4,
+      "qualification_gap": 18,
+      "stretch": 12,
+      "reasonable_application": 5,
+      "investigate": 1
+    },
+    "sources": {
+      "greenhouse_public_validation": 40
+    },
+    "shortlist_sources": {
+      "greenhouse_public_validation": 17
+    },
+    "shortlist_families": {
+      "policy_legislative": 15,
+      "research_consulting": 16,
+      "programs_operations": 16,
+      "communications": 17,
+      "advocacy_campaigns": 4,
+      "development_associations": 17,
+      "education_adjacent": 12
+    }
+  },
+  "cost": {
+    "network_calls": 0,
+    "model_calls": 0,
+    "paid_services_enabled": false
+  },
+  "limitations": [
+    "Labels by model author, not independent review; source and employer sampling nonrepresentative.",
+    "No blind-packet record was passed to the ranker. No rule changes informed by these new examples.",
+    "Published ATS record observed, not independently verified accepting applications; updated_at is not posting date.",
+    "Requested top 30 may contain fewer than 30: no padding with rejected or unknown roles.",
+    "No qualified human preference between ranked and unranked output has been measured."
+  ],
+  "input_sha256": "4021b52aa2d4bd0d6830ff654fe2feca2d845fe736a95ababa9490960f3f6f34",
+  "labels_sha256": "2b4358c695cf5248be6907bf8eff84f0f7790cc7c7d1b0b3d8ea96fa64d41266"
+}

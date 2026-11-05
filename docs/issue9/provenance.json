@@ -1,0 +1,114 @@
+{
+  "capture_sha256": "4e633f463d256e0bea898b8f243fb64d930409b778a794ee39a6f1e9d461c922",
+  "frame_selection": "Nine employer public boards found by broad web queries; SHA256 sample capped at 12 target-geography/remote records plus two controls per employer. All functions/levels eligible; not a random market sample.",
+  "public_api_documentation": "https://docs.greenhouse.io/job-board.html",
+  "requests": [
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/atiadvisory/jobs?content=true",
+      "status": 200,
+      "bytes": 58560,
+      "sha256": "339fd5634880601d74eb451712801f8f7a23b6288362fc5c1996d95f6bafbf52",
+      "observed_at": "2026-11-05T22:00:00+00:00",
+      "jobs_total": 3,
+      "target_metadata_count": 3,
+      "frame_selected": 3
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/breakwaterstrategy/jobs?content=true",
+      "status": 200,
+      "bytes": 42938,
+      "sha256": "22156e438bfeb27ca9e828f3e35667f2a8d4d4cf9c0c4b9371da2e9305792011",
+      "observed_at": "2026-11-05T22:00:01+00:00",
+      "jobs_total": 5,
+      "target_metadata_count": 4,
+      "frame_selected": 5
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/bgbxconsulting/jobs?content=true",
+      "status": 200,
+      "bytes": 405901,
+      "sha256": "1ed1e087d5b500b441f0b66105d36e79bdfd8cc14da872ecff09b3cba1bf1e54",
+      "observed_at": "2026-11-05T22:00:02+00:00",
+      "jobs_total": 24,
+      "target_metadata_count": 13,
+      "frame_selected": 14
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/capitaltg/jobs?content=true",
+      "status": 200,
+      "bytes": 144061,
+      "sha256": "adbeb54960c792ffdc0650fab5c8199f4565a1bc78e9ff77b0c9b8f0ea5f248f",
+      "observed_at": "2026-11-05T22:00:03+00:00",
+      "jobs_total": 13,
+      "target_metadata_count": 13,
+      "frame_selected": 12
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/acog/jobs?content=true",
+      "status": 200,
+      "bytes": 221478,
+      "sha256": "8252603209f0bf763daac1cdcd449193555fc3c44993a4ccab28f0b834d63d3d",
+      "observed_at": "2026-11-05T22:00:04+00:00",
+      "jobs_total": 14,
+      "target_metadata_count": 13,
+      "frame_selected": 13
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/aipn/jobs?content=true",
+      "status": 200,
+      "bytes": 67056,
+      "sha256": "1311c1a246e8a424d3211acacab30e777767af1606c18f34e4b33c3708c5c389",
+      "observed_at": "2026-11-05T22:00:12+00:00",
+      "jobs_total": 10,
+      "target_metadata_count": 10,
+      "frame_selected": 10
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/zerotothree/jobs?content=true",
+      "status": 200,
+      "bytes": 37325,
+      "sha256": "4c0b77b9eb72060b3116655907ad2ca6f9e9b164a86a5a13ae80fd02a2685548",
+      "observed_at": "2026-11-05T22:00:13+00:00",
+      "jobs_total": 3,
+      "target_metadata_count": 3,
+      "frame_selected": 3
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/alliancedefendingfreedom/jobs?content=true",
+      "status": 200,
+      "bytes": 574946,
+      "sha256": "c8febecc73f8534bf364ad985d17845e3f5f5435c63e01c02991a540bbbb8a22",
+      "observed_at": "2026-11-05T22:00:14+00:00",
+      "jobs_total": 39,
+      "target_metadata_count": 5,
+      "frame_selected": 7
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/charlesriverassociates/jobs?content=true",
+      "status": 200,
+      "bytes": 1387091,
+      "sha256": "a026222c5febaf21df020970cb4cb2c17ec346f5863f241994dc89864dd35488",
+      "observed_at": "2026-11-05T22:00:22+00:00",
+      "jobs_total": 96,
+      "target_metadata_count": 43,
+      "frame_selected": 14
+    }
+  ],
+  "api_records_served": 207,
+  "initial_frame_records": 81,
+  "initial_prior_excluded": 1,
+  "location_alias_review_entries_replaced": 3,
+  "additional_unsampled_records_from_same_responses": 3,
+  "primary_sealed": 40,
+  "diagnostic": 40,
+  "prior_dataset": "327 prior evaluation records plus 79 separately captured older-board/failure controls",
+  "freshness_control": {
+    "archived_board_records": 79,
+    "descriptions": 73,
+    "past_supplied_closing_date": 73,
+    "wrag_descriptions_unavailable": 6,
+    "interpretation": "Older-board records are newly retrieved but not new postings. WRAG detail requests returned HTTP 500; no retries/bypasses. Not used for the current-job diagnostic quality estimate."
+  },
+  "independent_review_available": false,
+  "ranking_rules_changed": false
+}
