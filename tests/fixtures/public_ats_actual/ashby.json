@@ -1,0 +1,30 @@
+{
+  "kind": "ACTUAL RETRIEVED RECORD — MINIMIZED, NOT SYNTHETIC; NOT A CURRENT VACANCY CLAIM",
+  "board": {
+    "provider": "ashby",
+    "token": "cognition",
+    "key": "ashby:cognition",
+    "url": "https://jobs.ashbyhq.com/cognition"
+  },
+  "company": "Cognition",
+  "posting": {
+    "title": "Workplace & Engagement Coordinator",
+    "location": "New York City",
+    "secondaryLocations": [],
+    "jobUrl": "https://jobs.ashbyhq.com/cognition/781253e9-294d-4820-b465-dcb00d92476c",
+    "isListed": true,
+    "isRemote": false,
+    "workplaceType": "OnSite",
+    "publishedAt": "2026-06-08T21:06:22.115+00:00",
+    "department": "General & Administrative",
+    "employmentType": "FullTime",
+    "descriptionPlain": "WE ARE AN APPLIED AI LAB BUILDING END-TO-END SOFTWARE AGENTS. We're the makers of Devin, the first AI software engineer."
+  },
+  "expected": {
+    "identity": "ashby:cognition:781253e9-294d-4820-b465-dcb00d92476c",
+    "title": "Workplace & Engagement Coordinator",
+    "location": "New York City",
+    "geography": "elsewhere",
+    "url": "https://jobs.ashbyhq.com/cognition/781253e9-294d-4820-b465-dcb00d92476c"
+  }
+}

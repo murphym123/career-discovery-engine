@@ -1,0 +1,14 @@
+{
+  "experimental": true,
+  "validation_status": "not_independently_validated",
+  "status": "completed_with_partial_sources",
+  "network_calls": 0,
+  "model_calls": 0,
+  "input_sha256": "fd2f7f208d5254bcdcca46758fc91f6a256c721156f831dc1d0571bfc8f9a72b",
+  "ranker_version": "evidence-triage-v1.3-diagnostic",
+  "ranker_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266",
+  "input_preserved": true,
+  "received": 1327,
+  "retained": 1327,
+  "note": "Actual combined-audit publication smoke check, not fit evaluation or independent validation. Core ranker unchanged."
+}

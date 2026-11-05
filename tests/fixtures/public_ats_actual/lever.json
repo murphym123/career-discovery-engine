@@ -1,0 +1,31 @@
+{
+  "kind": "ACTUAL RETRIEVED RECORD — MINIMIZED, NOT SYNTHETIC; NOT A CURRENT VACANCY CLAIM",
+  "board": {
+    "provider": "lever",
+    "token": "100ms",
+    "key": "lever:100ms",
+    "url": "https://jobs.lever.co/100ms"
+  },
+  "company": "100ms",
+  "posting": {
+    "id": "4c9f19c7-4432-4394-ba93-167319c68adc",
+    "text": "AI Engineer – AI Agents (Healthcare)",
+    "categories": {
+      "location": "Bengaluru",
+      "team": "AI Team",
+      "allLocations": [
+        "Bengaluru"
+      ]
+    },
+    "hostedUrl": "https://jobs.lever.co/100ms/4c9f19c7-4432-4394-ba93-167319c68adc",
+    "workplaceType": "onsite",
+    "descriptionPlain": "We’re looking for an AI Engineer to help us design, evaluate, and scale our next generation of LLM-powered agents. This"
+  },
+  "expected": {
+    "identity": "lever:100ms:4c9f19c7-4432-4394-ba93-167319c68adc",
+    "title": "AI Engineer – AI Agents (Healthcare)",
+    "location": "Bengaluru",
+    "geography": "elsewhere",
+    "url": "https://jobs.lever.co/100ms/4c9f19c7-4432-4394-ba93-167319c68adc"
+  }
+}

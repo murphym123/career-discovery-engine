@@ -1,0 +1,2457 @@
+{
+  "note": "Actual retrieval metadata for every DC/DMV-labeled ATS identity in the measured pilots. Descriptions omitted here; hashes and request provenance supplied. Full originals remain in unranked local/workflow audits. None are independently confirmed active or recommendations.",
+  "records": [
+    {
+      "identity": "greenhouse:nationalnursesunited:4432191009",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:nationalnursesunited",
+      "title": "Labor Representative - Washington, DC",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432191009",
+      "original_posting_url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432191009",
+      "retrieved_at": "2026-11-05T23:00:12+00:00",
+      "posted_at": "2026-10-05T15:23:59-04:00",
+      "updated_at": "2026-10-30T17:38:01-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "f773787189d5271372cb31f3c8cf774dea5db3b3a13f81e9e4be759a8996410f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live",
+        "spread",
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4462499009",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:nationalnursesunited",
+      "title": "Regulatory/Policy Specialist",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Silver Spring/Washington, DC",
+      "raw_locations": [
+        "Silver Spring/Washington, DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009",
+      "original_posting_url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009",
+      "retrieved_at": "2026-11-05T23:00:13+00:00",
+      "posted_at": "2026-11-05T11:41:25-05:00",
+      "updated_at": "2026-11-05T11:41:25-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "4db58fc251c25d1fa20cdf1f7c0f37e5c73fcf2d779941ce4216bf6e6e80898a",
+      "description_truncated": false,
+      "duplicate_status": "possible_crosspost_review",
+      "duplicate_evidence": {
+        "method": "source_link_or_employer_title_requires_review",
+        "source_urls": [
+          "https://www.unionjobs.com/listing/31649-regulatory-policy-specialist"
+        ],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live",
+        "spread",
+        "sector"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:b92b9c7d-a6d5-4292-b126-11e6bd16eea3",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Federal Account Executive, DoW",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/b92b9c7d-a6d5-4292-b126-11e6bd16eea3",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/b92b9c7d-a6d5-4292-b126-11e6bd16eea3",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-08-25T18:00:32.566+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "4d783ef0e3b318df868c5b80766e32ebd0ae6dad94948df21db117d3b634a7b0",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:ab298dd9-2596-4a25-8d87-5a4c6761aaf8",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Federal Account Executive, Intelligence Community",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/ab298dd9-2596-4a25-8d87-5a4c6761aaf8",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/ab298dd9-2596-4a25-8d87-5a4c6761aaf8",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-08-24T22:14:35.544+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "aecaf2e7f8b8e592f5a445057801449176beeeedba7a2c8a87d57972a26c8b43",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:0fa1d7ee-8c6f-44e1-8855-97ed64c53f7f",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Federal Account Executive, Civilian",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/0fa1d7ee-8c6f-44e1-8855-97ed64c53f7f",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/0fa1d7ee-8c6f-44e1-8855-97ed64c53f7f",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-08-25T14:53:13.802+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "4a2a766954a0f25280f82ce16ffb7dc584dfd0c994533c63882a947f27f3cf00",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:a1912456-abc9-404d-a9ad-221bf1c7a42c",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Commercial Account Executive, DC",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/a1912456-abc9-404d-a9ad-221bf1c7a42c",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/a1912456-abc9-404d-a9ad-221bf1c7a42c",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-09-08T19:24:56.185+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a1ef941ba52392a4ec6e58771d38ae0e9e7afdc20a1356560252160bf2da8e8c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:92804015-1fba-4a84-8a8d-788e19a3c5df",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Manager, Commercial Sales",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/92804015-1fba-4a84-8a8d-788e19a3c5df",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/92804015-1fba-4a84-8a8d-788e19a3c5df",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-09-08T20:41:04.924+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "b1730578ded7e157973afbf5941011111eff7839233f8349651d68c791e974be",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:14091b3e-91a6-4c2b-beb6-55bc98898d2e",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Federal Sales Engineer, CIV",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/14091b3e-91a6-4c2b-beb6-55bc98898d2e",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/14091b3e-91a6-4c2b-beb6-55bc98898d2e",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-09-16T19:23:57.592+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "4457cbd70c56c6f8456215db6fed7da81f9326977075ef49eaf30cbb35d6d286",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:5098194e-06ef-47dd-9cbb-556bbc3cd886",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Federal Sales Engineer, DoW",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/5098194e-06ef-47dd-9cbb-556bbc3cd886",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/5098194e-06ef-47dd-9cbb-556bbc3cd886",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-09-16T19:25:47.633+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "8637f16cba832c98a6ff2e5a75e99b4148e5963ac2f8bae36413521ea12ca066",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:f6372427-5e83-4b07-8bb6-49f7a367378c",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Sr. Manager, People Operations",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "US, Remote ; Philadelphia, PA ; Washington, DC ; Miami, Florida ; Boston, Massachusetts ; New York City, NY",
+      "raw_locations": [
+        "US, Remote",
+        "Philadelphia, PA",
+        "Washington, DC",
+        "Miami, Florida",
+        "Boston, Massachusetts",
+        "New York City, NY"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/f6372427-5e83-4b07-8bb6-49f7a367378c",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/f6372427-5e83-4b07-8bb6-49f7a367378c",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-10-01T14:08:40.257+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "1b81273a46dfc0f8a1a265802efe71ef311f7e3496f0425f7b79286455b386aa",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:fc1f499d-ef43-4f1e-a52e-d2cfd32f3822",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Director, Federal Sales, Civilian ",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/fc1f499d-ef43-4f1e-a52e-d2cfd32f3822",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/fc1f499d-ef43-4f1e-a52e-d2cfd32f3822",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-11-03T16:21:51.986+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "dc33c312eb09880b781e89bd03bccebd1f4d24e5e09e1750ca9d99ef0a8f4870",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:f8146886-3fb1-4c85-bb88-e6e8704dabce",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Staff Product Manager, Rapid Response",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "San Francisco, California ; Washington, DC ; New York City, NY",
+      "raw_locations": [
+        "San Francisco, California",
+        "Washington, DC",
+        "New York City, NY"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/f8146886-3fb1-4c85-bb88-e6e8704dabce",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/f8146886-3fb1-4c85-bb88-e6e8704dabce",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-10-09T20:11:26.991+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "96d092624721cf04910b1e3171019d4f2fc5c22677425f20cc829264c136f373",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:f8875a3b-f728-418f-a93c-4cfb4aa65d80",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Marketing Campaign Manager, Federal",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/f8875a3b-f728-418f-a93c-4cfb4aa65d80",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/f8875a3b-f728-418f-a93c-4cfb4aa65d80",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-10-11T01:44:39.493+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "d9e8de8404b6a5053485fea2220bc4710b92ab5074b7d9e9c5a1329df27a888a",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:7624f919-b0cd-40c7-9dc2-82aeb83d74c9",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Sales Development Representative, Federal",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/7624f919-b0cd-40c7-9dc2-82aeb83d74c9",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/7624f919-b0cd-40c7-9dc2-82aeb83d74c9",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-10-28T21:24:04.018+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "2ce17523e37fbe773aea36cb9d3ed896962eed46a143113488fd0a95bb90266c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:7c88665c-f61b-4d87-9691-d3a6de324e06",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Account Executive, SLED - DC/DMV",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "US, Remote ; Washington, DC",
+      "raw_locations": [
+        "US, Remote",
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/7c88665c-f61b-4d87-9691-d3a6de324e06",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/7c88665c-f61b-4d87-9691-d3a6de324e06",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-11-04T17:02:08.892+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "007325985279ca5aec94f0792ac83cec59a2a82b36935a1319b4f16a60fb5aad",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:horizon3ai:22d9d03f-24e2-45b5-a831-df0231f06244",
+      "provider": "ashby",
+      "board_key": "ashby:horizon3ai",
+      "title": "Senior Executive Assistant, CRO",
+      "company": "Horizon3",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/horizon3ai/22d9d03f-24e2-45b5-a831-df0231f06244",
+      "original_posting_url": "https://jobs.ashbyhq.com/horizon3ai/22d9d03f-24e2-45b5-a831-df0231f06244",
+      "retrieved_at": "2026-11-05T23:00:18+00:00",
+      "posted_at": "2026-09-15T14:29:34.968+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "6dc4bea0d74afaf6ea744f0ae9a113c8cc61d639f92253893bdae31244fcc6de",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:decagon:9875ed62-9d62-4485-8d47-fc897d43493b",
+      "provider": "ashby",
+      "board_key": "ashby:decagon",
+      "title": "Strategic Account Director - East",
+      "company": "Decagon",
+      "company_evidence": "public_board_page_title",
+      "location": "Remote ; Washington D.C. ; Atlanta ; Toronto ; Boston",
+      "raw_locations": [
+        "Remote",
+        "Washington D.C.",
+        "Atlanta",
+        "Toronto",
+        "Boston"
+      ],
+      "url": "https://jobs.ashbyhq.com/decagon/9875ed62-9d62-4485-8d47-fc897d43493b",
+      "original_posting_url": "https://jobs.ashbyhq.com/decagon/9875ed62-9d62-4485-8d47-fc897d43493b",
+      "retrieved_at": "2026-11-05T23:00:28+00:00",
+      "posted_at": "2026-03-25T19:59:06.443+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "065489cf1f77b282748da825291910c2b798351dc6584cf55ce85a075938be43",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4651471005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": " Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Silver Spring, Maryland, United States",
+      "raw_locations": [
+        "Silver Spring, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4651471005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4651471005",
+      "retrieved_at": "2026-11-05T23:15:53+00:00",
+      "posted_at": "2026-01-20T12:32:59-05:00",
+      "updated_at": "2026-11-05T14:02:27-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "fc913a511fcd15e0b9dae4a112ec8048494e86a1e1b3421f77dbf49f743eff7c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4635398005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": " Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Alexandria, Virginia, United States",
+      "raw_locations": [
+        "Alexandria, Virginia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4635398005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4635398005",
+      "retrieved_at": "2026-11-05T23:01:03+00:00",
+      "posted_at": "2025-12-02T11:24:34-05:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "c43eeb6d1a248d6640751c8404a614659e2219e508ad899a108b50217342b40f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4353326005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Upper Marlboro, Maryland, United States",
+      "raw_locations": [
+        "Upper Marlboro, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4353326005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4353326005",
+      "retrieved_at": "2026-11-05T23:16:10+00:00",
+      "posted_at": "2024-01-01T17:12:28-05:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "fc913a511fcd15e0b9dae4a112ec8048494e86a1e1b3421f77dbf49f743eff7c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4725996005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Board Certified Behavior Analyst",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Upper Marlboro, Maryland, United States",
+      "raw_locations": [
+        "Upper Marlboro, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4725996005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4725996005",
+      "retrieved_at": "2026-11-05T23:16:04+00:00",
+      "posted_at": "2026-08-20T09:12:57-04:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "f0e849575ad8e5a9ffbae75a6a29dfaeb8680bf8647fb9e3f3a6f3140223c1b0",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4728000005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": " Clinical Psychologist - Autism Spectrum Disorders",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Upper Marlboro, Maryland, United States",
+      "raw_locations": [
+        "Upper Marlboro, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4728000005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4728000005",
+      "retrieved_at": "2026-11-05T23:16:06+00:00",
+      "posted_at": "2026-08-26T14:32:01-04:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "ff64d338a2a91c929cedb007729389ebd7bc45b38983ca6625dd63f940836426",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4668336005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Hybrid BCBA",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Ashburn, Virginia, United States",
+      "raw_locations": [
+        "Ashburn, Virginia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4668336005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4668336005",
+      "retrieved_at": "2026-11-05T23:01:01+00:00",
+      "posted_at": "2026-03-03T10:59:39-05:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "33bcf1dbfecd7f7229b802946967607f48525a821f4cd4ecbb7043d37de9b63f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4522951005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Registered Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Upper Marlboro, Maryland, United States",
+      "raw_locations": [
+        "Upper Marlboro, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4522951005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4522951005",
+      "retrieved_at": "2026-11-05T23:16:09+00:00",
+      "posted_at": "2025-03-04T09:53:09-05:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a6ba7a0217ca6c53a30e980f634b65172c10fdac26e95bca9aad2043fa415d6c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4651472005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Registered Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Silver Spring, Maryland, United States",
+      "raw_locations": [
+        "Silver Spring, Maryland, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4651472005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4651472005",
+      "retrieved_at": "2026-11-05T23:01:02+00:00",
+      "posted_at": "2026-01-20T12:33:28-05:00",
+      "updated_at": "2026-11-05T14:02:28-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a6ba7a0217ca6c53a30e980f634b65172c10fdac26e95bca9aad2043fa415d6c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:acornhealth:4635397005",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:acornhealth",
+      "title": "Registered Behavior Technician",
+      "company": "Acorn Health",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Alexandria, Virginia, United States",
+      "raw_locations": [
+        "Alexandria, Virginia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/acornhealth/jobs/4635397005",
+      "original_posting_url": "https://job-boards.greenhouse.io/acornhealth/jobs/4635397005",
+      "retrieved_at": "2026-11-05T23:16:08+00:00",
+      "posted_at": "2025-12-02T11:24:35-05:00",
+      "updated_at": "2026-10-28T15:00:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "e38ba9f7d9d38a29cf7f16699429d1c4e26dc85ad6992bfbca642f1165fcd2ad",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cognition:b154cc8a-0f04-44b8-88d8-72901fc0582d",
+      "provider": "ashby",
+      "board_key": "ashby:cognition",
+      "title": "Federal Account Director",
+      "company": "Cognition",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/cognition/b154cc8a-0f04-44b8-88d8-72901fc0582d",
+      "original_posting_url": "https://jobs.ashbyhq.com/cognition/b154cc8a-0f04-44b8-88d8-72901fc0582d",
+      "retrieved_at": "2026-11-05T23:01:04+00:00",
+      "posted_at": "2026-01-08T16:04:27.044+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a8cfe2ca20596ea512e726cf3d863ea77a762a5d4d29016f136e19b77dbbf349",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cognition:f1430967-f367-4afe-9107-e58da423633c",
+      "provider": "ashby",
+      "board_key": "ashby:cognition",
+      "title": "Forward Deployed Engineer - Federal",
+      "company": "Cognition",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington DC ; San Francisco",
+      "raw_locations": [
+        "Washington DC",
+        "San Francisco"
+      ],
+      "url": "https://jobs.ashbyhq.com/cognition/f1430967-f367-4afe-9107-e58da423633c",
+      "original_posting_url": "https://jobs.ashbyhq.com/cognition/f1430967-f367-4afe-9107-e58da423633c",
+      "retrieved_at": "2026-11-05T23:01:04+00:00",
+      "posted_at": "2026-01-26T23:26:14.041+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "3792b08976a3eb2091c7bedefc5cb99d4618ac2615af03fb9a9b5d5435f119b1",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cognition:589326d3-9dc0-447e-ae0c-972b808f831d",
+      "provider": "ashby",
+      "board_key": "ashby:cognition",
+      "title": "Devops Engineer, Federal",
+      "company": "Cognition",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/cognition/589326d3-9dc0-447e-ae0c-972b808f831d",
+      "original_posting_url": "https://jobs.ashbyhq.com/cognition/589326d3-9dc0-447e-ae0c-972b808f831d",
+      "retrieved_at": "2026-11-05T23:01:04+00:00",
+      "posted_at": "2026-02-12T20:03:02.682+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a07f3bb9b8eeb00ea69880759d61722f5c5cdfdb8e7d58e48c0cbc05f92cd403",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cognition:1b2f97f6-2215-4ebd-bd01-4c6a10ca4ac0",
+      "provider": "ashby",
+      "board_key": "ashby:cognition",
+      "title": "Capture Lead - Federal",
+      "company": "Cognition",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/cognition/1b2f97f6-2215-4ebd-bd01-4c6a10ca4ac0",
+      "original_posting_url": "https://jobs.ashbyhq.com/cognition/1b2f97f6-2215-4ebd-bd01-4c6a10ca4ac0",
+      "retrieved_at": "2026-11-05T23:01:04+00:00",
+      "posted_at": "2026-07-22T02:04:41.497+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "725f86c686e945f2dac4d06ae49a379e4e8d8603cb46f16d2762d10b1618994f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cognition:c6cd45c1-08d2-4acb-a33b-9ff6872025c0",
+      "provider": "ashby",
+      "board_key": "ashby:cognition",
+      "title": "Workplace & Engagement Coordinator",
+      "company": "Cognition",
+      "company_evidence": "public_board_page_title",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://jobs.ashbyhq.com/cognition/c6cd45c1-08d2-4acb-a33b-9ff6872025c0",
+      "original_posting_url": "https://jobs.ashbyhq.com/cognition/c6cd45c1-08d2-4acb-a33b-9ff6872025c0",
+      "retrieved_at": "2026-11-05T23:01:04+00:00",
+      "posted_at": "2026-08-11T00:43:09.432+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "70a2128e52fff8e840b45939cd083b5227865a3368170703e6e24c902cc0a478",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cursor:7d6611cb-28bf-4277-8758-178154466934",
+      "provider": "ashby",
+      "board_key": "ashby:cursor",
+      "title": "Regional Director, Forward Deployed Engineering - Public Sector",
+      "company": "cursor",
+      "company_evidence": "board_identifier_only_not_legal_employer_verified",
+      "location": "Washington, D.C.",
+      "raw_locations": [
+        "Washington, D.C."
+      ],
+      "url": "https://jobs.ashbyhq.com/cursor/7d6611cb-28bf-4277-8758-178154466934",
+      "original_posting_url": "https://jobs.ashbyhq.com/cursor/7d6611cb-28bf-4277-8758-178154466934",
+      "retrieved_at": "2026-11-05T23:01:21+00:00",
+      "posted_at": "2026-10-28T18:06:56.420+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "c4f5a949bb080da4b65e3ff6b687eb187b42ad5641632e6f3762d83884e314a0",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "ashby:cursor:a750c967-7c4d-4704-a528-dcb63afc5f64",
+      "provider": "ashby",
+      "board_key": "ashby:cursor",
+      "title": "Field Engineer, Public Sector",
+      "company": "cursor",
+      "company_evidence": "board_identifier_only_not_legal_employer_verified",
+      "location": "Remote ; Washington, D.C.",
+      "raw_locations": [
+        "Remote",
+        "Washington, D.C."
+      ],
+      "url": "https://jobs.ashbyhq.com/cursor/a750c967-7c4d-4704-a528-dcb63afc5f64",
+      "original_posting_url": "https://jobs.ashbyhq.com/cursor/a750c967-7c4d-4704-a528-dcb63afc5f64",
+      "retrieved_at": "2026-11-05T23:01:21+00:00",
+      "posted_at": "2026-09-04T07:03:13.944+00:00",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "c1b43adc5990b1db04d924a05707f1c568a95f93acc11b6dc5f9265521b50add",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:540:7994706003",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:540",
+      "title": "Multiple Award BPA Program Manager",
+      "company": "540",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Arlington, VA",
+      "raw_locations": [
+        "Arlington, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/540/jobs/7994706003",
+      "original_posting_url": "https://job-boards.greenhouse.io/540/jobs/7994706003",
+      "retrieved_at": "2026-11-05T23:02:10+00:00",
+      "posted_at": "2026-09-14T14:55:13-04:00",
+      "updated_at": "2026-09-14T14:55:13-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "aa75333e976f41aefaa4197668b173ce9959cce7fb56d35e8ed23d42f43b708d",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:540:6073768003",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:540",
+      "title": "Pitch Your Position!",
+      "company": "540",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Arlington, VA",
+      "raw_locations": [
+        "Arlington, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/540/jobs/6073768003",
+      "original_posting_url": "https://job-boards.greenhouse.io/540/jobs/6073768003",
+      "retrieved_at": "2026-11-05T23:02:11+00:00",
+      "posted_at": "2024-07-30T15:40:21-04:00",
+      "updated_at": "2026-07-29T16:33:58-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "8cda9780a511ecc8c20cc773f70a1c76b3208e54ed7eeae74d6dd1e3eb33184e",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": true,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8906181002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Deputy Project Director for Immigration Detention, National Prison Project",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States",
+      "raw_locations": [
+        "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8906181002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8906181002",
+      "retrieved_at": "2026-11-05T23:16:11+00:00",
+      "posted_at": "2026-10-22T11:10:53-04:00",
+      "updated_at": "2026-10-28T17:02:33-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "6eb2a2ee0f9edbfad08f3abe3143fea3ea337e323cd650f078e8b5c67c71660d",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8926022002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Investigator, National Prison Project",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States",
+      "raw_locations": [
+        "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8926022002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8926022002",
+      "retrieved_at": "2026-11-05T23:02:49+00:00",
+      "posted_at": "2026-11-04T18:00:22-05:00",
+      "updated_at": "2026-11-04T18:00:22-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "3eb23a43d3857db8085f2b93c8f7dd955474f1fee4af199a0398b08042a496da",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8907095002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Senior Advisor, Affiliate Legal Programs",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States",
+      "raw_locations": [
+        "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8907095002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8907095002",
+      "retrieved_at": "2026-11-05T23:16:03+00:00",
+      "posted_at": "2026-10-30T12:59:13-04:00",
+      "updated_at": "2026-10-30T15:05:43-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "f81dd2738e294f0b7a892f66ebd8f318d570032ac72c1922a32fe94a3c1ea413",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8438039002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Senior Campaign Lead, Democracy",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington, District of Columbia, United States",
+      "raw_locations": [
+        "Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8438039002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8438039002",
+      "retrieved_at": "2026-11-05T23:02:50+00:00",
+      "posted_at": "2026-02-26T12:18:49-05:00",
+      "updated_at": "2026-06-11T15:19:51-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "b820d83c14cb94e1b1cbcf2ed2f00cf61cf362ea5a862744a49297bdf533e2c7",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8831288002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Service Desk Technician II",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington, District of Columbia, United States",
+      "raw_locations": [
+        "Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8831288002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8831288002",
+      "retrieved_at": "2026-11-05T23:16:05+00:00",
+      "posted_at": "2026-09-24T12:22:47-04:00",
+      "updated_at": "2026-09-24T12:22:47-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "8904bd6a7e808a59ce1ee1eb8513a7897477eecc6d14c8e5ef340c352b7c6cfc",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:aclu:8926814002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:aclu",
+      "title": "Staff Attorney, Senior Staff Attorney, or Senior Counsel, National Prison Project",
+      "company": "ACLU - National Office",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States",
+      "raw_locations": [
+        "New York, New York, United States; San Francisco, California, United States; Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/aclu/jobs/8926814002",
+      "original_posting_url": "https://job-boards.greenhouse.io/aclu/jobs/8926814002",
+      "retrieved_at": "2026-11-05T23:02:48+00:00",
+      "posted_at": "2026-11-04T19:44:35-05:00",
+      "updated_at": "2026-11-04T19:44:35-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "27017da02eca6cac501f83f36ef076088eef773c5aa707d7d1e5495e72d5ee49",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "live"
+      ]
+    },
+    {
+      "identity": "greenhouse:copiapower:4421828009",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:copiapower",
+      "title": "Associate, Development Engineering",
+      "company": "Copia Power",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Dana Point, California, United States; Lake Oswego, Oregon, United States; Phoenix, Arizona, United States; Salt Lake City, Utah, United States; Washington, District of Columbia, United States",
+      "raw_locations": [
+        "Dana Point, California, United States; Lake Oswego, Oregon, United States; Phoenix, Arizona, United States; Salt Lake City, Utah, United States; Washington, District of Columbia, United States"
+      ],
+      "url": "https://job-boards.greenhouse.io/copiapower/jobs/4421828009",
+      "original_posting_url": "https://job-boards.greenhouse.io/copiapower/jobs/4421828009",
+      "retrieved_at": "2026-11-05T23:10:03+00:00",
+      "posted_at": "2026-09-28T16:18:03-04:00",
+      "updated_at": "2026-10-16T15:26:34-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "103854b8a7027a0f587bba190659c15d358be6b8c46e71a1c007326855a75ec6",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:defcon:5281779007",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:defcon",
+      "title": "Controller",
+      "company": "DEFCON AI",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA (Hybrid)",
+      "raw_locations": [
+        "McLean, VA (Hybrid)"
+      ],
+      "url": "https://job-boards.greenhouse.io/defcon/jobs/5281779007",
+      "original_posting_url": "https://job-boards.greenhouse.io/defcon/jobs/5281779007",
+      "retrieved_at": "2026-11-05T23:11:08+00:00",
+      "posted_at": "2026-11-03T11:51:46-05:00",
+      "updated_at": "2026-11-05T16:08:24-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "35637a4d4e1b4f190c21744db43b48143a332aa8c2079a876dce761952005b32",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:defcon:5271339007",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:defcon",
+      "title": "IT Help Desk Specialist",
+      "company": "DEFCON AI",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Mclean, Virginia",
+      "raw_locations": [
+        "Mclean, Virginia"
+      ],
+      "url": "https://job-boards.greenhouse.io/defcon/jobs/5271339007",
+      "original_posting_url": "https://job-boards.greenhouse.io/defcon/jobs/5271339007",
+      "retrieved_at": "2026-11-05T23:11:07+00:00",
+      "posted_at": "2026-10-22T09:33:19-04:00",
+      "updated_at": "2026-11-05T16:08:24-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "8fce96c3a672f5afe2e8cc17515cbfc261a2e67bc21e52f38266167efd3bbf5e",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:curaleaf:8832903002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:curaleaf",
+      "title": "Lead Store Associate",
+      "company": "Curaleaf ",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "10011 Stedwick Rd Gaithersburg, MD",
+      "raw_locations": [
+        "10011 Stedwick Rd Gaithersburg, MD"
+      ],
+      "url": "https://job-boards.greenhouse.io/curaleaf/jobs/8832903002",
+      "original_posting_url": "https://job-boards.greenhouse.io/curaleaf/jobs/8832903002",
+      "retrieved_at": "2026-11-05T23:11:14+00:00",
+      "posted_at": "2026-10-01T14:22:21-04:00",
+      "updated_at": "2026-10-26T14:25:17-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "e96b763866eacba4d96c35b26d500e3c596eb5c13e5c2bf6e4bb6c3ea11bb0c6",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8569140002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Data Scientist / Technical Targeter",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Tysons Corner, VA",
+      "raw_locations": [
+        "Tysons Corner, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8569140002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8569140002",
+      "retrieved_at": "2026-11-05T23:11:17+00:00",
+      "posted_at": "2026-05-28T14:53:23-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "index_only",
+      "description_sha256": "",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8164940002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Finance Administrator- Generalist ",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8164940002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8164940002",
+      "retrieved_at": "2026-11-05T23:16:20+00:00",
+      "posted_at": "2025-09-11T14:49:53-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "e2dff5ee97938a2b6dae9e4c9ae9d33ea951c5c4364839c11b4bbb0b2ebbd64e",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8602799002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "HUMINT Collection Manager",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8602799002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8602799002",
+      "retrieved_at": "2026-11-05T23:16:32+00:00",
+      "posted_at": "2026-06-22T11:48:50-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "d756f327d159e00db77f5db659bbb1ff2bc887f7406fbb4c18e0c1938ff873af",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:6603086002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "IT Program Manager L1-6",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Tysons Corner, VA",
+      "raw_locations": [
+        "Tysons Corner, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/6603086002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/6603086002",
+      "retrieved_at": "2026-11-05T23:11:19+00:00",
+      "posted_at": "2023-02-06T12:46:09-05:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "2e61ed9e1416d6167c60c07319700b3d4f213c59470d83e4dc8645f7a7f57ecb",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8483176002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Junior Technical Writer",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8483176002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8483176002",
+      "retrieved_at": "2026-11-05T23:16:29+00:00",
+      "posted_at": "2026-03-27T12:20:23-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "1038e88a8204c1db667341c7b0a6b8473ee8539eacff93b5078a0a9c52df6ac5",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:6603820002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Linguist (Albanian, Bengali, Finnish, Greek, Hindi, Turkish, and more.)",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/6603820002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/6603820002",
+      "retrieved_at": "2026-11-05T23:16:36+00:00",
+      "posted_at": "2023-02-06T16:46:25-05:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "3315c11a7617090c2dc3d7a138d49cd85a77ce9dfd8e97bbae96e26e97f8f361",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:7645063002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Mission Support Administrator ",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/7645063002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/7645063002",
+      "retrieved_at": "2026-11-05T23:16:19+00:00",
+      "posted_at": "2024-09-18T15:40:02-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "438025e7f413709461513029211fecb467340e1f99a7f58c4b6d3ca7b0913c81",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8766241002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Operations Advisor",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8766241002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8766241002",
+      "retrieved_at": "2026-11-05T23:16:33+00:00",
+      "posted_at": "2026-08-31T14:31:26-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "2cff5d6387ac252943e06604d292080e58a1f274e27954bbdbeb78a3118870e1",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:7644953002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Principal Support Administrator",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/7644953002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/7644953002",
+      "retrieved_at": "2026-11-05T23:16:37+00:00",
+      "posted_at": "2024-09-18T15:06:05-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "9e890bb90679340a365d6c7679898ca3d8633f19a41e32b60b63f9d6cb44809c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8483213002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Security Analyst",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8483213002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8483213002",
+      "retrieved_at": "2026-11-05T23:16:35+00:00",
+      "posted_at": "2026-03-27T12:34:04-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "24f85d2629ce6c60adc7a2c48b2294c750447bfed2ae361e2a59fdcfc676945f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8575446002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Security Engineer",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8575446002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8575446002",
+      "retrieved_at": "2026-11-05T23:11:17+00:00",
+      "posted_at": "2026-06-02T15:18:36-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "index_only",
+      "description_sha256": "",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8899772002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Senior Technical Editor, HQDA G-2",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Arlington, VA",
+      "raw_locations": [
+        "Arlington, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8899772002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8899772002",
+      "retrieved_at": "2026-11-05T23:16:18+00:00",
+      "posted_at": "2026-10-19T08:26:13-04:00",
+      "updated_at": "2026-10-19T08:26:13-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "7c61ca9d4c796c10872ca21de182344b6fbcdd3602d0268572595916456b5b55",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8585603002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Senior Technical Writer",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8585603002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8585603002",
+      "retrieved_at": "2026-11-05T23:11:18+00:00",
+      "posted_at": "2026-06-10T10:22:12-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "c6e831bda68e2d718eef496653566c92720a1de4abd77aee4726e379fbef60d0",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:6603161002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Software Developer L1-6",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Tysons Corner, VA",
+      "raw_locations": [
+        "Tysons Corner, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/6603161002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/6603161002",
+      "retrieved_at": "2026-11-05T23:11:17+00:00",
+      "posted_at": "2023-02-06T12:46:19-05:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "index_only",
+      "description_sha256": "",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:7645132002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Support Generalist",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/7645132002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/7645132002",
+      "retrieved_at": "2026-11-05T23:11:17+00:00",
+      "posted_at": "2024-09-18T15:51:04-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "index_only",
+      "description_sha256": "",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:7849427002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Systems Analyst",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "McLean, VA",
+      "raw_locations": [
+        "McLean, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/7849427002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/7849427002",
+      "retrieved_at": "2026-11-05T23:16:28+00:00",
+      "posted_at": "2026-07-21T11:19:36-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "2b6aae57e8ec9b27ff9c595f334c476c2f6d141fd5afde9e97be4e6c47167ff7",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8730012002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Systems Engineer, Expert",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Mclean, Virginia",
+      "raw_locations": [
+        "Mclean, Virginia"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8730012002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8730012002",
+      "retrieved_at": "2026-11-05T23:16:38+00:00",
+      "posted_at": "2026-08-19T13:31:21-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "0f0dc994898e5aac5579f6d953721baffa945d7a6a29398e153cdf04682ed0d0",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:6603005002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Systems Engineers L1-6 ",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Tysons Corner, VA",
+      "raw_locations": [
+        "Tysons Corner, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/6603005002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/6603005002",
+      "retrieved_at": "2026-11-05T23:11:20+00:00",
+      "posted_at": "2023-02-06T12:45:36-05:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a59a4db8d78612e3b57aacf9cb5fd756f2cd9fbeed54793162b737f25a67f237",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:6603106002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "Systems Integrator L1-6",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Tysons Corner, VA",
+      "raw_locations": [
+        "Tysons Corner, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/6603106002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/6603106002",
+      "retrieved_at": "2026-11-05T23:16:39+00:00",
+      "posted_at": "2023-02-06T12:46:39-05:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "28de96f5acbf17285e5f90bf7c7a6072690bbcc22e1f932ddbb2a65fbe6986f3",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8659238002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "WMD Analyst (Mission Support)",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Reston, VA",
+      "raw_locations": [
+        "Reston, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8659238002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8659238002",
+      "retrieved_at": "2026-11-05T23:16:30+00:00",
+      "posted_at": "2026-07-30T14:01:40-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "180061b28e9c6442d0bc1066bd4f0a09955fae58135b90b4ab9dc96cb065b050",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "greenhouse:coreone:8648912002",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:coreone",
+      "title": "WMD Analyst (Nuclear Enterprise Defense)",
+      "company": "Core One",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Reston, VA",
+      "raw_locations": [
+        "Reston, VA"
+      ],
+      "url": "https://job-boards.greenhouse.io/coreone/jobs/8648912002",
+      "original_posting_url": "https://job-boards.greenhouse.io/coreone/jobs/8648912002",
+      "retrieved_at": "2026-11-05T23:16:31+00:00",
+      "posted_at": "2026-07-24T10:38:53-04:00",
+      "updated_at": "2026-09-28T08:48:20-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "561dd27b1919b725c7159defd8e667fb64aabd3cb84962a9e2d96116fce03f96",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "spread"
+      ]
+    },
+    {
+      "identity": "lever:researchinnovations.com:901de5a8-33d5-4f08-96bc-9e0a7b990bd3",
+      "provider": "lever",
+      "board_key": "lever:researchinnovations.com",
+      "title": "Senior Principal FPGA & Digital Signals Processing Engineer",
+      "company": "researchinnovations.com",
+      "company_evidence": "board_identifier_only_not_legal_employer_verified",
+      "location": "Alexandria, VA",
+      "raw_locations": [
+        "Alexandria, VA"
+      ],
+      "url": "https://jobs.lever.co/researchinnovations.com/901de5a8-33d5-4f08-96bc-9e0a7b990bd3",
+      "original_posting_url": "https://jobs.lever.co/researchinnovations.com/901de5a8-33d5-4f08-96bc-9e0a7b990bd3",
+      "retrieved_at": "2026-11-05T23:23:37+00:00",
+      "posted_at": "",
+      "updated_at": "",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "801ae8a814784db55d957f622ecc3b8467cba5087a66bed9fdf7639d7d1e38e6",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5464695008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Managing Director, Assessment & Human Capital",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5464695008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5464695008",
+      "retrieved_at": "2026-11-05T23:24:04+00:00",
+      "posted_at": "2026-10-27T11:45:29-04:00",
+      "updated_at": "2026-10-30T09:25:59-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "5d3676aea1a1fee193eaf6ed88410237061fd79699771c3d3bf0a2f4844a7eef",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5447227008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Principal Researcher – CMMI Evaluations",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5447227008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5447227008",
+      "retrieved_at": "2026-11-05T23:24:02+00:00",
+      "posted_at": "2026-10-07T19:17:27-04:00",
+      "updated_at": "2026-10-07T19:17:27-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "3a8219d717b2afec4a1e44621dae9c07e08d33e66cf965cbb456c5d1fb822180",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5471021008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Quantitative Researcher, Evidence Synthesis & Meta-Analysis",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5471021008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5471021008",
+      "retrieved_at": "2026-11-05T23:24:26+00:00",
+      "posted_at": "2026-11-04T08:29:52-05:00",
+      "updated_at": "2026-11-04T08:29:52-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "15cb8190c44ef5c67246327dff1cf41ae39b12416a3391f8eff2d3e2229ddea4",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5460306008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Senior Applications Architect",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5460306008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5460306008",
+      "retrieved_at": "2026-11-05T23:24:32+00:00",
+      "posted_at": "2026-10-22T13:25:02-04:00",
+      "updated_at": "2026-11-02T16:09:41-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "1e18dd5813d48ee6e1de225d85b581e8536f4b433242eb22fe862d960224da9f",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5448353008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Senior Quantitative Researcher – CMMI Evaluations",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5448353008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5448353008",
+      "retrieved_at": "2026-11-05T23:24:01+00:00",
+      "posted_at": "2026-10-08T18:30:41-04:00",
+      "updated_at": "2026-11-05T12:51:51-05:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "59c1b1c7128c76f11f50fb2e4b2f865fd80058aead20d055dcd31028ac43afbf",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americaninstitutesforresearch:5447239008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americaninstitutesforresearch",
+      "title": "Technical Assistance Consultant, Mathematics Intervention and MTSS",
+      "company": "American Institutes for Research",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin",
+      "raw_locations": [
+        "US-Remote | US-VA-Arlington | US-NC-Chapel Hill | US-IL-Chicago | US-CA-Sacramento | US-TX-Austin"
+      ],
+      "url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5447239008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5447239008",
+      "retrieved_at": "2026-11-05T23:24:31+00:00",
+      "posted_at": "2026-10-09T15:50:12-04:00",
+      "updated_at": "2026-10-09T15:50:46-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "c5bde4cfbf3ac629554b10615e5fbab0d44ca3f63a1b3d42165811b3f091d5f2",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americanfloodcoalition:5208892008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americanfloodcoalition",
+      "title": "Federal Government Relations Director",
+      "company": "American Flood Coalition",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5208892008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5208892008",
+      "retrieved_at": "2026-11-05T23:24:20+00:00",
+      "posted_at": "2026-05-04T10:19:03-04:00",
+      "updated_at": "2026-10-30T11:57:44-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "e1099c489f81d3fb6674a84c1cb771aba1b07b2feda9840527b27ca49368feae",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americanfloodcoalition:5217827008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americanfloodcoalition",
+      "title": "Regional Strategy Director",
+      "company": "American Flood Coalition",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5217827008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5217827008",
+      "retrieved_at": "2026-11-05T23:24:17+00:00",
+      "posted_at": "2026-05-12T14:35:22-04:00",
+      "updated_at": "2026-10-30T12:10:15-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "e41d97370c969a163d8248ad128e4edd859d15ea0b70a232977d98cf3e2d7d5c",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    },
+    {
+      "identity": "greenhouse:americanfloodcoalition:5463350008",
+      "provider": "greenhouse",
+      "board_key": "greenhouse:americanfloodcoalition",
+      "title": "Senior Communications Associate",
+      "company": "American Flood Coalition",
+      "company_evidence": "provider_company_or_board_name",
+      "location": "Washington DC",
+      "raw_locations": [
+        "Washington DC"
+      ],
+      "url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5463350008",
+      "original_posting_url": "https://job-boards.greenhouse.io/americanfloodcoalition/jobs/5463350008",
+      "retrieved_at": "2026-11-05T23:24:19+00:00",
+      "posted_at": "2026-10-26T09:50:46-04:00",
+      "updated_at": "2026-10-26T09:50:46-04:00",
+      "record_kind": "advertised_position",
+      "detail_status": "public_description_observed",
+      "description_sha256": "a5e1bb452f626502ba7a8f9afd3e536ebff3258adcb1b44452a8c13f836d3aeb",
+      "description_truncated": false,
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "duplicate_evidence": {
+        "method": "",
+        "source_urls": [],
+        "related_ATS_identity": ""
+      },
+      "potential_talent_pool_title": false,
+      "independent_review_quarantined": false,
+      "observed_in": [
+        "sector"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ from pathlib import Path
 
 from career_engine import triage as engine
 from tools.rank_jobs import load_records, write_outputs
+from career_engine.review_quarantine import partition_for_review
 
 WARNING = 'EXPERIMENTAL — NOT INDEPENDENTLY VALIDATED'
 
@@ -29,7 +30,25 @@ def publish(input_path, output_dir, top=15, detailed_budget=200, seed=0, as_of=N
                       ranker_sha256=hashlib.sha256(Path(engine.__file__).read_bytes()).hexdigest())
         partial=any(counts.get('errors') or counts.get('status') in ('failed','partial_failure')
                     for counts in data['stats'].values())
-        result=engine.triage(records,top,detailed_budget,10,seed,as_of)
+        available,withheld=partition_for_review(records)
+        result=engine.triage(available,top,detailed_budget,10,seed,as_of)
+        used={r['identity'] for r in result['audit']}
+        for row in withheld:
+            key=engine.identity(row);n=1
+            while key in used:key=engine.identity(row)+f'#withheld{n}';n+=1
+            used.add(key)
+            result['audit'].append({**{k:row.get(k,'') for k in ('title','company','location','url','source','source_id','index_url','discovery_urls')},
+                'identity':key,'decision':'withheld_for_independent_review','inspection_route':'independent_review_quarantine',
+                'review_priority':None,'evidence_confidence':'not_evaluated','qualifications':{'status':'not_evaluated'},
+                'supported_experience':[],'competitive_advantage':[],'uncertainty':['Reserved for independent review; no model evaluation.'],
+                'verification':{'employer_active_verified':False},'possible_duplicate':None})
+        if withheld:
+            result['counts']['received']+=len(withheld);result['counts']['retained']+=len(withheld)
+            result['counts']['descriptions_available']+=sum(bool(r.get('description')) for r in withheld)
+            result['counts']['decisions']['withheld_for_independent_review']=len(withheld)
+            for r in withheld:
+                source=r.get('source','');result['counts']['sources'][source]=result['counts']['sources'].get(source,0)+1
+        result['independent_review_withheld']=len(withheld)
         result.update(experimental=True,validation_status=status['validation_status'],
                       warning=WARNING,unranked_audit={'file':input_path.name,'sha256':status['input_sha256'],
                                                     'source_capture_at':data.get('captured_at',''),

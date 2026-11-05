@@ -5,6 +5,24 @@ nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
 primary; no employer allowlist is required. Scores are triage heuristics and do
 not establish qualifications, job availability or interview probabilities.
 
+## New: optional discovery of unfamiliar public ATS boards
+
+The manual DC workflow can discover employer boards from free public URL indexes
+and links in source evidence, then read documented Greenhouse, Lever and Ashby
+APIs. The registry starts empty; there is no employer allowlist or tenant-name
+guessing. This is a bounded pilot with material source and relevance gaps.
+
+Enable **expanded_ats** (default false) in `source_mode=dc`; leave
+`allow_paid_search=false`. `ats_board_budget` defaults to 30. Original five-source
+JSON/CSV/Markdown remain unchanged, alongside ATS provenance and a complete
+combined unranked audit. Optional experimental ranking reads the combined audit
+and remains unvalidated. No new credentials or schedules are needed.
+
+Read the [issue #11 coverage assessment and setup](docs/issue11/ASSESSMENT.md),
+[actual requirements review](docs/issue11/REVIEW_SAMPLE.md), and
+[measured results](docs/issue11/metrics.json). Regional counts are separated from
+remote/global volume, possible duplicates, pools and specialist requirements.
+
 ## Current: optional experimental ranking in the manual GitHub workflow
 
 The manual DC workflow preserves its full unranked audit. After this change is

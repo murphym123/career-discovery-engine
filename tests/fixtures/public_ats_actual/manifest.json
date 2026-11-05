@@ -1,0 +1,35 @@
+[
+  {
+    "fixture": "greenhouse.json",
+    "retrieved_date_utc": "2026-11-05",
+    "request_url": "https://boards-api.greenhouse.io/v1/boards/coreone/jobs/8483176002",
+    "params": {},
+    "original_response_sha256": "9600c84ef8f8e9446e635daa6cd0701d28457903b3c9b77248045eb3f7743080",
+    "fixture_sha256": "4a6e9dc551355de4deaa80dd452225fc81a0125659475fca6357f390c43db291",
+    "minimization": "One listing, factual metadata and only first 20 description words; other descriptions/contacts/application paths removed. No protected independent-review listing."
+  },
+  {
+    "fixture": "lever.json",
+    "retrieved_date_utc": "2026-11-05",
+    "request_url": "https://api.lever.co/v0/postings/100ms",
+    "params": {
+      "mode": "json",
+      "limit": 100,
+      "skip": 0
+    },
+    "original_response_sha256": "f9946176c722e59d70cba17ec6dac765d50ea8881efeec0fd20d0444d1d9d34b",
+    "fixture_sha256": "90cb5665282b5836df1ce69bd7f9deeac8e5943ee13ae4c4b76575bbbfcb6b89",
+    "minimization": "One listing, factual metadata and only first 20 description words; other descriptions/contacts/application paths removed. No protected independent-review listing."
+  },
+  {
+    "fixture": "ashby.json",
+    "retrieved_date_utc": "2026-11-05",
+    "request_url": "https://api.ashbyhq.com/posting-api/job-board/cognition",
+    "params": {
+      "includeCompensation": "true"
+    },
+    "original_response_sha256": "06953a37310de4ae43b5555d2d1807c072ca54c64c761f33c0d1fb900ed74f40",
+    "fixture_sha256": "28f6434d483bffc94fb4baf3d78a40636df03e15825e787c6ca7eb33c16dd89d",
+    "minimization": "One listing, factual metadata and only first 20 description words; other descriptions/contacts/application paths removed. No protected independent-review listing."
+  }
+]
