@@ -14,22 +14,35 @@ import requests
 from career_engine.extract import robots_allowed, safe_public_url, USER_AGENT
 from career_engine.sources import SourceStats
 
-DC_SOURCES = ("senate", "unionjobs")
+DC_SOURCES = ("senate", "unionjobs")  # Stable legacy alias for existing callers.
+ALL_DC_SOURCES = (*DC_SOURCES,"globaljobs","onthinktanks","workfornonprofits")
 INDEXES = {
     "senate": ("https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",),
     "unionjobs": tuple("https://www.unionjobs.com/location.php?state=" + state
                        for state in ("District%20of%20Columbia", "Maryland", "Virginia")),
+    "globaljobs": ("https://globaljobs.org/",),
+    "onthinktanks": ("https://onthinktanks.org/jobsboard/",),
+    "workfornonprofits": ("https://workfornonprofits.org/jobs/district-of-columbia",),
 }
 HOSTS = {"senate": {"careers.employment.senate.gov"},
-         "unionjobs": {"www.unionjobs.com", "unionjobs.com"}}
+         "unionjobs": {"www.unionjobs.com", "unionjobs.com"},
+         "globaljobs": {"globaljobs.org","www.globaljobs.org"},
+         "onthinktanks": {"onthinktanks.org"},
+         "workfornonprofits": {"workfornonprofits.org"}}
 MAX_BYTES = 1_000_000
 UNION_RSS = "https://www.unionjobs.com/rss.php"
+GLOBAL_RSS = "https://globaljobs.org/jobs/feed.rss"
 
 
 def listing_url(source,url):
-    parts=urlsplit(url)
+    try:parts=urlsplit(url)
+    except ValueError:return False
     if not safe_public_url(url) or parts.hostname not in HOSTS[source]:
         return False
+    if source in ("globaljobs","onthinktanks","workfornonprofits") and parts.query:return False
+    if source=="globaljobs":return bool(re.fullmatch(r"/jobs/\d+-[a-zA-Z0-9_-]+",parts.path))
+    if source=="onthinktanks":return bool(re.fullmatch(r"/job/[a-zA-Z0-9_-]+/?",parts.path))
+    if source=="workfornonprofits":return bool(re.fullmatch(r"/companies/[a-zA-Z0-9_-]+/jobs/[a-zA-Z0-9_-]+/?",parts.path))
     return bool(re.fullmatch(r"/job/[a-zA-Z0-9_-]+",parts.path)) if source=="senate" else bool(
         re.fullmatch(r"/listing/\d+[a-zA-Z0-9_-]*",parts.path) or
         (parts.path=="/listing.php" and re.fullmatch(r"id=\d+",parts.query)))
@@ -126,8 +139,10 @@ def parse_index(source, html, index_url):
                                     url=url,source_id=re.search(r"listing/(\d+)",url).group(1) if "/listing/" in url else url,
                                     snippet=text,posted_at=posted.group(1) if posted else "",
                                     record_kind="talent_pool" if heading and "resume posting service" in heading.text().lower() else "advertised_position"))
-    else:
-        raise ValueError("unsupported DC source")
+    elif source in ("globaljobs","onthinktanks","workfornonprofits"):
+        from career_engine.specialty_sources import parse_specialty_index
+        records=parse_specialty_index(source,html,index_url)
+    else:raise ValueError("unsupported DC source")
     unique = {}
     for record in records:
         if record["title"] and listing_url(source,record["url"]):
@@ -138,6 +153,9 @@ def parse_index(source, html, index_url):
 
 
 def parse_detail(source, html):
+    if source in ("globaljobs","onthinktanks","workfornonprofits"):
+        from career_engine.specialty_sources import parse_specialty_detail
+        return parse_specialty_detail(source,html)
     doc = Document(html).root
     if source == "senate":
         # The specific job's description, never related jobs or navigation.
@@ -201,7 +219,7 @@ class _CountingSession:
 def _fetch(session, source, url, cache, pause, xml=False):
     for _ in range(3):
         parts=urlsplit(url)
-        is_index=url in INDEXES[source] or (source=="unionjobs" and url==UNION_RSS)
+        is_index=url in INDEXES[source] or (source=="unionjobs" and url==UNION_RSS) or (source=="globaljobs" and url==GLOBAL_RSS)
         if not (is_index or listing_url(source,url)):
             return "", "unsafe_url"
         if not robots_allowed(session,url,cache):
@@ -234,13 +252,13 @@ def _fetch(session, source, url, cache, pause, xml=False):
     return "", "too_many_redirects"
 
 
-def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep):
-    """Bounded source-order details; index records survive all detail failures.
+def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep, strategy="diverse",seed=0):
+    """Bounded stratified details; index records survive all detail failures.
 
     Senate's client-only Load more and robots-disallowed search/feed endpoints
     are deliberately not called. Union Jobs' three regional indexes are swept.
     """
-    if source not in DC_SOURCES or not 0<=max_details<=30:
+    if source not in ALL_DC_SOURCES or not 0<=max_details<=30:
         raise ValueError("invalid DC source or detail budget")
     stats=stats if stats is not None else SourceStats()
     transport=_CountingSession(session,stats)
@@ -255,6 +273,23 @@ def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep):
                 rows=parse_union_rss(xml)
                 stats.received+=len(rows)
                 for row in rows:
+                    row["retrieved_at"]=stamp
+                    unique[row["source_id"]]=row
+            else:
+                stats.errors.append("RSS "+status)
+                source_blocked=status in ("http_403","http_429")
+        except (requests.RequestException,ValueError,ElementTree.ParseError):
+            stats.errors.append("RSS network_or_parse_error")
+    elif source=="globaljobs":
+        from career_engine.specialty_sources import parse_global_feed
+        try:
+            xml,status=_fetch(transport,source,GLOBAL_RSS,cache,pause,xml=True)
+            if status=="ok":
+                stats.pages+=1
+                rows=parse_global_feed(xml)
+                stats.received+=len(rows)
+                for row in rows:
+                    if not listing_url(source,row["url"]):continue
                     row["retrieved_at"]=stamp
                     unique[row["source_id"]]=row
             else:
@@ -285,6 +320,9 @@ def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep):
             # Regional card provides the clean landing URL for a feed identity.
             previous=unique.setdefault(row["source_id"],{})
             origins=set(previous.get("discovery_urls",previous.get("index_url", "")).split(" ; "))
+            # An absolute RSS date must not be overwritten by 'Yesterday'.
+            if previous.get("posted_at") and not row.get("posted_at"):
+                row["posted_at"]=previous["posted_at"]
             previous.update(row)
             previous["discovery_urls"]=" ; ".join(sorted((origins|{url})-{""}))
     if source=="senate":
@@ -292,8 +330,18 @@ def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep):
     stats.unique=len(unique)
     if source_blocked:
         max_details=0
-    for index,record in enumerate(unique.values()):
-        if index<max_details:
+    from career_engine.inspection import plan_inspections
+    records=list(unique.values())
+    plan=plan_inspections(records,max_details,seed,strategy)
+    by_id={row["source"]+":"+row["source_id"]:row for row in records}
+    for row in records:
+        row["inspection_stratum"]="not_selected_budget"
+    detail_attempts=0
+    for choice in plan:
+        record=by_id[choice["identity"]]
+        record["inspection_stratum"]=choice["stratum"]
+        if not source_blocked:
+            detail_attempts+=1
             try:
                 html,status=_fetch(transport,source,record["url"],cache,pause)
                 fields,status=parse_detail(source,html) if status=="ok" else ({},status)
@@ -306,9 +354,17 @@ def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep):
                 stats.errors.append("Detail "+status)
             # On rate limit or denial, keep records without making more detail requests.
             if status in ("http_429","http_403"):
-                max_details=0
+                source_blocked=True
+        else:
+            record["detail_status"]="not_attempted_source_blocked"
+    for record in records:
         yield record
-    stats.capped=stats.capped or len(unique)>max_details
+    stats.capped=stats.capped or len(unique)>detail_attempts
+    stats.inspection_strategy=strategy
+    stats.details_planned=len(plan)
+    stats.details_attempted=detail_attempts
+    stats.descriptions_observed=sum(bool(row.get("description")) for row in records)
+    stats.index_only=len(records)-stats.descriptions_observed
     stats.status="partial_failure" if stats.errors and unique else "failed" if stats.errors else "ok"
 
 

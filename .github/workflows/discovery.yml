@@ -33,6 +33,11 @@ on:
         description: "Public detail pages per DC board (0–30); dc mode is an unranked source audit"
         default: 20
         required: true
+      inspection_seed:
+        type: number
+        description: "Reproducible exploratory description sample (DC mode)"
+        default: 0
+        required: true
 permissions:
   contents: read
   actions: read
@@ -77,6 +82,7 @@ jobs:
           SOURCE_PAGES: ${{ inputs.source_pages }}
           ALLOW_PAID_SEARCH: ${{ inputs.allow_paid_search }}
           DC_DETAIL_BUDGET: ${{ inputs.dc_detail_budget }}
+          INSPECTION_SEED: ${{ inputs.inspection_seed }}
         shell: bash
         run: |
           set -euo pipefail
@@ -84,8 +90,9 @@ jobs:
           [[ "$EXTRACT_BUDGET" =~ ^[0-9]+$ ]] && (( EXTRACT_BUDGET >= 0 && EXTRACT_BUDGET <= 30 )) || exit 2
           [[ "$SOURCE_PAGES" =~ ^[0-9]+$ ]] && (( SOURCE_PAGES >= 1 && SOURCE_PAGES <= 20 )) || exit 2
           [[ "$DC_DETAIL_BUDGET" =~ ^[0-9]+$ ]] && (( DC_DETAIL_BUDGET >= 0 && DC_DETAIL_BUDGET <= 30 )) || exit 2
+          [[ "$INSPECTION_SEED" =~ ^-?[0-9]+$ ]] || exit 2
           if [[ "$MODE" == dc ]]; then
-            python -m tools.audit_dc_sources --max-details "$DC_DETAIL_BUDGET" --output output/dc-source-audit.json
+            python -m tools.audit_dc_sources --max-details "$DC_DETAIL_BUDGET" --inspection-seed "$INSPECTION_SEED" --output output/dc-source-audit.json
             exit 0
           fi
           case "$MODE" in
