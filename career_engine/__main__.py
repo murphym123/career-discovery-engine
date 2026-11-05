@@ -16,7 +16,7 @@ from career_engine.extract import enrich_public_page
 from career_engine.queries import query_plan
 from career_engine.sources import SourceStats, free_sources, retrieve, REQUIREMENTS
 from career_engine.discovery import geography, expired, deduplicate, exploration_sample, screening_hold
-from career_engine.dc_sources import DC_SOURCES, retrieve_dc
+from career_engine.dc_sources import DC_SOURCES, ALL_DC_SOURCES, retrieve_dc
 
 QUERIES = [query.text for query in query_plan(20)]
 LANES = {
@@ -46,7 +46,7 @@ def norm(s):
     return re.sub("[^a-z0-9]+", " ", str(s or "").lower()).strip()
 
 def clean(raw):
-    j = {k: str(raw.get(k, "") or "") for k in ("title", "company", "location", "url", "snippet", "description", "source", "posted_at", "source_id", "closing_at", "sources", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind")}
+    j = {k: str(raw.get(k, "") or "") for k in ("title", "company", "location", "url", "snippet", "description", "source", "posted_at", "source_id", "closing_at", "sources", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind", "inspection_stratum", "experience_hint", "category", "sector_hint", "provider_sector", "work_arrangement", "employment_type", "posted_at_raw", "closing_at_raw", "description_truncated")}
     j["url"] = canonical(j["url"])
     if not j["url"] or not j["title"].strip():
         return None
@@ -103,7 +103,7 @@ def remotive(session):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--sources", default="dc", help="dc (Senate + Union Jobs regional discovery), free, remotive,jobicy,muse,reliefweb,usajobs,brave,csv")
+    p.add_argument("--sources", default="dc", help="dc (legacy Senate/Union Jobs), dc-broad (all specialty boards), free, individual source names, brave,csv")
     p.add_argument("--dc-detail-budget", type=int, default=20, help="Max public detail pages per DC source (0–30)")
     p.add_argument("--source-pages", type=int, default=6, help="Max requests per added API (1–20)")
     p.add_argument("--query-offset", type=int, help="Override saved query rotation (default: continue from history)")
@@ -121,7 +121,7 @@ def main():
     if not 1<=args.query_budget<=20 or not 1<=args.results_per_query<=20 or not 0<=args.max_extract<=30 or not 1<=args.source_pages<=20 or (args.query_offset is not None and args.query_offset<0) or not 0<=args.exploration_slots<=50 or args.top<1 or not 0<=args.dc_detail_budget<=30:
         p.error("invalid search or extraction budget")
     requested = [name.strip() for name in args.sources.split(",")]
-    sources = list(dict.fromkeys(name for source in requested for name in (DC_SOURCES if source == "dc" else free_sources() if source == "free" else [source])))
+    sources = list(dict.fromkeys(name for source in requested for name in (ALL_DC_SOURCES if source=="dc-broad" else DC_SOURCES if source == "dc" else free_sources() if source == "free" else [source])))
     if "brave" in sources and not args.allow_paid_search:
         p.error("Brave may charge; use --allow-paid-search only after authorizing charges")
     raw, errors, source_stats = [], [], {}
@@ -138,7 +138,7 @@ def main():
         stats = source_stats[source] = SourceStats()
         start = len(raw)
         try:
-            if source in DC_SOURCES:
+            if source in ALL_DC_SOURCES:
                 raw.extend(retrieve_dc(s,source,args.dc_detail_budget,stats))
                 errors.extend(source+": "+message for message in stats.errors)
             elif source in ("jobicy", *REQUIREMENTS):
@@ -162,7 +162,7 @@ def main():
         except (requests.RequestException, RuntimeError, OSError, ValueError) as e:
             stats.status = "failed"
             errors.append(source+": "+type(e).__name__)
-        if source not in (*DC_SOURCES, "jobicy", *REQUIREMENTS):
+        if source not in (*ALL_DC_SOURCES, "jobicy", *REQUIREMENTS):
             stats.received = len(raw) - start
     prepared = []
     invalid_records = 0
@@ -221,13 +221,13 @@ def main():
     all_passing = [j for j in unique.values() if j["score"] >= args.min_score]
     # A web-search hit can be a blog, overview, or expired board index.
     # Keep those leads visible but do not claim they are actual job records.
-    eligible = [j for j in all_passing if not j["expired"] and not j["screening_hold"] and j["geography"] not in ("elsewhere", "remote_eligibility_unknown")
+    eligible = [j for j in all_passing if not j["expired"] and not j["screening_hold"] and j["geography"] not in ("elsewhere", "remote_eligibility_unknown", "regional_worksite_unknown")
                 and (j["source"] != "brave" or j["extraction_status"] == "jobposting_metadata")]
     selected = select(eligible, args.top)
     selected_keys = {j["key"] for j in selected}
     search_leads = select([j for j in all_passing if j["source"] == "brave" and j["extraction_status"] != "jobposting_metadata"], args.top)
     exploration = exploration_sample([j for j in unique.values() if j["key"] not in selected_keys and not j["expired"] and not j["screening_hold"] and j["geography"] != "elsewhere"
-                                      and (j["score"] < args.min_score or j["geography"] in ("unknown", "remote_eligibility_unknown"))], args.exploration_slots)
+                                      and (j["score"] < args.min_score or j["geography"] in ("unknown", "remote_eligibility_unknown", "regional_worksite_unknown"))], args.exploration_slots)
     exploration_keys = {j["key"] for j in exploration}
     def decision(j):
         if j["expired"]: return "expired_by_source_date"
@@ -235,7 +235,7 @@ def main():
         if j["source"] == "brave" and j["extraction_status"] != "jobposting_metadata": return "unverified_web_lead"
         if j["screening_hold"]: return j["screening_hold"]
         if j["key"] in exploration_keys: return "exploration_review"
-        if j["geography"] in ("elsewhere", "remote_eligibility_unknown"): return "geography_review"
+        if j["geography"] in ("elsewhere", "remote_eligibility_unknown", "regional_worksite_unknown"): return "geography_review"
         if j["score"] < args.min_score: return "below_threshold"
         return "diversity_limit"
     decisions = {j["key"]: decision(j) for j in unique.values()}
@@ -301,7 +301,7 @@ def main():
         w=csv.DictWriter(f,fieldnames=keys);w.writeheader()
         for j in selected:w.writerow({k:j.get(k,"") for k in keys})
     with target.with_name("screening_audit.csv").open("w", encoding="utf-8", newline="") as f:
-        keys = ("score", "title", "company", "location", "url", "source", "lane", "posted_at", "extraction_status", "sources", "source_id", "closing_at", "geography", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind", "decision")
+        keys = ("score", "title", "company", "location", "url", "source", "lane", "posted_at", "extraction_status", "sources", "source_id", "closing_at", "geography", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind", "inspection_stratum", "experience_hint", "category", "employment_type", "posted_at_raw", "closing_at_raw", "description_truncated", "decision")
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         for j in sorted(unique.values(), key=lambda x:x["score"], reverse=True):

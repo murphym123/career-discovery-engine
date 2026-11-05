@@ -6,11 +6,12 @@ from datetime import datetime, timezone
 
 def geography(location):
     value = re.sub(r"[^a-z0-9]+", " ", str(location or "").lower()).strip()
+    value = re.sub(r"\bwashington d c\b","washington dc",value)
     if not value:
         return "unknown"
     if re.search(r"\b(washington dc|washington district of columbia|district of columbia)\b", value):
         return "dc_dmv"
-    if re.search(r"\b(arlington|alexandria|bethesda|silver spring|rockville|fairfax|falls church|tysons|reston|mclean|college park)\b", value):
+    if re.search(r"\b(arlington|alexandria|bethesda|silver spring|rockville|fairfax|falls church|tysons|reston|mclean|college park|camp springs|forestville|upper marlboro|greenbelt|hyattsville|chevy chase|gaithersburg|herndon|dulles|ashburn|manassas|woodbridge)\b", value):
         # Require state or an unambiguous local city, not Arlington TX.
         if re.search(r"\b(va|virginia|md|maryland)\b", value) or value in ("bethesda", "silver spring"):
             return "dc_dmv"
@@ -20,6 +21,9 @@ def geography(location):
         return "remote_eligibility_unknown"
     if value in ("us", "usa", "united states"):
         return "unknown"  # A country alone does not establish remote eligibility.
+    if re.search(r"\b(maryland|virginia|dmv|northern virginia)\b",value) and not re.search(r"\b(richmond|charlottesville|lynchburg|norfolk|baltimore|annapolis|west virginia)\b",value):
+        if re.fullmatch(r"(?:based in |location )?(?:maryland|virginia|dmv|northern virginia)",value) or "dmv" in value:
+            return "regional_worksite_unknown"
     return "elsewhere"
 
 

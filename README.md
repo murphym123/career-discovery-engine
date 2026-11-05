@@ -5,7 +5,31 @@ nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
 primary; no employer allowlist is required. Scores are triage heuristics and do
 not establish qualifications, job availability or interview probabilities.
 
-## Phase 1: DC-oriented source evidence
+## Current: broader DC discovery and description inspection
+
+The unranked audit now covers **Senate, Union Jobs, Global Jobs, On Think Tanks,
+and Work for Nonprofits**, without an employer allowlist or paid credentials.
+Start with the [27-record actual DC/DMV review](docs/issue5/REVIEW_SAMPLE.md) and
+[issue #5 assessment](docs/issue5/ASSESSMENT.md). The review distinguishes
+plausible routes, stretches, ineligible roles and missing evidence.
+
+```sh
+python -m tools.audit_dc_sources --max-details 20 --inspection-seed 5 --output output/dc-source-audit.json
+```
+
+Description inspection uses bounded early-career signals, employer/function and
+title variety, plus a seeded exploratory stratum. Every index record remains in
+the audit. Provider labels and titles are retrieval hints, not qualifications.
+The audit defaults to all five sources; its default seed is 0. Choose `--sources`
+to restrict boards, or `--inspection-strategy prefix` for a controlled comparison.
+The manual GitHub `dc` mode runs this broad unranked audit.
+
+The main engine accepts `--sources dc-broad` and individual new source names.
+Its legacy `dc` alias remains Senate+Union Jobs for compatibility. Fit-scoring
+weights and shortlist selection have not been redesigned; obvious geography
+bugs were corrected and state-only locations are kept ambiguous.
+
+## Phase 1: original DC source evidence
 
 Start with the [15-record actual opportunity review](docs/phase1/REVIEW_SAMPLE.md)
 and [Phase 1 assessment](docs/phase1/ASSESSMENT.md). The new no-key sources are the
@@ -15,7 +39,7 @@ without an employer allowlist. No general remote feed was added for this phase.
 
 ```sh
 python -m pip install -r requirements.txt
-python -m tools.audit_dc_sources --max-details 20 --output output/dc-source-audit.json
+python -m tools.audit_dc_sources --sources senate,unionjobs --max-details 20 --output output/dc-source-audit.json
 ```
 
 This produces an **unranked** Markdown/CSV/JSON source audit. It records actual

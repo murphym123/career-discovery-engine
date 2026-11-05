@@ -1,0 +1,61 @@
+{
+  "kind": "ACTUAL RETRIEVED PUBLIC HTML/RSS, MINIMIZED; NOT SYNTHETIC JOBS",
+  "files": {
+    "globaljobs-index.html": {
+      "url": "https://globaljobs.org/",
+      "status": 200,
+      "original_sha256": "65e4a73d189a3276232a8e0b3fc3cbe9710675cf489dbcb796c4ab39fa5c8d65",
+      "fixture_sha256": "755f03a3b595f5fb0d6b8d23c5a0f5d23c9c9c648c9b95fa83c8dbc71f6c5b0b",
+      "transformation": "Original selected visible cards; nonessential attributes, scripts, SVG and navigation removed; noncontiguous subset where noted by original IDs."
+    },
+    "onthinktanks-index.html": {
+      "url": "https://onthinktanks.org/jobsboard/",
+      "status": 200,
+      "original_sha256": "8e0ee141d6a11b995d86faf141ead134f7c17fe518e10d76c4f4be6f43e8f391",
+      "fixture_sha256": "cacd07c5c3da29071a3881974e4d4cc9462f416327910c57683b6c8ee6f26e5a",
+      "transformation": "Original selected visible cards; nonessential attributes, scripts, SVG and navigation removed; noncontiguous subset where noted by original IDs."
+    },
+    "workfornonprofits-index.html": {
+      "url": "https://workfornonprofits.org/jobs/district-of-columbia",
+      "status": 200,
+      "original_sha256": "e7af3fc668dd664048ae9c3072e5c1ef0b8a1cb7e5ea1fb8400c9b0e70e908d8",
+      "fixture_sha256": "05bcf716a8bcd0d89a751a74096e66c437a9de4c0ced0ef6dbd6a5e19b402b6c",
+      "transformation": "Original selected visible cards; nonessential attributes, scripts, SVG and navigation removed; noncontiguous subset where noted by original IDs."
+    },
+    "global-feed.xml": {
+      "url": "https://globaljobs.org/jobs/feed.rss",
+      "status": 200,
+      "original_sha256": "bc5b8313595de24e749d054fed0770fde4ecbe2a3969261ae2d41d44b73a8f64",
+      "fixture_sha256": "ff7d6b013afa57e48c02528ac4d04ad96f0f47e5f5d6fc91e9e5509062268b6e",
+      "transformation": "Four original public feed identities and dates; copyrighted teaser descriptions omitted."
+    },
+    "global-detail.html": {
+      "url": "https://globaljobs.org/jobs/52105-washington-dc-carnegie-endowment-for-international-peace-program-assistant-china-ai-initiative",
+      "status": 200,
+      "original_sha256": "ea6e47ac8113d80105621d8e6fd18841fe620f9b1f2d74c981179ebc93c8d21a",
+      "fixture_sha256": "04b8bce5a3f43e3dd170f6cccb7916eb07c5a564a35a2f3c791173867231e743",
+      "transformation": "Original visible content-container selector with a short exact requirements excerpt; remaining text omitted."
+    },
+    "global-wyss-detail.html": {
+      "url": "https://globaljobs.org/jobs/52025-washington-dc-the-wyss-foundation-program-assistant-conservation",
+      "status": 200,
+      "original_sha256": "76fdbef01dde5cf34bf8e22559de978eb840036d5f3a717fd82913d8ebc4f3bc",
+      "fixture_sha256": "04eaf22f63156d4b77104604b48d32ad5a052d17d9fdd3ffdbe4518bbe667d0c",
+      "transformation": "Original visible content-container selector with a short exact requirements excerpt; remaining text omitted."
+    },
+    "ott-detail.html": {
+      "url": "https://onthinktanks.org/job/policy-engagement-specialist-2/",
+      "status": 200,
+      "original_sha256": "48a873e365ab779cd5dd87ffe464ba651a59ef434a034284a336a9773ca7c6ab",
+      "fixture_sha256": "d295e09d93f1ebf45667a87a5a39ddc0b7e4edf5643da407adadd3d94c1fe17a",
+      "transformation": "Original visible content-container selector with a short exact requirements excerpt; remaining text omitted."
+    },
+    "nonprofit-detail.html": {
+      "url": "https://workfornonprofits.org/companies/j-street/jobs/relationship-manager-dc-maryland-and-virginia-3dfc7540d81a421b878d372431df62b5",
+      "status": 200,
+      "original_sha256": "2c1a895d0473dca61d62306fff9833e37b3ea5757659546a8d3ea94f6c3dffd5",
+      "fixture_sha256": "17896745bf5759075a9794826f1816f28e48d4ab707b9b022e79ffd8a603529d",
+      "transformation": "Published JobPosting factual fields retained; description replaced by a short exact requirements excerpt."
+    }
+  }
+}

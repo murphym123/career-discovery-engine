@@ -1,0 +1,1039 @@
+{
+  "kind": "ACTUAL-INDEX INSPECTION EXPOSURE COMPARISON; NOT FIT PRECISION OR MARKET RECALL",
+  "budget_per_source": 20,
+  "seed": 5,
+  "sources": {
+    "senate": {
+      "records": 25,
+      "dc_dmv_records": 25,
+      "prefix": {
+        "planned": 20,
+        "dc_dmv_selected": 20,
+        "employers_selected": 8,
+        "inspection_families": 4,
+        "weak_early_signals_selected": 7,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 15,
+        "strata": {
+          "source_prefix": 20
+        },
+        "plan": [
+          {
+            "identity": "senate:1295",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1291",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1288",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1289",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1290",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1292",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1293",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1294",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1296",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1297",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1298",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1299",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1283",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1285",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1286",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1281",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1278",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1276",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1275",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "senate:1277",
+            "stratum": "source_prefix"
+          }
+        ]
+      },
+      "diverse": {
+        "planned": 20,
+        "dc_dmv_selected": 20,
+        "employers_selected": 9,
+        "inspection_families": 4,
+        "weak_early_signals_selected": 8,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 20,
+        "strata": {
+          "latest_regional_listing": 1,
+          "plausible_early_career": 8,
+          "employer_function_diversity": 5,
+          "title_exploration": 3,
+          "low_signal_random_review": 3
+        },
+        "plan": [
+          {
+            "identity": "senate:1295",
+            "stratum": "latest_regional_listing"
+          },
+          {
+            "identity": "senate:1281",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1290",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1288",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1278",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1283",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1272",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1276",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1289",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "senate:1286",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "senate:1271",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "senate:1296",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "senate:1279",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "senate:1293",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "senate:1274",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "senate:1299",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "senate:1292",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "senate:1277",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "senate:1294",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "senate:1273",
+            "stratum": "low_signal_random_review"
+          }
+        ]
+      },
+      "newly_inspected_identities": [
+        "senate:1271",
+        "senate:1272",
+        "senate:1273",
+        "senate:1274",
+        "senate:1279"
+      ],
+      "prefix_only_identities": [
+        "senate:1275",
+        "senate:1285",
+        "senate:1291",
+        "senate:1297",
+        "senate:1298"
+      ]
+    },
+    "unionjobs": {
+      "records": 56,
+      "dc_dmv_records": 33,
+      "prefix": {
+        "planned": 20,
+        "dc_dmv_selected": 16,
+        "employers_selected": 12,
+        "inspection_families": 6,
+        "weak_early_signals_selected": 11,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 9,
+        "strata": {
+          "source_prefix": 20
+        },
+        "plan": [
+          {
+            "identity": "unionjobs:31309",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31348",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31641",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31644",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31630",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31052",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31623",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31406",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31407",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31535",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:11359",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31599",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31600",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31053",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31593",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31588",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31480",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:31440",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:30686",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "unionjobs:29867",
+            "stratum": "source_prefix"
+          }
+        ]
+      },
+      "diverse": {
+        "planned": 20,
+        "dc_dmv_selected": 20,
+        "employers_selected": 16,
+        "inspection_families": 5,
+        "weak_early_signals_selected": 16,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 20,
+        "strata": {
+          "latest_regional_listing": 1,
+          "plausible_early_career": 8,
+          "employer_function_diversity": 5,
+          "title_exploration": 3,
+          "low_signal_random_review": 3
+        },
+        "plan": [
+          {
+            "identity": "unionjobs:31309",
+            "stratum": "latest_regional_listing"
+          },
+          {
+            "identity": "unionjobs:31535",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31180",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31604",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:29867",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31563",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31503",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31623",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31608",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "unionjobs:31269",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "unionjobs:28720",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "unionjobs:31420",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "unionjobs:31053",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "unionjobs:31588",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "unionjobs:31530",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "unionjobs:31407",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "unionjobs:31609",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "unionjobs:31599",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "unionjobs:31120",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "unionjobs:31440",
+            "stratum": "low_signal_random_review"
+          }
+        ]
+      },
+      "newly_inspected_identities": [
+        "unionjobs:28720",
+        "unionjobs:31120",
+        "unionjobs:31180",
+        "unionjobs:31269",
+        "unionjobs:31420",
+        "unionjobs:31503",
+        "unionjobs:31530",
+        "unionjobs:31563",
+        "unionjobs:31604",
+        "unionjobs:31608",
+        "unionjobs:31609"
+      ],
+      "prefix_only_identities": [
+        "unionjobs:11359",
+        "unionjobs:30686",
+        "unionjobs:31052",
+        "unionjobs:31348",
+        "unionjobs:31406",
+        "unionjobs:31480",
+        "unionjobs:31593",
+        "unionjobs:31600",
+        "unionjobs:31630",
+        "unionjobs:31641",
+        "unionjobs:31644"
+      ]
+    },
+    "globaljobs": {
+      "records": 209,
+      "dc_dmv_records": 60,
+      "prefix": {
+        "planned": 20,
+        "dc_dmv_selected": 5,
+        "employers_selected": 20,
+        "inspection_families": 4,
+        "weak_early_signals_selected": 10,
+        "explicit_provider_early_selected": 9,
+        "already_observed_descriptions": 3,
+        "strata": {
+          "source_prefix": 20
+        },
+        "plan": [
+          {
+            "identity": "globaljobs:52217",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52216",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52215",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52214",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52213",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52212",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52211",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52210",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52209",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52208",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52207",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52206",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52205",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52204",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52203",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52202",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52201",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52200",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52199",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "globaljobs:52198",
+            "stratum": "source_prefix"
+          }
+        ]
+      },
+      "diverse": {
+        "planned": 20,
+        "dc_dmv_selected": 20,
+        "employers_selected": 20,
+        "inspection_families": 6,
+        "weak_early_signals_selected": 15,
+        "explicit_provider_early_selected": 14,
+        "already_observed_descriptions": 20,
+        "strata": {
+          "latest_regional_listing": 1,
+          "plausible_early_career": 8,
+          "employer_function_diversity": 5,
+          "title_exploration": 3,
+          "low_signal_random_review": 3
+        },
+        "plan": [
+          {
+            "identity": "globaljobs:52215",
+            "stratum": "latest_regional_listing"
+          },
+          {
+            "identity": "globaljobs:52025",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52208",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52058",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52141",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52105",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52013",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52088",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52042",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "globaljobs:52190",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "globaljobs:52172",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "globaljobs:52101",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "globaljobs:52072",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "globaljobs:52182",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "globaljobs:52061",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "globaljobs:52092",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "globaljobs:52032",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "globaljobs:52210",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "globaljobs:52153",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "globaljobs:52185",
+            "stratum": "low_signal_random_review"
+          }
+        ]
+      },
+      "newly_inspected_identities": [
+        "globaljobs:52013",
+        "globaljobs:52025",
+        "globaljobs:52032",
+        "globaljobs:52042",
+        "globaljobs:52058",
+        "globaljobs:52061",
+        "globaljobs:52072",
+        "globaljobs:52088",
+        "globaljobs:52092",
+        "globaljobs:52101",
+        "globaljobs:52105",
+        "globaljobs:52141",
+        "globaljobs:52153",
+        "globaljobs:52172",
+        "globaljobs:52182",
+        "globaljobs:52185",
+        "globaljobs:52190"
+      ],
+      "prefix_only_identities": [
+        "globaljobs:52198",
+        "globaljobs:52199",
+        "globaljobs:52200",
+        "globaljobs:52201",
+        "globaljobs:52202",
+        "globaljobs:52203",
+        "globaljobs:52204",
+        "globaljobs:52205",
+        "globaljobs:52206",
+        "globaljobs:52207",
+        "globaljobs:52209",
+        "globaljobs:52211",
+        "globaljobs:52212",
+        "globaljobs:52213",
+        "globaljobs:52214",
+        "globaljobs:52216",
+        "globaljobs:52217"
+      ]
+    },
+    "onthinktanks": {
+      "records": 15,
+      "dc_dmv_records": 11,
+      "prefix": {
+        "planned": 15,
+        "dc_dmv_selected": 11,
+        "employers_selected": 10,
+        "inspection_families": 4,
+        "weak_early_signals_selected": 5,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 15,
+        "strata": {
+          "source_prefix": 15
+        },
+        "plan": [
+          {
+            "identity": "onthinktanks:program-manager-cato-courses",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:curriculum-lead-sphere-education-initiatives",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:energy-policy-analyst",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:legal-fellow",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:policy-engagement-specialist-2",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:director-tax-policy",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:senior-fellow-energy-and-environment-2",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:director-tax-policy-2",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:grantmaker-in-residence-global-aid-policy",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:geschaftsfuhrung-evidenzbasierte-entwicklungszusammenarbeit",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:peope-operations-lead",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:senior-fellow-finance-and-insurance",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:echidna-global-scholar-5",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:head-of-steel-diplomacy",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "onthinktanks:chief-financial-and-operating-officer-institute-for-womens-policy-research",
+            "stratum": "source_prefix"
+          }
+        ]
+      },
+      "diverse": {
+        "planned": 15,
+        "dc_dmv_selected": 11,
+        "employers_selected": 10,
+        "inspection_families": 4,
+        "weak_early_signals_selected": 5,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 15,
+        "strata": {
+          "latest_regional_listing": 1,
+          "plausible_early_career": 5,
+          "employer_function_diversity": 4,
+          "title_exploration": 2,
+          "low_signal_random_review": 2,
+          "budget_fill": 1
+        },
+        "plan": [
+          {
+            "identity": "onthinktanks:program-manager-cato-courses",
+            "stratum": "latest_regional_listing"
+          },
+          {
+            "identity": "onthinktanks:senior-fellow-finance-and-insurance",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "onthinktanks:policy-engagement-specialist-2",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "onthinktanks:senior-fellow-energy-and-environment-2",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "onthinktanks:legal-fellow",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "onthinktanks:chief-financial-and-operating-officer-institute-for-womens-policy-research",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "onthinktanks:echidna-global-scholar-5",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "onthinktanks:curriculum-lead-sphere-education-initiatives",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "onthinktanks:energy-policy-analyst",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "onthinktanks:director-tax-policy",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "onthinktanks:director-tax-policy-2",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "onthinktanks:peope-operations-lead",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "onthinktanks:grantmaker-in-residence-global-aid-policy",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "onthinktanks:head-of-steel-diplomacy",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "onthinktanks:geschaftsfuhrung-evidenzbasierte-entwicklungszusammenarbeit",
+            "stratum": "budget_fill"
+          }
+        ]
+      },
+      "newly_inspected_identities": [],
+      "prefix_only_identities": []
+    },
+    "workfornonprofits": {
+      "records": 22,
+      "dc_dmv_records": 20,
+      "prefix": {
+        "planned": 20,
+        "dc_dmv_selected": 18,
+        "employers_selected": 17,
+        "inspection_families": 6,
+        "weak_early_signals_selected": 2,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 18,
+        "strata": {
+          "source_prefix": 20
+        },
+        "plan": [
+          {
+            "identity": "workfornonprofits:3dfc7540d81a421b878d372431df62b5",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:b76bf793af7548e9bb3aa9366eff1fa4",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:8781567fc5e14c95a2fa94612fd3e997",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:a6528d2d338a44d398be51430b808bda",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:c2f9bbf77ee94642be6778eb9012a474",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:2368beaaa8174566958d93240afb5c70",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:e04d68f949854977b8eb74a971b736f0",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:b7b6a450a8d5497db4e4cbb0e065c1a9",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:74d325c3efc24e04ab5854045163fe17",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:1433846a65ff4e6aab61ff90ebf5d421",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:14184d3b50594b6abe2efe5bea59f6af",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:a0bb2b79fd104d6087a1e41f79c26f7a",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:f7cad374b2a94637a97c396eec5350f6",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:d132ff5d22ef49cb88e9a9e316b68843",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:13640b0326854318bae13d042bbecff6",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:d9ef3b1eca194762a5b995fd6bb638c0",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:a4c273ced78a4a7dbd69f7bcbba96805",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:21d28aab9d9d468d83dcd6c446c18bc6",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:60d83a72c76c467f81619b14273d763a",
+            "stratum": "source_prefix"
+          },
+          {
+            "identity": "workfornonprofits:01971a0864aa4a0b9660138e812db999",
+            "stratum": "source_prefix"
+          }
+        ]
+      },
+      "diverse": {
+        "planned": 20,
+        "dc_dmv_selected": 20,
+        "employers_selected": 17,
+        "inspection_families": 6,
+        "weak_early_signals_selected": 2,
+        "explicit_provider_early_selected": 0,
+        "already_observed_descriptions": 20,
+        "strata": {
+          "latest_regional_listing": 1,
+          "plausible_early_career": 2,
+          "employer_function_diversity": 5,
+          "title_exploration": 3,
+          "low_signal_random_review": 3,
+          "budget_fill": 6
+        },
+        "plan": [
+          {
+            "identity": "workfornonprofits:3dfc7540d81a421b878d372431df62b5",
+            "stratum": "latest_regional_listing"
+          },
+          {
+            "identity": "workfornonprofits:b76bf793af7548e9bb3aa9366eff1fa4",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "workfornonprofits:d9ef3b1eca194762a5b995fd6bb638c0",
+            "stratum": "plausible_early_career"
+          },
+          {
+            "identity": "workfornonprofits:74d325c3efc24e04ab5854045163fe17",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "workfornonprofits:14184d3b50594b6abe2efe5bea59f6af",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "workfornonprofits:8781567fc5e14c95a2fa94612fd3e997",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "workfornonprofits:21d28aab9d9d468d83dcd6c446c18bc6",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "workfornonprofits:d6159e7266494340bbf8ccb5298d8677",
+            "stratum": "employer_function_diversity"
+          },
+          {
+            "identity": "workfornonprofits:b7b6a450a8d5497db4e4cbb0e065c1a9",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "workfornonprofits:a6528d2d338a44d398be51430b808bda",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "workfornonprofits:9571edc6bda24a618f53f7423472abb4",
+            "stratum": "title_exploration"
+          },
+          {
+            "identity": "workfornonprofits:e04d68f949854977b8eb74a971b736f0",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "workfornonprofits:1433846a65ff4e6aab61ff90ebf5d421",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "workfornonprofits:c2f9bbf77ee94642be6778eb9012a474",
+            "stratum": "low_signal_random_review"
+          },
+          {
+            "identity": "workfornonprofits:a4c273ced78a4a7dbd69f7bcbba96805",
+            "stratum": "budget_fill"
+          },
+          {
+            "identity": "workfornonprofits:60d83a72c76c467f81619b14273d763a",
+            "stratum": "budget_fill"
+          },
+          {
+            "identity": "workfornonprofits:f7cad374b2a94637a97c396eec5350f6",
+            "stratum": "budget_fill"
+          },
+          {
+            "identity": "workfornonprofits:d132ff5d22ef49cb88e9a9e316b68843",
+            "stratum": "budget_fill"
+          },
+          {
+            "identity": "workfornonprofits:01971a0864aa4a0b9660138e812db999",
+            "stratum": "budget_fill"
+          },
+          {
+            "identity": "workfornonprofits:13640b0326854318bae13d042bbecff6",
+            "stratum": "budget_fill"
+          }
+        ]
+      },
+      "newly_inspected_identities": [
+        "workfornonprofits:9571edc6bda24a618f53f7423472abb4",
+        "workfornonprofits:d6159e7266494340bbf8ccb5298d8677"
+      ],
+      "prefix_only_identities": [
+        "workfornonprofits:2368beaaa8174566958d93240afb5c70",
+        "workfornonprofits:a0bb2b79fd104d6087a1e41f79c26f7a"
+      ]
+    }
+  },
+  "limitations": "Same captured indexes, same page cap. Provider early-career hints and title/function signals are weak metadata, not qualifications. Newly selected descriptions were actually retrieved; prefix-only descriptions may remain uninspected. No fit-quality comparison is inferred from missing labels.",
+  "capture_sha256": "a2afc07101f8407a3502c5e0b904baedc5bb25e2ba9a5bc10114464e42511fa8"
+}

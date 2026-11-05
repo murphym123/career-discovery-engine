@@ -28,6 +28,11 @@ class SourceStats:
     status: str = "ok"
     unique: int = 0
     recommended: int = 0
+    inspection_strategy: str = ""
+    details_planned: int = 0
+    details_attempted: int = 0
+    descriptions_observed: int = 0
+    index_only: int = 0
     errors: list = field(default_factory=list)
 
 
