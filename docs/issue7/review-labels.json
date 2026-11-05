@@ -1,0 +1,594 @@
+{
+  "kind": "ANALYST LABELS, NOT HIRING OUTCOMES",
+  "frozen_before_evaluator_implementation": true,
+  "selection": {
+    "seed": "issue7-holdout-17",
+    "description": "Per source, SHA256(seed|URL) ordered sample of up to 8 described plus 3 index-only DC/US-remote records outside the issue5 27. Then up to 4 additional described assistant/aide/coordinator/internships/government-affairs titles per Senate/Union using issue7-transfer-17. 55 additional records; no model outputs used.",
+    "development_count": 27,
+    "holdout_count": 55,
+    "limitations": "Same analyst and same sources/time snapshot, not blinded or representative; holdout heavily senior, legal and index-only. Do not tune on held-out results or infer market precision."
+  },
+  "definitions": {
+    "plausible": "Worth a reasonable application review; not confirmation all requirements met.",
+    "stretch": "Material scope/duration/domain gaps, but credible transfer merits review.",
+    "unlikely": "Substantial competitive mismatch or unrelated/specialized work.",
+    "ineligible": "Stated mandatory credential/experience unsupported by documented early-career profile; not a legal eligibility determination.",
+    "unknown": "Insufficient evidence of requirements or particular opportunity."
+  },
+  "records": [
+    {
+      "identity": "senate:1291",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://careers.employment.senate.gov/job/homeland-security-staff-positions-washington-district-of-columbia-1291"
+    },
+    {
+      "identity": "senate:1288",
+      "partition": "holdout",
+      "label": "plausible",
+      "rationale": "Research, writing and constituent engagement align; Hill experience and Delaware ties preferred. Defense/appropriations depth requires review.",
+      "source_url": "https://careers.employment.senate.gov/job/foreign-policy-legislative-aide-washington-district-of-columbia-1288"
+    },
+    {
+      "identity": "senate:1289",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "At least five operations years including financial management/procurement exceed documented early-career range.",
+      "source_url": "https://careers.employment.senate.gov/job/senior-operations-specialist-washington-district-of-columbia-1289"
+    },
+    {
+      "identity": "senate:1290",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Research/communications internship functions align, Mandarin not required. Academic eligibility, compensation and fellowship terms unclear.",
+      "source_url": "https://careers.employment.senate.gov/job/spring-2027-internships-fellowships-washington-district-of-columbia-1290"
+    },
+    {
+      "identity": "senate:1293",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Multi-position recruitment pool without one defined requisition/level; broad functions relevant but cannot establish a specific suitable opening.",
+      "source_url": "https://careers.employment.senate.gov/job/government-affairs-staff-positions-washington-district-of-columbia-1293"
+    },
+    {
+      "identity": "senate:1297",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://careers.employment.senate.gov/job/nominations-counsel-washington-district-of-columbia-1297"
+    },
+    {
+      "identity": "senate:1299",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Significant experience representing parties in criminal proceedings is mandatory and unsupported.",
+      "source_url": "https://careers.employment.senate.gov/job/criminal-justice-counsel-washington-district-of-columbia-1299"
+    },
+    {
+      "identity": "senate:1283",
+      "partition": "holdout",
+      "label": "plausible",
+      "rationale": "Front-office, tours, communication and organizational duties align. Hill internship, IQ and state ties are preferences.",
+      "source_url": "https://careers.employment.senate.gov/job/staff-assistant-washington-district-of-columbia-1283"
+    },
+    {
+      "identity": "senate:1285",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://careers.employment.senate.gov/job/hr-business-partner-ii-talent-acquisition-5460-washington-district-of-columbia-1285"
+    },
+    {
+      "identity": "senate:1281",
+      "partition": "holdout",
+      "label": "plausible",
+      "rationale": "Administrative duties, proofreading and learning tax context align; two administrative or equivalent professional years need duration verification.",
+      "source_url": "https://careers.employment.senate.gov/job/executive-assistant-washington-district-of-columbia-1281"
+    },
+    {
+      "identity": "senate:1278",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Specialized verbatim stenography is central, not generic political writing; no stenographic skill documented.",
+      "source_url": "https://careers.employment.senate.gov/job/official-reporter-of-debates-washington-district-of-columbia-1278"
+    },
+    {
+      "identity": "senate:1277",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Executive Senate budget leadership and enterprise financial planning, not early-career operations.",
+      "source_url": "https://careers.employment.senate.gov/job/deputy-director-budgeting-and-planning-washington-district-of-columbia-1277"
+    },
+    {
+      "identity": "senate:1279",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "Political science BA and research align; prior congressional experience, specialist legal databases and archival knowledge are not established; MLIS is only preferred.",
+      "source_url": "https://careers.employment.senate.gov/job/legal-research-analyst-washington-district-of-columbia-1279"
+    },
+    {
+      "identity": "senate:1271",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Law degree and prior legislative/agency experience expressly required; legal credential absent from documented profile.",
+      "source_url": "https://careers.employment.senate.gov/job/telecom-counsel-washington-district-of-columbia-1271"
+    },
+    {
+      "identity": "senate:1272",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Executive-level security leadership, staffing and strategic oversight exceed documented responsibilities; no numeric minimum supplied.",
+      "source_url": "https://careers.employment.senate.gov/job/deputy-assistant-sergeant-at-arms-osepc-316-washington-district-of-columbia-1272"
+    },
+    {
+      "identity": "unionjobs:31348",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://www.unionjobs.com/listing/31348-coalitions-and-new-power-coordinator-civil-human-and-women-s-rights"
+    },
+    {
+      "identity": "unionjobs:31623",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "No numeric minimum established; social-media, web/mobile and communications capabilities need individual assessment.",
+      "source_url": "https://www.unionjobs.com/listing/31623-social-media-coordinator"
+    },
+    {
+      "identity": "unionjobs:31407",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "Strong admin/events match but demonstrated elected-leader/executive-office support required; exact depth and required skills tests need verification.",
+      "source_url": "https://www.unionjobs.com/listing/31407-administrative-assistant-office-of-the-president"
+    },
+    {
+      "identity": "unionjobs:31535",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "No numeric year count; Office/Google/webinar skills, workflow coordination and administrative tests required.",
+      "source_url": "https://www.unionjobs.com/listing/31535-senior-office-administrator-communications"
+    },
+    {
+      "identity": "unionjobs:31599",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Five to ten government-relations years; higher degree is preferred, not the principal blocker.",
+      "source_url": "https://www.unionjobs.com/listing/31599-senior-federal-lobbyist-political-department"
+    },
+    {
+      "identity": "unionjobs:31053",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "JD and bar admission required, not evidenced.",
+      "source_url": "https://www.unionjobs.com/listing/31053-eeo-specialist-attorney-women-s-and-fair-practices-department"
+    },
+    {
+      "identity": "unionjobs:31440",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Ten relevant years and management experience or substantial equivalence; early-career teaching is insufficient.",
+      "source_url": "https://www.unionjobs.com/listing/31440-assistant-director-education-and-leadership-training"
+    },
+    {
+      "identity": "unionjobs:29867",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "One to two labor-movement years required, not generic campaign research; writing and political research transfer.",
+      "source_url": "https://www.unionjobs.com/listing/29867-congressional-labor-fellow"
+    },
+    {
+      "identity": "unionjobs:31269",
+      "partition": "holdout",
+      "label": "plausible",
+      "rationale": "Organizing, campaign planning and data/communication skills align. Nursing qualification is not required; license/car and direct organizing depth need verification.",
+      "source_url": "https://www.unionjobs.com/listing/31269-dc-labor-representative"
+    },
+    {
+      "identity": "unionjobs:31503",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven organizing years, five campaign-management years and four supervisory years exceed profile.",
+      "source_url": "https://www.unionjobs.com/listing/31503-senior-campaign-coordinator"
+    },
+    {
+      "identity": "unionjobs:31539",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://www.unionjobs.com/listing/31539-administrative-manager-capital-area-district"
+    },
+    {
+      "identity": "unionjobs:30669",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://www.unionjobs.com/listing/30669-industrial-engineer-industrial-engineering-office"
+    },
+    {
+      "identity": "unionjobs:31120",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Accounting education/progressive accounting alternative is unsupported; administrative CRM work is insufficient.",
+      "source_url": "https://www.unionjobs.com/listing/31120-u-s-payroll-staff-accountant"
+    },
+    {
+      "identity": "unionjobs:31180",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Three grassroots years plus four to six organizing/fundraising years required; broad political skill overlap insufficient.",
+      "source_url": "https://www.unionjobs.com/listing/31180-senior-political-coordinator-legislative-and-political-action-department"
+    },
+    {
+      "identity": "unionjobs:31609",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "No stated year minimum; requires a driver licence, vehicle access and irregular-hour availability.",
+      "source_url": "https://www.unionjobs.com/listing/31609-organizer-in-training"
+    },
+    {
+      "identity": "unionjobs:31420",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "One year of organizing is preferred; interpersonal, campaign and schedule demands still need review.",
+      "source_url": "https://www.unionjobs.com/listing/31420-dc-baltimore-area-project-based-organizer"
+    },
+    {
+      "identity": "unionjobs:28720",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "Degree by start; no numeric minimum; legal-secretary and union experience encouraged.",
+      "source_url": "https://www.unionjobs.com/listing/28720-legal-secretary"
+    },
+    {
+      "identity": "unionjobs:31530",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "JD, bar and five labor-law years required.",
+      "source_url": "https://www.unionjobs.com/listing/31530-associate-general-counsel"
+    },
+    {
+      "identity": "unionjobs:31604",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "Administrative, event and database work transfer; three administrative years and autonomous executive support need verification.",
+      "source_url": "https://www.unionjobs.com/listing/31604-executive-assistant"
+    },
+    {
+      "identity": "globaljobs:52215",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "Two to four years, including internships; administrative/investor or donor support and marketing/communications. Spanish is advantageous; verify finance/data-tool demands.",
+      "source_url": "https://globaljobs.org/jobs/52215-washington-dc-mce-social-capital-business-development-operations-analyst"
+    },
+    {
+      "identity": "globaljobs:52210",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Ten years and masters are desired rather than mandatory; personnel/program leadership and publishing expectations still make competitiveness weak.",
+      "source_url": "https://globaljobs.org/jobs/52210-washington-dc-global-taiwan-institute-deputy-director"
+    },
+    {
+      "identity": "globaljobs:52208",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "Three related years or education/experience equivalence; policy and partner/government-facing experience.",
+      "source_url": "https://globaljobs.org/jobs/52208-arlington-virginia-the-nature-conservancy-fisheries-policy-associate"
+    },
+    {
+      "identity": "globaljobs:52190",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "Three years or equivalent training/experience; bachelor-level background, programs, events, payments, writing and logistics.",
+      "source_url": "https://globaljobs.org/jobs/52190-washington-dc-arizona-state-university-program-coordinator-of-human-rights-freedom"
+    },
+    {
+      "identity": "globaljobs:52185",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Ten progressively responsible fundraising years including senior leadership required.",
+      "source_url": "https://globaljobs.org/jobs/52185-washington-dc-world-justice-project-chief-of-partnerships"
+    },
+    {
+      "identity": "globaljobs:52182",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "No numeric minimum stated; project ownership, communications, Office proficiency and independent US work authorization.",
+      "source_url": "https://globaljobs.org/jobs/52182-washington-dc-foreign-commonwealth-and-development-office-political-support-officer-british-embassy"
+    },
+    {
+      "identity": "globaljobs:52172",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "The publisher explicitly welcomes first reporting opportunities; substantive writing and interest in federal policy matter.",
+      "source_url": "https://globaljobs.org/jobs/52172-washington-dc-inside-publishers-federal-policy-reporter"
+    },
+    {
+      "identity": "globaljobs:52153",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "Ten-plus years of security/nonproliferation/China-focused experience.",
+      "source_url": "https://globaljobs.org/jobs/52153-washington-dc-nuclear-threat-initiative-senior-director-china-engagement"
+    },
+    {
+      "identity": "globaljobs:52141",
+      "partition": "development",
+      "label": "unknown",
+      "rationale": "Student-oriented internship; event coordination and writing skills. Confirm whether a graduate is eligible and whether it is paid.",
+      "source_url": "https://globaljobs.org/jobs/52141-arlington-virginia-weta-srl-academy-events-intern"
+    },
+    {
+      "identity": "globaljobs:52140",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://globaljobs.org/jobs/52140-washington-dc-world-food-program-usa-senior-manager-advocacy-coalitions"
+    },
+    {
+      "identity": "globaljobs:52105",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "Bachelor degree and logistics/budget/event support; no numeric minimum. China/AI/think-tank knowledge welcomed but not required.",
+      "source_url": "https://globaljobs.org/jobs/52105-washington-dc-carnegie-endowment-for-international-peace-program-assistant-china-ai-initiative"
+    },
+    {
+      "identity": "globaljobs:52101",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Current TS clearance/SCI access and multiple counterintelligence requirements not established.",
+      "source_url": "https://globaljobs.org/jobs/52101-arlington-virginia-olgoonik-corporation-intelligence-research-specialist"
+    },
+    {
+      "identity": "globaljobs:52097",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://globaljobs.org/jobs/52097-washington-dc-corus-international-technical-manager-merl"
+    },
+    {
+      "identity": "globaljobs:52092",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven digital-fundraising years required; CRM overlap cannot establish qualification.",
+      "source_url": "https://globaljobs.org/jobs/52092-washington-dc-national-geographic-society-senior-manager-digital-fundraising"
+    },
+    {
+      "identity": "globaljobs:52088",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "GS07/09/11 alternatives and education equivalence merit review; grade-specific specialized experience, hiring eligibility and certification remain unresolved.",
+      "source_url": "https://globaljobs.org/jobs/52088-washington-dc-department-of-justice-criminal-division-international-affairs-specialist"
+    },
+    {
+      "identity": "globaljobs:52072",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "Bachelor-level education and relevant program/event support; no numeric year count. Office proficiency, writing, finance-process care and cultural sensitivity matter.",
+      "source_url": "https://globaljobs.org/jobs/52072-washington-dc-american-councils-for-international-education-actr-accels-program-officer-selection-and-administration-j-christopher-stevens-digital-leaders"
+    },
+    {
+      "identity": "globaljobs:52061",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Professional reporting track record, source network and breaking-news portfolio are substantial gaps. Board date conflicts with June priority text; active status unresolved.",
+      "source_url": "https://globaljobs.org/jobs/52061-washington-dc-the-post-city-hall-reporter"
+    },
+    {
+      "identity": "globaljobs:52058",
+      "partition": "development",
+      "label": "unknown",
+      "rationale": "Two to four years may include education/research. Arabic/Persian appears in the introduction, but reading proficiency is later described as preferred; clarify that tension.",
+      "source_url": "https://globaljobs.org/jobs/52058-washington-dc-wisconsin-project-on-nuclear-arms-control-research-associate-nonproliferation-and-export-controls"
+    },
+    {
+      "identity": "globaljobs:52042",
+      "partition": "holdout",
+      "label": "stretch",
+      "rationale": "Political-science BA and analysis transfer; required analytical tradecraft, threat-assessment expertise and scalable intelligence processes are not established. Three years and masters preferred.",
+      "source_url": "https://globaljobs.org/jobs/52042-herndon-virginia-amazon-intelligence-analyst-global-security"
+    },
+    {
+      "identity": "globaljobs:52032",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "Three to six years plus specific foreign-assistance expertise; minimum intersects the upper review boundary but domain experience is required.",
+      "source_url": "https://globaljobs.org/jobs/52032-arlington-virginia-cgi-senior-strategy-consultant-foreign-assistance"
+    },
+    {
+      "identity": "globaljobs:52025",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "One to two years; bachelor degree and conservation/public-lands/advocacy/policy background. GIS is a plus.",
+      "source_url": "https://globaljobs.org/jobs/52025-washington-dc-the-wyss-foundation-program-assistant-conservation"
+    },
+    {
+      "identity": "globaljobs:52014",
+      "partition": "holdout",
+      "label": "unknown",
+      "rationale": "Index-only record: title and provider level cannot establish actual requirements, suitability or active status.",
+      "source_url": "https://globaljobs.org/jobs/52014-washington-dc-honeywell-technologies-government-relations-specialist-ii"
+    },
+    {
+      "identity": "globaljobs:52013",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "Requires an environmental-studies degree, specialized marine/fisheries and foreign-assistance work, GOR certification and Secret clearance eligibility.",
+      "source_url": "https://globaljobs.org/jobs/52013-washington-dc-goldbelt-c6-llc-foreign-affairs-advisor"
+    },
+    {
+      "identity": "onthinktanks:program-manager-cato-courses",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "Two to four years of program/content/scholarship administration; interest in Cato’s mission and familiarity with learning/CRM tools.",
+      "source_url": "https://onthinktanks.org/job/program-manager-cato-courses/"
+    },
+    {
+      "identity": "onthinktanks:curriculum-lead-sphere-education-initiatives",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Five curriculum-development/publication years required; teaching experience alone does not establish this.",
+      "source_url": "https://onthinktanks.org/job/curriculum-lead-sphere-education-initiatives/"
+    },
+    {
+      "identity": "onthinktanks:energy-policy-analyst",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "No numeric minimum; related bachelor degree, energy-policy experience and ideological/mission alignment.",
+      "source_url": "https://onthinktanks.org/job/energy-policy-analyst/"
+    },
+    {
+      "identity": "onthinktanks:legal-fellow",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "JD, bar admission and at least four post-law-school years.",
+      "source_url": "https://onthinktanks.org/job/legal-fellow/"
+    },
+    {
+      "identity": "onthinktanks:policy-engagement-specialist-2",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "Seven to ten years; writing, presentations, policy translation and project management.",
+      "source_url": "https://onthinktanks.org/job/policy-engagement-specialist-2/"
+    },
+    {
+      "identity": "onthinktanks:director-tax-policy",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven relevant professional years plus tax-policy research and quantitative expertise exceed profile. Potential overlap with another BPC listing.",
+      "source_url": "https://onthinktanks.org/job/director-tax-policy/"
+    },
+    {
+      "identity": "onthinktanks:senior-fellow-energy-and-environment-2",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Deep environmental-policy expertise and legislative/regulatory testimony not documented.",
+      "source_url": "https://onthinktanks.org/job/senior-fellow-energy-and-environment-2/"
+    },
+    {
+      "identity": "onthinktanks:director-tax-policy-2",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven relevant professional years plus tax-policy research and quantitative expertise exceed profile.",
+      "source_url": "https://onthinktanks.org/job/director-tax-policy-2/"
+    },
+    {
+      "identity": "onthinktanks:peope-operations-lead",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "US HR compliance, benefits administration and end-to-end recruiting ownership required; campus recruitment is not equivalent HR leadership.",
+      "source_url": "https://onthinktanks.org/job/peope-operations-lead/"
+    },
+    {
+      "identity": "onthinktanks:senior-fellow-finance-and-insurance",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "High-level financial-regulatory expertise is expected; policy interest and political writing are insufficient.",
+      "source_url": "https://onthinktanks.org/job/senior-fellow-finance-and-insurance/"
+    },
+    {
+      "identity": "onthinktanks:echidna-global-scholar-5",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Masters, ten professional years, substantial Global South ties and return plans required; not a generic early-career fellowship.",
+      "source_url": "https://onthinktanks.org/job/echidna-global-scholar-5/"
+    },
+    {
+      "identity": "onthinktanks:chief-financial-and-operating-officer-institute-for-womens-policy-research",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Ten finance/operations-management years required; masters has equivalence and CPA is preferred.",
+      "source_url": "https://onthinktanks.org/job/chief-financial-and-operating-officer-institute-for-womens-policy-research/"
+    },
+    {
+      "identity": "workfornonprofits:3dfc7540d81a421b878d372431df62b5",
+      "partition": "development",
+      "label": "plausible",
+      "rationale": "Multiple associate-to-assistant-director levels; no numeric minimum in the board text. Relationship skills, organization and strong mission alignment are required.",
+      "source_url": "https://workfornonprofits.org/companies/j-street/jobs/relationship-manager-dc-maryland-and-virginia-3dfc7540d81a421b878d372431df62b5"
+    },
+    {
+      "identity": "workfornonprofits:b76bf793af7548e9bb3aa9366eff1fa4",
+      "partition": "development",
+      "label": "unknown",
+      "rationale": "The public board description lists program-management and administrative work but does not establish a complete qualifications section.",
+      "source_url": "https://workfornonprofits.org/companies/the-pew-charitable-trusts/jobs/associate-i-evidence-project-b76bf793af7548e9bb3aa9366eff1fa4"
+    },
+    {
+      "identity": "workfornonprofits:8781567fc5e14c95a2fa94612fd3e997",
+      "partition": "holdout",
+      "label": "unlikely",
+      "rationale": "Deep nonprofit-governance subject-matter expertise and curriculum leadership expected; formal qualifications missing from export. NPAG is recruiter; actual employer BoardSource.",
+      "source_url": "https://workfornonprofits.org/companies/npag/jobs/director-of-content-governance-education-8781567fc5e14c95a2fa94612fd3e997"
+    },
+    {
+      "identity": "workfornonprofits:c2f9bbf77ee94642be6778eb9012a474",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Twelve to fifteen compliance years required. Bar is a plus for this role; generic all-lawyer boilerplate must not become a universal JD requirement.",
+      "source_url": "https://workfornonprofits.org/companies/democracy-forward/jobs/senior-director-of-compliance-c2f9bbf77ee94642be6778eb9012a474"
+    },
+    {
+      "identity": "workfornonprofits:b7b6a450a8d5497db4e4cbb0e065c1a9",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "Twelve relevant years and five supervisory years.",
+      "source_url": "https://workfornonprofits.org/companies/american-college-of-obstetricians-and-gynecologists/jobs/senior-director-board-affairs-and-governance-b7b6a450a8d5497db4e4cbb0e065c1a9"
+    },
+    {
+      "identity": "workfornonprofits:1433846a65ff4e6aab61ff90ebf5d421",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven operational/project-management years required despite superficially transferable coordination duties.",
+      "source_url": "https://workfornonprofits.org/companies/arnold-ventures/jobs/director-criminal-justice-chief-of-staff-1433846a65ff4e6aab61ff90ebf5d421"
+    },
+    {
+      "identity": "workfornonprofits:d132ff5d22ef49cb88e9a9e316b68843",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Ten leadership years required; AI-policy interest does not qualify for AI studio leadership.",
+      "source_url": "https://workfornonprofits.org/companies/urban-institute/jobs/senior-director-ai-studio-d132ff5d22ef49cb88e9a9e316b68843"
+    },
+    {
+      "identity": "workfornonprofits:d9ef3b1eca194762a5b995fd6bb638c0",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Active CPA and ten financial-leadership years required.",
+      "source_url": "https://workfornonprofits.org/companies/daughters-of-the-american-revolution/jobs/chief-financial-officer-d9ef3b1eca194762a5b995fd6bb638c0"
+    },
+    {
+      "identity": "workfornonprofits:a4c273ced78a4a7dbd69f7bcbba96805",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Seven to ten fundraising years required; entry-level donations describes a gift channel, not seniority.",
+      "source_url": "https://workfornonprofits.org/companies/trust-for-the-national-mall/jobs/director-individual-giving-a4c273ced78a4a7dbd69f7bcbba96805"
+    },
+    {
+      "identity": "workfornonprofits:21d28aab9d9d468d83dcd6c446c18bc6",
+      "partition": "development",
+      "label": "stretch",
+      "rationale": "Two to four years of analytical/research work; bachelor required, graduate legal/policy training strongly preferred and publication-level writing expected.",
+      "source_url": "https://workfornonprofits.org/companies/georgetown-university/jobs/program-co-director-head-of-research-sovereign-debt-forum-21d28aab9d9d468d83dcd6c446c18bc6"
+    },
+    {
+      "identity": "workfornonprofits:60d83a72c76c467f81619b14273d763a",
+      "partition": "development",
+      "label": "ineligible",
+      "rationale": "Substantial progressive fundraising, donor pipeline/campaign success and supervision readiness. Degree/experience wording should not be read as waiving the functional demands.",
+      "source_url": "https://workfornonprofits.org/companies/academy-of-hope-adult-public-charter-school/jobs/assistant-director-of-individual-giving-60d83a72c76c467f81619b14273d763a"
+    },
+    {
+      "identity": "workfornonprofits:d6159e7266494340bbf8ccb5298d8677",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Eight to ten nonprofit-fundraising years and major/principal-gift record required.",
+      "source_url": "https://workfornonprofits.org/companies/roosevelt-institute/jobs/managing-director-of-library-philanthropy-fdr-presidential-library-and-museum-d6159e7266494340bbf8ccb5298d8677"
+    },
+    {
+      "identity": "workfornonprofits:9571edc6bda24a618f53f7423472abb4",
+      "partition": "holdout",
+      "label": "ineligible",
+      "rationale": "Ten corporate-partnership years and technology-sector executive relationships required.",
+      "source_url": "https://workfornonprofits.org/companies/national-geographic-society/jobs/director-corporate-partnerships-technology-sector-9571edc6bda24a618f53f7423472abb4"
+    }
+  ]
+}

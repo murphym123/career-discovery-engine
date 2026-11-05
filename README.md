@@ -5,7 +5,36 @@ nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
 primary; no employer allowlist is required. Scores are triage heuristics and do
 not establish qualifications, job availability or interview probabilities.
 
-## Current: broader DC discovery and description inspection
+## Current: evidence-backed candidate triage (diagnostic)
+
+Use the new source-independent offline evaluator after broad retrieval:
+
+```sh
+python -m tools.rank_jobs --input output/dc-source-audit.json --output output/ranked-brief.md
+```
+
+It separates career relevance, description-supported qualifications, transferable
+experience, potential advantages and uncertainty. Missing descriptions stay in
+investigation; every input row remains in JSON/CSV. Detailed analysis defaults
+to 200 descriptions with score-independent exploration. No credentials, AI,
+network calls or paid services are needed for ranking. Optional integration into
+the existing runner: `--triage-output output/ranked-brief.md`.
+
+Start with the [Phase 3 assessment](docs/issue7/ASSESSMENT.md) and
+[example ranked report using actual-record abstracts](docs/issue7/EXAMPLE_RANKED_REPORT.md).
+The original-text comparison finds more labeled promising top-30 records but
+**does not establish a precision improvement**. The initial holdout exposed bugs
+and was used for corrections, so final results are diagnostic, not untouched
+holdout validation. Human review of full requirements and posting status remains
+necessary. Existing score/selection functions remain available for compatibility
+and paired baseline measurements.
+
+```sh
+python -m tools.benchmark_triage --stress --report output/issue7/ranked-brief.md
+python -m unittest discover -s tests -v
+```
+
+## Broad DC discovery and description inspection
 
 The unranked audit now covers **Senate, Union Jobs, Global Jobs, On Think Tanks,
 and Work for Nonprofits**, without an employer allowlist or paid credentials.
@@ -25,9 +54,8 @@ to restrict boards, or `--inspection-strategy prefix` for a controlled compariso
 The manual GitHub `dc` mode runs this broad unranked audit.
 
 The main engine accepts `--sources dc-broad` and individual new source names.
-Its legacy `dc` alias remains Senate+Union Jobs for compatibility. Fit-scoring
-weights and shortlist selection have not been redesigned; obvious geography
-bugs were corrected and state-only locations are kept ambiguous.
+Its legacy `dc` alias remains Senate+Union Jobs for compatibility. The legacy fit scores remain available; Phase 3 adds the separate evidence
+triage above. State-only locations remain ambiguous.
 
 ## Phase 1: original DC source evidence
 
@@ -51,9 +79,8 @@ on access denials or rate limits. Details can be unknown; board presence is not
 confirmation that the employer still accepts applications.
 
 The main runner also defaults to `--sources dc`, accepts individual `senate` and
-`unionjobs` sources, and retains their evidence metadata in its full audit. Its
-ranking, selection and screening logic is unchanged and remains unvalidated;
-use the unranked audit for this phase. The measured sample contains adjacent
+`unionjobs` sources, and retains their evidence metadata in its full audit. Its legacy ranking remains available; use the Phase 3 evaluator for evidence
+triage and the unranked audit for source assessment. The measured sample contains adjacent
 roles, specialist/experience gaps, location ambiguity and a résumé-pool control,
 not a claimed shortlist of suitable vacancies.
 
@@ -151,8 +178,9 @@ python -m career_engine --sources csv --import-csv candidates.csv
 ```
 
 This does not synchronize Notion, submit applications, or claim comprehensive
-DC labor-market coverage. Without registered sources the default covers two
-remote boards, not the on-site DC market. Hill, association, consulting, advocacy,
+DC labor-market coverage. The main runner’s legacy `dc` default covers Senate and Union Jobs; the
+unranked audit covers all five boards. Optional unregistered remote feeds do
+not establish on-site DC coverage. Hill, association, consulting, advocacy,
    think-tank and small-employer vacancies often remain outside these feeds.
 
 ## Validation and measurable comparison
@@ -163,8 +191,10 @@ git show f1ce56c5cf4fdebeb490a447cc73e89a04037f2e:career_engine/__main__.py > /t
 python -m tools.benchmark_discovery --baseline-engine /tmp/career-baseline.py --output docs/benchmark.json
 ```
 
-All tests run offline. Fixtures are explicitly **synthetic**, use `example.org`
-links and do not represent real vacancies. The benchmark runs the actual prior
+All tests run offline. Early discovery fixtures are explicitly **synthetic**
+and do not represent real vacancies. Later source fixtures and Phase 3 listing
+metadata derive from actual retrieved postings, with provenance and representation
+labels; synthetic stress expansions do not represent additional vacancies. The benchmark runs the actual prior
 implementation and current runner on controlled fixtures. [Coverage assessment](docs/COVERAGE.md),
 [fixture measurements](docs/benchmark.json), and [live connectivity/replay counts](docs/live-check.json)
 separate test recall from real feed retrieval; neither measures market recall.

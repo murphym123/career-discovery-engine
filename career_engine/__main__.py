@@ -103,6 +103,8 @@ def remotive(session):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--triage-output", help="Write an additional evidence-based candidate report after retrieval (zero API calls)")
+    p.add_argument("--triage-detailed-budget", type=int, default=200)
     p.add_argument("--sources", default="dc", help="dc (legacy Senate/Union Jobs), dc-broad (all specialty boards), free, individual source names, brave,csv")
     p.add_argument("--dc-detail-budget", type=int, default=20, help="Max public detail pages per DC source (0–30)")
     p.add_argument("--source-pages", type=int, default=6, help="Max requests per added API (1–20)")
@@ -118,6 +120,7 @@ def main():
     p.add_argument("--db", default="data/live.db")
     p.add_argument("--output", default="output/live_brief.md")
     args = p.parse_args()
+    if args.triage_detailed_budget < 0: p.error("invalid triage detail budget")
     if not 1<=args.query_budget<=20 or not 1<=args.results_per_query<=20 or not 0<=args.max_extract<=30 or not 1<=args.source_pages<=20 or (args.query_offset is not None and args.query_offset<0) or not 0<=args.exploration_slots<=50 or args.top<1 or not 0<=args.dc_detail_budget<=30:
         p.error("invalid search or extraction budget")
     requested = [name.strip() for name in args.sources.split(",")]
@@ -316,6 +319,22 @@ def main():
                "decisions":{label:sum(v == label for v in decisions.values()) for label in sorted(set(decisions.values()))},
                "queries":[vars(q) for q in queries], "report":str(target), "errors":errors}
     target.with_name("discovery_metrics.json").write_text(json.dumps(metrics, indent=2)+"\n", encoding="utf-8")
+    if args.triage_output:
+        from career_engine.triage import triage
+        from tools.rank_jobs import write_outputs
+        # Preserve every retrieved sighting, including invalid/duplicate inputs;
+        # overlay any successful optional enrichment without erasing provenance.
+        enriched = {j['url']: j for j in unique.values()}
+        triage_records = []
+        for record in raw:
+            item = dict(record)
+            match = enriched.get(canonical(str(item.get('url') or '')))
+            if match and clean(item):
+                for field in ('description', 'extraction_status', 'title', 'company', 'location'):
+                    if match.get(field): item[field] = match[field]
+            triage_records.append(item)
+        result = triage(triage_records, args.top, args.triage_detailed_budget, args.exploration_slots)
+        write_outputs(result, args.triage_output)
     print(json.dumps(metrics))
     return 1 if errors else 0
 
