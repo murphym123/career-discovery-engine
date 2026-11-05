@@ -13,6 +13,11 @@ on:
         description: "Brave queries (1–20)"
         default: 6
         required: true
+      extract_budget:
+        type: number
+        description: "Max public HTML pages to inspect (0–30; zero by default)"
+        default: 0
+        required: true
 permissions:
   contents: read
   actions: read
@@ -48,10 +53,12 @@ jobs:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           MODE: ${{ inputs.source_mode }}
           BUDGET: ${{ inputs.query_budget }}
+          EXTRACT_BUDGET: ${{ inputs.extract_budget }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$BUDGET" =~ ^[0-9]+$ ]] && (( BUDGET >= 1 && BUDGET <= 20 )) || exit 2
+          [[ "$EXTRACT_BUDGET" =~ ^[0-9]+$ ]] && (( EXTRACT_BUDGET >= 0 && EXTRACT_BUDGET <= 30 )) || exit 2
           case "$MODE" in
             remotive) sources=remotive ;;
             brave) sources=brave ;;
@@ -61,7 +68,7 @@ jobs:
           if [[ "$sources" == *brave* && -z "$BRAVE_API_KEY" ]]; then
             echo "BRAVE_API_KEY secret missing"; exit 2
           fi
-          python -m career_engine --sources "$sources" --query-budget "$BUDGET" --db data/live.db --output output/live_brief.md
+          python -m career_engine --sources "$sources" --query-budget "$BUDGET" --max-extract "$EXTRACT_BUDGET" --db data/live.db --output output/live_brief.md
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
