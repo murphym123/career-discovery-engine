@@ -179,14 +179,28 @@ def main():
     for j in unique.values():
         cx.execute("INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(job_key) DO UPDATE SET score=excluded.score,last_seen=excluded.last_seen,url=excluded.url", (j["key"],j["title"],j["company"],j["location"],j["url"],j["source"],j["score"],stamp,stamp))
     cx.commit();cx.close()
-    eligible = [j for j in unique.values() if j["score"] >= args.min_score]
+    all_passing = [j for j in unique.values() if j["score"] >= args.min_score]
+    # A web-search hit can be a blog, overview, or expired board index.
+    # Keep those leads visible but do not claim they are actual job records.
+    eligible = [j for j in all_passing if j["source"] != "brave" or j["extraction_status"] == "jobposting_metadata"]
     selected = select(eligible, args.top)
     selected_keys = {j["key"] for j in selected}
+    search_leads = select([j for j in all_passing if j["source"] == "brave" and j["extraction_status"] != "jobposting_metadata"], args.top)
     target=Path(args.output);target.parent.mkdir(parents=True,exist_ok=True)
     lines=["# DC Career Discovery — "+stamp,"",f"**Candidates received:** {len(raw)} · **Unique:** {len(unique)} · **Recommended:** {len(selected)}", "", "Relevance scores are preliminary, not hiring probabilities. Posting status is not independently verified.", "", "| Score | Job | Employer | Location | Source | Status |","|---:|---|---|---|---|---|"]
     for j in selected:
         title=j["title"].replace("|","\\|")
         lines.append(f'| {j["score"]} | [{title}]({j["url"]}) | {j["company"]} | {j["location"]} | {j["source"]} | {"Previously seen" if j["key"] in prior else "New"} |')
+    lines += ["", "## Unverified web search leads",
+              "These are **search results, not confirmed vacancies**. Visit and verify each before treating it as a job opening.",
+              "",
+              "| Preliminary score | Search result | Extraction status |",
+              "|---:|---|---|"]
+    for lead in search_leads:
+        title = lead["title"].replace("|", "\\|")
+        lines.append(f'| {lead["score"]} | [{title}]({lead["url"]}) | {lead["extraction_status"]} |')
+    if not search_leads:
+        lines.append("| — | No shortlisted unverified leads | — |")
     lines += ["", "## Extraction audit",
               f"- Public HTML pages attempted: {sum(extraction_counts.values())}",
               f"- Structured JobPosting records obtained: {extraction_counts.get('jobposting_metadata', 0)}"]
@@ -195,7 +209,8 @@ def main():
     lines += ["", "## Screening audit",
               f"- Preliminary threshold: {args.min_score}/100",
               f"- Candidates reaching threshold: {len(eligible)} of {len(unique)}",
-              f"- Below threshold: {len(unique)-len(eligible)}",
+              f"- Below threshold: {len(unique)-len(all_passing)}",
+              f"- Search leads awaiting verification: {len(all_passing)-len(eligible)}",
               f"- At/above threshold but not selected after diversity rules: {len(eligible)-len(selected)}"]
     if not selected:
         lines.append("- No recommendations cleared screening; this is not evidence that no good jobs exist.")
@@ -204,7 +219,9 @@ def main():
               "|---:|---|---|---|---|"]
     nonselected = [j for j in unique.values() if j["key"] not in selected_keys]
     for j in sorted(nonselected, key=lambda j:j["score"], reverse=True)[:12]:
-        reason = "Below threshold" if j["score"] < args.min_score else "Diversification cap"
+        reason = ("Below threshold" if j["score"] < args.min_score else
+                  "Unverified web lead" if j["source"] == "brave" and j["extraction_status"] != "jobposting_metadata" else
+                  "Diversification cap")
         def cell(v): return str(v).replace("|", "\\|").replace("\n", " ")
         lines.append(f'| {j["score"]} | {cell(j["title"])} | {cell(j["company"])} | {cell(j["location"])} | {reason} |')
     lines += ["", "## Retrieval issues"]+["- "+x for x in errors or ["None"]]
@@ -218,7 +235,10 @@ def main():
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         for j in sorted(unique.values(), key=lambda x:x["score"], reverse=True):
-            decision = "recommended" if j["key"] in selected_keys else ("below_threshold" if j["score"] < args.min_score else "diversity_limit")
+            decision = ("recommended" if j["key"] in selected_keys else
+                        "below_threshold" if j["score"] < args.min_score else
+                        "unverified_web_lead" if j["source"] == "brave" and j["extraction_status"] != "jobposting_metadata" else
+                        "diversity_limit")
             writer.writerow({**{k:j.get(k, "") for k in keys}, "decision":decision})
     print(json.dumps({"received":len(raw),"unique":len(unique),"extracted":extraction_counts.get("jobposting_metadata", 0),"above_threshold":len(eligible),"recommended":len(selected),"report":str(target),"errors":errors}))
     return 1 if errors else 0
