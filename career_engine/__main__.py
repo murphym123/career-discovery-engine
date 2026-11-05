@@ -145,19 +145,43 @@ def main():
     for j in unique.values():
         cx.execute("INSERT INTO jobs VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(job_key) DO UPDATE SET score=excluded.score,last_seen=excluded.last_seen,url=excluded.url", (j["key"],j["title"],j["company"],j["location"],j["url"],j["source"],j["score"],stamp,stamp))
     cx.commit();cx.close()
-    selected = select([j for j in unique.values() if j["score"] >= args.min_score], args.top)
+    eligible = [j for j in unique.values() if j["score"] >= args.min_score]
+    selected = select(eligible, args.top)
+    selected_keys = {j["key"] for j in selected}
     target=Path(args.output);target.parent.mkdir(parents=True,exist_ok=True)
     lines=["# DC Career Discovery — "+stamp,"",f"**Candidates received:** {len(raw)} · **Unique:** {len(unique)} · **Recommended:** {len(selected)}", "", "Relevance scores are preliminary, not hiring probabilities. Posting status is not independently verified.", "", "| Score | Job | Employer | Location | Source | Status |","|---:|---|---|---|---|---|"]
     for j in selected:
         title=j["title"].replace("|","\\|")
         lines.append(f'| {j["score"]} | [{title}]({j["url"]}) | {j["company"]} | {j["location"]} | {j["source"]} | {"Previously seen" if j["key"] in prior else "New"} |')
-    lines+=["","## Retrieval issues"]+["- "+x for x in errors or ["None"]]
+    lines += ["", "## Screening audit",
+              f"- Preliminary threshold: {args.min_score}/100",
+              f"- Candidates reaching threshold: {len(eligible)} of {len(unique)}",
+              f"- Below threshold: {len(unique)-len(eligible)}",
+              f"- At/above threshold but not selected after diversity rules: {len(eligible)-len(selected)}"]
+    if not selected:
+        lines.append("- No recommendations cleared screening; this is not evidence that no good jobs exist.")
+    lines += ["", "### Highest-scoring screened-out candidates",
+              "| Score | Title | Employer | Location | Reason |",
+              "|---:|---|---|---|---|"]
+    nonselected = [j for j in unique.values() if j["key"] not in selected_keys]
+    for j in sorted(nonselected, key=lambda j:j["score"], reverse=True)[:12]:
+        reason = "Below threshold" if j["score"] < args.min_score else "Diversification cap"
+        def cell(v): return str(v).replace("|", "\\|").replace("\n", " ")
+        lines.append(f'| {j["score"]} | {cell(j["title"])} | {cell(j["company"])} | {cell(j["location"])} | {reason} |')
+    lines += ["", "## Retrieval issues"]+["- "+x for x in errors or ["None"]]
     target.write_text("\n".join(lines)+"\n",encoding="utf-8")
     with target.with_suffix(".csv").open("w",encoding="utf-8",newline="") as f:
         keys=("score","title","company","location","url","source","lane","posted_at","snippet")
         w=csv.DictWriter(f,fieldnames=keys);w.writeheader()
         for j in selected:w.writerow({k:j.get(k,"") for k in keys})
-    print(json.dumps({"received":len(raw),"unique":len(unique),"recommended":len(selected),"report":str(target),"errors":errors}))
+    with target.with_name("screening_audit.csv").open("w", encoding="utf-8", newline="") as f:
+        keys = ("score", "title", "company", "location", "url", "source", "lane", "posted_at", "decision")
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writeheader()
+        for j in sorted(unique.values(), key=lambda x:x["score"], reverse=True):
+            decision = "recommended" if j["key"] in selected_keys else ("below_threshold" if j["score"] < args.min_score else "diversity_limit")
+            writer.writerow({**{k:j.get(k, "") for k in keys}, "decision":decision})
+    print(json.dumps({"received":len(raw),"unique":len(unique),"above_threshold":len(eligible),"recommended":len(selected),"report":str(target),"errors":errors}))
     return 1 if errors else 0
 
 if __name__ == "__main__":
