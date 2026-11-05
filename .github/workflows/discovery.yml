@@ -13,6 +13,16 @@ on:
         description: "DC only: add an EXPERIMENTAL, unvalidated shortlist beside the full audit"
         default: false
         required: true
+      expanded_ats:
+        type: boolean
+        description: "DC only: discover employer ATS boards using free public URL indexes"
+        default: false
+        required: true
+      ats_board_budget:
+        type: number
+        description: "Maximum discovered employer boards to poll (1–100), only if expanded_ats is enabled"
+        default: 30
+        required: true
       query_budget:
         type: number
         description: "Brave queries (1–20)"
@@ -74,6 +84,20 @@ jobs:
             fi
           done < <(gh run list --workflow discovery.yml --status success --limit 15 --json databaseId --jq '.[].databaseId')
           echo "No prior history artifact"
+      - name: Restore ATS registry when expanded discovery is requested
+        if: inputs.source_mode == 'dc' && inputs.expanded_ats
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data output
+          while read -r previous_id; do
+            if gh run download "$previous_id" -R "$GITHUB_REPOSITORY" -n public-ats-registry -D data >/dev/null 2>&1; then
+              echo "Restored discovered ATS registry"
+              exit 0
+            fi
+          done < <(gh run list --workflow discovery.yml --limit 15 --json databaseId --jq '.[].databaseId')
+          echo "Starting ATS registry from public URL evidence"
       - name: Run discovery
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
@@ -114,14 +138,29 @@ jobs:
             paid_args+=(--allow-paid-search)
           fi
           python -m career_engine --sources "$sources" --source-pages "$SOURCE_PAGES" --query-budget "$BUDGET" --max-extract "$EXTRACT_BUDGET" "${paid_args[@]}" --db data/live.db --output output/live_brief.md
+      - name: Expand public ATS discovery without replacing the five-source audit
+        if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' && inputs.expanded_ats }}
+        env:
+          ATS_BOARD_BUDGET: ${{ inputs.ats_board_budget }}
+          SEED_QUERIES: ${{ inputs.source_pages }}
+          EXTRA_DETAILS: ${{ inputs.dc_detail_budget }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS"
       - name: Publish experimental ranking from the existing DC audit
         if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' && inputs.experimental_ranking }}
         env:
           INSPECTION_SEED: ${{ inputs.inspection_seed }}
+          EXPANDED_ATS: ${{ inputs.expanded_ats }}
         shell: bash
         run: |
           set -euo pipefail
-          python -m tools.publish_experimental --input output/dc-source-audit.json --output-dir output/experimental-ranking --seed "$INSPECTION_SEED"
+          audit_input=output/dc-source-audit.json
+          if [[ "${EXPANDED_ATS:-false}" == true && -f output/dc-expanded-audit.json ]]; then
+            audit_input=output/dc-expanded-audit.json
+          fi
+          python -m tools.publish_experimental --input "$audit_input" --output-dir output/experimental-ranking --seed "$INSPECTION_SEED"
           cat output/experimental-ranking/README.md >> "$GITHUB_STEP_SUMMARY"
       - name: Upload report
         if: always()
@@ -137,6 +176,10 @@ jobs:
             output/dc-source-audit.csv
             output/dc-source-audit.md
             output/experimental-ranking/
+            output/ats-discovery/
+            output/dc-expanded-audit.json
+            output/dc-expanded-audit.csv
+            output/dc-expanded-audit.md
           if-no-files-found: warn
           retention-days: 30
       - name: Save history
@@ -148,3 +191,11 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+      - name: Save discovered ATS registry for future manual runs
+        if: always() && inputs.source_mode == 'dc' && inputs.expanded_ats
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-ats-registry
+          path: data/ats-registry.json
+          if-no-files-found: warn
+          retention-days: 90

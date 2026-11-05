@@ -1,0 +1,29 @@
+{
+  "kind": "ACTUAL RETRIEVED RECORD — MINIMIZED, NOT SYNTHETIC; NOT A CURRENT VACANCY CLAIM",
+  "board": {
+    "provider": "greenhouse",
+    "token": "coreone",
+    "key": "greenhouse:coreone",
+    "url": "https://job-boards.greenhouse.io/coreone"
+  },
+  "company": "Core One",
+  "posting": {
+    "id": 8483176002,
+    "title": "Junior Technical Writer",
+    "internal_job_id": 6388409002,
+    "location": {
+      "name": "McLean, VA"
+    },
+    "absolute_url": "https://job-boards.greenhouse.io/coreone/jobs/8483176002",
+    "updated_at": "2026-09-28T08:48:20-04:00",
+    "first_published": "2026-03-27T12:20:23-04:00",
+    "content": "Join our team at Core One! Our mission is to be at the forefront of devising analytical, operational and technical"
+  },
+  "expected": {
+    "identity": "greenhouse:coreone:8483176002",
+    "title": "Junior Technical Writer",
+    "location": "McLean, VA",
+    "geography": "dc_dmv",
+    "url": "https://job-boards.greenhouse.io/coreone/jobs/8483176002"
+  }
+}

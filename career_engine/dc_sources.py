@@ -153,6 +153,14 @@ def parse_index(source, html, index_url):
 
 
 def parse_detail(source, html):
+    fields,status=_parse_detail(source,html)
+    if status=="public_description_observed":
+        from career_engine.ats_registry import observed_ats_urls
+        fields["employer_board_urls"]=observed_ats_urls(html)
+    return fields,status
+
+
+def _parse_detail(source, html):
     if source in ("globaljobs","onthinktanks","workfornonprofits"):
         from career_engine.specialty_sources import parse_specialty_detail
         return parse_specialty_detail(source,html)
