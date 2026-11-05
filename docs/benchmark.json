@@ -1,0 +1,90 @@
+{
+  "kind": "SYNTHETIC FIXTURE BENCHMARK \u2014 NOT LIVE VACANCIES OR MARKET COVERAGE",
+  "baseline_commit": "f1ce56c5cf4fdebeb490a447cc73e89a04037f2e",
+  "baseline_engine_sha256": "edb5e9b2854ff3836e2d10f6c4fdd00859eb449c523821b2590f6d0245abab6e",
+  "fixture_sha256": "d0c31813e40f62031328efcc5e4b086c0f6c0d0c6c7b94d363fdbbd53a665c6d",
+  "cases": {
+    "old_free_default": {
+      "received": 3,
+      "unique": 3,
+      "recommended": 0,
+      "http_requests": 1,
+      "sources_retrieved": 1,
+      "fixture_relevant_captured": 2,
+      "fixture_relevant_total": 16,
+      "fixture_relevant_recommended": 0,
+      "recommended_lanes": 0,
+      "atypical_in_exploration": 0,
+      "washington_state_recommended": 0,
+      "expired_recommended": 0,
+      "same_title_dc_requisitions_retained": 0
+    },
+    "new_free_no_credentials": {
+      "received": 7,
+      "unique": 5,
+      "recommended": 3,
+      "http_requests": 3,
+      "sources_retrieved": 2,
+      "fixture_relevant_captured": 3,
+      "fixture_relevant_total": 16,
+      "fixture_relevant_recommended": 3,
+      "recommended_lanes": 3,
+      "atypical_in_exploration": 1,
+      "washington_state_recommended": 0,
+      "expired_recommended": 0,
+      "same_title_dc_requisitions_retained": 0
+    },
+    "new_all_free_configured": {
+      "received": 27,
+      "unique": 21,
+      "recommended": 14,
+      "http_requests": 11,
+      "sources_retrieved": 5,
+      "fixture_relevant_captured": 16,
+      "fixture_relevant_total": 16,
+      "fixture_relevant_recommended": 14,
+      "recommended_lanes": 6,
+      "atypical_in_exploration": 2,
+      "washington_state_recommended": 0,
+      "expired_recommended": 0,
+      "same_title_dc_requisitions_retained": 2
+    },
+    "old_same_normalized_input": {
+      "received": 27,
+      "unique": 23,
+      "recommended": 15,
+      "http_requests": 0,
+      "sources_retrieved": 0,
+      "fixture_relevant_captured": 15,
+      "fixture_relevant_total": 16,
+      "fixture_relevant_recommended": 13,
+      "recommended_lanes": 4,
+      "atypical_in_exploration": 0,
+      "washington_state_recommended": 1,
+      "expired_recommended": 1,
+      "same_title_dc_requisitions_retained": 1
+    },
+    "new_same_normalized_input": {
+      "received": 27,
+      "unique": 21,
+      "recommended": 14,
+      "http_requests": 0,
+      "sources_retrieved": 0,
+      "fixture_relevant_captured": 16,
+      "fixture_relevant_total": 16,
+      "fixture_relevant_recommended": 14,
+      "recommended_lanes": 6,
+      "atypical_in_exploration": 2,
+      "washington_state_recommended": 0,
+      "expired_recommended": 0,
+      "same_title_dc_requisitions_retained": 2
+    }
+  },
+  "query_family_coverage": {
+    "old_default_six": 4,
+    "old_two_identical_default_runs": 4,
+    "new_default_six": 6,
+    "new_two_rotated_six_query_runs": 10,
+    "taxonomy": "Manually map old queries to research, policy, government_affairs, advocacy, consulting, communications, operations, development, executive_support, exploration. Old first six map to research, government_affairs, government_affairs, operations, research, communications."
+  }
+}
