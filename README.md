@@ -5,7 +5,35 @@ nearby DMV and suitable US-remote work. Broad feeds and open-web discovery are
 primary; no employer allowlist is required. Scores are triage heuristics and do
 not establish qualifications, job availability or interview probabilities.
 
-## Free discovery
+## Phase 1: DC-oriented source evidence
+
+Start with the [15-record actual opportunity review](docs/phase1/REVIEW_SAMPLE.md)
+and [Phase 1 assessment](docs/phase1/ASSESSMENT.md). The new no-key sources are the
+Senate Employment Bulletin and Union Jobs Clearinghouse's advertised RSS plus
+DC, Maryland and Virginia indexes. They discover across offices/employers,
+without an employer allowlist. No general remote feed was added for this phase.
+
+```sh
+python -m pip install -r requirements.txt
+python -m tools.audit_dc_sources --max-details 20 --output output/dc-source-audit.json
+```
+
+This produces an **unranked** Markdown/CSV/JSON source audit. It records actual
+location text, provenance, detail-access status and public descriptions where
+retrieved. The manual GitHub workflow now defaults to this `dc` mode. No new
+credentials are needed. Detail requests are capped at 0–30 per source, with
+robots checks, one-second page pacing, strict source URLs and no bypass/retries
+on access denials or rate limits. Details can be unknown; board presence is not
+confirmation that the employer still accepts applications.
+
+The main runner also defaults to `--sources dc`, accepts individual `senate` and
+`unionjobs` sources, and retains their evidence metadata in its full audit. Its
+ranking, selection and screening logic is unchanged and remains unvalidated;
+use the unranked audit for this phase. The measured sample contains adjacent
+roles, specialist/experience gaps, location ambiguity and a résumé-pool control,
+not a claimed shortlist of suitable vacancies.
+
+## Other free APIs and remote feeds (opt-in)
 
 ```sh
 python -m pip install -r requirements.txt
@@ -42,7 +70,7 @@ at most four refreshes daily and Jobicy hourly. No scheduler is enabled.
 ## Run manually on GitHub
 
 1. Open **Actions → DC career discovery → Run workflow**.
-2. Keep `source_mode=free` and `allow_paid_search=false`.
+2. Keep `source_mode=dc` and `allow_paid_search=false` for an unranked DC source audit; choose `free` explicitly for the earlier remote/registered-source mode.
 3. Download the report artifact from the completed run.
 
 Optional credentials belong in repository secrets with the names above. This PR
@@ -101,7 +129,7 @@ python -m career_engine --sources csv --import-csv candidates.csv
 This does not synchronize Notion, submit applications, or claim comprehensive
 DC labor-market coverage. Without registered sources the default covers two
 remote boards, not the on-site DC market. Hill, association, consulting, advocacy,
-think-tank and small-employer vacancies often remain outside these feeds.
+   think-tank and small-employer vacancies often remain outside these feeds.
 
 ## Validation and measurable comparison
 

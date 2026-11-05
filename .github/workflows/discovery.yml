@@ -4,9 +4,9 @@ on:
     inputs:
       source_mode:
         type: choice
-        description: "Free uses public feeds plus configured free APIs; Brave may charge"
-        options: [free, remotive, jobicy, muse, reliefweb, usajobs, brave, both]
-        default: free
+        description: "DC is an unranked public-board audit; free uses other feeds/APIs; Brave may charge"
+        options: [dc, free, remotive, jobicy, muse, reliefweb, usajobs, brave, both]
+        default: dc
         required: true
       query_budget:
         type: number
@@ -28,6 +28,11 @@ on:
         description: "Explicitly authorize possible Brave charges (leave false for free runs)"
         default: false
         required: true
+      dc_detail_budget:
+        type: number
+        description: "Public detail pages per DC board (0–30); dc mode is an unranked source audit"
+        default: 20
+        required: true
 permissions:
   contents: read
   actions: read
@@ -46,6 +51,7 @@ jobs:
       - name: Install packages
         run: python -m pip install -r requirements.txt
       - name: Restore prior history when available
+        if: inputs.source_mode != 'dc'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -70,12 +76,18 @@ jobs:
           EXTRACT_BUDGET: ${{ inputs.extract_budget }}
           SOURCE_PAGES: ${{ inputs.source_pages }}
           ALLOW_PAID_SEARCH: ${{ inputs.allow_paid_search }}
+          DC_DETAIL_BUDGET: ${{ inputs.dc_detail_budget }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$BUDGET" =~ ^[0-9]+$ ]] && (( BUDGET >= 1 && BUDGET <= 20 )) || exit 2
           [[ "$EXTRACT_BUDGET" =~ ^[0-9]+$ ]] && (( EXTRACT_BUDGET >= 0 && EXTRACT_BUDGET <= 30 )) || exit 2
           [[ "$SOURCE_PAGES" =~ ^[0-9]+$ ]] && (( SOURCE_PAGES >= 1 && SOURCE_PAGES <= 20 )) || exit 2
+          [[ "$DC_DETAIL_BUDGET" =~ ^[0-9]+$ ]] && (( DC_DETAIL_BUDGET >= 0 && DC_DETAIL_BUDGET <= 30 )) || exit 2
+          if [[ "$MODE" == dc ]]; then
+            python -m tools.audit_dc_sources --max-details "$DC_DETAIL_BUDGET" --output output/dc-source-audit.json
+            exit 0
+          fi
           case "$MODE" in
             free|jobicy|muse|reliefweb|usajobs) sources="$MODE" ;;
             remotive) sources=remotive ;;
@@ -100,10 +112,13 @@ jobs:
             output/live_brief.csv
             output/screening_audit.csv
             output/discovery_metrics.json
+            output/dc-source-audit.json
+            output/dc-source-audit.csv
+            output/dc-source-audit.md
           if-no-files-found: warn
           retention-days: 30
       - name: Save history
-        if: success()
+        if: success() && inputs.source_mode != 'dc'
         uses: actions/upload-artifact@v4
         with:
           name: career-history

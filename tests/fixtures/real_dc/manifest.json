@@ -1,0 +1,49 @@
+{
+  "kind": "ACTUAL RETRIEVED HTML/RSS FRAGMENTS, MINIMIZED FOR REGRESSION TESTS; NOT SYNTHETIC VACANCIES",
+  "captured_on_user_local_date": "2026-11-04",
+  "description": "Actual visible listing markup retained; navigation removed. Detail pages retain only short factual requirements/duty excerpts in the original content container. Full source HTML and descriptions are not redistributed.",
+  "files": {
+    "senate-index.html": {
+      "url": "https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",
+      "http_status": 200,
+      "original_sha256": "bf729525af9c92d43fb372b62f9ee3eff22c338a9e3f75ab9182933a2b4a529f",
+      "transformation": "selected visible cards, scripts/navigation omitted",
+      "fixture_sha256": "1b3a3a91069880777285de85704c2e93d3e0bd07ee5f4d77ffa7ec3dfab703f8"
+    },
+    "union-index.html": {
+      "url": "https://www.unionjobs.com/location.php?state=District%20of%20Columbia",
+      "http_status": 200,
+      "original_sha256": "e8a6f45c289774805af15f3f054f243b42f793f95a60ffea583163c48cc1a9e9",
+      "transformation": "selected visible cards, scripts/navigation omitted",
+      "fixture_sha256": "934cbbcba15dd9300890b559da8748ce931498fbde0ccb5fdbc95d6b9357b49f"
+    },
+    "senate-detail.html": {
+      "url": "https://careers.employment.senate.gov/job/staff-assistant-washington-district-of-columbia-1283",
+      "http_status": 200,
+      "original_sha256": "9a34e5a536de836a036f2ba0de600e31633ec6ea5e884372c422bee302e56668",
+      "transformation": "original content container with exact short excerpts; remainder omitted",
+      "fixture_sha256": "12b36fade8aaa70300f124f5c6beacf122a46572b83395e5e2e61c976f058b8e"
+    },
+    "union-detail.html": {
+      "url": "https://www.unionjobs.com/listing/31407-administrative-assistant-office-of-the-president",
+      "http_status": 200,
+      "original_sha256": "17ed656ce58857149d749da197b89c43a3b79d0838e7b966d658a6016f1d238c",
+      "transformation": "original content container with exact short excerpts; remainder omitted",
+      "fixture_sha256": "f6b5e4e38cd9d78e93245771b73bcdf15135164a2ea9f49cb942e74108203867"
+    },
+    "epi-detail.html": {
+      "url": "https://www.unionjobs.com/listing/29867-congressional-labor-fellow",
+      "http_status": 200,
+      "original_sha256": "8528e0a1b3cf2dcff5a5ea08d414a6f568f785765957abd3afe5f760cbbcb75a",
+      "transformation": "original content container with exact short excerpts; remainder omitted",
+      "fixture_sha256": "866da3de1209a4d83b95c069ef1ad5b7f607a5ac60a50d5268b8a5da59230d61"
+    },
+    "union-feed.xml": {
+      "url": "https://www.unionjobs.com/rss.php",
+      "http_status": 200,
+      "original_sha256": "e58d4eb19d3258bc1c4cfc20827c05c9e14483bdfd7ee380025f6be6b1e75b0a",
+      "transformation": "three original feed items; no synthetic field values",
+      "fixture_sha256": "f341952b32dceaad53fbecd7dbee468b60dca9e77b7ed9cc5e5d533f20576ad0"
+    }
+  }
+}

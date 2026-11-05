@@ -16,6 +16,7 @@ from career_engine.extract import enrich_public_page
 from career_engine.queries import query_plan
 from career_engine.sources import SourceStats, free_sources, retrieve, REQUIREMENTS
 from career_engine.discovery import geography, expired, deduplicate, exploration_sample, screening_hold
+from career_engine.dc_sources import DC_SOURCES, retrieve_dc
 
 QUERIES = [query.text for query in query_plan(20)]
 LANES = {
@@ -45,7 +46,7 @@ def norm(s):
     return re.sub("[^a-z0-9]+", " ", str(s or "").lower()).strip()
 
 def clean(raw):
-    j = {k: str(raw.get(k, "") or "") for k in ("title", "company", "location", "url", "snippet", "description", "source", "posted_at", "source_id", "closing_at", "sources")}
+    j = {k: str(raw.get(k, "") or "") for k in ("title", "company", "location", "url", "snippet", "description", "source", "posted_at", "source_id", "closing_at", "sources", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind")}
     j["url"] = canonical(j["url"])
     if not j["url"] or not j["title"].strip():
         return None
@@ -102,7 +103,8 @@ def remotive(session):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--sources", default="free", help="free (configured free feeds), remotive,jobicy,muse,reliefweb,usajobs,brave,csv")
+    p.add_argument("--sources", default="dc", help="dc (Senate + Union Jobs regional discovery), free, remotive,jobicy,muse,reliefweb,usajobs,brave,csv")
+    p.add_argument("--dc-detail-budget", type=int, default=20, help="Max public detail pages per DC source (0–30)")
     p.add_argument("--source-pages", type=int, default=6, help="Max requests per added API (1–20)")
     p.add_argument("--query-offset", type=int, help="Override saved query rotation (default: continue from history)")
     p.add_argument("--allow-paid-search", action="store_true", help="Explicitly authorize Brave requests, which may be billed")
@@ -116,10 +118,10 @@ def main():
     p.add_argument("--db", default="data/live.db")
     p.add_argument("--output", default="output/live_brief.md")
     args = p.parse_args()
-    if not 1<=args.query_budget<=20 or not 1<=args.results_per_query<=20 or not 0<=args.max_extract<=30 or not 1<=args.source_pages<=20 or (args.query_offset is not None and args.query_offset<0) or not 0<=args.exploration_slots<=50 or args.top<1:
+    if not 1<=args.query_budget<=20 or not 1<=args.results_per_query<=20 or not 0<=args.max_extract<=30 or not 1<=args.source_pages<=20 or (args.query_offset is not None and args.query_offset<0) or not 0<=args.exploration_slots<=50 or args.top<1 or not 0<=args.dc_detail_budget<=30:
         p.error("invalid search or extraction budget")
     requested = [name.strip() for name in args.sources.split(",")]
-    sources = list(dict.fromkeys(name for source in requested for name in (free_sources() if source == "free" else [source])))
+    sources = list(dict.fromkeys(name for source in requested for name in (DC_SOURCES if source == "dc" else free_sources() if source == "free" else [source])))
     if "brave" in sources and not args.allow_paid_search:
         p.error("Brave may charge; use --allow-paid-search only after authorizing charges")
     raw, errors, source_stats = [], [], {}
@@ -136,7 +138,10 @@ def main():
         stats = source_stats[source] = SourceStats()
         start = len(raw)
         try:
-            if source in ("jobicy", *REQUIREMENTS):
+            if source in DC_SOURCES:
+                raw.extend(retrieve_dc(s,source,args.dc_detail_budget,stats))
+                errors.extend(source+": "+message for message in stats.errors)
+            elif source in ("jobicy", *REQUIREMENTS):
                 raw.extend(retrieve(s, source, args.source_pages, stats))
                 errors.extend(source + ": " + message for message in stats.errors)
             elif source == "remotive":
@@ -157,7 +162,7 @@ def main():
         except (requests.RequestException, RuntimeError, OSError, ValueError) as e:
             stats.status = "failed"
             errors.append(source+": "+type(e).__name__)
-        if source not in ("jobicy", *REQUIREMENTS):
+        if source not in (*DC_SOURCES, "jobicy", *REQUIREMENTS):
             stats.received = len(raw) - start
     prepared = []
     invalid_records = 0
@@ -296,7 +301,7 @@ def main():
         w=csv.DictWriter(f,fieldnames=keys);w.writeheader()
         for j in selected:w.writerow({k:j.get(k,"") for k in keys})
     with target.with_name("screening_audit.csv").open("w", encoding="utf-8", newline="") as f:
-        keys = ("score", "title", "company", "location", "url", "source", "lane", "posted_at", "extraction_status", "sources", "source_id", "closing_at", "geography", "decision")
+        keys = ("score", "title", "company", "location", "url", "source", "lane", "posted_at", "extraction_status", "sources", "source_id", "closing_at", "geography", "index_url", "discovery_urls", "raw_location", "retrieved_at", "evidence_status", "detail_status", "record_kind", "decision")
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         for j in sorted(unique.values(), key=lambda x:x["score"], reverse=True):
