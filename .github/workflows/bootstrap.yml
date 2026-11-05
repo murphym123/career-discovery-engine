@@ -1,0 +1,38 @@
+name: One-time source migration
+on:
+  push:
+    paths:
+      - 'migration/source.b64'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore source files from transfer bundle
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64,io,lzma,tarfile
+          from pathlib import Path
+          encoded=Path('migration/source.b64').read_text()
+          data=lzma.decompress(base64.b64decode(encoded))
+          with tarfile.open(fileobj=io.BytesIO(data)) as tar:
+              for item in tar.getmembers():
+                  target=Path(item.name)
+                  if target.is_absolute() or '..' in target.parts or not item.isfile():
+                      raise ValueError('Unexpected archive path')
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  with tar.extractfile(item) as stream:
+                      target.write_bytes(stream.read())
+          PY
+      - name: Commit migrated sources
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Import tested career discovery engine source' || exit 0
+          git push
