@@ -1,0 +1,329 @@
+{
+  "cases": [
+    {
+      "frame_id": "dc-cbe:5274059",
+      "legal_name": "Rodia, LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.rodiaresearch.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5274059",
+      "legal_name": "Rodia, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "page_prefix_limited",
+      "url": "https://www.hepconstruction.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "identity_conflict_or_insufficient_name_evidence",
+      "next_action": "verify_operating_entity_parent_or_rebrand"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://hepconstruction.com/hep-careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://hepconstruction.com/careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273003",
+      "legal_name": "Coast 2 Coast Travel Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273641",
+      "legal_name": "Griffis CRE Holdings LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5274056",
+      "legal_name": "Robtco Property Management",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://www.robtco.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5274056",
+      "legal_name": "Robtco Property Management",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273719",
+      "legal_name": "Micon Constructions, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://miconconstructions.com/careers/",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "page_prefix_limited",
+      "url": "https://www.robertbobbgroup.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "javascript_shell_or_sparse_page",
+      "url": "https://www.robertbobbgroup.com/",
+      "next_action": "optional_public_research_no_hidden_API"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5272975",
+      "legal_name": "BonstraHaresign Architects, LLP",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.bonstra.com/studio/careers/",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5272975",
+      "legal_name": "BonstraHaresign Architects, LLP",
+      "reason": "inventory_unknown_email_application",
+      "url": "mailto:employment@bonstra.com",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273569",
+      "legal_name": "Kahak Inc",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5273018",
+      "legal_name": "Capitol Services Management, Inc.",
+      "reason": "unsafe_redirect",
+      "url": "https://thecsmi.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273018",
+      "legal_name": "Capitol Services Management, Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5272792",
+      "legal_name": "Barrow Consulting Services",
+      "reason": "unapproved_or_nonpublic_employer_URL",
+      "url": "https://www.barrowcs.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5272792",
+      "legal_name": "Barrow Consulting Services",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273246",
+      "legal_name": "Dale Curtis Communications LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274137",
+      "legal_name": "Smile Therapy Services LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273912",
+      "legal_name": "Piedmont Atlantic LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5273208",
+      "legal_name": "Cubicle Griot, LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.cubiclegriot.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273208",
+      "legal_name": "Cubicle Griot, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274602",
+      "legal_name": "Williams, Adley & Company, LLP",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.williamsadley.com/careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274602",
+      "legal_name": "Williams, Adley & Company, LLP",
+      "reason": "inventory_unknown_unsupported_platform_reference",
+      "url": "https://workforcenow.adp.com/mascsr/default/mdf/recwebcomponents/recruitment/main-config/recruitment.js",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274496",
+      "legal_name": "Wellness Diagnostics",
+      "reason": "http_404",
+      "url": "https://www.wellnessdiagnosticllc.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5274496",
+      "legal_name": "Wellness Diagnostics",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274245",
+      "legal_name": "Rana Labs LLC",
+      "reason": "javascript_shell_or_sparse_page",
+      "url": "https://ranalabs.com/",
+      "next_action": "optional_public_research_no_hidden_API"
+    },
+    {
+      "frame_id": "dc-cbe:5274245",
+      "legal_name": "Rana Labs LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273046",
+      "legal_name": "Coretec LLC",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.coretecusa.com/careers/working-at-coretec",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273046",
+      "legal_name": "Coretec LLC",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.coretecusa.com/careers/available-opportunities",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274098",
+      "legal_name": "Olan Williams & Associates, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273977",
+      "legal_name": "North Coast Communications LLC",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://northcoastcomms.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273977",
+      "legal_name": "North Coast Communications LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274515",
+      "legal_name": "Tiber Hudson LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273265",
+      "legal_name": "DC Caulking LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5272842",
+      "legal_name": "1013 Enterprise",
+      "reason": "identity_conflict_or_insufficient_name_evidence",
+      "next_action": "verify_operating_entity_parent_or_rebrand"
+    },
+    {
+      "frame_id": "dc-cbe:5272842",
+      "legal_name": "1013 Enterprise",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273625",
+      "legal_name": "I AM Konsulting LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.iamkonsulting.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273625",
+      "legal_name": "I AM Konsulting LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274165",
+      "legal_name": "Softmax",
+      "reason": "inventory_unknown_external_hiring_channel",
+      "url": "https://softmax.conrep.com/conrep/web/open_jobs.php?params=Q01QQ0Q9NjMwNDUmRElWSUQ9",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273255",
+      "legal_name": "Darnamic Applied Solutions LLC",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://darnamicappliedsolutions.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273255",
+      "legal_name": "Darnamic Applied Solutions LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274177",
+      "legal_name": "Stemulum LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5272896",
+      "legal_name": "A. Wash & Associates, Inc.",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://awashassociates.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5272896",
+      "legal_name": "A. Wash & Associates, Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274181",
+      "legal_name": "Stockbridge Construction LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    }
+  ],
+  "optional_research_contract": "Only these unknown cases; public evidence; proposed URLs remain untrusted until deterministic verification. No model integration or automatic submission."
+}

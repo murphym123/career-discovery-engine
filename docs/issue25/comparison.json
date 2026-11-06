@@ -1,0 +1,68 @@
+{
+  "schema_version": "employer-discovery-comparison/v1",
+  "design": "OBSERVATIONAL; two live windows, same starting saved registry; different allocation, no causal/market-recall claim",
+  "input_sha256": {
+    "employer-source-audit.json": "35b8d64eceeceafa459ae5af1e2ede997e7c87f5ee519171396849070587ae3f",
+    "ats-source-audit.json": "9a380d3ebfa39ae88d034c44138ca509ca00ace0e33ce7425acb4d4709082d24",
+    "prior-registry.json": "1da6c940b4fdbe273a1d70ac7ac6fa0a0237fc19e5ecbc2718fd6a35c36e93ce"
+  },
+  "budgets": {
+    "each_arm_total_requests": 180,
+    "each_arm_bytes": 64000000,
+    "each_arm_seconds": 600,
+    "employer": "30 frozen frame entities; 120 discovery + 60 collection requests, 3 pages/employer, 15 boards, 2 details/board",
+    "global": "existing legacy expand mode; 3 seed queries, 15 boards, 3 per-board + 2 shared details; empty comparison base, five-source collectors not rerun"
+  },
+  "employer_first": {
+    "eligible_employers": 30,
+    "verified_official_sites": 16,
+    "verified_careers_endpoints": 4,
+    "supported_board_groups_discovered": 0,
+    "inventories_attempted": 0,
+    "entities_with_attempted_inventories": 0,
+    "new_board_groups": 0,
+    "known_unpolled_groups": 0,
+    "regional_posting_identities": 0,
+    "regional_with_original_descriptions": 0,
+    "new_regional_identities_in_saved_history": 0,
+    "new_regional_described_in_saved_history": 0,
+    "regional_board_groups": 0,
+    "regional_frame_entities": 0,
+    "unsupported_channel_leads": 10,
+    "employers_with_unsupported_channels": 6,
+    "unresolved_employers": 30,
+    "review_queue_items": 50,
+    "failed_inventory_groups": 0,
+    "identity_access_unresolved_employers": 25,
+    "first_observed_regional_in_saved_history": 0,
+    "first_observed_described_regional_in_saved_history": 0,
+    "requests": 67,
+    "bytes": 5922461,
+    "channel_types": {
+      "employer_html": 7,
+      "email_application": 1,
+      "unsupported_platform_reference": 1,
+      "external_hiring_channel": 1
+    }
+  },
+  "global_board_first": {
+    "regional_posting_identities": 24,
+    "regional_with_original_descriptions": 19,
+    "regional_board_groups": 7,
+    "first_observed_regional_in_saved_history": 17,
+    "first_observed_described_regional_in_saved_history": 12,
+    "selected_boards": 15,
+    "inventories_attempted": 15,
+    "failed_inventory_groups": 2,
+    "requests": 52,
+    "bytes": 9650481,
+    "verified_frame_sites": null,
+    "frame_site_metric_note": "Global mode does not resolve this external employer frame",
+    "frame_board_groups_overlapping_verified_employer_edges": 0
+  },
+  "starting_registry": {
+    "boards": 2368,
+    "run": 3
+  },
+  "limits": "Frame entities, shared board groups, published worksite labels and vacancy/fit are different units. None of these finite windows identifies market-wide recall. Zero employer-arm inventories means not_collected, not no vacancies."
+}

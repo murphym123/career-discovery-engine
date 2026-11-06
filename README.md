@@ -308,3 +308,10 @@ Greenhouse lists request `content=true`; oversized bodies fall back to the metad
 Expanded manual DC regional runs also check the existing USAJOBS collector. Configure repository secrets `USAJOBS_API_KEY`, `USAJOBS_USER_AGENT` (registered email), and repository variable `USAJOBS_TERMS_ACCEPTED=true` only after confirming authorized use and terms. Missing configuration is reported as `configured=false` / `not_collected`; no request is made. The original five-source audit is preserved; federal rows appear separately in regional/combined artifacts.
 
 Registry state is staged and verified before restore, written atomically, and saved only after pipeline success. Explicit partial collection can still be a valid state snapshot. Inspect `registry-restore.json` for provenance or restore failures. Artifacts still expire after 30–90 days; history is not durable cloud storage.
+
+
+### Bounded employer-first DC pilot
+
+`python -m tools.freeze_employer_frame --output-dir work/dc-frame --size 30` freezes a non-personal Open Data DC certified-business frame and a deterministic development batch. `python -m tools.discover_employers --frame work/dc-frame/batch.json --registry data/ats-registry.json --output-dir output/employer-discovery` resolves observed official-site and hiring links, records unknown/unsupported channels, and hands verified supported boards to existing collectors. An optional `--base` preserves the original audit and writes a separate combined capture. No workflow mode or schedule is changed.
+
+See [usage and input schema](docs/issue25/USAGE.md) and [actual results and limits](docs/issue25/RESULTS.md). The measured 30-employer batch corroborated 16 sites but found no supported ATS source; unconventional channel evidence is retained as unknown inventory, not zero jobs or proof of market recall.
