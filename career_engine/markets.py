@@ -32,6 +32,8 @@ class Market:
         return 'elsewhere'
 
     def asdict(self):return {'schema_version':'market/v1','id':self.identifier,'name':self.name,'city':self.city,'state':self.state,
+        'scope_id':'dc-nearby-dmv' if self.identifier=='dc-dmv' else self.identifier,
+        'other_DC_scope_boundaries':{'dc-strict':'District only; separate from nearby DMV','washington-msa':'Full Washington MSA is not implemented by this market fixture'} if self.identifier=='dc-dmv' else {},
         'scope':'DC plus existing nearby-MD/VA fixture' if self.identifier=='dc-dmv' else 'City/state label test; no inferred metro radius or remote eligibility.'}
 
 

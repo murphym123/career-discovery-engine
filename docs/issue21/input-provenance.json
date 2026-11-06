@@ -1,0 +1,45 @@
+{
+  "comparison_base_commit": "d887063f379b2f422390654a7af6e6e2601935e1",
+  "local_archived_equivalent_baseline": "7872c6f",
+  "five_source_base": "actual Nov6 run42193251891,302records,not refreshed for this comparison",
+  "five_source_sha256": "c0834cdd10f9620874b37b259168bfa4bd9a7eb5883c427e1d50376d39f960db",
+  "five_source_records": 302,
+  "as_of_UTC": "2026-11-06T20:04:07+00:00",
+  "transport_requests": {
+    "prior": 58,
+    "new": 66
+  },
+  "run_constraints": {
+    "registry": "empty in both arms; no evidence imports or employer seeds",
+    "board_budget": 12,
+    "seed_queries": 6,
+    "employer_sites": 3,
+    "sitemap_pages": 0,
+    "description_base_budget": 12,
+    "conditional_max_descriptions": 24,
+    "max_requests": 150,
+    "max_seconds": 540,
+    "max_bytes": 64000000,
+    "max_index_pages_per_board": 3
+  },
+  "ranker_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266",
+  "original_base_identical_in_both_arms": true,
+  "raw_capture_file_hashes": {
+    "replay/prior/ats/ats-source-audit.json": "63769ef9c8925fde64e53e71b709dad82280b0bab10ab7d7bacbfa1ec34abc73",
+    "replay/prior/combined.json": "0b7ea4e920e1f5228ade540ee82c0d04cd03c7292b0882462010ca547bde60c1",
+    "replay/prior/ats/coverage-audit.json": "8a5bdc5d76dc8585fa1dbe1c90387c6b3a2b4925da4e3d9b3df5eb74dffa8656",
+    "replay/new/ats/ats-source-audit.json": "250259ae1322bab10b7561fa7c82a0811c34084d3418550307eac657201499af",
+    "replay/new/combined.json": "0097ad82471a99d7a02260a78d6e5e1946c20214c2eadcf260c17cf0577b0b2f",
+    "replay/new/ats/coverage-audit.json": "c3da39edd2fa78413594be6bf89002a7194433af9d62571df643c62c3d720185"
+  },
+  "paired_source_observation_window": {
+    "earliest": "2026-11-06T19:59:29+00:00",
+    "latest": "2026-11-06T20:04:07+00:00"
+  },
+  "direct_source_observation_window": {
+    "earliest": "2026-11-06T19:52:53.306787+00:00",
+    "latest": "2026-11-06T20:03:57.041054+00:00"
+  },
+  "network_requests_during_strict_paired_replay": 0,
+  "sealed_packet_opened": false
+}

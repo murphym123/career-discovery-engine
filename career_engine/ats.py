@@ -9,14 +9,14 @@ import json
 import re
 import time
 from datetime import datetime, timezone
-from urllib.parse import quote, unquote, urlsplit, urlunsplit
+from urllib.parse import quote, unquote, urlsplit, urlunsplit, urlencode
 
 import requests
 from career_engine.extract import safe_public_url, strip_html, USER_AGENT
 from career_engine.discovery import geography
 from career_engine.worksite_evidence import worksite_evidence
 
-PROVIDERS=('greenhouse','lever','ashby')
+PROVIDERS=('greenhouse','lever','ashby','jazzhr','icims')
 PUBLIC_HOSTS={'job-boards.greenhouse.io':'greenhouse','boards.greenhouse.io':'greenhouse',
               'jobs.lever.co':'lever','jobs.eu.lever.co':'lever_eu','jobs.ashbyhq.com':'ashby'}
 API_HOSTS={'boards-api.greenhouse.io','api.lever.co','api.eu.lever.co','api.ashbyhq.com'}
@@ -35,6 +35,9 @@ def board_from_url(url):
     try:
         u=urlsplit(str(url));host=(u.hostname or '').lower()
         if u.scheme not in ('http','https') or u.username or u.password or u.port not in (None,443):return None
+        from career_engine.icims import board_url
+        icims=board_url(url) if u.scheme=='https' else board_url('https:'+str(url).split(':',1)[1])
+        if icims:return icims
         parts=[unquote(x) for x in u.path.strip('/').split('/')]
         provider=PUBLIC_HOSTS.get(host);token=parts[0] if parts else ''
         jazz=re.fullmatch(r'([a-z0-9][a-z0-9-]{0,99})\.applytojob\.com',host)
@@ -52,6 +55,7 @@ def board_from_url(url):
 
 
 def public_board_url(provider,token):
+    if provider=='icims':return 'https://'+token.lower()+'.icims.com/jobs/search'
     if provider=='jazzhr':return 'https://'+token.lower()+'.applytojob.com/apply'
     host={'greenhouse':'job-boards.greenhouse.io','lever':'jobs.lever.co',
           'lever_eu':'jobs.eu.lever.co','ashby':'jobs.ashbyhq.com'}[provider]
@@ -62,6 +66,9 @@ def posting_key(url):
     b=board_from_url(url)
     if not b:return ''
     parts=[unquote(x) for x in urlsplit(url).path.strip('/').split('/')]
+    if b['provider']=='icims':
+        from career_engine.icims import posting_id
+        return posting_id(url)
     if b['provider']=='greenhouse':
         if len(parts)>=3 and parts[1]=='jobs' and re.fullmatch(r'\d+',parts[2]):return b['key']+':'+parts[2]
     elif b['provider']=='jazzhr':
@@ -75,7 +82,7 @@ def canonical_posting_url(url):
     key=posting_key(url)
     if key:
         b=board_from_url(url);post=key.rsplit(':',1)[1]
-        if b['provider']=='jazzhr':return urlunsplit(('https',urlsplit(url).hostname,urlsplit(url).path.rstrip('/'),'',''))
+        if b['provider'] in ('jazzhr','icims'):return urlunsplit(('https',urlsplit(url).hostname,urlsplit(url).path.rstrip('/'),'',''))
         return b['url']+('/jobs/' if b['provider']=='greenhouse' else '/')+post
     if not safe_public_url(str(url)):return ''
     u=urlsplit(url)
@@ -102,6 +109,8 @@ class PublicTransport:
     def allowed(url):
         if not safe_public_url(url):return False
         u=urlsplit(url);p=u.path
+        from career_engine.icims import public_url
+        if public_url(url):return True
         if any(unquote(seg) in ('.','..') or '/' in unquote(seg) or '\\' in unquote(seg) for seg in p.split('/')):return False
         token=r'[A-Za-z0-9%._-]+'
         if u.hostname=='boards-api.greenhouse.io':return bool(re.fullmatch(r'/v1/boards/'+token+r'(?:/jobs(?:/\d+)?)?',p))
@@ -119,7 +128,11 @@ class PublicTransport:
         return False
 
     def redirect_allowed(self,original_host,target):
-        return self.allowed(target) and urlsplit(target).hostname==original_host
+        permitted=self.allowed(target) and urlsplit(target).hostname==original_host
+        if original_host.endswith('.icims.com') and urlsplit(target).path!='/robots.txt':
+            rule=self.robots.get(original_host,False)
+            permitted=permitted and (rule is True or (rule is not False and rule.can_fetch(USER_AGENT,target)))
+        return permitted
 
     def global_stop_reason(self):
         if len(self.requests)>=self.max_requests:return 'request_budget'
@@ -129,13 +142,26 @@ class PublicTransport:
 
     def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False):
         if not self.allowed(url):raise FetchError('unsafe_endpoint')
+        if urlsplit(url).hostname.endswith('.icims.com') and params:
+            from career_engine.icims import public_url
+            u=urlsplit(url);query=u.query+('&' if u.query else '')+urlencode(params,doseq=True)
+            if not public_url(urlunsplit((u.scheme,u.netloc,u.path,query,''))):raise FetchError('unsafe_endpoint')
         original_host=urlsplit(url).hostname
         if original_host in self.blocked:raise FetchError('host_stopped_after_denial')
         for redirect in range(3):
             if time.monotonic()-self.started>self.max_seconds:raise FetchError('time_budget')
             if len(self.requests)>=self.max_requests:raise FetchError('request_budget')
             if self.bytes>=self.max_bytes:raise FetchError('byte_budget')
-            self.pause(1)
+            delay=1
+            if original_host.endswith('.icims.com') and urlsplit(url).path!='/robots.txt':
+                rule=self.robots.get(original_host,False)
+                if rule is False:raise FetchError('robots_not_established')
+                if rule is not True:
+                    if not rule.can_fetch(USER_AGENT,url):raise FetchError('robots_disallowed')
+                    delay=max(1,rule.crawl_delay(USER_AGENT) or 1)
+                    if delay>10:raise FetchError('stricter_crawl_delay_skip')
+            self.pause(delay)
+            if time.monotonic()-self.started>self.max_seconds:raise FetchError('time_budget')
             item={'url':url,'params':params or {},'kind':kind,'observed_at':stamp()};self.requests.append(item)
             try:
                 accept='text/html' if kind=='public_html' else 'text/plain' if kind=='robots' else 'application/rss+xml, application/xml, text/xml' if kind in ('public_feed','seed_sitemap') else 'application/json'
@@ -277,6 +303,9 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
     if not parsed or parsed['key']!=board.get('key') or parsed['provider']!=board.get('provider') or parsed['token']!=board.get('token'):raise ValueError('Invalid observed board')
     if not 1<=max_pages<=10 or not 0<=detail_budget<=30:raise ValueError('Invalid ATS page/detail cap')
     provider=board['provider'];token=quote(board['token'],safe='._-')
+    if provider=='icims':
+        from career_engine.icims import retrieve_icims
+        return retrieve_icims(transport,board,max_pages,detail_budget,market)
     if provider=='jazzhr':
         from career_engine.jazzhr import retrieve_jazzhr
         return retrieve_jazzhr(transport,board,detail_budget,market)
@@ -371,7 +400,7 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=No
     """
     from career_engine.inspection import plan_inspections,identity as inspection_identity
     if not 0<=budget<=30:raise ValueError('Extra detail budget must be 0–30')
-    candidates=[r for r in records if r['provider'] in ('greenhouse','jazzhr') and not r.get('description')
+    candidates=[r for r in records if r['provider'] in ('greenhouse','jazzhr','icims') and not r.get('description')
                 and r.get('detail_status')=='index_only' and r['geography']!='elsewhere']
     candidates.sort(key=lambda r:(r.get('updated_at',''),r['identity']),reverse=True)
     if adaptive:
@@ -384,14 +413,20 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=No
     for choice in plan:
         if transport.global_stop_reason():break
         r=available[choice['identity']];board=boards[r['board_key']]
-        host=urlsplit(r['url']).hostname if r['provider']=='jazzhr' else 'boards-api.greenhouse.io'
+        host=urlsplit(r['url']).hostname if r['provider'] in ('jazzhr','icims') else 'boards-api.greenhouse.io'
         if host in denied or host in transport.blocked:continue
         endpoint='https://boards-api.greenhouse.io/v1/boards/'+quote(board['token'],safe='._-')+'/jobs/'+r['identity'].rsplit(':',1)[-1]
         before=len(transport.requests)
         item={'identity':r['identity'],'board_key':r['board_key'],'stratum':choice['stratum'],'status':'ok',
               'conditional_extra_slot':choice.get('conditional_extra_slot',False)}
         try:
-            if r['provider']=='jazzhr':
+            if r['provider']=='icims':
+                from career_engine.icims import public_html,detail_page
+                from career_engine.review_quarantine import ReviewQuarantine
+                if ReviewQuarantine().matches(r):
+                    r['detail_status']='sealed_review_not_inspected';continue
+                detail_page(public_html(transport,r['url']),r,market)
+            elif r['provider']=='jazzhr':
                 from career_engine.jazzhr import jazz_detail
                 from career_engine.public_sources import public_text
                 jazz_detail(public_text(transport,r['url'],max_bytes=1_000_000,kind='public_html'),r,market)

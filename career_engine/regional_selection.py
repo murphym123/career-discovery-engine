@@ -20,6 +20,7 @@ def evidence_strength(board,market=None):
         title=e.get('job_title') or e.get('job_title_hint','')
         observed_function=family({'title':title})!='other'
         if e.get('kind')=='source_audit_link' and local:strength=6 if observed_function else 5
+        elif e.get('kind') in ('commoncrawl_url_index','internet_archive_url_index','publication_document_link') and local:strength=3
         elif e.get('kind')=='regional_employer_public_link' and local:strength=3  # HQ/link evidence only.
         elif e.get('kind')=='public_provider_sitemap' and local:strength=4 if observed_function else 3
         elif e.get('kind')=='public_provider_sitemap' and market and e.get('market_id')==market.identifier and e.get('geography_hint')=='possible_market':strength=2

@@ -147,7 +147,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional
+          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional --employer-budget 3
       - name: Report collection health independently of ranking
         if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' }}
         env:

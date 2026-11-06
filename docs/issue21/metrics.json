@@ -1,0 +1,66 @@
+{
+  "prior": {
+    "regional_listing_identities": 6,
+    "regional_with_description": 6,
+    "regional_untruncated_descriptions": 6,
+    "regional_boards": 2,
+    "index_identities": 282,
+    "attempted_boards": 12,
+    "retrieval_requests": 31,
+    "total_logical_requests": 58,
+    "regional_not_matched_to_five_source_capture": 2,
+    "possible_regional_crossposts": 4
+  },
+  "new": {
+    "regional_listing_identities": 12,
+    "regional_with_description": 12,
+    "regional_untruncated_descriptions": 12,
+    "regional_boards": 3,
+    "index_identities": 324,
+    "attempted_boards": 12,
+    "retrieval_requests": 38,
+    "total_logical_requests": 66,
+    "regional_not_matched_to_five_source_capture": 8,
+    "possible_regional_crossposts": 4
+  },
+  "change": {
+    "additional_regional_labels": 7,
+    "no_longer_labelled_regional": 1,
+    "previous_regional_record_still_retained": true,
+    "net_regional_labels": 6,
+    "net_described_regional": 6,
+    "new_clear_generalist_0_2_examples_established_in_operational_arm": 0,
+    "verified_paid_current_vacancy_gain": null
+  },
+  "independent_inventory_check": {
+    "regional_listing_identities": 14,
+    "regional_with_description": 14,
+    "regional_untruncated_descriptions": 14,
+    "regional_boards": 3,
+    "all_index_records": 83,
+    "all_descriptions": 14,
+    "exact_matches_to_prior_production_capture": 0,
+    "boards": {
+      "icims:careers-cfr": {
+        "regional_listing_identities": 8,
+        "regional_with_description": 8,
+        "regional_untruncated_descriptions": 8,
+        "regional_boards": 1
+      },
+      "icims:careers-culmen": {
+        "regional_listing_identities": 4,
+        "regional_with_description": 4,
+        "regional_untruncated_descriptions": 4,
+        "regional_boards": 1
+      },
+      "icims:jobs-jhpiego": {
+        "regional_listing_identities": 2,
+        "regional_with_description": 2,
+        "regional_untruncated_descriptions": 2,
+        "regional_boards": 1
+      }
+    },
+    "plausible_early_career_examples_with_material_conditions": 2
+  },
+  "limits": "Listing and description counts, not confirmed current paid jobs or market coverage. Purposeful diagnostic boards are not independent human validation."
+}

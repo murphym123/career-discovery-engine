@@ -1,0 +1,33 @@
+{
+  "provider": "icims",
+  "token": "bowheadcareers-uicalaska",
+  "key": "icims:bowheadcareers-uicalaska",
+  "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search",
+  "first_seen_at": "2026-11-06T20:18:52+00:00",
+  "evidence": [
+    {
+      "kind": "source_audit_link",
+      "url": "https://globaljobs.org/jobs/52091-arlington-virginia-uicgs-bowhead-family-of-companies-terrorism-targeted-violence-risk-mitigation-support-landing-page",
+      "source": "globaljobs",
+      "source_id": "52091",
+      "geography_hint": "dc_dmv",
+      "location": "Arlington, Virginia",
+      "job_title": "Terrorism & Targeted Violence Risk Mitigation Support Landing Page"
+    }
+  ],
+  "last_checked_run": 1,
+  "last_discovered_at": "2026-11-06T20:18:52+00:00",
+  "selection_evidence": {
+    "route": "regional_or_function_evidence",
+    "strength": 5,
+    "platform_cap": 6,
+    "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+  },
+  "icims_location_cursor": 1,
+  "status": "partial_failure",
+  "dc_dmv": 7,
+  "unique": 56,
+  "descriptions": 7,
+  "last_checked_at": "2026-11-06T20:18:52+00:00",
+  "last_errors": []
+}

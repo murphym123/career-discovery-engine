@@ -44,6 +44,7 @@ class EmployerTransport(PublicTransport):
         url=website_url(url)
         if not url or any(urlsplit(url).hostname.removeprefix('www.')==h.removeprefix('www.') or urlsplit(url).hostname.endswith('.'+h.removeprefix('www.')) for h in RESTRICTED):return False
         host=urlsplit(url).hostname
+        if host.endswith('.icims.com') and not PublicTransport.allowed(url):return False
         if host not in self.resolved:
             try:
                 addresses=self.resolver(host,443,type=socket.SOCK_STREAM)
@@ -55,7 +56,9 @@ class EmployerTransport(PublicTransport):
     def allowed(self,url):return PublicTransport.allowed(url) or url in self.observed
 
     def redirect_allowed(self,original_host,target):
-        if super().redirect_allowed(original_host,target):return True
+        permitted=super().redirect_allowed(original_host,target)
+        if original_host.endswith('.icims.com'):return permitted
+        if permitted:return True
         # An HTTP redirect is URL evidence, but only a www alias of this same
         # employer may be followed. Never follow another company or ATS/private API.
         host=urlsplit(target).hostname or ''
@@ -138,6 +141,8 @@ def discover_employer_links(transport,registry,records,budget=8):
             if not hasattr(transport,'observe') or not transport.observe(site['url']):raise FetchError('unapproved_or_nonpublic_employer_URL')
             first=public_text(transport,site['url'],max_bytes=600000,kind='public_html');pages.append(site['url'])
             links=careers_links(first,site['url'])
+            for observed in observed_ats_urls(first):
+                register(registry,observed,{**evidence,'observed_url':observed})
             # All supported ATS links on the observed page are recorded first.
             for url in links:
                 if board_from_url(url):register(registry,url,{**evidence,'observed_url':url})

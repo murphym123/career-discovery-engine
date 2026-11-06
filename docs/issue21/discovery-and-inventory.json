@@ -1,0 +1,1474 @@
+{
+  "prior": {
+    "registry_boards": 52,
+    "new_registry_boards": 52,
+    "boards": [
+      {
+        "board_key": "jazzhr:street",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 3,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 5,
+        "unique": 3,
+        "dc_dmv": 0,
+        "descriptions": 3,
+        "inventory": {
+          "scope": "one public hosted-career index response",
+          "observed_available_items": 3,
+          "metadata_retained": 3,
+          "metadata_complete": null,
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 3,
+          "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+        },
+        "selection_evidence": {
+          "route": "regional_or_function_evidence",
+          "strength": 6,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 3
+      },
+      {
+        "board_key": "greenhouse:10beauty",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 6,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 6,
+        "unique": 6,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 6,
+          "provider_claimed_total": 6,
+          "metadata_retained": 6,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 6,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "ashby:0g",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 9,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 3,
+        "unique": 9,
+        "dc_dmv": 0,
+        "descriptions": 9,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 9,
+          "provider_claimed_total": null,
+          "metadata_retained": 9,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 9,
+          "description_denominator_observed_records": 9,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "lever:174powerglobal",
+        "status": "failed",
+        "errors": [
+          "http_404"
+        ],
+        "warnings": [],
+        "received": 0,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 1,
+        "unique": 0,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": null,
+          "provider_claimed_total": null,
+          "metadata_retained": 0,
+          "metadata_complete": false,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 0,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:nationalnursesunited",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 14,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 5,
+        "provider_claimed_total": 14,
+        "unique": 14,
+        "dc_dmv": 3,
+        "descriptions": 3,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "regional_or_function_evidence",
+          "strength": 6,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 3
+      },
+      {
+        "board_key": "ashby:1password",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 78,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 78,
+        "dc_dmv": 0,
+        "descriptions": 78,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 78,
+          "provider_claimed_total": null,
+          "metadata_retained": 78,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 78,
+          "description_denominator_observed_records": 78,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "lever:100ms",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 10,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 3,
+        "unique": 10,
+        "dc_dmv": 0,
+        "descriptions": 10,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 10,
+          "provider_claimed_total": null,
+          "metadata_retained": 10,
+          "metadata_complete": true,
+          "pagination_page_lengths": [
+            10
+          ],
+          "descriptions_observed": 10,
+          "description_denominator_observed_records": 10,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "ashby:10xteam",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 134,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 134,
+        "dc_dmv": 0,
+        "descriptions": 134,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 134,
+          "provider_claimed_total": null,
+          "metadata_retained": 134,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 134,
+          "description_denominator_observed_records": 134,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:21shares",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 0,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 0,
+        "unique": 0,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 0,
+          "provider_claimed_total": 0,
+          "metadata_retained": 0,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 0,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "lever:15five",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 3,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 3,
+        "dc_dmv": 0,
+        "descriptions": 3,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 3,
+          "provider_claimed_total": null,
+          "metadata_retained": 3,
+          "metadata_complete": true,
+          "pagination_page_lengths": [
+            3
+          ],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 3,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "ashby:council-capital",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 14,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 14,
+        "dc_dmv": 0,
+        "descriptions": 14,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": null,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 14,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:1stavenuepower",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 11,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 11,
+        "unique": 11,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 11,
+          "provider_claimed_total": 11,
+          "metadata_retained": 11,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 11,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      }
+    ],
+    "selected_boards": 12,
+    "attempted_boards": 12,
+    "seed_queries": [
+      {
+        "provider": "greenhouse",
+        "pattern": "job-boards.greenhouse.io/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": 6,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 34,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 930,
+          "new_boards": 34,
+          "limit": 1000,
+          "capped": true,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "lever",
+        "pattern": "jobs.lever.co/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 5,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 166,
+          "new_boards": 5,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "ashby",
+        "pattern": "jobs.ashbyhq.com/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": null,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 10,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 978,
+          "new_boards": 10,
+          "limit": 1000,
+          "capped": true,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "greenhouse",
+        "pattern": "job-boards.greenhouse.io/council*",
+        "family": "employer_prefix:council*",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_404",
+        "index_lines": 0,
+        "new_boards": 0,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 0,
+          "new_boards": 0,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "lever",
+        "pattern": "jobs.lever.co/council*",
+        "family": "employer_prefix:council*",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 0,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 0,
+          "new_boards": 0,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "ashby",
+        "pattern": "jobs.ashbyhq.com/council*",
+        "family": "employer_prefix:council*",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 1,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 3,
+          "new_boards": 1,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      }
+    ],
+    "regional_evidence": {
+      "public_sitemaps": [],
+      "employer_directory": {
+        "status": "ok",
+        "url": "https://query.wikidata.org/sparql",
+        "query": "SELECT DISTINCT ?org ?orgLabel ?website WHERE { ?org wdt:P159 wd:Q61 ; wdt:P856 ?website . SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } } ORDER BY ?org LIMIT 200 OFFSET 0",
+        "bindings": 200,
+        "new_employer_sites": 197,
+        "note": "CC0 crowd-maintained headquarters/website leads, not job-location or current-employer verification."
+      },
+      "employer_link_checks": [
+        {
+          "url": "https://www.centropa.org/hu",
+          "company_label": "Centropa",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://www.centropa.org/hu"
+          ],
+          "requests": 2
+        },
+        {
+          "url": "https://www.embassyofstlucia.org/",
+          "company_label": "embassy of Saint Lucia in the United States",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://www.embassyofstlucia.org/"
+          ],
+          "requests": 2
+        },
+        {
+          "url": "https://globewomen.org/",
+          "company_label": "GlobeWomen Research and Education Institut",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://globewomen.org/"
+          ],
+          "requests": 2
+        }
+      ]
+    },
+    "platform_counts": {
+      "selected": {
+        "jazzhr": 1,
+        "greenhouse": 4,
+        "ashby": 4,
+        "lever": 3
+      },
+      "attempted": {
+        "jazzhr": 1,
+        "greenhouse": 4,
+        "ashby": 4,
+        "lever": 3
+      }
+    }
+  },
+  "new": {
+    "registry_boards": 52,
+    "new_registry_boards": 52,
+    "boards": [
+      {
+        "board_key": "jazzhr:street",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 3,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 4,
+        "unique": 3,
+        "dc_dmv": 0,
+        "descriptions": 2,
+        "inventory": {
+          "scope": "one public hosted-career index response",
+          "observed_available_items": 3,
+          "metadata_retained": 3,
+          "metadata_complete": null,
+          "descriptions_observed": 2,
+          "description_denominator_observed_records": 3,
+          "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+        },
+        "selection_evidence": {
+          "route": "regional_or_function_evidence",
+          "strength": 6,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 2
+      },
+      {
+        "board_key": "greenhouse:10beauty",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 6,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 6,
+        "unique": 6,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 6,
+          "provider_claimed_total": 6,
+          "metadata_retained": 6,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 6,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "ashby:0g",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 9,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 3,
+        "unique": 9,
+        "dc_dmv": 0,
+        "descriptions": 9,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 9,
+          "provider_claimed_total": null,
+          "metadata_retained": 9,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 9,
+          "description_denominator_observed_records": 9,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "icims:bowheadcareers-uicalaska",
+        "status": "partial_failure",
+        "errors": [],
+        "warnings": [
+          "regional_form_window_prioritized_global_pagination_incomplete"
+        ],
+        "received": 56,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 10,
+        "observed_regional_search_options": [
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+            "option_label": "DC,Washington, DC,United States",
+            "option_value": "12781-12832-Washington, DC",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          },
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-Hyattsville",
+            "option_label": "MD,Hyattsville,United States",
+            "option_value": "12781-12804-Hyattsville",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          },
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-Rockville",
+            "option_label": "MD,Rockville,United States",
+            "option_value": "12781-12804-Rockville",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          },
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-West+Bethesda",
+            "option_label": "MD,West Bethesda,United States",
+            "option_value": "12781-12804-West Bethesda",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          },
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12830-Arlington",
+            "option_label": "VA,Arlington,United States",
+            "option_value": "12781-12830-Arlington",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          },
+          {
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12830-Falls+Church",
+            "option_label": "VA,Falls Church,United States",
+            "option_value": "12781-12830-Falls Church",
+            "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+          }
+        ],
+        "selected_regional_search": {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+          "option_label": "DC,Washington, DC,United States",
+          "option_value": "12781-12832-Washington, DC",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        "regional_options_not_attempted": 5,
+        "regional_window_complete": true,
+        "unique": 56,
+        "dc_dmv": 7,
+        "descriptions": 7,
+        "inventory": {
+          "scope": "permitted public iCIMS search HTML window",
+          "observed_available_items": null,
+          "provider_claimed_total": null,
+          "metadata_complete": false,
+          "metadata_retained": 56,
+          "pagination_pages": [
+            {
+              "page": 1,
+              "pages": 6,
+              "provider_claimed_total": null,
+              "next_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?pr=1&searchRelation=keyword_all",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search"
+            },
+            {
+              "page": 1,
+              "pages": 1,
+              "provider_claimed_total": null,
+              "next_url": "",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC"
+            }
+          ],
+          "descriptions_observed": 7,
+          "description_denominator_observed_records": 56,
+          "verified_empty": false
+        },
+        "selection_evidence": {
+          "route": "regional_or_function_evidence",
+          "strength": 5,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 7
+      },
+      {
+        "board_key": "lever:174powerglobal",
+        "status": "failed",
+        "errors": [
+          "http_404"
+        ],
+        "warnings": [],
+        "received": 0,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 1,
+        "unique": 0,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": null,
+          "provider_claimed_total": null,
+          "metadata_retained": 0,
+          "metadata_complete": false,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 0,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "non_targeted_exploration",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:nationalnursesunited",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 14,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 5,
+        "provider_claimed_total": 14,
+        "unique": 14,
+        "dc_dmv": 3,
+        "descriptions": 3,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "regional_or_function_evidence",
+          "strength": 6,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 3
+      },
+      {
+        "board_key": "ashby:1password",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 78,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 78,
+        "dc_dmv": 0,
+        "descriptions": 78,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 78,
+          "provider_claimed_total": null,
+          "metadata_retained": 78,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 78,
+          "description_denominator_observed_records": 78,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "lever:100ms",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 10,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 3,
+        "unique": 10,
+        "dc_dmv": 0,
+        "descriptions": 10,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 10,
+          "provider_claimed_total": null,
+          "metadata_retained": 10,
+          "metadata_complete": true,
+          "pagination_page_lengths": [
+            10
+          ],
+          "descriptions_observed": 10,
+          "description_denominator_observed_records": 10,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "ashby:10xteam",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 134,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 134,
+        "dc_dmv": 0,
+        "descriptions": 134,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 134,
+          "provider_claimed_total": null,
+          "metadata_retained": 134,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 134,
+          "description_denominator_observed_records": 134,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:21shares",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 0,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 0,
+        "unique": 0,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 0,
+          "provider_claimed_total": 0,
+          "metadata_retained": 0,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 0,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "lever:15five",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 3,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 3,
+        "dc_dmv": 0,
+        "descriptions": 3,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 3,
+          "provider_claimed_total": null,
+          "metadata_retained": 3,
+          "metadata_complete": true,
+          "pagination_page_lengths": [
+            3
+          ],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 3,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      },
+      {
+        "board_key": "greenhouse:1stavenuepower",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 11,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "provider_claimed_total": 11,
+        "unique": 11,
+        "dc_dmv": 0,
+        "descriptions": 0,
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 11,
+          "provider_claimed_total": 11,
+          "metadata_retained": 11,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 0,
+          "description_denominator_observed_records": 11,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "selection_evidence": {
+          "route": "broad_fill",
+          "strength": 0,
+          "platform_cap": 6,
+          "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+        },
+        "extra_detail_requests": 0
+      }
+    ],
+    "selected_boards": 12,
+    "attempted_boards": 12,
+    "seed_queries": [
+      {
+        "provider": "greenhouse",
+        "pattern": "job-boards.greenhouse.io/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": 6,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 34,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 930,
+          "new_boards": 34,
+          "limit": 1000,
+          "capped": true,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "lever",
+        "pattern": "jobs.lever.co/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 5,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 166,
+          "new_boards": 5,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "ashby",
+        "pattern": "jobs.ashbyhq.com/*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": null,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 10,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 978,
+          "new_boards": 10,
+          "limit": 1000,
+          "capped": true,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "greenhouse",
+        "pattern": "job-boards.greenhouse.io/council*",
+        "family": "employer_prefix:council*",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_404",
+        "index_lines": 0,
+        "new_boards": 0,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 0,
+          "new_boards": 0,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "lever",
+        "pattern": "jobs.lever.co/council*",
+        "family": "employer_prefix:council*",
+        "collection": "CC-MAIN-2026-43",
+        "page": 0,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 0,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 0,
+          "new_boards": 0,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      },
+      {
+        "provider": "icims",
+        "pattern": "*.icims.com/jobs/search*",
+        "family": "unrestricted",
+        "collection": "CC-MAIN-2026-43",
+        "page": null,
+        "status": "http_504",
+        "index_lines": 0,
+        "new_boards": 0,
+        "limit": 2500,
+        "board_URLs": 0,
+        "note": "Historical URL evidence only; no assertion of current employer/job availability.",
+        "fallback": {
+          "status": "ok",
+          "page": 0,
+          "index_lines": 0,
+          "new_boards": 0,
+          "limit": 1000,
+          "capped": false,
+          "page_count_known": false,
+          "note": "Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias."
+        }
+      }
+    ],
+    "regional_evidence": {
+      "public_sitemaps": [],
+      "employer_directory": {
+        "status": "ok",
+        "url": "https://query.wikidata.org/sparql",
+        "query": "SELECT DISTINCT ?org ?orgLabel ?website WHERE { ?org wdt:P159 wd:Q61 ; wdt:P856 ?website . SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } } ORDER BY ?org LIMIT 200 OFFSET 0",
+        "bindings": 200,
+        "new_employer_sites": 197,
+        "note": "CC0 crowd-maintained headquarters/website leads, not job-location or current-employer verification."
+      },
+      "employer_link_checks": [
+        {
+          "url": "https://www.centropa.org/hu",
+          "company_label": "Centropa",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://www.centropa.org/hu"
+          ],
+          "requests": 2
+        },
+        {
+          "url": "https://www.embassyofstlucia.org/",
+          "company_label": "embassy of Saint Lucia in the United States",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://www.embassyofstlucia.org/"
+          ],
+          "requests": 2
+        },
+        {
+          "url": "https://globewomen.org/",
+          "company_label": "GlobeWomen Research and Education Institut",
+          "status": "no_careers_link_observed",
+          "observed_ATS_boards": 0,
+          "pages": [
+            "https://globewomen.org/"
+          ],
+          "requests": 2
+        }
+      ]
+    },
+    "platform_counts": {
+      "selected": {
+        "jazzhr": 1,
+        "greenhouse": 4,
+        "ashby": 3,
+        "icims": 1,
+        "lever": 3
+      },
+      "attempted": {
+        "jazzhr": 1,
+        "greenhouse": 4,
+        "ashby": 3,
+        "icims": 1,
+        "lever": 3
+      }
+    },
+    "platform_funnel": {
+      "ashby": {
+        "newly_discovered": 10,
+        "discovered": 10,
+        "attempted": 3,
+        "index_records": 221,
+        "described_records": 221
+      },
+      "greenhouse": {
+        "newly_discovered": 35,
+        "discovered": 35,
+        "attempted": 4,
+        "index_records": 31,
+        "described_records": 3
+      },
+      "icims": {
+        "newly_discovered": 1,
+        "discovered": 1,
+        "attempted": 1,
+        "index_records": 56,
+        "described_records": 7
+      },
+      "jazzhr": {
+        "newly_discovered": 1,
+        "discovered": 1,
+        "attempted": 1,
+        "index_records": 3,
+        "described_records": 2
+      },
+      "lever": {
+        "newly_discovered": 5,
+        "discovered": 5,
+        "attempted": 3,
+        "index_records": 13,
+        "described_records": 13
+      }
+    }
+  },
+  "independent": {
+    "board_stats": [
+      {
+        "board_key": "icims:careers-cfr",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 19,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 19,
+        "dc_dmv": 8,
+        "descriptions": 8,
+        "inventory": {
+          "scope": "permitted public iCIMS search HTML window",
+          "observed_available_items": 19,
+          "provider_claimed_total": null,
+          "metadata_complete": true,
+          "metadata_retained": 19,
+          "pagination_pages": [
+            {
+              "page": 1,
+              "pages": 1,
+              "provider_claimed_total": null,
+              "next_url": "",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://careers-cfr.icims.com/jobs/search"
+            }
+          ],
+          "descriptions_observed": 8,
+          "description_denominator_observed_records": 19,
+          "verified_empty": false
+        }
+      },
+      {
+        "board_key": "icims:jobs-jhpiego",
+        "status": "partial_failure",
+        "errors": [],
+        "warnings": [
+          "regional_form_window_prioritized_global_pagination_incomplete"
+        ],
+        "received": 24,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": true,
+        "requests": 4,
+        "observed_regional_search_options": [
+          {
+            "url": "https://jobs-jhpiego.icims.com/jobs/search?hashed=-435833945&ss=1&searchLocation=12707-12758-",
+            "option_label": "US-DC",
+            "option_value": "12707-12758-",
+            "form_action": "https://jobs-jhpiego.icims.com/jobs/search?hashed=-435833945"
+          }
+        ],
+        "selected_regional_search": {
+          "url": "https://jobs-jhpiego.icims.com/jobs/search?hashed=-435833945&ss=1&searchLocation=12707-12758-",
+          "option_label": "US-DC",
+          "option_value": "12707-12758-",
+          "form_action": "https://jobs-jhpiego.icims.com/jobs/search?hashed=-435833945"
+        },
+        "regional_options_not_attempted": 0,
+        "regional_window_complete": true,
+        "unique": 21,
+        "dc_dmv": 2,
+        "descriptions": 2,
+        "inventory": {
+          "scope": "permitted public iCIMS search HTML window",
+          "observed_available_items": null,
+          "provider_claimed_total": null,
+          "metadata_complete": false,
+          "metadata_retained": 21,
+          "pagination_pages": [
+            {
+              "page": 1,
+              "pages": 8,
+              "provider_claimed_total": null,
+              "next_url": "https://jobs-jhpiego.icims.com/jobs/search?pr=1&",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://jobs-jhpiego.icims.com/jobs/search"
+            },
+            {
+              "page": 1,
+              "pages": 2,
+              "provider_claimed_total": null,
+              "next_url": "https://jobs-jhpiego.icims.com/jobs/search?pr=1&searchLocation=12707-12758-",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://jobs-jhpiego.icims.com/jobs/search?hashed=-435833945&ss=1&searchLocation=12707-12758-"
+            },
+            {
+              "page": 2,
+              "pages": 2,
+              "provider_claimed_total": null,
+              "next_url": "",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://jobs-jhpiego.icims.com/jobs/search?pr=1&searchLocation=12707-12758-"
+            }
+          ],
+          "descriptions_observed": 2,
+          "description_denominator_observed_records": 21,
+          "verified_empty": false
+        }
+      },
+      {
+        "board_key": "icims:careers-culmen",
+        "status": "ok",
+        "errors": [],
+        "warnings": [],
+        "received": 43,
+        "malformed": 0,
+        "unlisted_omitted": 0,
+        "capped": false,
+        "requests": 2,
+        "unique": 43,
+        "dc_dmv": 4,
+        "descriptions": 4,
+        "inventory": {
+          "scope": "permitted public iCIMS search HTML window",
+          "observed_available_items": 43,
+          "provider_claimed_total": null,
+          "metadata_complete": true,
+          "metadata_retained": 43,
+          "pagination_pages": [
+            {
+              "page": 1,
+              "pages": 1,
+              "provider_claimed_total": null,
+              "next_url": "",
+              "explicit_empty": false,
+              "malformed": 0,
+              "url": "https://careers-culmen.icims.com/jobs/search"
+            }
+          ],
+          "descriptions_observed": 4,
+          "description_denominator_observed_records": 43,
+          "verified_empty": false
+        }
+      }
+    ],
+    "detail_budget": {
+      "base": 9,
+      "max_with_regional_extension": 18
+    },
+    "detail_attempts": 14,
+    "request_count": 22
+  }
+}

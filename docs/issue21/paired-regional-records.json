@@ -1,0 +1,527 @@
+{
+  "prior": [
+    {
+      "identity": "jazzhr:street:PUezjYTzxG",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Energy and Environment",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/PUezjYTzxG/Senior-Fellow-Energy-And-Environment",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4b8e091734a973995b9451b1f95ddd40560db3c3ddaf18231dec6713d5eb3482",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "2027-01-17",
+      "description_observed": true
+    },
+    {
+      "identity": "jazzhr:street:BnH7DBB0Yh",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Finance and Insurance",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4197298f9fe1458f88ea682e06f2b00c8eaa70523f0fcd4e075ac0dcf3b881c7",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "2027-01-05",
+      "description_observed": true
+    },
+    {
+      "identity": "jazzhr:street:ssxWOdjd2D",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Financial Services and Insurance Policy",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "5e7ffe0a946e08972e3de1e5a1b3828d4c1cb89cefb63b546e1a5effe2ebaacd",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "2027-01-27",
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432191009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "Labor Representative - Washington, DC",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432191009",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "f773787189d5271372cb31f3c8cf774dea5db3b3a13f81e9e4be759a8996410f",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432987009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "National Organizer",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432987009",
+      "location": "California; Illinois; DC; Colorado",
+      "raw_location": "California; Illinois; DC; Colorado",
+      "raw_locations": [
+        "California; Illinois; DC; Colorado"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "91aad4950ec138c318c749791fa36f07706f4c417de46e49c814c9566c3e02ff",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4462499009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "Regulatory/Policy Specialist",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009",
+      "location": "Silver Spring/Washington, DC",
+      "raw_location": "Silver Spring/Washington, DC",
+      "raw_locations": [
+        "Silver Spring/Washington, DC"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4db58fc251c25d1fa20cdf1f7c0f37e5c73fcf2d779941ce4216bf6e6e80898a",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    }
+  ],
+  "new": [
+    {
+      "identity": "jazzhr:street:PUezjYTzxG",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Energy and Environment",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/PUezjYTzxG/Senior-Fellow-Energy-And-Environment",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4b8e091734a973995b9451b1f95ddd40560db3c3ddaf18231dec6713d5eb3482",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "2027-01-17",
+      "description_observed": true
+    },
+    {
+      "identity": "jazzhr:street:BnH7DBB0Yh",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Finance and Insurance",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4197298f9fe1458f88ea682e06f2b00c8eaa70523f0fcd4e075ac0dcf3b881c7",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "2027-01-05",
+      "description_observed": true
+    },
+    {
+      "identity": "jazzhr:street:ssxWOdjd2D",
+      "board_key": "jazzhr:street",
+      "provider": "jazzhr",
+      "source": "ats_jazzhr",
+      "title": "Senior Fellow, Financial Services and Insurance Policy",
+      "company": "R Street Institute",
+      "url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy",
+      "location": "Remote",
+      "raw_location": "Remote",
+      "raw_locations": [
+        "Remote"
+      ],
+      "index_url": "https://street.applytojob.com/apply",
+      "geography": "remote_eligibility_unknown",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "",
+      "description_truncated": false,
+      "detail_status": "index_only",
+      "closing_at": "",
+      "description_observed": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26541",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Indian Health Service Network Operations & Support Center:",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26541/indian-health-service-network-operations-%26-support-center%3a/job",
+      "location": "US-MD-Rockville",
+      "raw_location": "US-MD-Rockville",
+      "raw_locations": [
+        "US-MD-Rockville"
+      ],
+      "index_raw_locations": [
+        "Rockville,MD,USA"
+      ],
+      "detail_raw_locations": [
+        "US-MD-Rockville"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "f5752a3e00d251c55f4c6d22bbba1d4daec4d33fa8208f456c9f451860914485",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26443",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Outreach Coordinator",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26443/outreach-coordinator/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "75a203d116f2e88df91dbdf15ffda0e82ef016e54469f93c87c1bbee0ce1263f",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26442",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Senior Maritime Data and Infrastructure Subject Matter Expert",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26442/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "6e0c878e695720d5d2aca7e23636bd46a5d40eae9a67d03de4b727a39a23d258",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26284",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Crash Simulation Engineer",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26284/crash-simulation-engineer/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "8a12ada658c4ddc91da1580be3d32e0b6fcbcdb4502d227c5d32e086aedea9ed",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26236",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Emergency Operations / Telecommunications Specialist",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26236/emergency-operations---telecommunications-specialist/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "6f91144638cfee45c4bd8e2a0a03fe6d233ee33bc7db07c34139d556d53d38f1",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:25624",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Program Manager",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25624/program-manager/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "2f2cfce814f03063770bffbc6d68ea8908433200b0d4e514f029c1c902278765",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:25009",
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "provider": "icims",
+      "source": "ats_icims",
+      "title": "Senior Maritime Data and Infrastructure Subject Matter Expert",
+      "company": "UIC Alaska",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25009/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+      "location": "US-DC-Washington, DC",
+      "raw_location": "US-DC-Washington, DC",
+      "raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_raw_locations": [
+        "Washington, DC, USA"
+      ],
+      "detail_raw_locations": [
+        "US-DC-Washington, DC"
+      ],
+      "index_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "e578cbc5bcdde0cad60c0f3f323ba376d11483db013fe9cbccff9df3645cad6e",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "inventory_search_evidence": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654",
+        "note": "Publisher filter evidence only; raw displayed locations can differ. Not proof of a local worksite."
+      },
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432191009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "Labor Representative - Washington, DC",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432191009",
+      "location": "Washington, DC",
+      "raw_location": "Washington, DC",
+      "raw_locations": [
+        "Washington, DC"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "not_matched_to_five_source_capture",
+      "description_sha256": "f773787189d5271372cb31f3c8cf774dea5db3b3a13f81e9e4be759a8996410f",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432987009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "National Organizer",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432987009",
+      "location": "California; Illinois; DC; Colorado",
+      "raw_location": "California; Illinois; DC; Colorado",
+      "raw_locations": [
+        "California; Illinois; DC; Colorado"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "91aad4950ec138c318c749791fa36f07706f4c417de46e49c814c9566c3e02ff",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4462499009",
+      "board_key": "greenhouse:nationalnursesunited",
+      "provider": "greenhouse",
+      "source": "ats_greenhouse",
+      "title": "Regulatory/Policy Specialist",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009",
+      "location": "Silver Spring/Washington, DC",
+      "raw_location": "Silver Spring/Washington, DC",
+      "raw_locations": [
+        "Silver Spring/Washington, DC"
+      ],
+      "index_url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "geography": "dc_dmv",
+      "record_kind": "advertised_position",
+      "duplicate_status": "possible_crosspost_review",
+      "description_sha256": "4db58fc251c25d1fa20cdf1f7c0f37e5c73fcf2d779941ce4216bf6e6e80898a",
+      "description_truncated": false,
+      "detail_status": "public_description_observed",
+      "closing_at": "",
+      "description_observed": true
+    }
+  ]
+}
