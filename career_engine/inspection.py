@@ -56,7 +56,7 @@ def evidence_tier(row):
     return 2
 
 
-def plan_inspections(rows,budget=20,seed=0,strategy="diverse"):
+def plan_inspections(rows,budget=20,seed=0,strategy="diverse",location_classifier=geography):
     if not 0<=budget<=30 or strategy not in ("diverse","prefix"):
         raise ValueError("invalid inspection budget/strategy")
     unique={}
@@ -68,8 +68,8 @@ def plan_inspections(rows,budget=20,seed=0,strategy="diverse"):
     selected=[];seen=set();employers=Counter();families=Counter();titles=Counter()
     def hashed(row):return hashlib.sha256((str(seed)+"|"+identity(row)).encode()).hexdigest()
     def geo(row):
-        label=geography(row.get("location",""))
-        return {"dc_dmv":0,"regional_worksite_unknown":1,"unknown":1,"remote_eligibility_unknown":2,"us_remote":2,"elsewhere":3}[label]
+        label=location_classifier(row.get("location",""))
+        return {"dc_dmv":0,"in_market":0,"regional_worksite_unknown":1,"unknown":1,"remote_eligibility_unknown":2,"us_remote":2,"elsewhere":3}[label]
     def choose(pool,count,stratum,diversify=True):
         for _ in range(count):
             available=[row for row in pool if identity(row) not in seen]

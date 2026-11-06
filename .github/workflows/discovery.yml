@@ -15,7 +15,7 @@ on:
         required: true
       expanded_ats:
         type: boolean
-        description: "DC only: discover employer ATS boards using free public URL indexes"
+        description: "DC only: regional source evidence, public ATS discovery, and separate broad exploration"
         default: false
         required: true
       ats_board_budget:
@@ -147,7 +147,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS"
+          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional
       - name: Publish experimental ranking from the existing DC audit
         if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' && inputs.experimental_ranking }}
         env:
@@ -175,6 +175,9 @@ jobs:
             output/dc-source-audit.json
             output/dc-source-audit.csv
             output/dc-source-audit.md
+            output/coverage-audit.json
+            output/coverage-audit.csv
+            output/coverage-audit.md
             output/experimental-ranking/
             output/ats-discovery/
             output/dc-expanded-audit.json

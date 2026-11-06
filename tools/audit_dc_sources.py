@@ -10,11 +10,12 @@ import requests
 from career_engine.dc_sources import ALL_DC_SOURCES,retrieve_dc,observe_selected_details
 from career_engine.sources import SourceStats
 from career_engine.discovery import geography
+from career_engine.publication_audit import PublicationObserver,build_ledger,write_ledger
 
 
 def capture(sources=ALL_DC_SOURCES,max_details=20,session=None,strategy="diverse",seed=0):
     records,stats=[],{}
-    session=session if session is not None else requests.Session()
+    session=PublicationObserver(session if session is not None else requests.Session())
     for source in sources:
         counts=SourceStats()
         records.extend(retrieve_dc(session,source,max_details,counts,strategy=strategy,seed=seed))
@@ -25,7 +26,7 @@ def capture(sources=ALL_DC_SOURCES,max_details=20,session=None,strategy="diverse
         row["geography"]=geography(row["location"])
     return dict(kind="ACTUAL RETRIEVED BOARD RECORDS; NOT CONFIRMED OPENINGS OR RECOMMENDATIONS",
                 captured_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                inspection_strategy=strategy,inspection_seed=seed,records=records,stats=stats)
+                inspection_strategy=strategy,inspection_seed=seed,records=records,stats=stats,publication_observations=session.observations)
 
 
 def main():
@@ -57,6 +58,7 @@ def main():
         data=capture(sources,args.max_details,strategy=args.inspection_strategy,seed=args.inspection_seed)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n")
+    write_ledger(args.output.parent/'coverage-audit.json',build_ledger(data))
     def cell(value):return str(value).replace("|","\\|").replace("\n"," ")
     lines=["# DC source audit — unranked", "", data["kind"], "",
            "These are observed board records, not employer-confirmed openings or recommendations. Full public descriptions, where retrieved, are in the CSV.", "",

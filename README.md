@@ -7,6 +7,39 @@ not establish qualifications, job availability or interview probabilities.
 
 ## New: optional discovery of unfamiliar public ATS boards
 
+Issue #14 extends this path with advertised public JazzHR sitemap seeds and
+hosted job inventories, an Impact Opportunity RSS adapter, and passive discovery
+of RSS/Atom, sitemap, career-site and ATS publication links. These are publication
+mechanisms, not an employer allowlist. The independent coverage ledger records
+discovered, searched, partial, inaccessible and not-yet-covered sources, with
+explicit inventory denominators where available.
+
+Read the [current coverage assessment](docs/issue14/ASSESSMENT.md),
+[actual recovered examples](docs/issue14/RECOVERED_EXAMPLES.md),
+[measured comparison](docs/issue14/metrics.json), and
+[small interface boundaries](docs/issue14/INTERFACES.md). The bounded DC test
+recovered meaningful additional employers, but also unpaid appointments, pools
+and specialist work; it does not measure the whole employment market.
+
+```sh
+# Existing manual DC path; no new credentials. Both commands are manual.
+python -m tools.audit_dc_sources --output output/dc-source-audit.json
+python -m tools.expand_ats --base output/dc-source-audit.json --strategy regional
+
+# Separate portable cold start, without the DC source fixture or seed employers:
+python -m tools.discover_publications --city Tampa --state FL --output-dir output/tampa
+```
+
+In GitHub, select **source_mode=dc**, **expanded_ats=true**, and keep
+**allow_paid_search=false**. The existing experimental ranking remains optional
+and separate. The report artifact includes `coverage-audit.*`, `ats-discovery/`,
+the original five-source audit, and the combined unranked collection. Registry
+artifacts retain bounded seen identities, source status history and discovery
+cursors across manual runs. Missing/expired artifacts reset that history.
+The optional DC-HQ directory traversal is off by default after a zero-board
+pilot; it is not a prerequisite for publication discovery. No AI evaluator or
+schedule is added.
+
 The manual DC workflow can discover employer boards from free public URL indexes
 and links in source evidence, then read documented Greenhouse, Lever and Ashby
 APIs. The registry starts empty; there is no employer allowlist or tenant-name

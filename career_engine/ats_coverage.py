@@ -7,6 +7,7 @@ from urllib.parse import urlsplit,urlunsplit,parse_qsl,urlencode
 from career_engine.ats import posting_key
 from career_engine.discovery import geography,expired
 from career_engine.review_quarantine import ReviewQuarantine
+from career_engine.worksite_evidence import worksite_evidence
 
 FAMILIES={
  'policy_government_affairs':r'\b(policy|legislat\w*|government (?:affairs|relations)|public affairs|lobby\w*|regulat\w*)\b',
@@ -60,7 +61,7 @@ def early_signal(row):
     return {'kind':'no_signal_or_unknown','evidence':[],'note':'No negative fit inference; missing or unusual evidence remains reviewable.'}
 
 
-def assess_increment(base,rows):
+def assess_increment(base,rows,now=None,market=None):
     quarantine=ReviewQuarantine()
     old_urls={canonical(r.get('url','')):r for r in base if r.get('url')}
     old_postings={}
@@ -98,21 +99,23 @@ def assess_increment(base,rows):
         r['independent_review_quarantined']=quarantine.matches(r)
         r['function_signals']=[] if r['independent_review_quarantined'] else [f for f,p in FAMILIES.items() if re.search(p,r['title'],re.I)]
         r['early_career_signal']=({'kind':'withheld_for_independent_review','evidence':[],'note':'Retained unranked; no automatic evaluation.'} if r['independent_review_quarantined'] else early_signal(r))
-        r['geography']=geography(r['location']);r['expired_by_supplied_date']=expired(r)
+        r.update(worksite_evidence(r,market));r['expired_by_supplied_date']=expired(r,now)
         r['potential_talent_pool_title']=bool(re.search(r'(?i)^(?:general (?:interest|application)|talent (?:pool|community)|pitch your position!?|future opportunities|expression of interest|open application)(?:\s*[-–|:].*)?$',r['title'].strip()))
-        r['coverage_status']='regional_geography_review' if r['geography'] in ('unknown','regional_worksite_unknown','remote_eligibility_unknown') else 'outside_DC_region' if r['geography']=='elsewhere' else 'DC_DMV_label' if r['geography']=='dc_dmv' else 'US_remote_label_not_DC_worksite'
+        r['coverage_status']='IN_MARKET_label' if r['geography']=='in_market' else 'regional_geography_review' if r['geography'] in ('unknown','regional_worksite_unknown','remote_eligibility_unknown') else 'outside_DC_region' if r['geography']=='elsewhere' else 'DC_DMV_label' if r['geography']=='dc_dmv' else 'US_remote_label_not_DC_worksite'
         groups[(tuple(sorted(name_keys(r['company']))),title_key(r['title']))].append(r)
         counts[r['duplicate_status']]+=1
     for key,group in groups.items():
         if len(group)>1:
             gid=hashlib.sha256(repr(key).encode()).hexdigest()[:16]
             for r in group:r['possible_same_employer_title_group']={'id':gid,'count':len(group),'action':'flag_only_distinct_requisitions_retained'}
-    local=[r for r in rows if r['geography']=='dc_dmv']
-    local_new=[r for r in local if r['duplicate_status']=='not_matched_to_five_source_capture' and not r['expired_by_supplied_date'] and r['record_kind']!='prospect_pool' and not r['potential_talent_pool_title']]
-    return {'raw_ATS_source_identities':len(rows),'distinct_board_keys':len({r['board_key'] for r in rows}),
+    local_label=market.local_label if market else 'dc_dmv'
+    local=[r for r in rows if r['geography']==local_label]
+    local_new=[r for r in local if r['duplicate_status']=='not_matched_to_five_source_capture' and not r['expired_by_supplied_date'] and r['record_kind'] not in ('prospect_pool','volunteer_public_appointment','registration_pool') and not r['potential_talent_pool_title']]
+    result={'worksite_evidence_counts':dict(Counter(r['worksite_evidence']['kind'] for r in rows)),'raw_ATS_source_identities':len(rows),'distinct_board_keys':len({r['board_key'] for r in rows}),
             'dc_dmv_labels':len(local),'us_remote_labels':sum(r['geography']=='us_remote' for r in rows),
             'geography_review':sum(r['geography'] in ('unknown','regional_worksite_unknown','remote_eligibility_unknown') for r in rows),
-            'talent_or_prospect_pool_signals':sum(r['record_kind']=='prospect_pool' or r['potential_talent_pool_title'] for r in rows),
+            'talent_or_prospect_pool_signals':sum(r['record_kind'] in ('prospect_pool','registration_pool') or r['potential_talent_pool_title'] for r in rows),
+            'explicit_volunteer_appointments':sum(r['record_kind']=='volunteer_public_appointment' for r in rows),
             'outside_region':sum(r['geography']=='elsewhere' for r in rows),'duplicates':dict(counts),
             'dc_not_matched_to_five_sources':len(local_new),
             'dc_new_conservative_employer_title_groups':len({(tuple(sorted(name_keys(r['company']))) or (r['board_key'],),title_key(r['title'])) for r in local_new}),
@@ -124,3 +127,9 @@ def assess_increment(base,rows):
             'dc_new_title_only_signals':sum(r['early_career_signal']['kind']=='title_only_review' for r in local_new),
             'dc_new_function_signals':dict(Counter(f for r in local_new for f in r['function_signals'])),
             'note':'Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.'}
+
+    result.update(market=market.asdict() if market else {'id':'dc-dmv'},in_market_labels=len(local),unmatched_in_market=len(local_new))
+    if market and market.identifier!='dc-dmv':
+        for key in list(result):
+            if key.startswith('dc_'):result[key.replace('dc_','market_',1)]=result.pop(key)
+    return result

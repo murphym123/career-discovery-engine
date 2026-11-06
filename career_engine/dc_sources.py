@@ -157,6 +157,10 @@ def parse_detail(source, html):
     if status=="public_description_observed":
         from career_engine.ats_registry import observed_ats_urls
         fields["employer_board_urls"]=observed_ats_urls(html)
+        # Keep observed external employer/career links for bounded regional
+        # discovery. Never guess tenant IDs or follow arbitrary reference links.
+        from career_engine.employer_discovery import careers_links
+        fields["employer_site_urls"]=careers_links(html,"")
     return fields,status
 
 

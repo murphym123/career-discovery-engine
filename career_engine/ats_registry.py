@@ -45,7 +45,8 @@ def observed_ats_urls(text):
     return sorted(valid)
 
 
-def empty_registry():return {'schema_version':1,'run':0,'query_offset':0,'index_pages':{},'index_counts':{},'host_not_before':{},'boards':{},'unsupported':[]}
+def empty_registry():return {'schema_version':1,'run':0,'query_offset':0,'index_pages':{},'index_counts':{},'host_not_before':{},'boards':{},'unsupported':[],
+                             'directory_offset':0,'jazz_sitemap_offset':0,'employer_sites':{},'seen_postings':{},'source_status_snapshots':{}}
 
 
 def validate_registry(data):
@@ -56,6 +57,17 @@ def validate_registry(data):
     if not isinstance(result['index_counts'],dict) or not isinstance(result['host_not_before'],dict):raise ValueError('Invalid index/cooldown metadata')
     if not isinstance(result['index_pages'],dict):raise ValueError('Invalid index cursor')
     result['unsupported']=result['unsupported'][:500] if isinstance(result['unsupported'],list) else []
+    for field in ('directory_offset','jazz_sitemap_offset'):
+        value=data.get(field,0)
+        if not isinstance(value,int) or not 0<=value<=100000:raise ValueError('Invalid discovery cursor')
+        result[field]=value
+    for field,limit in (('employer_sites',5000),('seen_postings',50000)):
+        value=data.get(field,{})
+        if not isinstance(value,dict):raise ValueError('Invalid persisted discovery metadata')
+        result[field]={k:v for k,v in list(value.items())[:limit] if isinstance(v,dict)}
+    snapshots=data.get('source_status_snapshots',{})
+    if not isinstance(snapshots,dict):raise ValueError('Invalid source snapshots')
+    result['source_status_snapshots']={k:v[-3:] for k,v in list(snapshots.items())[:6000] if isinstance(v,list)}
     for key,b in list(data['boards'].items())[:5000]:
         if not isinstance(b,dict):continue
         parsed=board_from_url(b.get('url'))
@@ -75,12 +87,19 @@ def register(registry,url,evidence):
         if len(registry['boards'])>=5000:return False
         registry['boards'][board['key']]={**board,'first_seen_at':stamp(),'evidence':[],'last_checked_run':None}
     entry=registry['boards'][board['key']]
-    if evidence not in entry['evidence'] and len(entry['evidence'])<20:entry['evidence'].append(evidence)
+    if evidence not in entry['evidence']:
+        entry['evidence'].append(evidence)
+        def priority(e):
+            return (0 if e.get('kind') in ('source_audit_link','regional_employer_public_link') else 1 if e.get('geography_hint') in ('dc_dmv','in_market','possible_market') else 2)
+        entry['evidence']=sorted(entry['evidence'],key=priority)[:20]
     entry['last_discovered_at']=stamp()
     return True
 
 
-def source_seeds(registry,records):
+def source_seeds(registry,records,market=None):
+    from career_engine.discovery import geography
+    from career_engine.review_quarantine import ReviewQuarantine
+    quarantine=ReviewQuarantine()
     added=0
     for row in records:
         urls=set(observed_ats_urls(row.get('description','')))
@@ -90,7 +109,8 @@ def source_seeds(registry,records):
         for url in urls:
             before=len(registry['boards'])
             register(registry,url,{'kind':'source_audit_link','url':row.get('url',''),'source':row.get('source',''),
-                                  'source_id':row.get('source_id',''),'geography_hint':row.get('geography','unknown')})
+                                  'source_id':row.get('source_id',''),'geography_hint':market.label(row.get('location','')) if market else geography(row.get('location','')),
+                                  'location':row.get('location',''),'job_title':'' if quarantine.matches(row) else row.get('title','')})
             added+=len(registry['boards'])-before
     return added
 

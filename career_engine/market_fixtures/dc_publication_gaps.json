@@ -1,0 +1,21 @@
+{
+  "schema_version": "ecosystem-observations/v1",
+  "observed_local_date": "2026-11-05",
+  "timezone": "America/Denver",
+  "note": "Optional DC audit knowledge, not collection dependencies or employer seeds. These observations describe current access/implementation gaps, not a census.",
+  "sources": [
+    {"url":"https://www.house.gov/employment/positions-with-members-and-committees","source_kind":"institutional_career_channel","retrieval_state":"not_yet_covered","reason":"Official page offers a weekly email bulletin and links a JavaScript career site. Public HTML did not expose an inventory; no internal/token API used.","evidence":{"url":"https://www.house.gov/employment/positions-with-members-and-committees","kind":"official_public_channel_investigation"}},
+    {"url":"https://pac.org/jobs","source_kind":"specialty_board","retrieval_state":"inaccessible","reason":"Published terms restrict automated collection; no collector enabled.","evidence":{"url":"https://pac.org/terms-of-use","kind":"published_access_restriction"}},
+    {"url":"https://careerhq.asaecenter.org/jobs/","source_kind":"specialty_board","retrieval_state":"inaccessible","reason":"HTTP 200 returned an interactive bot challenge rather than searchable inventory. No bypass attempted.","evidence":{"url":"https://careerhq.asaecenter.org/jobs/","kind":"actual_access_challenge"}},
+    {"url":"https://www.foundationlist.org/","source_kind":"specialty_board","retrieval_state":"inaccessible","reason":"Advertised feed investigated, but broad published extraction restrictions prevent enabling collection without publisher authorization.","evidence":{"url":"https://www.foundationlist.org/terms-conditions/","kind":"published_access_restriction"}},
+    {"url":"https://www.politicaljobhunt.com/","source_kind":"specialty_board","retrieval_state":"not_yet_covered","reason":"An RSS channel was observed, but restrictive copying/scraping terms leave integration permission unresolved. Not used in the benchmark or enabled in production.","evidence":{"url":"https://www.politicaljobhunt.com/terms-of-service","kind":"source_policy_investigation"}}
+  ],
+  "ecosystems": [
+    {"ecosystem":"Congress / Hill","observed_channels":["Senate adapter","House public employment page"],"boundary":"Senate has an adapter but source failures remain visible. House inventory is not integrated; email subscriptions and private/JavaScript APIs are not activated."},
+    {"ecosystem":"Think tanks / policy / advocacy / research","observed_channels":["Global Jobs","On Think Tanks","public ATS inventories"],"boundary":"Observed inventories and examples, not an employer census; unindexed/custom career sites remain unknown."},
+    {"ecosystem":"Associations / public affairs / lobbying","observed_channels":["Association CareerHQ","Public Affairs Council","incidental broad-board/ATS postings"],"boundary":"Dedicated channels are blocked or restricted. Incidental postings do not establish systematic sector coverage."},
+    {"ecosystem":"Nonprofits / programs / development / administration","observed_channels":["Work for Nonprofits","Impact Opportunity RSS","public ATS"],"boundary":"Feed windows and crossposts limit marginal gain. Recruiter labels may differ from the ultimate employer."},
+    {"ecosystem":"Consulting / contractors / corporate adjacent work","observed_channels":["public ATS and sitemap candidates"],"boundary":"Some inventories are observed; technical/security-cleared concentration is not representative of all consulting work."},
+    {"ecosystem":"Universities / media / custom and unsupported platforms","observed_channels":["incidental specialty-board postings"],"boundary":"Workday, iCIMS, custom pages and other publication mechanisms are not generally collected. Unknown inventories have no denominator."}
+  ]
+}
