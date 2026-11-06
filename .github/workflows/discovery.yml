@@ -90,14 +90,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p data output
-          while read -r previous_id; do
-            if gh run download "$previous_id" -R "$GITHUB_REPOSITORY" -n public-ats-registry -D data >/dev/null 2>&1; then
-              echo "Restored discovered ATS registry"
-              exit 0
-            fi
-          done < <(gh run list --workflow discovery.yml --limit 15 --json databaseId --jq '.[].databaseId')
-          echo "Starting ATS registry from public URL evidence"
+          python -m tools.registry_state restore
       - name: Run discovery
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
@@ -144,10 +137,13 @@ jobs:
           ATS_BOARD_BUDGET: ${{ inputs.ats_board_budget }}
           SEED_QUERIES: ${{ inputs.source_pages }}
           EXTRA_DETAILS: ${{ inputs.dc_detail_budget }}
+          USAJOBS_API_KEY: ${{ secrets.USAJOBS_API_KEY }}
+          USAJOBS_USER_AGENT: ${{ secrets.USAJOBS_USER_AGENT }}
+          USAJOBS_TERMS_ACCEPTED: ${{ vars.USAJOBS_TERMS_ACCEPTED }}
         shell: bash
         run: |
           set -euo pipefail
-          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional --employer-budget 3
+          python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional --employer-budget 3 --usajobs-pages "$SEED_QUERIES"
       - name: Report collection health independently of ranking
         if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' }}
         env:
@@ -187,6 +183,7 @@ jobs:
             output/coverage-audit.json
             output/coverage-audit.csv
             output/coverage-audit.md
+            output/registry-restore.json
             output/collection-status.json
             output/collection-status.md
             output/experimental-ranking/
@@ -205,11 +202,14 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+      - name: Validate and seal completed registry snapshot
+        if: success() && inputs.source_mode == 'dc' && inputs.expanded_ats
+        run: python -m tools.registry_state seal
       - name: Save discovered ATS registry for future manual runs
-        if: always() && inputs.source_mode == 'dc' && inputs.expanded_ats
+        if: success() && inputs.source_mode == 'dc' && inputs.expanded_ats
         uses: actions/upload-artifact@v4
         with:
           name: public-ats-registry
-          path: data/ats-registry.json
-          if-no-files-found: warn
+          path: data/registry-snapshot/
+          if-no-files-found: error
           retention-days: 90

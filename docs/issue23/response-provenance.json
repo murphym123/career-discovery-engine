@@ -1,0 +1,165 @@
+{
+  "collected_at": "2026-11-06T21:10:11+00:00",
+  "responses": [
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+      "params": {
+        "content": "true"
+      },
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:02+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "000.body",
+      "sha256": "04467b90f5679d7a7f23ce8fd9dcb92d6f494d344aebe9f91c8d5a415fe81f9e",
+      "bytes": 202866
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:03+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "001.body",
+      "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1",
+      "bytes": 732
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs",
+      "params": {
+        "content": "true"
+      },
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:05+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": false,
+      "body_file": "002.body",
+      "sha256": "10c08c61682631fa6ed0a4a3e9ad34d27f29eb15603f27118b19ae08080f3e2e",
+      "bytes": 8101058
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:06+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "003.body",
+      "sha256": "42989e47288c30ed905cd20e1ed16f6c12901cb7888474a4b51ed0b2d7dbc711",
+      "bytes": 2736008
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:07+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "004.body",
+      "sha256": "2eac6d6508d32389d987c471ef8e37a870394909ebcd894f115a1c4bb4cc2da7",
+      "bytes": 42
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/4861096007",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:08+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "005.body",
+      "sha256": "1764379453acc0c6242270c1d54a589d02286ec4ecaea242595b67e77d31f70b",
+      "bytes": 16287
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5235308007",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:10+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "006.body",
+      "sha256": "2c42037c0209cb9fea041dfa7cd381e7876c67c39cdaf2b83c4491cce49a3851",
+      "bytes": 17994
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5032221007",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:11+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "007.body",
+      "sha256": "99126320eda641ac7d05a49e90e3f5cbd29964c0f527b3561e79d246655194e1",
+      "bytes": 16280
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:11+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "008.body",
+      "sha256": "2bdc52983c433b650609b82ba73e21985d032bfe367298080bad4250826ce7a8",
+      "bytes": 9782
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432987009",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:11+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "009.body",
+      "sha256": "1cb9f5cd157442e31ead1c6c20627716cf92d4ce66740eb0c579c7ca1ed7101f",
+      "bytes": 16047
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432191009",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:11+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "010.body",
+      "sha256": "95d65d53cd11e0deba341abd77c80834c24a7def668fbb5a58be05687a2e0d8a",
+      "bytes": 15288
+    },
+    {
+      "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4462499009",
+      "params": {},
+      "status": 200,
+      "observed_at": "2026-11-06T21:10:11+00:00",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "complete": true,
+      "body_file": "011.body",
+      "sha256": "004f8951d2e2a1a32224d39ecda31a35f6590951a1b2d8202ed5c08f14d4a088",
+      "bytes": 10678
+    }
+  ]
+}

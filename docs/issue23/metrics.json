@@ -1,0 +1,297 @@
+{
+  "before_ref": "b0fbaabef2f3390fc36519bf6d09b1225d8aba5e",
+  "before_module_sha256": "32d76217253b2f972950fb8bf4dd5f43d983dfac77901b326049ee5c92a6a2a5",
+  "budgets_each": {
+    "max_requests": 30,
+    "max_bytes": 64000000,
+    "response_bytes": 8000000,
+    "detail_budget": 3
+  },
+  "boards": {
+    "nationalnursesunited": {
+      "before": {
+        "records": 14,
+        "regional_records": 3,
+        "regional_descriptions": 3,
+        "descriptions": 3,
+        "requests": 5,
+        "extra_detail_requests": 3,
+        "bytes": 52527,
+        "status": "ok",
+        "capped": false,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "metadata_and_bounded_details",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 9782,
+            "sha256": "2bdc52983c433b650609b82ba73e21985d032bfe367298080bad4250826ce7a8"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 732,
+            "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432987009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 16047,
+            "sha256": "1cb9f5cd157442e31ead1c6c20627716cf92d4ce66740eb0c579c7ca1ed7101f"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432191009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 15288,
+            "sha256": "95d65d53cd11e0deba341abd77c80834c24a7def668fbb5a58be05687a2e0d8a"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4462499009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 10678,
+            "sha256": "004f8951d2e2a1a32224d39ecda31a35f6590951a1b2d8202ed5c08f14d4a088"
+          }
+        ]
+      },
+      "after": {
+        "records": 14,
+        "regional_records": 3,
+        "regional_descriptions": 3,
+        "descriptions": 14,
+        "requests": 2,
+        "extra_detail_requests": 0,
+        "bytes": 203598,
+        "status": "ok",
+        "capped": false,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 14,
+          "descriptions_complete": true,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "content_list",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+            "params": {
+              "content": "true"
+            },
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 202866,
+            "sha256": "04467b90f5679d7a7f23ce8fd9dcb92d6f494d344aebe9f91c8d5a415fe81f9e"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 732,
+            "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1"
+          }
+        ]
+      },
+      "all_before_identities_retained": true
+    },
+    "andurilindustries": {
+      "before": {
+        "records": 2593,
+        "regional_records": 238,
+        "regional_descriptions": 3,
+        "descriptions": 3,
+        "requests": 5,
+        "extra_detail_requests": 3,
+        "bytes": 2786611,
+        "status": "ok",
+        "capped": true,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 2593,
+          "provider_claimed_total": 2593,
+          "metadata_retained": 2593,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 2593,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "metadata_and_bounded_details",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 2736008,
+            "sha256": "42989e47288c30ed905cd20e1ed16f6c12901cb7888474a4b51ed0b2d7dbc711"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 42,
+            "sha256": "2eac6d6508d32389d987c471ef8e37a870394909ebcd894f115a1c4bb4cc2da7"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/4861096007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:53+00:00",
+            "status": 200,
+            "bytes": 16287,
+            "sha256": "1764379453acc0c6242270c1d54a589d02286ec4ecaea242595b67e77d31f70b"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5235308007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 17994,
+            "sha256": "2c42037c0209cb9fea041dfa7cd381e7876c67c39cdaf2b83c4491cce49a3851"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5032221007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 16280,
+            "sha256": "99126320eda641ac7d05a49e90e3f5cbd29964c0f527b3561e79d246655194e1"
+          }
+        ]
+      },
+      "after": {
+        "records": 2593,
+        "regional_records": 238,
+        "regional_descriptions": 3,
+        "descriptions": 3,
+        "requests": 6,
+        "extra_detail_requests": 3,
+        "bytes": 10847539,
+        "status": "partial_failure",
+        "capped": true,
+        "errors": [
+          "content_list_response_too_large"
+        ],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 2593,
+          "provider_claimed_total": 2593,
+          "metadata_retained": 2593,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "descriptions_complete": false,
+          "description_denominator_observed_records": 2593,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "metadata_fallback_bounded_details",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs",
+            "params": {
+              "content": "true"
+            },
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes_observed": 8060928,
+            "error": "response_too_large",
+            "response_limit": 8000000
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 2736008,
+            "sha256": "42989e47288c30ed905cd20e1ed16f6c12901cb7888474a4b51ed0b2d7dbc711"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 42,
+            "sha256": "2eac6d6508d32389d987c471ef8e37a870394909ebcd894f115a1c4bb4cc2da7"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/4861096007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 16287,
+            "sha256": "1764379453acc0c6242270c1d54a589d02286ec4ecaea242595b67e77d31f70b"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5235308007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 17994,
+            "sha256": "2c42037c0209cb9fea041dfa7cd381e7876c67c39cdaf2b83c4491cce49a3851"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/andurilindustries/jobs/5032221007",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:14:54+00:00",
+            "status": 200,
+            "bytes": 16280,
+            "sha256": "99126320eda641ac7d05a49e90e3f5cbd29964c0f527b3561e79d246655194e1"
+          }
+        ]
+      },
+      "all_before_identities_retained": true
+    }
+  }
+}

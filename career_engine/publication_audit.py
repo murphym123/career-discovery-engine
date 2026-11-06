@@ -130,6 +130,12 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
                 requests=stats['requests'],in_market_labels=sum(r.get('geography')==market.local_label for r in ats.get('records',[]) if r['board_key']==key))
     for source,stats in supplemental.get('stats',{}).items():
         rows=[r for r in supplemental.get('records',[]) if r['source']==source]
+        if source=='usajobs':
+            add('https://data.usajobs.gov/api/search','documented_api',{'kind':'authorized_API_adapter','source':source},source=source,
+                retrieval_state='not_collected' if stats.get('status')=='not_collected' else _state(stats),
+                configured=stats.get('configured',False),terms_confirmed=stats.get('terms_confirmed',False),
+                setup_requirements=stats.get('setup_requirements',''),errors=stats.get('errors',[]),inventory=stats.get('inventory',{}))
+            continue
         url=next((r.get('index_url') for r in rows if r.get('index_url')),'https://impactopportunity.org/rss/')
         total=len(rows)
         add(url,'rss',{'kind':'published_job_feed_adapter','source':source},source=source,

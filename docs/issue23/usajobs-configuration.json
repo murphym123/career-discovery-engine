@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-11-06T21:15:14+00:00",
+  "repository_actions_UI": {
+    "repository_secrets": "none configured",
+    "environment_secrets": "none configured",
+    "repository_variables": "none configured",
+    "settings_changed": false
+  },
+  "local_collector_check": {
+    "requests": 0,
+    "received": 0,
+    "malformed": 0,
+    "pages": 0,
+    "capped": false,
+    "status": "not_collected",
+    "unique": 0,
+    "recommended": 0,
+    "inspection_strategy": "",
+    "details_planned": 0,
+    "details_attempted": 0,
+    "descriptions_observed": 0,
+    "index_only": 0,
+    "errors": [
+      "Missing configuration: USAJOBS_API_KEY, USAJOBS_USER_AGENT",
+      "Confirm authorized API use: USAJOBS_TERMS_ACCEPTED=true"
+    ],
+    "index_attempts": [],
+    "access_observations": [],
+    "configured": false,
+    "terms_confirmed": false,
+    "missing_configuration": [
+      "USAJOBS_API_KEY",
+      "USAJOBS_USER_AGENT"
+    ],
+    "setup_requirements": "Request an authorized key at https://developer.usajobs.gov/apirequest/; set USAJOBS_API_KEY and USAJOBS_USER_AGENT (the registered email) as repository secrets; confirm authorized use/terms with repository variable USAJOBS_TERMS_ACCEPTED=true.",
+    "affiliation": "Unofficial research tool; not operated, sponsored, approved or endorsed by OPM."
+  },
+  "records": 0,
+  "live_API_validation": "not_performed_no_credentials"
+}

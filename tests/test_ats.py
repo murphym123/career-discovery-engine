@@ -99,7 +99,7 @@ class URLAndTransportSafetyTests(unittest.TestCase):
 
 
 class ProviderNormalizationTests(unittest.TestCase):
-    def test_greenhouse_metadata_first_preserves_every_region_and_unusual_title(self):
+    def test_greenhouse_requests_content_and_preserves_every_region_and_unusual_title(self):
         b=board_from_url('https://job-boards.greenhouse.io/syntheticcivic');root='https://boards-api.greenhouse.io/v1/boards/syntheticcivic'
         s=Session({root:Response({'name':'Synthetic Civic Organization'}),root+'/jobs':Response({'jobs':[gh_item(),gh_item(2,'London, UK')]}),
                    root+'/jobs/1':Response(gh_item(content='<p>Research and event support. Two years experience.</p>',company_name='Synthetic Civic Organization',first_published='2026-11-05T00:00:00Z'))})
@@ -108,7 +108,7 @@ class ProviderNormalizationTests(unittest.TestCase):
         self.assertEqual(rows[0]['geography'],'dc_dmv');self.assertEqual(rows[1]['geography'],'elsewhere')
         self.assertEqual(rows[0]['posted_at'],'2026-11-05T00:00:00Z')
         self.assertEqual(stats['received'],2);self.assertEqual(s.calls[0][0],root+'/jobs')
-        self.assertFalse(any((call[1] or {}).get('content') for call in s.calls))
+        self.assertEqual(s.calls[0][1],{'content':'true'})
 
     def test_description_denial_does_not_erase_metadata(self):
         b=board_from_url('https://job-boards.greenhouse.io/syntheticcivic');root='https://boards-api.greenhouse.io/v1/boards/syntheticcivic'
