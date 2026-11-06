@@ -1,0 +1,86 @@
+[
+  {
+    "identity": "icims:careers-cfr:3068",
+    "title": "Research Associate, U.S. Foreign Policy",
+    "company": "Council on Foreign Relations",
+    "url": "https://careers-cfr.icims.com/jobs/3068/research-associate%2c-u.s.-foreign-policy/job",
+    "location": "Washington, DC",
+    "description_sha256": "ccd663d17caa5869f59db69bd36bdfc276c1d138419574dbe455141f5e1e9068",
+    "assessment": "plausible_early_career_with_conditions",
+    "evidence_paraphrase": "Related bachelor required; master preferred, not required; one or more years of administrative/internship experience preferred. Research/writing and Office skills. Washington office, hybrid attendance. $55,000-$58,000.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:careers-cfr:3077",
+    "title": "Assistant Video Producer",
+    "company": "Council on Foreign Relations",
+    "url": "https://careers-cfr.icims.com/jobs/3077/assistant-video-producer/job",
+    "location": "Washington, DC",
+    "description_sha256": "88d017dfeb269e63f5e00acbeb1f6938b6120bc2193184970fa4da6f389eb809",
+    "assessment": "plausible_early_career_specialist_skills",
+    "evidence_paraphrase": "At least one year in video/digital media/communications; media/communications bachelor or equivalent practical experience; Adobe Premiere/Creative Cloud and demonstrated social video production. $60,000-$65,000. DC location in public index.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:jobs-jhpiego:8285",
+    "title": "Communications Officer",
+    "company": "Jhpiego",
+    "url": "https://jobs-jhpiego.icims.com/jobs/8285/communications-officer/job",
+    "location": "US-DC; US-MD-Baltimore",
+    "description_sha256": "f8fa6af828cec2943bacc61aabcaf2a1d7e8c1c943dde7d120bdfa523c3266ba",
+    "assessment": "senior_experience_condition",
+    "evidence_paraphrase": "Bachelor with 5-7 years relevant experience, USG global-health experience and communications portfolio; published degree/experience equivalencies require separate review. DC/Baltimore offered labels.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:careers-culmen:4583",
+    "title": "Project Manager II",
+    "company": " Culmen International LLC",
+    "url": "https://careers-culmen.icims.com/jobs/4583/project-manager-ii/job",
+    "location": "US-DC-Washington",
+    "description_sha256": "7385c20df0b280d98487cd042b2472447c54d735253826eefc102fc791ab013d",
+    "assessment": "senior_and_security_conditions",
+    "evidence_paraphrase": "Master in a relevant field, 5-10 years relevant experience, DOE Q or ability to acquire it. Public index/description says Washington DC. Not a generalist 0-2 year role.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:bowheadcareers-uicalaska:26443",
+    "title": "Outreach Coordinator",
+    "company": "UIC Alaska",
+    "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26443/outreach-coordinator/job",
+    "location": "US-DC-Washington, DC",
+    "description_sha256": "75a203d116f2e88df91dbdf15ffda0e82ef016e54469f93c87c1bbee0ce1263f",
+    "assessment": "duration_unspecified_domain_expertise_required",
+    "evidence_paraphrase": "Degree preferred; demonstrated Arctic maritime/policy/infrastructure expertise and federal coordination familiarity. Public Trust/US citizenship conditions published. $65,000-$75,000. Coordinator title does not establish entry level.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:bowheadcareers-uicalaska:26442",
+    "title": "Senior Maritime Data and Infrastructure Subject Matter Expert",
+    "company": "UIC Alaska",
+    "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26442/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+    "location": "US-DC-Washington, DC",
+    "description_sha256": "6e0c878e695720d5d2aca7e23636bd46a5d40eae9a67d03de4b727a39a23d258",
+    "assessment": "senior_repost_identity_uncertain",
+    "evidence_paraphrase": "Relevant bachelor and 7-10 years maritime/supply-chain/infrastructure experience; public-trust/citizenship conditions. Same title and employer as 25009, retained as different requisition IDs; distinct vacancy status unknown.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  },
+  {
+    "identity": "icims:bowheadcareers-uicalaska:26541",
+    "title": "Indian Health Service Network Operations & Support Center:",
+    "company": "UIC Alaska",
+    "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26541/indian-health-service-network-operations-%26-support-center%3a/job",
+    "location": "US-MD-Rockville",
+    "description_sha256": "f5752a3e00d251c55f4c6d22bbba1d4daec4d33fa8208f456c9f451860914485",
+    "assessment": "multi_role_recruiting_notice",
+    "evidence_paraphrase": "Broad contract/team recruitment listing in Rockville, spanning multiple positions and security conditions; do not count it as one confirmed specific vacancy.",
+    "validation": "AI diagnostic review of actual retrieved descriptions; no personal fit score or independent validation",
+    "accepting_applications": "not_tested"
+  }
+]

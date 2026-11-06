@@ -7,6 +7,21 @@ not establish qualifications, job availability or interview probabilities.
 
 ## New: optional discovery of unfamiliar public ATS boards
 
+The [Issue #21 iCIMS increment](docs/issue21/ASSESSMENT.md) adds robots-aware
+public iCIMS search inventories, observed regional search-form options and
+stable posting identities. It repairs `US-DC` / `US-DC-Washington` aliases
+without widening the nearby-DMV market. iCIMS links can come from existing
+sources, employer career pages and a bounded free URL-index query; there is no
+employer allowlist or API key. Shells, restrictions and partial pagination remain
+visible in the source ledger. Regional descriptions use the existing shared
+budget and all uninspected records remain in the full audit.
+
+The measured gain was modest: **6 → 12** regional ATS records with descriptions
+in an equal-budget fresh-registry comparison. Three separate diagnostic boards
+yielded **14** described regional labels; those direct tests are not all automatic
+discoveries or verified early-career vacancies. See the assessment for exact
+budgets, provenance, qualification evidence and remaining source-discovery gaps.
+
 The [Issue #17 production fix](docs/issue17/ASSESSMENT.md) adds per-source
 red/yellow/green health, balanced polling across Greenhouse/Lever/Ashby/JazzHR,
 isolated oversized-response failures and employer-spread regional description
@@ -53,13 +68,15 @@ and separate. The report artifact includes `coverage-audit.*`, `ats-discovery/`,
 the original five-source audit, and the combined unranked collection. Registry
 artifacts retain bounded seen identities, source status history and discovery
 cursors across manual runs. Missing/expired artifacts reset that history.
-The optional DC-HQ directory traversal is off by default after a zero-board
-pilot; it is not a prerequisite for publication discovery. No AI evaluator or
-schedule is added.
+The expanded manual GitHub path now permits three public employer-link checks,
+including the optional DC-HQ directory; the CLI remains off unless
+`--employer-budget` is supplied. These checks found no new boards in the paired
+pilot and remain bounded by the existing request limits. They are not a
+prerequisite for source-link discovery. No AI evaluator or schedule is added.
 
 The manual DC workflow can discover employer boards from free public URL indexes
 and links in source evidence, then read documented Greenhouse, Lever and Ashby
-APIs. The registry starts empty; there is no employer allowlist or tenant-name
+APIs, plus permitted public JazzHR and iCIMS HTML inventories. The registry starts empty; there is no employer allowlist or tenant-name
 guessing. This is a bounded pilot with material source and relevance gaps.
 
 Enable **expanded_ats** (default false) in `source_mode=dc`; leave

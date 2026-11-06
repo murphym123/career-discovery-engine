@@ -1,0 +1,87 @@
+[
+  {
+    "url": "https://careers-cfr.icims.com/jobs/search",
+    "original_sha256": "d6a0a36d8826e64a2a77a096fe2ee4f3a18024bbc2486b5b41317ed6b23e945b",
+    "observed_at": "2026-11-06T19:55:25.136725+00:00",
+    "fixture_kind": "actual DOM card and metadata; overview/form/scripts removed; one-page wrapper added; not an independent validation sample",
+    "html": "<title>CFR Careers Center - Job Listings at Council on Foreign Relations</title><meta name=\"description\" content=\"View all current positions at Council on Foreign Relations across all categories and locations. See a position you like? Contact us and apply today!\"></meta><ul><li class=\"iCIMS_JobCardItem\">\n<div class=\"row\">\n<div class=\"col-xs-12 title\">\n<a href=\"https://careers-cfr.icims.com/jobs/3077/assistant-video-producer/job\" class=\"iCIMS_Anchor\" title=\"3077 - Assistant Video Producer\">\n<span class=\"sr-only field-label\">Title</span>\n<h3>\nAssistant Video Producer</h3>\n</a>\n</div>\n\n<div class=\"col-xs-12 additionalFields\">\n<dl class=\"iCIMS_JobHeaderGroup\">\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\"><span class=\"glyphicons glyphicons-map-marker\" aria-hidden=\"true\"></span>\n<span class=\"sr-only field-label\">Location : Location</span>\n</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nUS-DC-Washington</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Type</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nRegular Full-Time</span>\n</dd>\n</div>\n</dl>\n</div>\n</div>\n</li></ul><h2>Page 1 of 1</h2>",
+    "expected": [
+      {
+        "identity": "icims:careers-cfr:3077",
+        "title": "Assistant Video Producer",
+        "raw_locations": [
+          "US-DC-Washington"
+        ],
+        "geography": "dc_dmv"
+      }
+    ]
+  },
+  {
+    "url": "https://jobs-jhpiego.icims.com/jobs/search",
+    "original_sha256": "8fdcbea4a44567182fada2867768128e262418622afbed43f28a20f0f5f323de",
+    "observed_at": "2026-11-06T19:55:36.258905+00:00",
+    "fixture_kind": "actual DOM card and metadata; overview/form/scripts removed; one-page wrapper added; not an independent validation sample",
+    "html": "<title>Job Listings at Jhpiego</title><meta name=\"description\" content=\"View all current positions at Jhpiego across all categories and locations. See a position you like? Contact us and apply today!\"></meta><ul><li class=\"iCIMS_JobCardItem\">\n<div class=\"row\">\n<div class=\"col-xs-6 header left\">\n</div>\n<div class=\"col-xs-6 header right\">\n<span class=\"sr-only field-label\">Posted Date</span>\n<span title=\"11/6/2026 6:32 AM\">\n8 hours ago<span class=\"sr-only\">(11/6/2026 6:32 AM)</span></span>\n</div>\n<div class=\"col-xs-12 title\">\n<a href=\"https://jobs-jhpiego.icims.com/jobs/8334/associate-director-sustainability-%26-health-systems-strengthening-and-hrh/job\" class=\"iCIMS_Anchor\" title=\"8334 - Associate Director-Sustainability &amp; Health Systems Strengthening and HRH\">\n<span class=\"sr-only field-label\">Job Title</span>\n<h3>\nAssociate Director-Sustainability &amp; Health Systems Strengthening and HRH</h3>\n</a>\n</div>\n\n<div class=\"col-xs-12 additionalFields\">\n<dl class=\"iCIMS_JobHeaderGroup\">\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Job ID</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\n2026-8334</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Work Arrangement</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nOn Site</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\"><span class=\"glyphicons glyphicons-map-marker\" aria-hidden=\"true\"></span>\n<span class=\"sr-only field-label\">Job Location: Country</span>\n</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nNG</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\"><span class=\"glyphicons glyphicons-map-marker\" aria-hidden=\"true\"></span>\n<span class=\"sr-only field-label\">City</span>\n</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nAbuja</span>\n</dd>\n</div>\n</dl>\n</div>\n</div>\n</li></ul><h2>Page 1 of 1</h2>",
+    "expected": [
+      {
+        "identity": "icims:jobs-jhpiego:8334",
+        "title": "Associate Director-Sustainability & Health Systems Strengthening and HRH",
+        "raw_locations": [
+          "NG-Abuja"
+        ],
+        "geography": "elsewhere"
+      }
+    ]
+  },
+  {
+    "url": "https://careers-culmen.icims.com/jobs/search",
+    "original_sha256": "a8eb1e69bd7e0568cdd3d5fde56a41983af58e478158ae8d4edaf58893bfd4b5",
+    "observed_at": "2026-11-06T19:55:45.087683+00:00",
+    "fixture_kind": "actual DOM card and metadata; overview/form/scripts removed; one-page wrapper added; not an independent validation sample",
+    "html": "<title>Job Listings at  Culmen International LLC</title><meta name=\"description\" content=\"View all current positions at  Culmen International LLC across all categories and locations. See a position you like? Contact us and apply today!\"></meta><ul><li class=\"iCIMS_JobCardItem\">\n<div class=\"row\">\n<div class=\"col-xs-6 header left\">\n<span class=\"sr-only field-label\">Job Locations</span>\n<span>\nUS-OH-Dayton</span>\n</div>\n<div class=\"col-xs-6 header right\">\n</div>\n<div class=\"col-xs-12 title\">\n<a href=\"https://careers-culmen.icims.com/jobs/4647/engagement-protocol-communications-officer-%28mid-level%29/job\" class=\"iCIMS_Anchor\" title=\"4647 - Engagement Protocol Communications Officer (Mid-Level)\">\n<span class=\"sr-only field-label\">Title</span>\n<h3>\nEngagement Protocol Communications Officer (Mid-Level)</h3>\n</a>\n</div>\n\n<div class=\"col-xs-12 additionalFields\">\n<dl class=\"iCIMS_JobHeaderGroup\">\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">ID</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\n2026-4647</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Clearance Requirements</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nTop Secret with SCI eligibility</span>\n</dd>\n</div>\n</dl>\n</div>\n</div>\n</li></ul><h2>Page 1 of 1</h2>",
+    "expected": [
+      {
+        "identity": "icims:careers-culmen:4647",
+        "title": "Engagement Protocol Communications Officer (Mid-Level)",
+        "raw_locations": [
+          "US-OH-Dayton"
+        ],
+        "geography": "elsewhere"
+      }
+    ]
+  },
+  {
+    "url": "https://careers-brookings.icims.com/jobs/search?ss=1&hashed=-435682078",
+    "original_sha256": "91b3e6a9f8ed780074fe3106d5c766320aea33638f258862af96f40c3ef2c54c",
+    "observed_at": "2026-11-06T10:06:52+00:00",
+    "fixture_kind": "actual DOM card and metadata; overview/form/scripts removed; one-page wrapper added; not an independent validation sample",
+    "html": "<title>Jobs and Internships | Brookings Institution | Job Openings at The Brookings Institution</title><meta name=\"description\" content=\"View all current positions at The Brookings Institution across all categories and locations. See a position you like? Contact us and apply today!\"></meta><ul><li class=\"iCIMS_JobCardItem\">\n<div class=\"row\">\n<div class=\"col-xs-12 title\">\n<a href=\"https://careers-brookings.icims.com/jobs/3923/research-assistant%2c-economic-studies-%28job-id%3a-2026-3923%29/job\" class=\"iCIMS_Anchor\" title=\"3923 - Research Assistant, Economic Studies (Job ID: 2026-3923)\">\n<span class=\"sr-only field-label\">Job Title</span>\n<h3>\nResearch Assistant, Economic Studies (Job ID: 2026-3923)</h3>\n</a>\n</div>\n\n<div class=\"col-xs-12 additionalFields\">\n<dl class=\"iCIMS_JobHeaderGroup\">\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Job ID</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\n2026-3923</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Program</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nEconomic Studies</span>\n</dd>\n</div>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\"><span class=\"glyphicons glyphicons-map-marker\" aria-hidden=\"true\"></span>\n<span class=\"sr-only field-label\">Location</span>\n</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span>\nUS-DC-Washington</span>\n</dd>\n</div>\n</dl>\n</div>\n</div>\n</li></ul><h2>Page 1 of 1</h2>",
+    "expected": [
+      {
+        "identity": "icims:careers-brookings:3923",
+        "title": "Research Assistant, Economic Studies (Job ID: 2026-3923)",
+        "raw_locations": [
+          "US-DC-Washington"
+        ],
+        "geography": "dc_dmv"
+      }
+    ]
+  },
+  {
+    "url": "https://careers-aei.icims.com/jobs/search?bga=true&hashed=-435590589&height=500&jan1offset=-300&jun1offset=-240&mobile=false&needsRedirect=false&width=1154",
+    "original_sha256": "18187222428b4e12be7050b4d78c6792a1987f37cc984cf44c2666ce93da87d7",
+    "observed_at": "2026-11-06T10:06:52+00:00",
+    "fixture_kind": "actual DOM card and metadata; overview/form/scripts removed; one-page wrapper added; not an independent validation sample",
+    "html": "<title>Job Listings at American Enterprise Institute</title><meta name=\"description\" content=\"View all current positions at American Enterprise Institute across all categories and locations. See a position you like? Contact us and apply today!\"></meta><ul><li class=\"iCIMS_JobCardItem\">\n<div class=\"row\">\n<div class=\"col-xs-6 header left\">\n<span class=\"sr-only field-label\">Job Locations</span>\n<span>\nUS-DC</span>\n</div>\n<div class=\"col-xs-6 header right\">\n</div>\n<div class=\"col-xs-12 title\">\n<a href=\"https://careers-aei.icims.com/jobs/2580/iran-analyst%2c-critical-threats-project/job\" class=\"iCIMS_Anchor\" title=\"2580 - Iran Analyst, Critical Threats Project\">\n<span class=\"sr-only field-label\">Job Title</span>\n<h3>\nIran Analyst, Critical Threats Project</h3>\n</a>\n</div>\n\n</div>\n</li></ul><h2>Page 1 of 1</h2>",
+    "expected": [
+      {
+        "identity": "icims:careers-aei:2580",
+        "title": "Iran Analyst, Critical Threats Project",
+        "raw_locations": [
+          "US-DC"
+        ],
+        "geography": "dc_dmv"
+      }
+    ]
+  }
+]

@@ -9,6 +9,9 @@ def geography(location):
     value = re.sub(r"\bwashington d c\b","washington dc",value)
     if not value:
         return "unknown"
+    # Verified provider country/state/city order; bare Washington is ambiguous.
+    if re.fullmatch(r'(?:us|usa|united states) dc(?: washington)?',value) or re.fullmatch(r'(?:us|usa|united states) district of columbia(?: washington)?',value) or re.fullmatch(r'dc washington (?:us|usa|united states)',value):
+        return 'dc_dmv'
     if re.search(r"\b(washington dc|washington district of columbia|district of columbia)\b", value):
         return "dc_dmv"
     if re.search(r"\b(arlington|alexandria|bethesda|silver spring|rockville|fairfax|falls church|tysons|reston|mclean|college park|camp springs|forestville|upper marlboro|greenbelt|hyattsville|chevy chase|gaithersburg|herndon|dulles|ashburn|manassas|woodbridge)\b", value):

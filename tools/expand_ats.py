@@ -42,7 +42,8 @@ def write_capture(path,data):
     columns=['identity','source','source_id','board_key','title','company','company_evidence','location','geography',
              'url','posted_at','updated_at','closing_at','retrieved_at','record_kind','evidence_status','detail_status',
              'duplicate_status','description','description_truncated','early_career_signal','function_signals',
-             'market_id','collection_mode','worksite_evidence','board_selection_route','previously_seen_in_this_registry','first_observed_run','description_changed_since_prior_observation']
+             'market_id','collection_mode','worksite_evidence','board_selection_route','previously_seen_in_this_registry','first_observed_run','description_changed_since_prior_observation',
+             'index_raw_locations','detail_raw_locations','index_fields','detail_fields','inventory_search_evidence','description_format']
     with path.with_suffix('.csv').open('w',newline='',encoding='utf-8') as f:
         w=csv.DictWriter(f,fieldnames=columns);w.writeheader()
         for r in data['records']:
@@ -65,13 +66,17 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
             if datetime.fromisoformat(until)>datetime.now(timezone.utc):transport.blocked.add(host)
         except (ValueError,TypeError):pass
     before=set(registry['boards']);source_added=source_seeds(registry,base['records'],market)
+    for observation in base.get('publication_observations',[]):
+        for edge in observation.get('channels',[]):
+            if edge.get('source_kind')=='public_ats_candidate':
+                register(registry,edge['url'],{'kind':'publication_document_link','url':observation['url'],'observed_url':edge.get('observed_url',edge['url'])})
     supplemental=candidate_capture or (regional_candidates(transport,registry,base,employer_budget,sitemap_budget,market) if strategy=='regional' else {'records':[],'stats':{},'discovery':{}})
     if imports:
         for entry in imports:
             if not isinstance(entry,dict) or not isinstance(entry.get('url'),str) or not safe_public_url(str(entry.get('evidence_url',''))):continue
             register(registry,entry['url'],{'kind':'explicit_public_URL_evidence_import','url':entry['evidence_url'],
                      'query_family':entry.get('query_family','unrestricted'),'note':'Imported URL evidence, not an employer name allowlist; live provider response still required.'})
-    seed_log=discover_commoncrawl(transport,registry,seed_queries)
+    seed_log=discover_commoncrawl(transport,registry,seed_queries,include_icims=strategy=='regional')
     selected=select_regional_boards(registry,board_budget,market=market) if strategy=='regional' else select_boards(registry,board_budget)
     records=[];board_stats=[];stop_reason=''
     for entry in selected:
@@ -104,7 +109,7 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
     coverage=assess_increment(base['records'],records,as_of,market)
     supplemental_coverage=assess_increment(base['records'],supplemental['records'],as_of,market)
     seen=mark_seen(registry,records+supplemental['records'])
-    status='partial_failure' if not_attempted or any(s['errors'] for s in board_stats) or any(q.get('status')!='ok' for q in seed_log) else 'ok'
+    status='partial_failure' if not_attempted or any(s['errors'] or s['status']!='ok' for s in board_stats) or any(q.get('status')!='ok' for q in seed_log) else 'ok'
     stats={'requests':len(transport.requests),'received':len(records),'unique':len(records),'status':status,
            'errors':(['Some seed queries or boards failed; inspect ATS discovery report'] if status!='ok' else []),
            'capped':len(selected)<len(registry['boards']) or any(s['capped'] for s in board_stats)}
@@ -121,6 +126,12 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
                            'attempted':dict(Counter(registry['boards'][s['board_key']]['provider'].removesuffix('_eu') for s in board_stats))},
                        'description_completeness':{'before_shared_inspection':detail_before,'after_shared_inspection':detail_after,
                            'base_page_budget':extra_details,'maximum_conditional_pages':min(60,extra_details*2) if strategy=='regional' else extra_details},
+                       'platform_funnel':{p:{'newly_discovered':sum(b['key'] not in before and b['provider'].removesuffix('_eu')==p for b in registry['boards'].values()),
+                           'discovered':sum(b['provider'].removesuffix('_eu')==p for b in registry['boards'].values()),
+                           'attempted':sum(registry['boards'][b['board_key']]['provider'].removesuffix('_eu')==p for b in board_stats),
+                           'index_records':sum(r['provider'].removesuffix('_eu')==p for r in records),
+                           'described_records':sum(r['provider'].removesuffix('_eu')==p and bool(r['description']) for r in records)}
+                           for p in sorted({b['provider'].removesuffix('_eu') for b in registry['boards'].values()})},
                        'boards':board_stats,'extra_detail_inspections':extra_log,'unsupported_platform_links':registry['unsupported']},
           'transport':{'requests':transport.requests,'bytes':transport.bytes,'maximum_requests':transport.max_requests},
           'baseline_sha256':hashlib.sha256(original).hexdigest(),

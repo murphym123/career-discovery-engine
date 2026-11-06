@@ -19,6 +19,7 @@ PREFIXES=('*','council*','research*','public*','foundation*','american*','consul
           'institute*','policy*','communications*','university*','advocacy*','strategy*',
           *tuple(chr(c)+'*' for c in range(ord('a'),ord('z')+1)))
 INDEX_HOSTS=(('greenhouse','job-boards.greenhouse.io'),('lever','jobs.lever.co'),('ashby','jobs.ashbyhq.com'))
+# Retain unresolved iCIMS routes; recognized public boards are routed first.
 UNSUPPORTED=('myworkdayjobs.com','icims.com','bamboohr.com','smartrecruiters.com','rippling.com',
              'rippling-ats.com','paycomonline.net','oraclecloud.com','adp.com','paylocity.com')
 
@@ -73,6 +74,14 @@ def validate_registry(data):
         parsed=board_from_url(b.get('url'))
         if parsed and parsed['key']==key:
             result['boards'][key]={**b,**parsed,'evidence':b.get('evidence',[])[:20] if isinstance(b.get('evidence'),list) else []}
+    # Promote previously unsupported iCIMS links without losing their evidence.
+    pending=[]
+    for lead in result['unsupported']:
+        if not isinstance(lead,dict):continue
+        if board_from_url(lead.get('url','')):
+            register(result,lead['url'],lead.get('evidence',{'kind':'legacy_observed_public_link'}))
+        else:pending.append(lead)
+    result['unsupported']=pending
     return result
 
 
@@ -102,7 +111,7 @@ def source_seeds(registry,records,market=None):
     quarantine=ReviewQuarantine()
     added=0
     for row in records:
-        urls=set(observed_ats_urls(row.get('description','')))
+        urls=set(observed_ats_urls(row.get('description',''))+observed_ats_urls(row.get('snippet','')))
         for field in ('url','employer_board_urls'):
             value=row.get(field,[])
             urls.update(value if isinstance(value,list) else observed_ats_urls(value))
@@ -156,7 +165,7 @@ def archive_fallback(transport,registry,query,page):
         board=board_from_url(record[0])
         if not board or board['provider'].removesuffix('_eu')!=query['provider']:continue
         lines+=1
-        register(registry,record[0],{'kind':'internet_archive_url_index','url':endpoint,'pattern':query['pattern'],
+        register(registry,record[0],{'geography_hint':_url_hint(record[0]),'kind':'internet_archive_url_index','url':endpoint,'pattern':query['pattern'],
                 'page':actual_page,'family':query['family'],'archive_timestamp':str(record[1] if len(record)>1 else ''),
                 'observed_url':record[0]})
     registry['index_pages'][pagekey]=actual_page+1
@@ -166,7 +175,7 @@ def archive_fallback(transport,registry,query,page):
             'note':'Bounded URL evidence; unavailable page counts leave initial-page alphabetical bias.'}
 
 
-def discover_commoncrawl(transport,registry,query_budget=6):
+def discover_commoncrawl(transport,registry,query_budget=6,include_icims=False):
     if not 0<=query_budget<=20:raise ValueError('Seed query budget must be 0–20')
     logs=[]
     if not query_budget:return logs
@@ -177,6 +186,11 @@ def discover_commoncrawl(transport,registry,query_budget=6):
         collection=sorted(choices,reverse=True)[0]
     except (FetchError,TypeError,KeyError) as e:return [{'status':str(e),'kind':'catalog_unavailable','new_boards':0}]
     plan=seed_plan(registry['query_offset'],query_budget)
+    if include_icims and query_budget>=2:
+        # Reserve one of the same bounded query slots for public iCIMS URLs.
+        # Historical URL-index evidence only; no employer tokens are guessed.
+        pattern='*.icims.com/jobs/search*' if registry['query_offset']%2==0 else '*.icims.com/jobs/*'
+        plan[-1]={'provider':'icims','pattern':pattern,'family':'unrestricted'}
     for query in plan:
         registry['query_offset']+=1
         pagekey=collection+'|'+query['pattern'];page=registry['index_pages'].get(pagekey)
@@ -208,7 +222,7 @@ def discover_commoncrawl(transport,registry,query_budget=6):
                 board=board_from_url(item['url'])
                 if not board or (board['provider'].removesuffix('_eu')!=query['provider']):continue
                 log['board_URLs']+=1
-                register(registry,item['url'],{'kind':'commoncrawl_url_index','url':endpoint,'pattern':query['pattern'],
+                register(registry,item['url'],{'geography_hint':_url_hint(item['url']),'kind':'commoncrawl_url_index','url':endpoint,'pattern':query['pattern'],
                          'page':page,'family':query['family'],'archive_timestamp':str(item.get('timestamp','')),
                          'observed_url':item['url']})
                 log['new_boards']+=len(registry['boards'])-before
@@ -261,3 +275,9 @@ def select_boards(registry,budget=30):
     used={e['key'] for e in selected}
     selected += [e for e in fresh+refresh if e['key'] not in used][:budget-len(selected)]
     return selected[:budget]
+
+
+def _url_hint(url):
+    from career_engine.public_sources import url_location_hint
+    label=url_location_hint(urlsplit(url).path)
+    return label if label=='dc_dmv' else 'unknown'

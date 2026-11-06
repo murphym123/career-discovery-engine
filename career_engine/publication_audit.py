@@ -144,6 +144,11 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
             inventory={'scope':'bounded sitemap prefix','complete_URL_entries_observed':seed.get('complete_URL_entries',0),
                 'total_URL_entries':None,'prefix_limited':True,'note':'URL seeds only; neither vacancies nor verified live boards.'},errors=[] if seed.get('status')=='ok' else [seed.get('status')])
     for lead in registry.get('unsupported',[]):
+        parsed=board_from_url(lead.get('url',''))
+        if parsed:
+            # Keep the original edge while updating capability classification.
+            add(parsed['url'],'public_ats_candidate',lead.get('evidence'))
+            continue
         add(lead.get('url',''),'unresolved_publication_link',lead.get('evidence'),retrieval_state='not_yet_covered',
             verification='observed_link_not_searched',reason='No supported adapter; one observed URL is not proof of a distinct board, employer or vacancy.')
     if market.identifier=='dc-dmv':
@@ -172,6 +177,7 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
         for key in list(snapshots)[:len(snapshots)-6000]:del snapshots[key]
     return {'schema_version':'publication-coverage-ledger/v1','market':market.asdict(),'captured_at':captured,
         'collection_context':ats.get('collection_context',{'mode':'live_public_get'}),
+        'supported_public_ats_platforms':['greenhouse','lever','ashby','jazzhr','icims'],
         'summary':{'catalogue_entries':len(entries),'discovered_source_candidates':sum(e['source_kind']!='unresolved_publication_link' for e in entries.values()),
             'unresolved_publication_links':sum(e['source_kind']=='unresolved_publication_link' for e in entries.values()),
             'source_kinds':dict(Counter(e['source_kind'] for e in entries.values())),'retrieval_states':states,
