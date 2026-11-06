@@ -158,26 +158,43 @@ def parse_jobposting(html, expected_title=""):
     }
 
 
-def robots_allowed(session, url, cache):
+def robots_allowed(session, url, cache, observations=None):
     """Respect robots rules; conservatively skip on inability to read them."""
     parts = urlsplit(url)
     origin = f"{parts.scheme}://{parts.netloc}"
+    evidence={"url":url,"robots_url":origin+"/robots.txt","cached":origin in cache}
     if origin not in cache:
         try:
             response = session.get(origin + "/robots.txt", headers={"User-Agent": USER_AGENT},
-                                   timeout=8, allow_redirects=False)
+                                   timeout=12, allow_redirects=False)
+            evidence["http_status"]=response.status_code
             if response.status_code == 404 or response.status_code == 410:
                 cache[origin] = None
+                evidence["reason"]="robots_not_published"
             elif response.status_code == 200:
-                parser = RobotFileParser()
-                parser.parse(response.text[:100_000].splitlines())
-                cache[origin] = parser
+                text=response.text.lstrip("\ufeff")
+                if re.search(r'<(?:html|!doctype html)\b',text[:1000],re.I):
+                    cache[origin]=False;evidence["reason"]="robots_invalid_or_challenge"
+                else:
+                    parser = RobotFileParser()
+                    parser.parse(text[:100_000].splitlines())
+                    cache[origin] = parser;evidence["reason"]="robots_rules_observed"
             else:
                 cache[origin] = False
-        except requests.RequestException:
+                evidence["reason"]="robots_http_"+str(response.status_code)
+            if hasattr(response,"close"):response.close()
+        except requests.RequestException as exc:
             cache[origin] = False
+            evidence["reason"]="robots_network_"+type(exc).__name__
     rule = cache[origin]
-    return rule is None or (rule is not False and rule.can_fetch(USER_AGENT, url))
+    allowed=rule is None or (rule is not False and rule.can_fetch(USER_AGENT, url))
+    if allowed and rule not in (None,False) and (rule.crawl_delay(USER_AGENT) or 0)>1:
+        allowed=False;evidence["reason"]="stricter_crawl_delay_skip"
+    evidence["allowed"]=allowed
+    if "reason" not in evidence:evidence["reason"]="cached_rules_allow" if allowed else "cached_rules_deny_or_unavailable"
+    if not allowed and evidence["reason"]=="robots_rules_observed":evidence["reason"]="robots_explicit_disallow"
+    if observations is not None:observations.append(evidence)
+    return allowed
 
 
 def enrich_public_page(session, url, title="", robots_cache=None):
@@ -210,3 +227,4 @@ def enrich_public_page(session, url, title="", robots_cache=None):
             return {}, "no_jobposting_metadata"
         return job, "jobposting_metadata"
     return {}, "too_many_redirects"
+

@@ -121,6 +121,12 @@ class PublicTransport:
     def redirect_allowed(self,original_host,target):
         return self.allowed(target) and urlsplit(target).hostname==original_host
 
+    def global_stop_reason(self):
+        if len(self.requests)>=self.max_requests:return 'request_budget'
+        if self.bytes>=self.max_bytes:return 'byte_budget'
+        if time.monotonic()-self.started>self.max_seconds:return 'time_budget'
+        return ''
+
     def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False):
         if not self.allowed(url):raise FetchError('unsafe_endpoint')
         original_host=urlsplit(url).hostname
@@ -154,9 +160,11 @@ class PublicTransport:
                 for chunk in r.iter_content(65536):
                     self.bytes+=len(chunk);data.extend(chunk)
                     if time.monotonic()-self.started>self.max_seconds:raise FetchError('time_budget')
-                    if self.bytes>self.max_bytes:raise FetchError('response_or_byte_limit')
+                    if self.bytes>self.max_bytes:raise FetchError('byte_budget')
                     if len(data)>max_bytes:
-                        if not prefix:raise FetchError('response_or_byte_limit')
+                        if not prefix:
+                            item.update(bytes_observed=len(data),error='response_too_large',response_limit=max_bytes)
+                            raise FetchError('response_too_large')
                         del data[max_bytes:];item.update(truncated=True,sha256_kind='retrieved_prefix_only');break
                 item.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
                 try:
@@ -354,7 +362,7 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
     return rows,stats
 
 
-def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=None):
+def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=None,adaptive=False):
     """A shared post-discovery detail budget; never remove an index record.
 
     Reuses broad inspection strata (including atypical exploration), independent
@@ -366,13 +374,22 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=No
     candidates=[r for r in records if r['provider'] in ('greenhouse','jazzhr') and not r.get('description')
                 and r.get('detail_status')=='index_only' and r['geography']!='elsewhere']
     candidates.sort(key=lambda r:(r.get('updated_at',''),r['identity']),reverse=True)
-    plan=plan_inspections(candidates,budget,seed,location_classifier=market.label if market else geography)
+    if adaptive:
+        from career_engine.detail_allocation import detail_plan
+        plan=detail_plan(records,candidates,budget,seed,market)
+    else:
+        plan=plan_inspections(candidates,budget,seed,location_classifier=market.label if market else geography)
     available={inspection_identity(r):r for r in candidates};log=[]
+    denied=set()
     for choice in plan:
+        if transport.global_stop_reason():break
         r=available[choice['identity']];board=boards[r['board_key']]
+        host=urlsplit(r['url']).hostname if r['provider']=='jazzhr' else 'boards-api.greenhouse.io'
+        if host in denied or host in transport.blocked:continue
         endpoint='https://boards-api.greenhouse.io/v1/boards/'+quote(board['token'],safe='._-')+'/jobs/'+r['identity'].rsplit(':',1)[-1]
         before=len(transport.requests)
-        item={'identity':r['identity'],'board_key':r['board_key'],'stratum':choice['stratum'],'status':'ok'}
+        item={'identity':r['identity'],'board_key':r['board_key'],'stratum':choice['stratum'],'status':'ok',
+              'conditional_extra_slot':choice.get('conditional_extra_slot',False)}
         try:
             if r['provider']=='jazzhr':
                 from career_engine.jazzhr import jazz_detail
@@ -389,5 +406,6 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=No
         except (FetchError,ValueError,TypeError) as e:
             item['status']=str(e)[:100];r['detail_status']=item['status']
         item['requests']=len(transport.requests)-before;log.append(item)
-        if any(x in item['status'] for x in ('403','429','budget','host_stopped')):break
+        if any(x in item['status'] for x in ('403','429','host_stopped','robots_disallowed','stricter_crawl_delay')):denied.add(host)
+        if transport.global_stop_reason():break
     return log

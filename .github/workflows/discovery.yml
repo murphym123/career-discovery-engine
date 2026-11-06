@@ -121,7 +121,7 @@ jobs:
           [[ "$DC_DETAIL_BUDGET" =~ ^[0-9]+$ ]] && (( DC_DETAIL_BUDGET >= 0 && DC_DETAIL_BUDGET <= 30 )) || exit 2
           [[ "$INSPECTION_SEED" =~ ^-?[0-9]+$ ]] || exit 2
           if [[ "$MODE" == dc ]]; then
-            python -m tools.audit_dc_sources --max-details "$DC_DETAIL_BUDGET" --inspection-seed "$INSPECTION_SEED" --output output/dc-source-audit.json
+            python -m tools.audit_dc_sources --max-details "$DC_DETAIL_BUDGET" --inspection-seed "$INSPECTION_SEED" --output output/dc-source-audit.json --allow-partial
             exit 0
           fi
           case "$MODE" in
@@ -148,6 +148,15 @@ jobs:
         run: |
           set -euo pipefail
           python -m tools.expand_ats --base output/dc-source-audit.json --registry data/ats-registry.json --output-dir output/ats-discovery --combined-output output/dc-expanded-audit.json --board-budget "$ATS_BOARD_BUDGET" --seed-queries "$SEED_QUERIES" --extra-details "$EXTRA_DETAILS" --strategy regional
+      - name: Report collection health independently of ranking
+        if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' }}
+        env:
+          EXPANDED_ATS: ${{ inputs.expanded_ats }}
+        shell: bash
+        run: |
+          args=()
+          if [[ "$EXPANDED_ATS" == true ]]; then args+=(--expanded output/dc-expanded-audit.json); fi
+          python -m tools.summarize_collection --base output/dc-source-audit.json "${args[@]}" --output output/collection-status.json
       - name: Publish experimental ranking from the existing DC audit
         if: ${{ always() && !cancelled() && inputs.source_mode == 'dc' && inputs.experimental_ranking }}
         env:
@@ -178,6 +187,8 @@ jobs:
             output/coverage-audit.json
             output/coverage-audit.csv
             output/coverage-audit.md
+            output/collection-status.json
+            output/collection-status.md
             output/experimental-ranking/
             output/ats-discovery/
             output/dc-expanded-audit.json
