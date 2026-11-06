@@ -1,0 +1,15 @@
+{
+  "sample_frame": {
+    "frozen_at_UTC": "2026-11-06T09:58:06+00:00",
+    "sha256": "06cd190ada2282d7e5bd312bb2b2f17f75f492f39268158d0337c90f974986bf",
+    "endpoints": 32,
+    "prior_access_controls": 3,
+    "independent_new_checks": 29
+  },
+  "independent_inventory": {
+    "frozen_at_UTC": "2026-11-06T10:19:37.104256+00:00",
+    "sha256": "f4b23dab14946e52b1dd9229f14740f31aca4becd8f3893296a0bb25ea6552c5",
+    "records": 68,
+    "quarantined": 2
+  }
+}

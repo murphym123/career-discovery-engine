@@ -1,0 +1,121 @@
+{
+  "run_id": 42193251891,
+  "implementation_sha": "068714c5bd418e2b1d3f4db1e77cd080151339e1",
+  "collection_status": "PARTIAL COLLECTION",
+  "captured_at": "2026-11-06T09:17:48+00:00",
+  "sources": [
+    {
+      "source": "ats_ashby",
+      "raw_sightings": 470,
+      "local_labels": 16,
+      "local_described": 16
+    },
+    {
+      "source": "ats_greenhouse",
+      "raw_sightings": 459,
+      "local_labels": 3,
+      "local_described": 3
+    },
+    {
+      "source": "ats_jazzhr",
+      "raw_sightings": 1982,
+      "local_labels": 63,
+      "local_described": 37
+    },
+    {
+      "source": "ats_lever",
+      "raw_sightings": 25,
+      "local_labels": 1,
+      "local_described": 1
+    },
+    {
+      "source": "globaljobs",
+      "raw_sightings": 208,
+      "local_labels": 63,
+      "local_described": 20
+    },
+    {
+      "source": "impactopportunity",
+      "raw_sightings": 50,
+      "local_labels": 4,
+      "local_described": 4
+    },
+    {
+      "source": "onthinktanks",
+      "raw_sightings": 15,
+      "local_labels": 11,
+      "local_described": 11
+    },
+    {
+      "source": "unionjobs",
+      "raw_sightings": 58,
+      "local_labels": 35,
+      "local_described": 20
+    },
+    {
+      "source": "workfornonprofits",
+      "raw_sightings": 21,
+      "local_labels": 20,
+      "local_described": 20
+    }
+  ],
+  "ledger_entries": 371,
+  "ledger_states": {
+    "not_yet_covered": 362,
+    "partially_retrieved": 5,
+    "inaccessible": 4
+  },
+  "registry_board_candidates": 2368,
+  "ats_platform_attempts": {
+    "jazzhr": 15,
+    "greenhouse": 5,
+    "ashby": 5,
+    "lever": 5
+  },
+  "original_source_status": {
+    "senate": {
+      "status": "failed",
+      "unique": 0,
+      "capped": true,
+      "descriptions_observed": 0,
+      "index_only": 0,
+      "errors": [
+        "Index http_404",
+        "Index http_403"
+      ]
+    },
+    "unionjobs": {
+      "status": "ok",
+      "unique": 58,
+      "capped": true,
+      "descriptions_observed": 20,
+      "index_only": 38,
+      "errors": []
+    },
+    "globaljobs": {
+      "status": "ok",
+      "unique": 208,
+      "capped": true,
+      "descriptions_observed": 20,
+      "index_only": 188,
+      "errors": []
+    },
+    "onthinktanks": {
+      "status": "ok",
+      "unique": 15,
+      "capped": false,
+      "descriptions_observed": 15,
+      "index_only": 0,
+      "errors": []
+    },
+    "workfornonprofits": {
+      "status": "ok",
+      "unique": 21,
+      "capped": true,
+      "descriptions_observed": 20,
+      "index_only": 1,
+      "errors": []
+    }
+  },
+  "engine_ranker_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266"
+}

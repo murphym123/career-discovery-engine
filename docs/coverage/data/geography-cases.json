@@ -1,0 +1,31 @@
+{
+  "implementation_sha": "068714c5bd418e2b1d3f4db1e77cd080151339e1",
+  "kind": "frozen deterministic diagnostic, not an engine change",
+  "cases": [
+    {
+      "raw_location": "US-DC",
+      "engine_classification": "elsewhere",
+      "reviewed_expected_scope": "strict_DC"
+    },
+    {
+      "raw_location": "US-DC-Washington",
+      "engine_classification": "elsewhere",
+      "reviewed_expected_scope": "strict_DC"
+    },
+    {
+      "raw_location": "Washington, DC",
+      "engine_classification": "dc_dmv",
+      "reviewed_expected_scope": "strict_DC"
+    },
+    {
+      "raw_location": "Chantilly, VA",
+      "engine_classification": "elsewhere",
+      "reviewed_expected_scope": "Washington_MSA"
+    },
+    {
+      "raw_location": "Arlington, TX",
+      "engine_classification": "elsewhere",
+      "reviewed_expected_scope": "outside_Washington_MSA"
+    }
+  ]
+}

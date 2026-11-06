@@ -1,0 +1,15 @@
+{
+  "data/benchmarks.json": "b50eb9a6c4206451b06ae098f4077d35e22175c8f0f596c7d9eec9cd09a405b7",
+  "data/engine-observations.json": "5b495ef1a3e4f76f5987f4edaf489152934c193dd680b013085967e1aa15237d",
+  "data/engine-regional-metadata.json": "b4ddd33120a9e2dc2703c05f1c401b3a77a071884c0d1548db6af9f6088e26dd",
+  "data/freeze-receipts.json": "13001a2b7618b825248b0145668d758cdd58e61fe0e274f57cddb0cde4987642",
+  "data/geography-cases.json": "8b207b249fbaea7bbcd9384412a1fa33f5c08ad407e6d3ff61fa336ebc690b6b",
+  "data/independent-inventory-records.json": "b98ddbadb3c10892bb4d307e87357fb3dd2c2872672833e844d494a88d7ef044",
+  "data/independent-inventory-summary.json": "34b6d8dc3be46095e6815eb7d92c59a216bc467dd26436cf4e64447b6836c732",
+  "data/provenance.json": "6f6b291b6ea5b0b236355957b2fb98f0ac58591ca9c163349e7b35eb3a5d102f",
+  "data/public-response-receipts.json": "375b51dfd1193d32ec3994fd3b3c909ec754284733819edc15dae8d169342a83",
+  "data/qualification-examples.json": "10ef488e75187735c72d490cbe8169a40e55cff102d6f5094652ff3aa5793bee",
+  "data/sample-frame.json": "06cd190ada2282d7e5bd312bb2b2f17f75f492f39268158d0337c90f974986bf",
+  "data/source-audit.csv": "ee126bfaa3243e17186208fd455391ae8ea104699a24f1b3339934442cae49ca",
+  "data/source-audit.json": "999ab0299886a1d6cb0b98089e1d5541574c872109482d6eaef41680b35070fd"
+}

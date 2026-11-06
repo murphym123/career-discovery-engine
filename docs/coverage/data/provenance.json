@@ -1,0 +1,35 @@
+{
+  "schema_version": "coverage-research-provenance/v1",
+  "report_artifact": {
+    "id": 13491835198,
+    "url": "https://github.com/murphym123/career-discovery-engine/actions/runs/42193251891",
+    "zip_sha256": "874c61ee40c8114cd27e74a7ab94a3fe768e8bec9e419f755b0c007b8c67dd24",
+    "bytes": 5854862
+  },
+  "registry_artifact": {
+    "id": 13491735450,
+    "zip_sha256": "06821b7f8d681c09058c3eefe4c80d51d470980a95b2ed68817b3662e27c8267",
+    "bytes": 955709
+  },
+  "source_files": [
+    {
+      "path": "dc-expanded-audit.json",
+      "sha256": "6f275e763fc7c153cb7028e4abd13379bad49f8b3da92631e3338f4ff59cceaa"
+    },
+    {
+      "path": "dc-source-audit.json",
+      "sha256": "c0834cdd10f9620874b37b259168bfa4bd9a7eb5883c427e1d50376d39f960db"
+    },
+    {
+      "path": "coverage-audit.json",
+      "sha256": "12165df00588d9920d4f459635a72916f79b0994840ea38c0910aadf0aa9a4cd"
+    },
+    {
+      "path": "ats-discovery/ats-source-audit.json",
+      "sha256": "178e10a37146de27ac9102c3193f949d8e5a3b6b9dff24bbfc4274ab5b46f4ae"
+    }
+  ],
+  "registry_json_sha256": "1da6c940b4fdbe273a1d70ac7ac6fa0a0237fc19e5ecbc2718fd6a35c36e93ce",
+  "raw_bodies_committed": false,
+  "receipt_note": "Public-response hashes identify privately retained public bodies; repo includes minimized metadata and paraphrases, no application forms, contacts, or sealed-review bodies."
+}
