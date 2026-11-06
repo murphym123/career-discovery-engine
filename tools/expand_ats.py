@@ -3,6 +3,7 @@ import argparse
 import csv
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
 from urllib.parse import urlsplit
@@ -17,6 +18,7 @@ from career_engine.regional_selection import select_regional_boards,mark_seen
 from career_engine.ats import FetchError
 from career_engine.markets import DC_MARKET
 from career_engine.publication_audit import build_ledger,write_ledger
+from career_engine.detail_allocation import description_completeness
 
 
 def regional_candidates(transport,registry,base,employer_budget=0,sitemap_budget=2,market=DC_MARKET):
@@ -71,9 +73,11 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
                      'query_family':entry.get('query_family','unrestricted'),'note':'Imported URL evidence, not an employer name allowlist; live provider response still required.'})
     seed_log=discover_commoncrawl(transport,registry,seed_queries)
     selected=select_regional_boards(registry,board_budget,market=market) if strategy=='regional' else select_boards(registry,board_budget)
-    records=[];board_stats=[]
+    records=[];board_stats=[];stop_reason=''
     for entry in selected:
-        rows,stats=retrieve_board(transport,entry,detail_budget=1 if strategy=='regional' else 3,market=market)
+        stop_reason=transport.global_stop_reason()
+        if stop_reason:break
+        rows,stats=retrieve_board(transport,entry,detail_budget=0 if strategy=='regional' else 3,market=market)
         stats['selection_evidence']=entry.get('selection_evidence',{'route':'legacy_provider_spread'})
         entry.update({k:stats[k] for k in ('status','dc_dmv','unique','descriptions')})
         entry['last_checked_run']=registry['run'];entry['last_checked_at']=stamp();entry['last_errors']=stats['errors']
@@ -82,9 +86,13 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
             row['board_selection_route']=stats['selection_evidence']['route']
         records+=rows;board_stats.append(stats)
         if len(records)>=20000:
-            board_stats[-1]['errors'].append('run_record_cap');break
-        if any('budget' in str(x) or 'byte_limit' in str(x) for x in stats['errors']):break
-    extra_log=enrich_regional_metadata(transport,records,registry['boards'],extra_details,registry['run'],market)
+            board_stats[-1]['errors'].append('run_record_cap');stop_reason='run_record_cap';break
+        # An individual oversized response or denied host is not a global stop.
+    attempted={s['board_key'] for s in board_stats}
+    not_attempted=[{'board_key':e['key'],'provider':e['provider'],'reason':stop_reason or 'global_limit'} for e in selected if e['key'] not in attempted]
+    detail_before=description_completeness(records,market)
+    extra_log=enrich_regional_metadata(transport,records,registry['boards'],extra_details,registry['run'],market,adaptive=strategy=='regional')
+    detail_after=description_completeness(records,market)
     for stats in board_stats:
         related=[x for x in extra_log if x['board_key']==stats['board_key']]
         stats['extra_detail_requests']=sum(x['requests'] for x in related);stats['requests']+=stats['extra_detail_requests']
@@ -96,7 +104,7 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
     coverage=assess_increment(base['records'],records,as_of,market)
     supplemental_coverage=assess_increment(base['records'],supplemental['records'],as_of,market)
     seen=mark_seen(registry,records+supplemental['records'])
-    status='partial_failure' if any(s['errors'] for s in board_stats) or any(q.get('status')!='ok' for q in seed_log) else 'ok'
+    status='partial_failure' if not_attempted or any(s['errors'] for s in board_stats) or any(q.get('status')!='ok' for q in seed_log) else 'ok'
     stats={'requests':len(transport.requests),'received':len(records),'unique':len(records),'status':status,
            'errors':(['Some seed queries or boards failed; inspect ATS discovery report'] if status!='ok' else []),
            'capped':len(selected)<len(registry['boards']) or any(s['capped'] for s in board_stats)}
@@ -107,6 +115,12 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
                        'strategy':strategy,'regional_evidence':supplemental['discovery'],'cross_run_observations':seen,
                        'publication_observations':transport.publication_observations,
                        'source_link_boards_added':source_added,'seed_queries':seed_log,'selected_boards':len(selected),
+                       'attempted_boards':len(board_stats),'not_attempted_boards':not_attempted,
+                       'selected_board_plan':[{'board_key':e['key'],'provider':e['provider'],'selection_evidence':e.get('selection_evidence',{'route':'legacy_provider_spread'})} for e in selected],
+                       'platform_counts':{'selected':dict(Counter(e['provider'].removesuffix('_eu') for e in selected)),
+                           'attempted':dict(Counter(registry['boards'][s['board_key']]['provider'].removesuffix('_eu') for s in board_stats))},
+                       'description_completeness':{'before_shared_inspection':detail_before,'after_shared_inspection':detail_after,
+                           'base_page_budget':extra_details,'maximum_conditional_pages':min(60,extra_details*2) if strategy=='regional' else extra_details},
                        'boards':board_stats,'extra_detail_inspections':extra_log,'unsupported_platform_links':registry['unsupported']},
           'transport':{'requests':transport.requests,'bytes':transport.bytes,'maximum_requests':transport.max_requests},
           'baseline_sha256':hashlib.sha256(original).hexdigest(),
@@ -133,7 +147,9 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
     lines=['# Public ATS discovery — unranked','',
            'The original five-source audit is unchanged. ATS publication is observed, not independent confirmation of accepting applications or candidate qualification. No paid search/API or model calls.',
            '', '## Measured coverage','', '```json',json.dumps(coverage,indent=2),'```','',
-           f"Registry: {len(registry['boards'])} discovered boards; {len(selected)} selected; {len(transport.requests)} requests; {transport.bytes} response bytes.",'',
+           f"Registry: {len(registry['boards'])} discovered board candidates; {len(selected)} selected; {len(board_stats)} attempted; {len(not_attempted)} not attempted; {len(transport.requests)} requests; {transport.bytes} response bytes.",'',
+           '## Observed local description completeness','', '```json',json.dumps(detail_after,indent=2),'```','',
+           '## Selected but not attempted','', '```json',json.dumps(not_attempted,indent=2),'```','',
            '## Board access','', '| Board | Status | Rows | DC/DMV labels | Descriptions | Errors |','|---|---|---:|---:|---:|---|']
     for s in board_stats:lines.append(f"| {c(s['board_key'])} | {s['status']} | {s['unique']} | {s['dc_dmv']} | {s['descriptions']} | {c(', '.join(s['errors']))} |")
     lines+=['','## New regional records requiring review','',

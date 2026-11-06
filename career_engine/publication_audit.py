@@ -72,8 +72,8 @@ class PublicationObserver:
 def _state(stats):
     errors=' '.join(map(str,stats.get('errors',[])))
     if stats.get('unique',0) and errors:return 'partially_retrieved'
-    if re.search(r'403|429|404|network|robots|challenge|host_stopped|time_budget',errors):return 'inaccessible'
-    if re.search(r'response_or_byte_limit|request_budget',errors):return 'partially_retrieved'
+    if re.search(r'403|429|404|network|robots|challenge|host_stopped|stricter_crawl_delay',errors):return 'inaccessible'
+    if re.search(r'response_or_byte_limit|response_too_large|request_budget|byte_budget|time_budget',errors):return 'partially_retrieved'
     if errors:return 'not_yet_covered'  # Reachable but empty/unsupported schema is not proven access denial.
     inventory=stats.get('inventory',{})
     return 'searched' if inventory.get('metadata_complete') is True else 'partially_retrieved'
@@ -109,6 +109,7 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
                 'descriptions_observed':details,'description_denominator_observed_records':total,
                 'note':'Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred.'})
     board_stats={s['board_key']:s for s in ats.get('discovery',{}).get('boards',[])}
+    pending={s['board_key']:s['reason'] for s in ats.get('discovery',{}).get('not_attempted_boards',[])}
     for key,board in registry.get('boards',{}).items():
         stats=board_stats.get(key)
         evidence=board.get('evidence') or [{'kind':'registry_URL_evidence'}]
@@ -117,6 +118,8 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
             verification='live_public_inventory_observed' if stats and (stats.get('unique') or stats.get('inventory',{}).get('metadata_complete')) else 'URL_candidate_not_verified_live',
             reason='Inventory inspected within this run' if stats else 'Discovered board candidate not polled within this run budget')
         if not entry:continue
+        entry['inspection_basis']='current_run_inventory_attempt' if stats else 'discovered_URL_only'
+        if key in pending:entry.update(selection_state='selected_not_attempted',not_attempted_reason=pending[key])
         for item in evidence[1:4]:
             if item not in entry['discovery_evidence']:entry['discovery_evidence'].append(item)
         if stats:
@@ -154,6 +157,7 @@ def build_ledger(base,ats=None,supplemental=None,registry=None,market=DC_MARKET)
                 existing['historical_access_observation']=historical
             else:
                 add(item['url'],item['source_kind'],item['evidence'],historical_access_observation=historical,
+                    inspection_basis='dated_access_investigation_not_rechecked',observed_at=gaps['observed_local_date'],
                     **{k:v for k,v in item.items() if k not in ('url','source_kind','evidence')})
     else:gaps={'ecosystems':[]}
     states=dict(Counter(e['retrieval_state'] for e in entries.values()))

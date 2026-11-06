@@ -24,6 +24,7 @@ INDEXES = {
     "onthinktanks": ("https://onthinktanks.org/jobsboard/",),
     "workfornonprofits": ("https://workfornonprofits.org/jobs/district-of-columbia",),
 }
+SENATE_FALLBACK="https://careers.employment.senate.gov/"
 HOSTS = {"senate": {"careers.employment.senate.gov"},
          "unionjobs": {"www.unionjobs.com", "unionjobs.com"},
          "globaljobs": {"globaljobs.org","www.globaljobs.org"},
@@ -231,10 +232,10 @@ class _CountingSession:
 def _fetch(session, source, url, cache, pause, xml=False):
     for _ in range(3):
         parts=urlsplit(url)
-        is_index=url in INDEXES[source] or (source=="unionjobs" and url==UNION_RSS) or (source=="globaljobs" and url==GLOBAL_RSS)
+        is_index=url in INDEXES[source] or (source=="senate" and url==SENATE_FALLBACK) or (source=="unionjobs" and url==UNION_RSS) or (source=="globaljobs" and url==GLOBAL_RSS)
         if not (is_index or listing_url(source,url)):
             return "", "unsafe_url"
-        if not robots_allowed(session,url,cache):
+        if not robots_allowed(session,url,cache,getattr(getattr(session,'stats',None),'access_observations',None)):
             return "", "robots_disallowed_or_unavailable"
         pause(1)
         response=session.get(url,headers={"User-Agent":USER_AGENT,"Accept":"text/html"},timeout=15,allow_redirects=False,stream=True)
@@ -309,13 +310,19 @@ def retrieve_dc(session, source, max_details=20, stats=None, pause=time.sleep, s
                 source_blocked=status in ("http_403","http_429")
         except (requests.RequestException,ValueError,ElementTree.ParseError):
             stats.errors.append("RSS network_or_parse_error")
-    for url in INDEXES[source]:
+    indexes=list(INDEXES[source])
+    for url in indexes:
         if source_blocked:
             break
         try:
             html,status=_fetch(transport,source,url,cache,pause)
         except requests.RequestException:
             html,status="","network_error"
+        stats.index_attempts.append({'url':url,'status':status,'fallback':url==SENATE_FALLBACK})
+        # The official vacancies page advertises this public home page. Only a
+        # missing regional route permits one fallback; never retry a denial.
+        if source=="senate" and status in ('http_404','http_410') and url!=SENATE_FALLBACK:
+            indexes.append(SENATE_FALLBACK)
         if status!="ok":
             stats.errors.append("Index "+status)
             if status in ("http_429","http_403"):

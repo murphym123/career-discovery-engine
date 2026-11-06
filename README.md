@@ -7,6 +7,23 @@ not establish qualifications, job availability or interview probabilities.
 
 ## New: optional discovery of unfamiliar public ATS boards
 
+The [Issue #17 production fix](docs/issue17/ASSESSMENT.md) adds per-source
+red/yellow/green health, balanced polling across Greenhouse/Lever/Ashby/JazzHR,
+isolated oversized-response failures and employer-spread regional description
+retrieval. The manual workflow can finish with a prominent **PARTIAL COLLECTION**
+warning when useful records survive; it does not turn source failure into a
+zero-vacancy result. All-source failure remains an error. Standalone collection
+keeps strict exit behavior unless `--allow-partial` is explicitly supplied.
+
+`dc_detail_budget` still caps original-source detail requests at 0–30 each. In
+expanded discovery it supplies a shared base detail budget, with up to that many
+additional slots for remaining regional metadata (maximum 60 shared pages).
+Board indexes are polled first; the existing total request/byte/time limits
+still apply. `ats-discovery/ats-source-audit.json` records selected/attempted
+boards, unattempted reasons, platform counts and per-board local description
+denominators. `collection-status.json/.md` summarize original and combined health
+independently of ranking. No new credentials are needed.
+
 Issue #14 extends this path with advertised public JazzHR sitemap seeds and
 hosted job inventories, an Impact Opportunity RSS adapter, and passive discovery
 of RSS/Atom, sitemap, career-site and ATS publication links. These are publication

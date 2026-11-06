@@ -1,0 +1,2077 @@
+{
+  "kind": "ACTUAL PUBLIC RETRIEVAL QA; NOT A JOB-FIT OR AI EVALUATION",
+  "trigger_run": {
+    "id": 42159678800,
+    "url": "https://github.com/murphym123/career-discovery-engine/actions/runs/42159678800",
+    "head_sha": "16eae519a217a3c3bb4953d44c1fcfb0b83f59e1",
+    "workflow_conclusion": "failure",
+    "original_source_records": 281,
+    "original_source_stats": {
+      "senate": {
+        "requests": 2,
+        "received": 0,
+        "malformed": 0,
+        "pages": 0,
+        "capped": true,
+        "status": "failed",
+        "unique": 0,
+        "inspection_strategy": "diverse",
+        "details_planned": 0,
+        "details_attempted": 0,
+        "descriptions_observed": 0,
+        "index_only": 0,
+        "errors": [
+          "Index http_404"
+        ]
+      },
+      "unionjobs": {
+        "requests": 25,
+        "received": 108,
+        "malformed": 0,
+        "pages": 4,
+        "capped": true,
+        "status": "ok",
+        "unique": 58,
+        "inspection_strategy": "diverse",
+        "details_planned": 20,
+        "details_attempted": 20,
+        "descriptions_observed": 20,
+        "index_only": 38,
+        "errors": []
+      },
+      "globaljobs": {
+        "requests": 23,
+        "received": 414,
+        "malformed": 0,
+        "pages": 2,
+        "capped": true,
+        "status": "ok",
+        "unique": 208,
+        "inspection_strategy": "diverse",
+        "details_planned": 20,
+        "details_attempted": 20,
+        "descriptions_observed": 20,
+        "index_only": 188,
+        "errors": []
+      },
+      "onthinktanks": {
+        "requests": 17,
+        "received": 15,
+        "malformed": 0,
+        "pages": 1,
+        "capped": false,
+        "status": "ok",
+        "unique": 15,
+        "inspection_strategy": "diverse",
+        "details_planned": 15,
+        "details_attempted": 15,
+        "descriptions_observed": 15,
+        "index_only": 0,
+        "errors": []
+      },
+      "workfornonprofits": {
+        "requests": 1,
+        "received": 0,
+        "malformed": 0,
+        "pages": 0,
+        "capped": false,
+        "status": "failed",
+        "unique": 0,
+        "inspection_strategy": "diverse",
+        "details_planned": 0,
+        "details_attempted": 0,
+        "descriptions_observed": 0,
+        "index_only": 0,
+        "errors": [
+          "Index robots_disallowed_or_unavailable"
+        ]
+      }
+    },
+    "ATS": {
+      "ATS_source_identities": 1832,
+      "logical_requests": 88,
+      "response_bytes": 12086370,
+      "selected_boards": 30,
+      "attempted_boards": 19,
+      "attempted_platforms": {
+        "jazzhr": 18,
+        "greenhouse": 1
+      },
+      "platforms_returning_records": {
+        "jazzhr": 16
+      },
+      "local_metadata": 113,
+      "local_descriptions": 31,
+      "local_missing_descriptions": 82,
+      "local_description_fraction": 0.2743362831858407,
+      "local_board_groups": 12,
+      "local_described_board_groups": 12,
+      "local_record_kinds": {
+        "advertised_position": 106,
+        "registration_pool": 3,
+        "volunteer_public_appointment": 4
+      },
+      "local_duplicate_flags": {
+        "possible_crosspost_review": 2,
+        "not_matched_to_five_source_capture": 111
+      },
+      "geography_review": 32,
+      "board_errors": {
+        "greenhouse:debtbook": [
+          "http_404"
+        ],
+        "jazzhr:esentio": [
+          "no_public_index_rows_or_schema_changed"
+        ],
+        "jazzhr:milehighadjustershoustoninc": [
+          "response_or_byte_limit"
+        ]
+      },
+      "by_local_board": {
+        "jazzhr:brennancenter": {
+          "metadata": 5,
+          "descriptions": 5
+        },
+        "jazzhr:butler": {
+          "metadata": 9,
+          "descriptions": 3
+        },
+        "jazzhr:ccmiretailservices": {
+          "metadata": 4,
+          "descriptions": 2
+        },
+        "jazzhr:context": {
+          "metadata": 1,
+          "descriptions": 1
+        },
+        "jazzhr:drdemo": {
+          "metadata": 12,
+          "descriptions": 2
+        },
+        "jazzhr:languagetr": {
+          "metadata": 8,
+          "descriptions": 2
+        },
+        "jazzhr:maania": {
+          "metadata": 20,
+          "descriptions": 4
+        },
+        "jazzhr:motaboards": {
+          "metadata": 42,
+          "descriptions": 4
+        },
+        "jazzhr:street": {
+          "metadata": 2,
+          "descriptions": 2
+        },
+        "jazzhr:techinsights": {
+          "metadata": 3,
+          "descriptions": 2
+        },
+        "jazzhr:thegatheringspot": {
+          "metadata": 5,
+          "descriptions": 2
+        },
+        "jazzhr:thresholdgroup": {
+          "metadata": 2,
+          "descriptions": 2
+        }
+      }
+    }
+  },
+  "controlled_comparison": {
+    "method": "Identical saved post-run candidate registry and 281-record baseline; pre-fix and fixed regional strategies; same actual response snapshots, no live replay fallback. Selection and detail allocation both change.",
+    "acquisition_window_UTC": {
+      "earliest": "2026-11-06T09:08:39+00:00",
+      "latest": "2026-11-06T09:12:13+00:00"
+    },
+    "response_identities": 142,
+    "budgets_each": {
+      "boards": 30,
+      "logical_requests": 180,
+      "global_response_bytes": 64000000,
+      "extra_detail_base": 20,
+      "fixed_conditional_maximum": 40
+    },
+    "baseline_sha256": "f7477d49834b774b32a15bcd049a03649b352640adf868f41689df2331c05b5b",
+    "arms": {
+      "prior": {
+        "ATS_source_identities": 3042,
+        "logical_requests": 102,
+        "response_bytes": 10207536,
+        "selected_boards": 30,
+        "attempted_boards": 30,
+        "attempted_platforms": {
+          "jazzhr": 26,
+          "greenhouse": 3,
+          "ashby": 1
+        },
+        "platforms_returning_records": {
+          "jazzhr": 23,
+          "greenhouse": 3,
+          "ashby": 1
+        },
+        "local_metadata": 135,
+        "local_descriptions": 33,
+        "local_missing_descriptions": 102,
+        "local_description_fraction": 0.24444444444444444,
+        "local_board_groups": 17,
+        "local_described_board_groups": 16,
+        "local_record_kinds": {
+          "advertised_position": 131,
+          "volunteer_public_appointment": 2,
+          "registration_pool": 2
+        },
+        "local_duplicate_flags": {
+          "not_matched_to_five_source_capture": 132,
+          "possible_crosspost_review": 3
+        },
+        "geography_review": 44,
+        "board_errors": {
+          "jazzhr:leap": [
+            "posting_ID_mismatch",
+            "extra_detail_posting_ID_mismatch",
+            "extra_detail_posting_ID_mismatch",
+            "extra_detail_posting_ID_mismatch"
+          ],
+          "jazzhr:stax": [
+            "public_description_empty"
+          ],
+          "jazzhr:covertmfg": [
+            "no_public_index_rows_or_schema_changed"
+          ],
+          "jazzhr:valnetfreelance": [
+            "no_public_index_rows_or_schema_changed"
+          ],
+          "jazzhr:chinatowncdc": [
+            "no_public_index_rows_or_schema_changed"
+          ]
+        },
+        "by_local_board": {
+          "greenhouse:nationalnursesunited": {
+            "metadata": 3,
+            "descriptions": 3
+          },
+          "jazzhr:aspwebsolutions": {
+            "metadata": 7,
+            "descriptions": 2
+          },
+          "jazzhr:brennancenter": {
+            "metadata": 5,
+            "descriptions": 5
+          },
+          "jazzhr:butler": {
+            "metadata": 9,
+            "descriptions": 2
+          },
+          "jazzhr:ccmiretailservices": {
+            "metadata": 4,
+            "descriptions": 1
+          },
+          "jazzhr:context": {
+            "metadata": 1,
+            "descriptions": 1
+          },
+          "jazzhr:drdemo": {
+            "metadata": 12,
+            "descriptions": 2
+          },
+          "jazzhr:languagetr": {
+            "metadata": 8,
+            "descriptions": 1
+          },
+          "jazzhr:leap": {
+            "metadata": 6,
+            "descriptions": 0
+          },
+          "jazzhr:maania": {
+            "metadata": 20,
+            "descriptions": 2
+          },
+          "jazzhr:motaboards": {
+            "metadata": 42,
+            "descriptions": 3
+          },
+          "jazzhr:stellarscience": {
+            "metadata": 2,
+            "descriptions": 1
+          },
+          "jazzhr:street": {
+            "metadata": 1,
+            "descriptions": 1
+          },
+          "jazzhr:techinsights": {
+            "metadata": 3,
+            "descriptions": 2
+          },
+          "jazzhr:thegatheringspot": {
+            "metadata": 5,
+            "descriptions": 3
+          },
+          "jazzhr:thejointchiropractic": {
+            "metadata": 5,
+            "descriptions": 2
+          },
+          "jazzhr:thresholdgroup": {
+            "metadata": 2,
+            "descriptions": 2
+          }
+        }
+      },
+      "fixed": {
+        "ATS_source_identities": 3510,
+        "logical_requests": 100,
+        "response_bytes": 17240044,
+        "selected_boards": 30,
+        "attempted_boards": 30,
+        "attempted_platforms": {
+          "jazzhr": 15,
+          "greenhouse": 5,
+          "ashby": 5,
+          "lever": 5
+        },
+        "platforms_returning_records": {
+          "jazzhr": 15,
+          "greenhouse": 5,
+          "ashby": 5,
+          "lever": 3
+        },
+        "local_metadata": 134,
+        "local_descriptions": 57,
+        "local_missing_descriptions": 77,
+        "local_description_fraction": 0.4253731343283582,
+        "local_board_groups": 16,
+        "local_described_board_groups": 16,
+        "local_record_kinds": {
+          "advertised_position": 127,
+          "volunteer_public_appointment": 3,
+          "registration_pool": 4
+        },
+        "local_duplicate_flags": {
+          "not_matched_to_five_source_capture": 132,
+          "possible_crosspost_review": 2
+        },
+        "geography_review": 45,
+        "board_errors": {
+          "lever:publiccloudgroup-2": [
+            "http_404"
+          ],
+          "lever:publicprep": [
+            "http_404"
+          ]
+        },
+        "by_local_board": {
+          "ashby:perplexity": {
+            "metadata": 3,
+            "descriptions": 3
+          },
+          "ashby:saronic": {
+            "metadata": 13,
+            "descriptions": 13
+          },
+          "greenhouse:nationalnursesunited": {
+            "metadata": 3,
+            "descriptions": 3
+          },
+          "jazzhr:aspwebsolutions": {
+            "metadata": 7,
+            "descriptions": 4
+          },
+          "jazzhr:brennancenter": {
+            "metadata": 5,
+            "descriptions": 3
+          },
+          "jazzhr:ccmiretailservices": {
+            "metadata": 4,
+            "descriptions": 3
+          },
+          "jazzhr:context": {
+            "metadata": 1,
+            "descriptions": 1
+          },
+          "jazzhr:drdemo": {
+            "metadata": 12,
+            "descriptions": 4
+          },
+          "jazzhr:languagetr": {
+            "metadata": 8,
+            "descriptions": 3
+          },
+          "jazzhr:maania": {
+            "metadata": 20,
+            "descriptions": 4
+          },
+          "jazzhr:motaboards": {
+            "metadata": 42,
+            "descriptions": 4
+          },
+          "jazzhr:techinsights": {
+            "metadata": 3,
+            "descriptions": 3
+          },
+          "jazzhr:thegatheringspot": {
+            "metadata": 5,
+            "descriptions": 3
+          },
+          "jazzhr:thejointchiropractic": {
+            "metadata": 5,
+            "descriptions": 3
+          },
+          "jazzhr:thresholdgroup": {
+            "metadata": 2,
+            "descriptions": 2
+          },
+          "lever:researchinnovations.com": {
+            "metadata": 1,
+            "descriptions": 1
+          }
+        }
+      }
+    },
+    "common_local_cohort": {
+      "identities": 117,
+      "prior_described": 29,
+      "fixed_described": 40,
+      "newly_described": 19,
+      "no_longer_described": 8
+    },
+    "fixed_only_local_identities": 17,
+    "prior_only_local_identities": 18,
+    "warning": "Different selected boards have different denominators. Description gain is not evidence of more suitable early-career jobs. Original failure run is observational evidence, not a matched comparator."
+  },
+  "verification": {
+    "unit_tests": 211,
+    "existing_tests_removed": 0,
+    "ranker_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266",
+    "raw_capture_runner_sha256": "e74579e9205c4f7bd752d659265d2c196211dfe9a3449a66b09ebebee88da55a",
+    "manual_workflow_run": 42193251891,
+    "manual_run_initial_code_sha": "068714c5bd418e2b1d3f4db1e77cd080151339e1",
+    "independent_packet": "Sealed; not opened or used for evaluation."
+  },
+  "live_manual_run": {
+    "id": 42193251891,
+    "url": "https://github.com/murphym123/career-discovery-engine/actions/runs/42193251891",
+    "conclusion": "success",
+    "head_sha": "068714c5bd418e2b1d3f4db1e77cd080151339e1",
+    "captured_at": "2026-11-06T09:17:48+00:00",
+    "original_sources": {
+      "records": 302,
+      "health": {
+        "state": "partial",
+        "label": "PARTIAL COLLECTION",
+        "sources": {
+          "senate": {
+            "state": "failed",
+            "signal": "red",
+            "records": 0,
+            "errors": [
+              "Index http_404",
+              "Index http_403"
+            ],
+            "note": "Access/collection failure; not evidence of zero vacancies."
+          },
+          "unionjobs": {
+            "state": "ok",
+            "signal": "green",
+            "records": 58,
+            "errors": [],
+            "note": "Successful bounded collection is not a complete publisher inventory."
+          },
+          "globaljobs": {
+            "state": "ok",
+            "signal": "green",
+            "records": 208,
+            "errors": [],
+            "note": "Successful bounded collection is not a complete publisher inventory."
+          },
+          "onthinktanks": {
+            "state": "ok",
+            "signal": "green",
+            "records": 15,
+            "errors": [],
+            "note": "Successful bounded collection is not a complete publisher inventory."
+          },
+          "workfornonprofits": {
+            "state": "ok",
+            "signal": "green",
+            "records": 21,
+            "errors": [],
+            "note": "Successful bounded collection is not a complete publisher inventory."
+          }
+        },
+        "inventory_completeness": "Not inferred from successful requests; see source-scoped coverage ledger."
+      },
+      "stats": {
+        "senate": {
+          "requests": 3,
+          "received": 0,
+          "malformed": 0,
+          "pages": 0,
+          "capped": true,
+          "status": "failed",
+          "unique": 0,
+          "inspection_strategy": "diverse",
+          "details_planned": 0,
+          "details_attempted": 0,
+          "descriptions_observed": 0,
+          "index_only": 0,
+          "errors": [
+            "Index http_404",
+            "Index http_403"
+          ],
+          "index_attempts": [
+            {
+              "url": "https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",
+              "status": "http_404",
+              "fallback": false
+            },
+            {
+              "url": "https://careers.employment.senate.gov/",
+              "status": "http_403",
+              "fallback": true
+            }
+          ],
+          "access_observations": [
+            {
+              "url": "https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",
+              "robots_url": "https://careers.employment.senate.gov/robots.txt",
+              "cached": false,
+              "http_status": 200,
+              "reason": "robots_rules_observed",
+              "allowed": true
+            },
+            {
+              "url": "https://careers.employment.senate.gov/",
+              "robots_url": "https://careers.employment.senate.gov/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            }
+          ]
+        },
+        "unionjobs": {
+          "requests": 25,
+          "received": 108,
+          "malformed": 0,
+          "pages": 4,
+          "capped": true,
+          "status": "ok",
+          "unique": 58,
+          "inspection_strategy": "diverse",
+          "details_planned": 20,
+          "details_attempted": 20,
+          "descriptions_observed": 20,
+          "index_only": 38,
+          "errors": [],
+          "index_attempts": [
+            {
+              "url": "https://www.unionjobs.com/location.php?state=District%20of%20Columbia",
+              "status": "ok",
+              "fallback": false
+            },
+            {
+              "url": "https://www.unionjobs.com/location.php?state=Maryland",
+              "status": "ok",
+              "fallback": false
+            },
+            {
+              "url": "https://www.unionjobs.com/location.php?state=Virginia",
+              "status": "ok",
+              "fallback": false
+            }
+          ],
+          "access_observations": [
+            {
+              "url": "https://www.unionjobs.com/rss.php",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": false,
+              "http_status": 404,
+              "reason": "robots_not_published",
+              "allowed": true
+            },
+            {
+              "url": "https://www.unionjobs.com/location.php?state=District%20of%20Columbia",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/location.php?state=Maryland",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/location.php?state=Virginia",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31646-lead-community-relations-and-engagement-coordinator-mid-atlantic-region",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/29867-congressional-labor-fellow",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31535-senior-office-administrator-communications",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31052-six-month-term-secretary-women-s-and-fair-practices-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31608-lead-organizer",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31604-executive-assistant",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31530-associate-general-counsel",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31503-senior-campaign-coordinator",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31623-social-media-coordinator",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/28720-legal-secretary",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31180-senior-political-coordinator-legislative-and-political-action-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31648-assistant-counsel-legal-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31588-political-action-representative-i-political-action-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31649-regulatory-policy-specialist",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31563-grievance-representative-capital-area-district",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31420-dc-baltimore-area-project-based-organizer",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31407-administrative-assistant-office-of-the-president",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31480-labor-advocate-i-research-and-collective-bargaining-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31502-organizing-campaign-director",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://www.unionjobs.com/listing/31599-senior-federal-lobbyist-political-department",
+              "robots_url": "https://www.unionjobs.com/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            }
+          ]
+        },
+        "globaljobs": {
+          "requests": 23,
+          "received": 416,
+          "malformed": 0,
+          "pages": 2,
+          "capped": true,
+          "status": "ok",
+          "unique": 208,
+          "inspection_strategy": "diverse",
+          "details_planned": 20,
+          "details_attempted": 20,
+          "descriptions_observed": 20,
+          "index_only": 188,
+          "errors": [],
+          "index_attempts": [
+            {
+              "url": "https://globaljobs.org/",
+              "status": "ok",
+              "fallback": false
+            }
+          ],
+          "access_observations": [
+            {
+              "url": "https://globaljobs.org/jobs/feed.rss",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": false,
+              "http_status": 200,
+              "reason": "robots_rules_observed",
+              "allowed": true
+            },
+            {
+              "url": "https://globaljobs.org/",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52229-arlington-virginia-amazon-leo-sr-eng-int-l-wrc-strategy-global-regulatory-affairs",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52215-washington-dc-mce-social-capital-business-development-operations-analyst",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52105-washington-dc-carnegie-endowment-for-international-peace-program-assistant-china-ai-initiative",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52058-washington-dc-wisconsin-project-on-nuclear-arms-control-research-associate-nonproliferation-and-export-controls",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52025-washington-dc-the-wyss-foundation-program-assistant-conservation",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52208-arlington-virginia-the-nature-conservancy-fisheries-policy-associate",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52141-arlington-virginia-weta-srl-academy-events-intern",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52088-washington-dc-department-of-justice-criminal-division-international-affairs-specialist",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52101-arlington-virginia-olgoonik-corporation-intelligence-research-specialist",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52072-washington-dc-american-councils-for-international-education-actr-accels-program-officer-selection-and-administration-j-christopher-stevens-digital-leaders",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52172-washington-dc-inside-publishers-federal-policy-reporter",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52042-herndon-virginia-amazon-intelligence-analyst-global-security",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52190-washington-dc-arizona-state-university-program-coordinator-of-human-rights-freedom",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52182-washington-dc-foreign-commonwealth-and-development-office-political-support-officer-british-embassy",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52091-arlington-virginia-uicgs-bowhead-family-of-companies-terrorism-targeted-violence-risk-mitigation-support-landing-page",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52024-washington-dc-exxonmobil-senior-writer-brief",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52092-washington-dc-national-geographic-society-senior-manager-digital-fundraising",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52134-washington-dc-pacific-northwest-national-laboratory-international-legal-analyst",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52067-washington-dc-eli-lilly-and-company-associate-vice-president-us-policy-campaigns",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://globaljobs.org/jobs/52140-washington-dc-world-food-program-usa-senior-manager-advocacy-coalitions",
+              "robots_url": "https://globaljobs.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            }
+          ]
+        },
+        "onthinktanks": {
+          "requests": 17,
+          "received": 15,
+          "malformed": 0,
+          "pages": 1,
+          "capped": false,
+          "status": "ok",
+          "unique": 15,
+          "inspection_strategy": "diverse",
+          "details_planned": 15,
+          "details_attempted": 15,
+          "descriptions_observed": 15,
+          "index_only": 0,
+          "errors": [],
+          "index_attempts": [
+            {
+              "url": "https://onthinktanks.org/jobsboard/",
+              "status": "ok",
+              "fallback": false
+            }
+          ],
+          "access_observations": [
+            {
+              "url": "https://onthinktanks.org/jobsboard/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": false,
+              "http_status": 200,
+              "reason": "robots_rules_observed",
+              "allowed": true
+            },
+            {
+              "url": "https://onthinktanks.org/job/program-manager-cato-courses/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/senior-fellow-finance-and-insurance/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/policy-engagement-specialist-2/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/senior-fellow-energy-and-environment-2/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/legal-fellow/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/chief-financial-and-operating-officer-institute-for-womens-policy-research/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/echidna-global-scholar-5/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/curriculum-lead-sphere-education-initiatives/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/energy-policy-analyst/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/director-tax-policy/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/director-tax-policy-2/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/head-of-steel-diplomacy/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/grantmaker-in-residence-global-aid-policy/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/peope-operations-lead/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://onthinktanks.org/job/geschaftsfuhrung-evidenzbasierte-entwicklungszusammenarbeit/",
+              "robots_url": "https://onthinktanks.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            }
+          ]
+        },
+        "workfornonprofits": {
+          "requests": 22,
+          "received": 21,
+          "malformed": 0,
+          "pages": 1,
+          "capped": true,
+          "status": "ok",
+          "unique": 21,
+          "inspection_strategy": "diverse",
+          "details_planned": 20,
+          "details_attempted": 20,
+          "descriptions_observed": 20,
+          "index_only": 1,
+          "errors": [],
+          "index_attempts": [
+            {
+              "url": "https://workfornonprofits.org/jobs/district-of-columbia",
+              "status": "ok",
+              "fallback": false
+            }
+          ],
+          "access_observations": [
+            {
+              "url": "https://workfornonprofits.org/jobs/district-of-columbia",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": false,
+              "http_status": 200,
+              "reason": "robots_rules_observed",
+              "allowed": true
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/j-street/jobs/relationship-manager-dc-maryland-and-virginia-3dfc7540d81a421b878d372431df62b5",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/the-pew-charitable-trusts/jobs/associate-i-evidence-project-b76bf793af7548e9bb3aa9366eff1fa4",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/daughters-of-the-american-revolution/jobs/chief-financial-officer-d9ef3b1eca194762a5b995fd6bb638c0",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/american-association-of-university-professors/jobs/senior-state-policy-analyst-74d325c3efc24e04ab5854045163fe17",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/american-association-of-university-professors/jobs/senior-federal-lobbyist-14184d3b50594b6abe2efe5bea59f6af",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/georgetown-university/jobs/program-co-director-head-of-research-sovereign-debt-forum-21d28aab9d9d468d83dcd6c446c18bc6",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/npag/jobs/director-of-content-governance-education-8781567fc5e14c95a2fa94612fd3e997",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/common-cause/jobs/senior-director-individual-giving-a6528d2d338a44d398be51430b808bda",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/urban-institute/jobs/senior-director-ai-studio-d132ff5d22ef49cb88e9a9e316b68843",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/american-college-of-obstetricians-and-gynecologists/jobs/senior-director-board-affairs-and-governance-b7b6a450a8d5497db4e4cbb0e065c1a9",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/democracy-forward/jobs/senior-director-of-compliance-c2f9bbf77ee94642be6778eb9012a474",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/national-geographic-society/jobs/director-corporate-partnerships-technology-sector-9571edc6bda24a618f53f7423472abb4",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/the-george-washington-university/jobs/director-of-development-gwsb-f7cad374b2a94637a97c396eec5350f6",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/amica-center-for-immigrant-rights/jobs/deputy-program-director-childrens-program-e04d68f949854977b8eb74a971b736f0",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/roosevelt-institute/jobs/managing-director-of-development-roosevelt-institute-01971a0864aa4a0b9660138e812db999",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/arnold-ventures/jobs/director-criminal-justice-chief-of-staff-1433846a65ff4e6aab61ff90ebf5d421",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/trust-for-the-national-mall/jobs/director-individual-giving-a4c273ced78a4a7dbd69f7bcbba96805",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/the-george-washington-university/jobs/executive-director-employee-and-labor-relations-13640b0326854318bae13d042bbecff6",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/roosevelt-institute/jobs/managing-director-of-library-philanthropy-fdr-presidential-library-and-museum-d6159e7266494340bbf8ccb5298d8677",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            },
+            {
+              "url": "https://workfornonprofits.org/companies/results-for-america/jobs/vice-president-federal-practice-lead-2368beaaa8174566958d93240afb5c70",
+              "robots_url": "https://workfornonprofits.org/robots.txt",
+              "cached": true,
+              "allowed": true,
+              "reason": "cached_rules_allow"
+            }
+          ]
+        }
+      }
+    },
+    "ATS": {
+      "raw_identities": 2936,
+      "selected": 30,
+      "attempted": 30,
+      "not_attempted": [],
+      "platform_counts": {
+        "selected": {
+          "jazzhr": 15,
+          "greenhouse": 5,
+          "ashby": 5,
+          "lever": 5
+        },
+        "attempted": {
+          "jazzhr": 15,
+          "greenhouse": 5,
+          "ashby": 5,
+          "lever": 5
+        }
+      },
+      "logical_requests": 118,
+      "description_completeness": {
+        "before_shared_inspection": {
+          "total": {
+            "local_index_records": 83,
+            "local_with_description": 17,
+            "local_untruncated_descriptions": 17,
+            "local_truncated_descriptions": 0,
+            "local_missing_description": 66,
+            "local_description_fraction": 0.20481927710843373,
+            "uncertain_or_remote_index_records": 66,
+            "uncertain_or_remote_with_description": 30,
+            "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+          },
+          "boards": {
+            "ashby:perplexity": {
+              "local_index_records": 3,
+              "local_with_description": 3,
+              "local_untruncated_descriptions": 3,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 10,
+              "uncertain_or_remote_with_description": 10,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:relayfi": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:revecore": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 13,
+              "uncertain_or_remote_with_description": 13,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:saronic": {
+              "local_index_records": 13,
+              "local_with_description": 13,
+              "local_untruncated_descriptions": 13,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 1,
+              "uncertain_or_remote_with_description": 1,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:valkai": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 2,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:culinahealth": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:dentalxchange": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:devrev": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 11,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:dhpace": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:nationalnursesunited": {
+              "local_index_records": 3,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 3,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:aspwebsolutions": {
+              "local_index_records": 7,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 7,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:autismspeaks": {
+              "local_index_records": 2,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:bellababyphotography": {
+              "local_index_records": 2,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:breadbutterpr": {
+              "local_index_records": 2,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:brennancenter": {
+              "local_index_records": 5,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 5,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:companionanimalhospitalpartners": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:drdemo": {
+              "local_index_records": 12,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 12,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:floridasheriffsyouthranches": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:luminatortechnologygroup": {
+              "local_index_records": 1,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 1,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:maania": {
+              "local_index_records": 20,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 20,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 6,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:street": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 3,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:techinsights": {
+              "local_index_records": 3,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 3,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 10,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:thejointchiropractic": {
+              "local_index_records": 5,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 5,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:thresholdgroup": {
+              "local_index_records": 2,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:visitingangelseldersbergmaryland": {
+              "local_index_records": 2,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:americantall": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:foundation-llm-technologies": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 4,
+              "uncertain_or_remote_with_description": 4,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:researchgate": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:researchinnovations.com": {
+              "local_index_records": 1,
+              "local_with_description": 1,
+              "local_untruncated_descriptions": 1,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            }
+          }
+        },
+        "after_shared_inspection": {
+          "total": {
+            "local_index_records": 83,
+            "local_with_description": 57,
+            "local_untruncated_descriptions": 57,
+            "local_truncated_descriptions": 0,
+            "local_missing_description": 26,
+            "local_description_fraction": 0.6867469879518072,
+            "uncertain_or_remote_index_records": 66,
+            "uncertain_or_remote_with_description": 30,
+            "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+          },
+          "boards": {
+            "ashby:perplexity": {
+              "local_index_records": 3,
+              "local_with_description": 3,
+              "local_untruncated_descriptions": 3,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 10,
+              "uncertain_or_remote_with_description": 10,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:relayfi": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:revecore": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 13,
+              "uncertain_or_remote_with_description": 13,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:saronic": {
+              "local_index_records": 13,
+              "local_with_description": 13,
+              "local_untruncated_descriptions": 13,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 1,
+              "uncertain_or_remote_with_description": 1,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "ashby:valkai": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 2,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:culinahealth": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:dentalxchange": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:devrev": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 11,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:dhpace": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "greenhouse:nationalnursesunited": {
+              "local_index_records": 3,
+              "local_with_description": 3,
+              "local_untruncated_descriptions": 3,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:aspwebsolutions": {
+              "local_index_records": 7,
+              "local_with_description": 5,
+              "local_untruncated_descriptions": 5,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 2,
+              "local_description_fraction": 0.7142857142857143,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:autismspeaks": {
+              "local_index_records": 2,
+              "local_with_description": 2,
+              "local_untruncated_descriptions": 2,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:bellababyphotography": {
+              "local_index_records": 2,
+              "local_with_description": 2,
+              "local_untruncated_descriptions": 2,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:breadbutterpr": {
+              "local_index_records": 2,
+              "local_with_description": 2,
+              "local_untruncated_descriptions": 2,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:brennancenter": {
+              "local_index_records": 5,
+              "local_with_description": 4,
+              "local_untruncated_descriptions": 4,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 1,
+              "local_description_fraction": 0.8,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:companionanimalhospitalpartners": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:drdemo": {
+              "local_index_records": 12,
+              "local_with_description": 5,
+              "local_untruncated_descriptions": 5,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 7,
+              "local_description_fraction": 0.4166666666666667,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:floridasheriffsyouthranches": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:luminatortechnologygroup": {
+              "local_index_records": 1,
+              "local_with_description": 1,
+              "local_untruncated_descriptions": 1,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:maania": {
+              "local_index_records": 20,
+              "local_with_description": 5,
+              "local_untruncated_descriptions": 5,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 15,
+              "local_description_fraction": 0.25,
+              "uncertain_or_remote_index_records": 6,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:street": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 3,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:techinsights": {
+              "local_index_records": 3,
+              "local_with_description": 3,
+              "local_untruncated_descriptions": 3,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 10,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:thejointchiropractic": {
+              "local_index_records": 5,
+              "local_with_description": 4,
+              "local_untruncated_descriptions": 4,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 1,
+              "local_description_fraction": 0.8,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:thresholdgroup": {
+              "local_index_records": 2,
+              "local_with_description": 2,
+              "local_untruncated_descriptions": 2,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 2,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "jazzhr:visitingangelseldersbergmaryland": {
+              "local_index_records": 2,
+              "local_with_description": 2,
+              "local_untruncated_descriptions": 2,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:americantall": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:foundation-llm-technologies": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 4,
+              "uncertain_or_remote_with_description": 4,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:researchgate": {
+              "local_index_records": 0,
+              "local_with_description": 0,
+              "local_untruncated_descriptions": 0,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": null,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            },
+            "lever:researchinnovations.com": {
+              "local_index_records": 1,
+              "local_with_description": 1,
+              "local_untruncated_descriptions": 1,
+              "local_truncated_descriptions": 0,
+              "local_missing_description": 0,
+              "local_description_fraction": 1.0,
+              "uncertain_or_remote_index_records": 0,
+              "uncertain_or_remote_with_description": 0,
+              "note": "Observed metadata denominator only; text may be truncated or omit mandatory requirements. Not market coverage or job suitability."
+            }
+          }
+        },
+        "base_page_budget": 20,
+        "maximum_conditional_pages": 40
+      },
+      "record_kinds_local": {
+        "advertised_position": 83
+      },
+      "coverage": {
+        "worksite_evidence_counts": {
+          "outside_region": 2787,
+          "single_regional_label": 70,
+          "remote_not_regional_worksite": 65,
+          "regional_option_multiple_locations": 13,
+          "geography_unresolved": 1
+        },
+        "raw_ATS_source_identities": 2936,
+        "distinct_board_keys": 29,
+        "dc_dmv_labels": 83,
+        "us_remote_labels": 28,
+        "geography_review": 38,
+        "talent_or_prospect_pool_signals": 7,
+        "explicit_volunteer_appointments": 0,
+        "outside_region": 2787,
+        "duplicates": {
+          "not_matched_to_five_source_capture": 2932,
+          "possible_crosspost_review": 4
+        },
+        "dc_not_matched_to_five_sources": 81,
+        "dc_new_conservative_employer_title_groups": 76,
+        "dc_new_title_specialist_signals": 16,
+        "independent_review_quarantined": 0,
+        "dc_possible_crossposts": 2,
+        "dc_new_with_description": 55,
+        "dc_new_description_early_signals": 4,
+        "dc_new_title_only_signals": 5,
+        "dc_new_function_signals": {
+          "programs_operations": 12,
+          "communications": 2,
+          "research_consulting": 5,
+          "specialist_or_clinical_signal": 16,
+          "policy_government_affairs": 1,
+          "advocacy_organizing": 2,
+          "development_associations": 2
+        },
+        "note": "Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.",
+        "market": {
+          "schema_version": "market/v1",
+          "id": "dc-dmv",
+          "name": "Washington DC / nearby DMV",
+          "city": "Washington",
+          "state": "DC",
+          "scope": "DC plus existing nearby-MD/VA fixture"
+        },
+        "in_market_labels": 83,
+        "unmatched_in_market": 81
+      }
+    },
+    "combined_rows": 3288,
+    "original_records_preserved": true,
+    "combined_health": {
+      "state": "partial",
+      "label": "PARTIAL COLLECTION",
+      "sources": {
+        "senate": {
+          "state": "failed",
+          "signal": "red",
+          "records": 0,
+          "errors": [
+            "Index http_404",
+            "Index http_403"
+          ],
+          "note": "Access/collection failure; not evidence of zero vacancies."
+        },
+        "unionjobs": {
+          "state": "ok",
+          "signal": "green",
+          "records": 58,
+          "errors": [],
+          "note": "Successful bounded collection is not a complete publisher inventory."
+        },
+        "globaljobs": {
+          "state": "ok",
+          "signal": "green",
+          "records": 208,
+          "errors": [],
+          "note": "Successful bounded collection is not a complete publisher inventory."
+        },
+        "onthinktanks": {
+          "state": "ok",
+          "signal": "green",
+          "records": 15,
+          "errors": [],
+          "note": "Successful bounded collection is not a complete publisher inventory."
+        },
+        "workfornonprofits": {
+          "state": "ok",
+          "signal": "green",
+          "records": 21,
+          "errors": [],
+          "note": "Successful bounded collection is not a complete publisher inventory."
+        },
+        "public_ats": {
+          "state": "partial",
+          "signal": "yellow",
+          "records": 2936,
+          "errors": [
+            "Some seed queries or boards failed; inspect ATS discovery report"
+          ],
+          "note": "Access/collection failure; not evidence of zero vacancies."
+        },
+        "impactopportunity": {
+          "state": "ok",
+          "signal": "green",
+          "records": 50,
+          "errors": [],
+          "note": "Successful bounded collection is not a complete publisher inventory."
+        }
+      },
+      "inventory_completeness": "Not inferred from successful requests; see source-scoped coverage ledger."
+    },
+    "coverage_catalogue_summary": {
+      "catalogue_entries": 2750,
+      "discovered_source_candidates": 2743,
+      "unresolved_publication_links": 7,
+      "source_kinds": {
+        "sitemap": 8,
+        "rss": 5,
+        "career_site_candidate": 352,
+        "public_ats_candidate": 2368,
+        "unresolved_publication_link": 7,
+        "specialty_board": 9,
+        "institutional_career_channel": 1
+      },
+      "retrieval_states": {
+        "not_yet_covered": 2708,
+        "searched": 14,
+        "partially_retrieved": 23,
+        "inaccessible": 5
+      },
+      "note": "Source candidates are not necessarily live employers. Counts describe this observed catalog, never all market sources/jobs."
+    },
+    "experimental_ranking": "not run; unchanged, optional integration preserved",
+    "artifact_sha256": "874c61ee40c8114cd27e74a7ab94a3fe768e8bec9e419f755b0c007b8c67dd24"
+  }
+}

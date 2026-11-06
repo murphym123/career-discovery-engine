@@ -34,6 +34,8 @@ class SourceStats:
     descriptions_observed: int = 0
     index_only: int = 0
     errors: list = field(default_factory=list)
+    index_attempts: list = field(default_factory=list)
+    access_observations: list = field(default_factory=list)
 
 
 def free_sources(environ=None):

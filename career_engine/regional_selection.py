@@ -37,38 +37,55 @@ def select_regional_boards(registry,budget=30,exploration_fraction=.2,market=Non
               (isinstance(e.get('last_checked_run'),int) and run-e['last_checked_run']>=(7 if e.get('status')=='failed' else 1))]
     def hashed(e):return hashlib.sha256((str(run)+'|'+e['key']).encode()).hexdigest()
     # No evidence/industry/title/score weighting in this reserved sample.
-    exploratory=sorted(eligible,key=lambda e:(e.get('last_checked_run') is not None,hashed(e)))[:math.ceil(budget*exploration_fraction)]
+    platform=lambda e:e['provider'].removesuffix('_eu')
+    platform_names={platform(e) for e in eligible}
+    ceiling=math.ceil(budget/2) if len(platform_names)>1 else budget
     selected=[];used=set();providers=Counter()
     def add(e,route):
-        if e['key'] in used:return
-        selected.append(e);used.add(e['key']);providers[e['provider']]+=1
+        selected.append(e);used.add(e['key']);providers[platform(e)]+=1
         e['selection_evidence']={'route':route,'strength':evidence_strength(e,market),
-            'note':'Board retrieval priority only; no candidate profile, score or suitability inference.'}
-    for e in exploratory:add(e,'non_targeted_exploration')
+            'platform_cap':ceiling,'note':'Board retrieval priority only; no candidate profile, score or suitability inference.'}
+    # Stratify exploration by platform, not by registry population. Thousands
+    # of sitemap candidates must not drown out small Lever/GH/Ashby strata.
+    for _ in range(min(math.ceil(budget*exploration_fraction),len(eligible))):
+        pool=[e for e in eligible if e['key'] not in used]
+        e=min(pool,key=lambda e:(providers[platform(e)],e.get('last_checked_run') is not None,hashed(e)))
+        add(e,'non_targeted_exploration')
     targeted=[e for e in eligible if evidence_strength(e,market)>1 and e['key'] not in used]
     while targeted and len(selected)<budget:
-        e=min(targeted,key=lambda e:(e.get('last_checked_run') is not None,-evidence_strength(e,market),providers[e['provider']],hashed(e)))
+        pool=[e for e in targeted if providers[platform(e)]<ceiling]
+        if not pool:break
+        e=min(pool,key=lambda e:(e.get('last_checked_run') is not None,-evidence_strength(e,market),providers[platform(e)],hashed(e)))
         add(e,'regional_or_function_evidence');targeted.remove(e)
-    # Weak occupational URL evidence gets a small, separate exploratory budget,
-    # never all the remaining slots. Different functions share those slots.
     weak=[e for e in eligible if evidence_strength(e,market)==1 and e['key'] not in used]
     functions=Counter()
     def observed_family(e):
         return next((family({'title':x.get('job_title_hint','')}) for x in e['evidence'] if x.get('job_title_hint')),'other')
     for _ in range(min(budget//4,budget-len(selected))):
-        if not weak:break
-        e=min(weak,key=lambda e:(e.get('last_checked_run') is not None,functions[observed_family(e)],providers[e['provider']],hashed(e)))
+        pool=[e for e in weak if providers[platform(e)]<ceiling]
+        if not pool:break
+        e=min(pool,key=lambda e:(e.get('last_checked_run') is not None,functions[observed_family(e)],providers[platform(e)],hashed(e)))
         add(e,'weak_function_exploration');functions[observed_family(e)]+=1;weak.remove(e)
-    for e in legacy+sorted(eligible,key=hashed):
-        if len(selected)>=budget:break
+    legacy_order={e['key']:n for n,e in enumerate(legacy)}
+    while len(selected)<min(budget,len(eligible)):
+        pool=[e for e in eligible if e['key'] not in used]
+        # Relax only if the other platform pools are exhausted; report actual
+        # availability rather than inventing enough boards to meet a quota.
+        bounded=[e for e in pool if providers[platform(e)]<ceiling]
+        e=min(bounded or pool,key=lambda e:(providers[platform(e)],e.get('last_checked_run') is not None,legacy_order.get(e['key'],budget),hashed(e)))
         add(e,'broad_fill')
-    # Interleave the reserved sample with targeted boards so a request cap cannot
-    # silently leave all exploration until the very end of the run.
     exploration=[e for e in selected if e['selection_evidence']['route']=='non_targeted_exploration']
-    other=[e for e in selected if e['selection_evidence']['route']!='non_targeted_exploration'];result=[]
+    other=[e for e in selected if e['selection_evidence']['route']!='non_targeted_exploration'];ordered=[]
     for i in range(max(len(exploration),len(other))):
-        if i<len(other):result.append(other[i])
-        if i<len(exploration):result.append(exploration[i])
+        if i<len(other):ordered.append(other[i])
+        if i<len(exploration):ordered.append(exploration[i])
+    # Spread platforms at the front as well: early time/global limits must not
+    # leave all minority platforms waiting behind a long sequence of Jazz boards.
+    result=[];attempts=Counter();order={e['key']:n for n,e in enumerate(ordered)}
+    while ordered:
+        e=min(ordered,key=lambda e:(attempts[platform(e)],order[e['key']]))
+        result.append(e);attempts[platform(e)]+=1;ordered.remove(e)
+
     return result
 
 
