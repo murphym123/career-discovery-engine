@@ -1,0 +1,160 @@
+{
+  "schema_version": "coverage-research-brief/v1",
+  "issue": "https://github.com/murphym123/career-discovery-engine/issues/19",
+  "as_of": "2026-11-06",
+  "scope": "One-time AI-led research; no discovery, ranking or workflow changes; no independent human validation.",
+  "report": "DC_EMPLOYMENT_COVERAGE_INTELLIGENCE.md",
+  "evidence_files": [
+    "calculations.json",
+    "data/source-audit.csv",
+    "data/qualification-examples.json",
+    "data/provenance.json"
+  ],
+  "measured_facts": [
+    {
+      "claim": "Latest actual run is workflow-successful but PARTIAL COLLECTION",
+      "run_id": 42193251891,
+      "citation": "https://github.com/murphym123/career-discovery-engine/actions/runs/42193251891",
+      "confidence": "high"
+    },
+    {
+      "claim": "3, 288 raw sightings; 216 regional listing identities; 132 described; one explicitly expired; 165 without closing date",
+      "citation": "data/engine-regional-metadata.json",
+      "confidence": "high for frozen listing counts; vacancy status uncertain"
+    },
+    {
+      "claim": "32 purposeful endpoints, 8 strata, 29 newchecks+3 controls; 6accessible inventories expose68 items/43 regional labels; zero exact engine overlap",
+      "citation": "data/independent-inventory-summary.json",
+      "confidence": "high for observed windows; not market recall"
+    },
+    {
+      "claim": "40 additional retrieved identities carry MSA-locality labels classified elsewhere; none described",
+      "citation": "data/engine-regional-metadata.json",
+      "confidence": "high for labels; paid status, relevance and worksites unverified"
+    },
+    {
+      "claim": "Nine diagnostic description checks:3explicit early-career tracks/preferences+1degree-constrained plausible early role; 2titles exceed0-2 years; 1student-only",
+      "citation": "data/qualification-examples.json",
+      "confidence": "AI interpretation of captured requirements; not fit validation"
+    }
+  ],
+  "denominators": {
+    "all_current_paid_msa_vacancies": {
+      "coverage_estimate": null,
+      "estimated_range": null,
+      "status": "not_identifiable"
+    },
+    "broad_relevant_early_career_paid_vacancies": {
+      "coverage_estimate": null,
+      "estimated_range": null,
+      "status": "not_identifiable"
+    },
+    "known_accessible_observed_windows": {
+      "metadata_items": 68,
+      "regional_offered_labels": 43,
+      "engine_exact_overlap": 0,
+      "paid_current_vacancy_denominator": null,
+      "status": "scoped_metadata_observation_only"
+    }
+  },
+  "earlier_informal_estimates": {
+    "all_jobs": "0.1-0.3%",
+    "relevant_jobs": "1-5%",
+    "disposition": "withdraw_as_unsupported_not_replaced_by_another_market_range"
+  },
+  "assumptions": [
+    "Public index/API presence is publication evidence, not confirmed acceptance or a paid vacancy.",
+    "Exact URL/ATS identity dedup is conservative; employer/title matches are review flags only.",
+    "Full Washington MSA differs from engine nearby-DMV fixture; offered remote labels are separate from physical worksite.",
+    "Locality review is limited and does not repair the engine or prove geographic recall.",
+    "External inventory timing differs from engine by roughly one hour; not a coeval census.",
+    "Sample membership was frozen before registry matching; analyst has prior implementation context, so no independent analyst/blinded validation claim."
+  ],
+  "benchmark_reconciliation": [
+    {
+      "id": "aspen_q3_2026",
+      "count": 165437,
+      "definition": "monthly active-at-any-time union in employer panel; September reference inferred",
+      "citation": "https://aspentechlabs.com/jobmarketpulse-reports/2026/jobmarketpulse-report-q3-2026"
+    },
+    {
+      "id": "headcount_2026_10_14",
+      "count": 50772,
+      "definition": "provider open-job snapshot, datedOct14",
+      "citation": "https://headcountlabs.com/reports/us-job-market/2026-10-14/"
+    },
+    {
+      "id": "secondsummit_2026_11_02",
+      "count": 5687,
+      "employers": 857,
+      "definition": "provider subset; primary-domain excerpt only, full methodology unknown",
+      "citation": "https://secondsummit.ai/jobs-data/metro/washington-arlington-alexandria-dc-va-md-wv/"
+    },
+    {
+      "conclusion": "Incompatible dates, windows, populations and unverified numerator. Illustrative ratios are NOT coverage estimates or bounds. No capture-recapture."
+    }
+  ],
+  "priorities": [
+    {
+      "priority": 1,
+      "change": "Discover publication edges with real regional evidence; probe metadata from known/unfamiliar boards rather than URL-title geographic hints",
+      "evidence": "Known-unpolled Citizen4 regional; unsupported discovery of already-supported ACLU+FGS11 regional",
+      "effort": "medium",
+      "gain_estimate": null,
+      "citation": "data/independent-inventory-summary.json"
+    },
+    {
+      "priority": 2,
+      "change": "General public iCIMS and embedded Paylocity inventory adapters",
+      "evidence": "26 iCIMS+2 Paylocity regional labels; four plausibly0-2 year inspected iCIMS examples",
+      "effort": "medium",
+      "gain_estimate": null,
+      "citation": "data/qualification-examples.json"
+    },
+    {
+      "priority": 3,
+      "change": "Explicit MSA scope and country-state-city aliases; preserve raw locations and remote ambiguity",
+      "evidence": "40retrieved outside-label MSA identities; US-DC aliases on26additional public records",
+      "effort": "low_to_medium",
+      "gain_estimate": null,
+      "citation": "data/engine-regional-metadata.json"
+    },
+    {
+      "priority": 4,
+      "change": "Lawful public-sector and institutional collection, beginning with existing optional free-key USAJOBS mode",
+      "evidence": "Institutional publication channels not included in defaultDC collection; several portals remain unresolved",
+      "effort": "medium_to_high",
+      "gain_estimate": null,
+      "citation": "data/source-audit.json"
+    },
+    {
+      "priority": 5,
+      "change": "Inventory completeness contracts, explicit shell status and regional description allocation",
+      "evidence": "84 regional identities uninspected; ACLU shell contradicts18 API items; Marriott10of14, 181 global window",
+      "effort": "medium",
+      "gain_estimate": null,
+      "citation": "DC_EMPLOYMENT_COVERAGE_INTELLIGENCE.md"
+    }
+  ],
+  "unknowns": [
+    "Total undiscovered sources",
+    "All-market vacancy population",
+    "Relevant early-career denominator",
+    "Closed/unpaid/pool classification for uninspected listings",
+    "Public inventory accessibility behind unresolved portals",
+    "Cross-employer and agency duplicate identities",
+    "Remote geographic eligibility",
+    "Effect of future improvements under equal search budgets"
+  ],
+  "guardrails": {
+    "engine_changed": false,
+    "ranking_changed": false,
+    "new_paid_APIs": false,
+    "scheduled_runs": false,
+    "applications": false,
+    "merged": false,
+    "sealed_packet_opened": false,
+    "quarantined_metadata_not_inspected": 2
+  },
+  "ai_role": "Research, interpretation and prioritization; Python counts/hashes authoritative. No model API platform. AI hypotheses are not exclusion filters."
+}

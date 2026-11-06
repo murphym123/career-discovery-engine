@@ -1,0 +1,96 @@
+{
+  "schema_version": "coverage-research-calculations/v1",
+  "engine": {
+    "raw_sightings": 3288,
+    "regional_label_sightings": 216,
+    "distinct_regional_listing_identities": 216,
+    "regional_identities_described": 132,
+    "regional_description_fraction": 0.6111111111111112,
+    "regional_employer_name_groups": 120,
+    "possible_same_employer_title_groups": 6,
+    "regional_expired_by_explicit_date": 1,
+    "regional_without_explicit_closing_date": 165,
+    "regional_title_remote_signals": 1,
+    "additional_retrieved_metro_locality_sightings": 40,
+    "additional_metro_locality_identities": 40,
+    "additional_metro_locality_described": 0,
+    "additional_metro_employer_name_groups": 6,
+    "geography_diagnostic_union_identities": 256,
+    "latent_locations": {
+      "Fredericksburg, Virginia": 1,
+      "Chantilly, Virginia": 1,
+      "Frederick, MD F - Thornton": 1,
+      "Lanham, MD": 2,
+      "Stafford, VA": 2,
+      "Frederick, MD Frederick, MD": 2,
+      "Chantilly, VA": 5,
+      "Quantico, VA": 4,
+      "Ft. Belvoir, VA": 4,
+      "Fort Belvoir, VA": 8,
+      "Landover, MD": 2,
+      "Fort Belvoir, VA, VA": 1,
+      "Chantilly, VA Virginia": 1,
+      "Frederick, MD Maryland": 4,
+      "Beltsville, MD Maryland": 2
+    },
+    "local_quarantined": 0
+  },
+  "sample": {
+    "endpoints": 32,
+    "endpoints_with_observed_count": 10,
+    "unknown_inventory_count": 22,
+    "explicit_zero_endpoints": 1,
+    "strata": {
+      "legislative": 4,
+      "policy_research": 4,
+      "advocacy_nonprofit": 4,
+      "membership_associations": 4,
+      "consulting_public_affairs": 4,
+      "education_health_hospitality": 4,
+      "government_international": 4,
+      "independent_publication_channels": 4
+    },
+    "prior_access_controls": 3,
+    "new_checks": 29,
+    "known_engine_endpoints": 4,
+    "known_engine_endpoints_excluding_controls": 1,
+    "public_inventory_endpoints": 6,
+    "inventory_items": 68,
+    "offered_regional_labels": 43,
+    "exact_engine_overlap_items": 0,
+    "possible_company_title_overlap_items": 0,
+    "protected_records_not_inspected": 2,
+    "descriptions_reviewed": 9,
+    "explicit_early_preferred_or_assistant_track": 3,
+    "plausible_early_with_degree_constraints": 1,
+    "above_0_2_despite_title": 2
+  },
+  "incompatible_ratio_illustrations_NOT_coverage": [
+    {
+      "benchmark": "aspen_q3_2026",
+      "engine_listing_identities": 216,
+      "benchmark_postings": 165437,
+      "arithmetic_percent_only": 0.1305632959978723,
+      "market_coverage_estimate": null
+    },
+    {
+      "benchmark": "headcount_2026_10_14",
+      "engine_listing_identities": 216,
+      "benchmark_postings": 50772,
+      "arithmetic_percent_only": 0.42543134010872136,
+      "market_coverage_estimate": null
+    },
+    {
+      "benchmark": "secondsummit_2026_11_02",
+      "engine_listing_identities": 216,
+      "benchmark_postings": 5687,
+      "arithmetic_percent_only": 3.7981360998769125,
+      "market_coverage_estimate": null
+    }
+  ],
+  "market_coverage": {
+    "all_current_paid_vacancies": null,
+    "relevant_early_career_vacancies": null,
+    "reason": "No coeval enumerated compatible population or probability inclusion design."
+  }
+}

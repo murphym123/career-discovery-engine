@@ -1,0 +1,46 @@
+[
+  {
+    "id": "aspen_q3_2026",
+    "url": "https://aspentechlabs.com/jobmarketpulse-reports/2026/jobmarketpulse-report-q3-2026",
+    "postings": 165437,
+    "date": "Q3 2026; monthly metric, September reference inferred from report methodology",
+    "population": "Washington-Arlington-Alexandria DC-VA-MD-WV employer-site postings active at any time in reference month",
+    "method": "Monthly unique vacancy flow/stock union; agencies excluded from Q2 unless otherwise noted; provider employer panel, not market census",
+    "verification": "primary report body read",
+    "compatible_daily_denominator": false
+  },
+  {
+    "id": "headcount_2026_10_14",
+    "url": "https://headcountlabs.com/reports/us-job-market/2026-10-14/",
+    "postings": 50772,
+    "date": "2026-10-14; mi-20261014T234333Z",
+    "population": "Provider-observed open jobs in Washington MSA from employer career pages/ATS",
+    "method": "Deduplicated snapshot; multi-metro ads counted in each metro; provider panel, not all employers",
+    "verification": "primary report body read",
+    "compatible_daily_denominator": false
+  },
+  {
+    "id": "secondsummit_2026_11_02",
+    "url": "https://secondsummit.ai/jobs-data/metro/washington-arlington-alexandria-dc-va-md-wv/",
+    "postings": 5687,
+    "date": "2026-11-02",
+    "employers": 857,
+    "population": "Metro postings in provider data",
+    "method": "Full methodology unavailable in this audit; do not extrapolate its entry-level fraction",
+    "verification": "primary-domain search excerpt only; direct page unavailable",
+    "compatible_daily_denominator": false
+  },
+  {
+    "id": "bls_employment_context",
+    "url": "https://www.bls.gov/regions/mid-atlantic/summary/blssummary_washington.pdf",
+    "postings": null,
+    "date": "2026-10-05 release; August 2026 employment",
+    "employment": 3299600,
+    "professional_business_employment": 777700,
+    "education_health_employment": 489200,
+    "government_employment": 663300,
+    "population": "Washington MSA nonfarm employment; contextual sector stocks, NOT vacancy denominator",
+    "verification": "primary BLS summary read",
+    "compatible_daily_denominator": false
+  }
+]
