@@ -1,0 +1,867 @@
+{
+  "scope": "Only attempted boards, original sources/feed and dated access investigations; full ledger remains in run artifacts.",
+  "full_catalogue_summary": {
+    "catalogue_entries": 2379,
+    "discovered_source_candidates": 2372,
+    "unresolved_publication_links": 7,
+    "source_kinds": {
+      "sitemap": 6,
+      "rss": 5,
+      "career_site_candidate": 225,
+      "public_ats_candidate": 2126,
+      "unresolved_publication_link": 7,
+      "specialty_board": 9,
+      "institutional_career_channel": 1
+    },
+    "retrieval_states": {
+      "not_yet_covered": 2337,
+      "searched": 13,
+      "partially_retrieved": 22,
+      "inaccessible": 7
+    },
+    "note": "Source candidates are not necessarily live employers. Counts describe this observed catalog, never all market sources/jobs."
+  },
+  "sources": [
+    {
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "source_kind": "public_ats_candidate",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:nationalnursesunited",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 14,
+        "provider_claimed_total": 14,
+        "metadata_retained": 14,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 14,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://street.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:street",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 3,
+        "metadata_retained": 3,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 3,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://thejointchiropractic.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:thejointchiropractic",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 880,
+        "metadata_retained": 880,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 880,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://companionanimalhospitalpartners.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:companionanimalhospitalpartners",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 1,
+        "metadata_retained": 1,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 1,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://aspwebsolutions.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:aspwebsolutions",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 22,
+        "metadata_retained": 22,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 22,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://maania.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:maania",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 146,
+        "metadata_retained": 146,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 146,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://floridasheriffsyouthranches.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:floridasheriffsyouthranches",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 21,
+        "metadata_retained": 21,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 21,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://thresholdgroup.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:thresholdgroup",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 16,
+        "metadata_retained": 16,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 16,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://drdemo.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:drdemo",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 698,
+        "metadata_retained": 698,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 698,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://brennancenter.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:brennancenter",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 23,
+        "metadata_retained": 23,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 23,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://motaboards.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:motaboards",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 45,
+        "metadata_retained": 45,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 45,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://ccmiretailservices.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:ccmiretailservices",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 393,
+        "metadata_retained": 393,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 393,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://context.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:context",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 7,
+        "metadata_retained": 7,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 7,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://techinsights.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:techinsights",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 42,
+        "metadata_retained": 42,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 42,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://languagetr.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:languagetr",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 230,
+        "metadata_retained": 230,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 230,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://thegatheringspot.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:thegatheringspot",
+      "retrieval_state": "partially_retrieved",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 29,
+        "metadata_retained": 29,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 29,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",
+      "source_kind": "specialty_board",
+      "source": "senate",
+      "retrieval_state": "inaccessible",
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 0,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      },
+      "errors": [
+        "Index http_404"
+      ]
+    },
+    {
+      "url": "https://www.unionjobs.com/location.php?state=District%20of%20Columbia",
+      "source_kind": "specialty_board",
+      "source": "unionjobs",
+      "retrieval_state": "partially_retrieved",
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 58,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 20,
+        "description_denominator_observed_records": 58,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      },
+      "errors": []
+    },
+    {
+      "url": "https://globaljobs.org/",
+      "source_kind": "specialty_board",
+      "source": "globaljobs",
+      "retrieval_state": "partially_retrieved",
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 208,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 20,
+        "description_denominator_observed_records": 208,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      },
+      "errors": []
+    },
+    {
+      "url": "https://onthinktanks.org/jobsboard/",
+      "source_kind": "specialty_board",
+      "source": "onthinktanks",
+      "retrieval_state": "partially_retrieved",
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 15,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 15,
+        "description_denominator_observed_records": 15,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      },
+      "errors": []
+    },
+    {
+      "url": "https://workfornonprofits.org/jobs/district-of-columbia",
+      "source_kind": "specialty_board",
+      "source": "workfornonprofits",
+      "retrieval_state": "inaccessible",
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 0,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      },
+      "errors": [
+        "Index robots_disallowed_or_unavailable"
+      ]
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/culinahealth",
+      "source_kind": "public_ats_candidate",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:culinahealth",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 1,
+        "provider_claimed_total": 1,
+        "metadata_retained": 1,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 1,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/dentalxchange",
+      "source_kind": "public_ats_candidate",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:dentalxchange",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 2,
+        "provider_claimed_total": 2,
+        "metadata_retained": 2,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 2,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/devrev",
+      "source_kind": "public_ats_candidate",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:devrev",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 41,
+        "provider_claimed_total": 41,
+        "metadata_retained": 41,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 41,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/dhpace",
+      "source_kind": "public_ats_candidate",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:dhpace",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 402,
+        "provider_claimed_total": 402,
+        "metadata_retained": 402,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 402,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.lever.co/100ms",
+      "source_kind": "public_ats_candidate",
+      "platform": "lever",
+      "board_key": "lever:100ms",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 10,
+        "provider_claimed_total": null,
+        "metadata_retained": 10,
+        "metadata_complete": true,
+        "pagination_page_lengths": [
+          10
+        ],
+        "descriptions_observed": 10,
+        "description_denominator_observed_records": 10,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.ashbyhq.com/Perplexity",
+      "source_kind": "public_ats_candidate",
+      "platform": "ashby",
+      "board_key": "ashby:perplexity",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 137,
+        "provider_claimed_total": null,
+        "metadata_retained": 137,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 137,
+        "description_denominator_observed_records": 137,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.ashbyhq.com/relayfi",
+      "source_kind": "public_ats_candidate",
+      "platform": "ashby",
+      "board_key": "ashby:relayfi",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 38,
+        "provider_claimed_total": null,
+        "metadata_retained": 38,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 38,
+        "description_denominator_observed_records": 38,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.ashbyhq.com/Revecore",
+      "source_kind": "public_ats_candidate",
+      "platform": "ashby",
+      "board_key": "ashby:revecore",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 13,
+        "provider_claimed_total": null,
+        "metadata_retained": 13,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 13,
+        "description_denominator_observed_records": 13,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.ashbyhq.com/saronic",
+      "source_kind": "public_ats_candidate",
+      "platform": "ashby",
+      "board_key": "ashby:saronic",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 268,
+        "provider_claimed_total": null,
+        "metadata_retained": 268,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 268,
+        "description_denominator_observed_records": 268,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.ashbyhq.com/valkai",
+      "source_kind": "public_ats_candidate",
+      "platform": "ashby",
+      "board_key": "ashby:valkai",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 14,
+        "provider_claimed_total": null,
+        "metadata_retained": 14,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 14,
+        "description_denominator_observed_records": 14,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.lever.co/researchgate",
+      "source_kind": "public_ats_candidate",
+      "platform": "lever",
+      "board_key": "lever:researchgate",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 1,
+        "provider_claimed_total": null,
+        "metadata_retained": 1,
+        "metadata_complete": true,
+        "pagination_page_lengths": [
+          1
+        ],
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 1,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.lever.co/researchinnovations.com",
+      "source_kind": "public_ats_candidate",
+      "platform": "lever",
+      "board_key": "lever:researchinnovations.com",
+      "retrieval_state": "searched",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 13,
+        "provider_claimed_total": null,
+        "metadata_retained": 13,
+        "metadata_complete": true,
+        "pagination_page_lengths": [
+          13
+        ],
+        "descriptions_observed": 13,
+        "description_denominator_observed_records": 13,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": []
+    },
+    {
+      "url": "https://jobs.lever.co/publiccloudgroup-2",
+      "source_kind": "public_ats_candidate",
+      "platform": "lever",
+      "board_key": "lever:publiccloudgroup-2",
+      "retrieval_state": "inaccessible",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "URL_candidate_not_verified_live",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": null,
+        "provider_claimed_total": null,
+        "metadata_retained": 0,
+        "metadata_complete": false,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": null
+      },
+      "errors": [
+        "http_404"
+      ]
+    },
+    {
+      "url": "https://jobs.lever.co/publicprep",
+      "source_kind": "public_ats_candidate",
+      "platform": "lever",
+      "board_key": "lever:publicprep",
+      "retrieval_state": "inaccessible",
+      "inspection_basis": "current_run_inventory_attempt",
+      "verification": "URL_candidate_not_verified_live",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": null,
+        "provider_claimed_total": null,
+        "metadata_retained": 0,
+        "metadata_complete": false,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": null
+      },
+      "errors": [
+        "http_404"
+      ]
+    },
+    {
+      "url": "https://impactopportunity.org/rss/",
+      "source_kind": "rss",
+      "source": "impactopportunity",
+      "retrieval_state": "partially_retrieved",
+      "inventory": {
+        "scope": "returned RSS window, not all publisher jobs",
+        "observed_available_items": 50,
+        "metadata_retained": 50,
+        "retained_fraction_of_observed_inventory": 1.0,
+        "publisher_inventory_total": null,
+        "descriptions_observed": 50,
+        "requirements_completeness": "not_established; a published body may omit qualifications",
+        "note": "Full returned feed window parsed; provider may limit its size. No publisher-wide completeness fraction."
+      },
+      "errors": []
+    },
+    {
+      "url": "https://www.house.gov/employment/positions-with-members-and-committees",
+      "source_kind": "institutional_career_channel",
+      "retrieval_state": "not_yet_covered",
+      "inspection_basis": "dated_access_investigation_not_rechecked",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "not_yet_covered",
+        "reason": "Official page offers a weekly email bulletin and links a JavaScript career site. Public HTML did not expose an inventory; no internal/token API used.",
+        "evidence": {
+          "url": "https://www.house.gov/employment/positions-with-members-and-committees",
+          "kind": "official_public_channel_investigation"
+        }
+      }
+    },
+    {
+      "url": "https://pac.org/jobs",
+      "source_kind": "specialty_board",
+      "retrieval_state": "inaccessible",
+      "inspection_basis": "dated_access_investigation_not_rechecked",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "Published terms restrict automated collection; no collector enabled.",
+        "evidence": {
+          "url": "https://pac.org/terms-of-use",
+          "kind": "published_access_restriction"
+        }
+      }
+    },
+    {
+      "url": "https://careerhq.asaecenter.org/jobs/",
+      "source_kind": "specialty_board",
+      "retrieval_state": "inaccessible",
+      "inspection_basis": "dated_access_investigation_not_rechecked",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "HTTP 200 returned an interactive bot challenge rather than searchable inventory. No bypass attempted.",
+        "evidence": {
+          "url": "https://careerhq.asaecenter.org/jobs/",
+          "kind": "actual_access_challenge"
+        }
+      }
+    },
+    {
+      "url": "https://www.foundationlist.org/",
+      "source_kind": "specialty_board",
+      "retrieval_state": "inaccessible",
+      "inspection_basis": "dated_access_investigation_not_rechecked",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "Advertised feed investigated, but broad published extraction restrictions prevent enabling collection without publisher authorization.",
+        "evidence": {
+          "url": "https://www.foundationlist.org/terms-conditions/",
+          "kind": "published_access_restriction"
+        }
+      }
+    },
+    {
+      "url": "https://www.politicaljobhunt.com/",
+      "source_kind": "specialty_board",
+      "retrieval_state": "not_yet_covered",
+      "inspection_basis": "dated_access_investigation_not_rechecked",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "not_yet_covered",
+        "reason": "An RSS channel was observed, but restrictive copying/scraping terms leave integration permission unresolved. Not used in the benchmark or enabled in production.",
+        "evidence": {
+          "url": "https://www.politicaljobhunt.com/terms-of-service",
+          "kind": "source_policy_investigation"
+        }
+      }
+    }
+  ]
+}
