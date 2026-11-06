@@ -1,0 +1,18 @@
+{
+  "kind": "MINIMIZED METADATA FROM ACTUAL PUBLIC RETRIEVAL; NOT SYNTHETIC",
+  "source_url": "https://context.applytojob.com/apply/W7kiR2RDmM/Expert-Tour-Guide-Montreal-Opportunities",
+  "original_response_sha256": "791fb502f6039be9580c9f8b67592f7c6edf427705f06320eddf0b998fe68b45",
+  "source_observed_at": "2026-11-06T00:30:25+00:00",
+  "record": {
+    "title": "Expert Tour Guide - Montreal Opportunities",
+    "company": "Context Travel",
+    "url": "https://context.applytojob.com/apply/W7kiR2RDmM/Expert-Tour-Guide-Montreal-Opportunities",
+    "location": "Washington DC, DC Guide Community",
+    "raw_locations": [
+      "Washington DC, DC Guide Community"
+    ],
+    "geography": "unknown",
+    "work_arrangement": ""
+  },
+  "expected_worksite_kind": "conflicting_title_and_provider_location"
+}

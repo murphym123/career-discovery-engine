@@ -1,0 +1,2647 @@
+{
+  "schema_version": "publication-coverage-ledger/v1",
+  "market": {
+    "schema_version": "market/v1",
+    "id": "dc-dmv",
+    "name": "Washington DC / nearby DMV",
+    "city": "Washington",
+    "state": "DC",
+    "scope": "DC plus existing nearby-MD/VA fixture"
+  },
+  "captured_at": "2026-11-06T03:42:47+00:00",
+  "collection_context": {
+    "mode": "recorded_response_replay",
+    "snapshot_collected_at": "2026-11-06T03:30:57+00:00",
+    "source_observation_window": {
+      "earliest": "2026-11-06T00:28:07+00:00",
+      "latest": "2026-11-06T03:30:56+00:00",
+      "responses_with_known_timestamp": 197,
+      "responses_without_timestamp": 0
+    },
+    "timestamp_note": "Output/row timestamps describe reconstruction. Acquisition timestamps in the response manifest govern source freshness; no new network request is implied."
+  },
+  "summary": {
+    "catalogue_entries": 1634,
+    "discovered_source_candidates": 1626,
+    "unresolved_publication_links": 8,
+    "source_kinds": {
+      "sitemap": 7,
+      "rss": 5,
+      "public_ats_candidate": 1604,
+      "specialty_board": 9,
+      "unresolved_publication_link": 8,
+      "institutional_career_channel": 1
+    },
+    "retrieval_states": {
+      "not_yet_covered": 1594,
+      "searched": 6,
+      "partially_retrieved": 30,
+      "inaccessible": 4
+    },
+    "note": "Source candidates are not necessarily live employers. Counts describe this observed catalog, never all market sources/jobs."
+  },
+  "ecosystem_gaps": [
+    {
+      "ecosystem": "Congress / Hill",
+      "observed_channels": [
+        "Senate adapter",
+        "House public employment page"
+      ],
+      "boundary": "Senate has an adapter but source failures remain visible. House inventory is not integrated; email subscriptions and private/JavaScript APIs are not activated."
+    },
+    {
+      "ecosystem": "Think tanks / policy / advocacy / research",
+      "observed_channels": [
+        "Global Jobs",
+        "On Think Tanks",
+        "public ATS inventories"
+      ],
+      "boundary": "Observed inventories and examples, not an employer census; unindexed/custom career sites remain unknown."
+    },
+    {
+      "ecosystem": "Associations / public affairs / lobbying",
+      "observed_channels": [
+        "Association CareerHQ",
+        "Public Affairs Council",
+        "incidental broad-board/ATS postings"
+      ],
+      "boundary": "Dedicated channels are blocked or restricted. Incidental postings do not establish systematic sector coverage."
+    },
+    {
+      "ecosystem": "Nonprofits / programs / development / administration",
+      "observed_channels": [
+        "Work for Nonprofits",
+        "Impact Opportunity RSS",
+        "public ATS"
+      ],
+      "boundary": "Feed windows and crossposts limit marginal gain. Recruiter labels may differ from the ultimate employer."
+    },
+    {
+      "ecosystem": "Consulting / contractors / corporate adjacent work",
+      "observed_channels": [
+        "public ATS and sitemap candidates"
+      ],
+      "boundary": "Some inventories are observed; technical/security-cleared concentration is not representative of all consulting work."
+    },
+    {
+      "ecosystem": "Universities / media / custom and unsupported platforms",
+      "observed_channels": [
+        "incidental specialty-board postings"
+      ],
+      "boundary": "Workday, iCIMS, custom pages and other publication mechanisms are not generally collected. Unknown inventories have no denominator."
+    }
+  ],
+  "unknown_boundary": "Unindexed publishers, inaccessible inventories, undiscovered channels and unobserved jobs have no known total. No market-wide coverage percentage is estimated.",
+  "excerpt_scope": "Only inspected inventories and dated access/gap observations; full candidate ledger stays in the run artifact. Summary still describes full catalogue.",
+  "sources": [
+    {
+      "id": "a010fcabc7613ffa99be7d14",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://www.unionjobs.com/listing/31649-regulatory-policy-specialist",
+          "observed_url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009?gh_src=pyoqd3gj9us"
+        },
+        {
+          "kind": "source_audit_link",
+          "url": "https://www.unionjobs.com/listing/31649-regulatory-policy-specialist",
+          "source": "unionjobs",
+          "source_id": "31649",
+          "geography_hint": "dc_dmv",
+          "location": "based in Silver Spring, MD",
+          "job_title": "Regulatory / Policy Specialist"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:nationalnursesunited",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 14,
+        "provider_claimed_total": 14,
+        "metadata_retained": 14,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 14,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 6,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 5,
+      "in_market_labels": 3
+    },
+    {
+      "id": "843eddc701a4f6bfc8affd85",
+      "url": "https://street.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://onthinktanks.org/job/senior-fellow-finance-and-insurance/",
+          "observed_url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance?source=OTT"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://onthinktanks.org/job/senior-fellow-energy-and-environment-2/",
+          "observed_url": "https://street.applytojob.com/apply/PUezjYTzxG/Senior-Fellow-Energy-And-Environment?source=OTT"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://street.applytojob.com/apply",
+          "observed_url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance",
+          "observed_url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance"
+        },
+        {
+          "kind": "source_audit_link",
+          "url": "https://onthinktanks.org/job/senior-fellow-finance-and-insurance/",
+          "source": "onthinktanks",
+          "source_id": "senior-fellow-finance-and-insurance",
+          "geography_hint": "dc_dmv",
+          "location": "Washington, DC, USA/Remote",
+          "job_title": "Senior Fellow, Finance and Insurance"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy?source=GS",
+          "job_title_hint": "Senior Fellow Financial Services And Insurance Policy",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance?source=GS",
+          "job_title_hint": "Senior Fellow Finance And Insurance",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:street",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 3,
+        "metadata_retained": 3,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 3,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 6,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 1
+    },
+    {
+      "id": "7aad09d4947d3d27139f66a1",
+      "url": "https://app.jazz.co/feeds/google/xml/0",
+      "source_kind": "sitemap",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://themaxchallenge.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/0"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://street.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/0"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/0"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://blueacornici.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/0"
+        }
+      ],
+      "discovery_kinds": [
+        "sitemap"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Advertised publication mechanism; job subject, access policy and adapter support are not yet established.",
+      "inventory": {
+        "scope": "bounded sitemap prefix",
+        "complete_URL_entries_observed": 8180,
+        "total_URL_entries": null,
+        "prefix_limited": true,
+        "note": "URL seeds only; neither vacancies nor verified live boards."
+      },
+      "errors": []
+    },
+    {
+      "id": "a50b7033f31e507ec46084a2",
+      "url": "https://app.jazz.co/feeds/google/xml/1",
+      "source_kind": "sitemap",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://themaxchallenge.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/1"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://street.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/1"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/1"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://blueacornici.applytojob.com/robots.txt",
+          "observed_url": "https://app.jazz.co/feeds/google/xml/1"
+        }
+      ],
+      "discovery_kinds": [
+        "sitemap"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Advertised publication mechanism; job subject, access policy and adapter support are not yet established.",
+      "inventory": {
+        "scope": "bounded sitemap prefix",
+        "complete_URL_entries_observed": 8186,
+        "total_URL_entries": null,
+        "prefix_limited": true,
+        "note": "URL seeds only; neither vacancies nor verified live boards."
+      },
+      "errors": []
+    },
+    {
+      "id": "4f99f2f30d88def185324cfe",
+      "url": "https://themaxchallenge.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://themaxchallenge.applytojob.com/apply",
+          "observed_url": "https://themaxchallenge.applytojob.com/apply/7hcMpRRlgC/Membership-Experience-Leader-With-Sales-Experience"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://themaxchallenge.applytojob.com/apply/4O2QoWpmuE/Director-Of-Operations-Integrator?source=GS",
+          "job_title_hint": "Director Of Operations Integrator",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://themaxchallenge.applytojob.com/apply/38562a295e5d4b480053777b7c015e4666533c0f6b0d14023f0b11776a2c090e00332b/Group-Fitness-Instructor?source=GS",
+          "job_title_hint": "Group Fitness Instructor",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:themaxchallenge",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 5,
+        "metadata_retained": 5,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 5,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "b4047d479c6c8a890f77b89f",
+      "url": "https://maania.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/apply",
+          "observed_url": "https://maania.applytojob.com/apply/VOklfFrZPK/Zero-Trust-Engineer-Illumio-TSSCI-With-CI-Poly"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/apply/0jO7yfMYCQ/Cloud-Security-Engineer-With-TSSCI-Clearance",
+          "observed_url": "https://maania.applytojob.com/apply/0jO7yfMYCQ/Cloud-Security-Engineer-With-TSSCI-Clearance"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/apply/yjB6u4gt3Q/Activity-Security-Representative-The-Pentagon-With-TSSCI-In-Arlington-VA",
+          "observed_url": "https://maania.applytojob.com/apply/yjB6u4gt3Q/Activity-Security-Representative-The-Pentagon-With-TSSCI-In-Arlington-VA"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://maania.applytojob.com/apply/KtDk4weJ5P/Cyber-Threat-Intelligence-Analyst-With-TSSCI",
+          "observed_url": "https://maania.applytojob.com/apply/KtDk4weJ5P/Cyber-Threat-Intelligence-Analyst-With-TSSCI"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://maania.applytojob.com/apply/WviQP2HOaL/Cloud-Engineer-Secret?source=GS",
+          "job_title_hint": "Cloud Engineer Secret",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://maania.applytojob.com/apply/1Pbogr4lEg/Construction-Project-Manager?source=GS",
+          "job_title_hint": "Construction Project Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://maania.applytojob.com/apply/trfaN0nTtJ/Cyber-Threat-Intel-Analyst-Active-TSSCI?source=GS",
+          "job_title_hint": "Cyber Threat Intel Analyst Active TSSCI",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:maania",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 146,
+        "metadata_retained": 146,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 146,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 4,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 6,
+      "in_market_labels": 20
+    },
+    {
+      "id": "7103dc183a2c8f201edff1fa",
+      "url": "https://blueacornici.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://blueacornici.applytojob.com/apply",
+          "observed_url": "https://blueacornici.applytojob.com/apply/yAqBL1X9H5/Vice-President-Of-Sales-USNorth-America-VP-Sales-USNA"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://blueacornici.applytojob.com/apply/1OAVfbldF5/Delivery-Manager-Remote",
+          "observed_url": "https://blueacornici.applytojob.com/apply/1OAVfbldF5/Delivery-Manager-Remote"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://blueacornici.applytojob.com/apply/392454145b764571644255070341007c5a5007673a67183e5332333f0c010510316345/AEM-Enterprise-Architect-Remote?source=GS",
+          "job_title_hint": "AEM Enterprise Architect Remote",
+          "geography_hint": "remote_eligibility_unknown",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://blueacornici.applytojob.com/apply/4hzGYZfUwl/Data-Architect-Remote-Contract?source=GS",
+          "job_title_hint": "Data Architect Remote Contract",
+          "geography_hint": "remote_eligibility_unknown",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://blueacornici.applytojob.com/apply/TTiaCVIrDW/Integrated-Marketing-Manager-Remote?source=GS",
+          "job_title_hint": "Integrated Marketing Manager Remote",
+          "geography_hint": "remote_eligibility_unknown",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://blueacornici.applytojob.com/apply/FNZZLwCLrp/Program-Manager-Remote?source=GS",
+          "job_title_hint": "Program Manager Remote",
+          "geography_hint": "remote_eligibility_unknown",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:blueacornici",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 30,
+        "metadata_retained": 30,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 30,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 0
+    },
+    {
+      "id": "49ec3faeb9b549f4500df58c",
+      "url": "https://context.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://context.applytojob.com/apply",
+          "observed_url": "https://context.applytojob.com/apply/x2snNAPBKS/Expert-Tour-Guide-Washington-DC-Opportunities"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://context.applytojob.com/apply/x2snNAPBKS/Expert-Tour-Guide-Washington-DC-Opportunities",
+          "observed_url": "https://context.applytojob.com/apply/x2snNAPBKS/Expert-Tour-Guide-Washington-DC-Opportunities"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://context.applytojob.com/apply/W7kiR2RDmM/Expert-Tour-Guide-Montreal-Opportunities",
+          "observed_url": "https://context.applytojob.com/apply/W7kiR2RDmM/Expert-Tour-Guide-Montreal-Opportunities"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://context.applytojob.com/apply/BClT0pBeJJ/Expert-Tour-Guide-Avignon?source=GS",
+          "job_title_hint": "Expert Tour Guide Avignon",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://context.applytojob.com/apply/Du42IgJlRE/Expert-Tour-Guide-Warsaw?source=GS",
+          "job_title_hint": "Expert Tour Guide Warsaw",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://context.applytojob.com/apply/203e51660557585a5a067f6802414c7648746c747955023a36073618050a147a0b1b36/Expert-Tour-Guide-Washington-DC-Opportunities?source=GS",
+          "job_title_hint": "Expert Tour Guide Washington DC Opportunities",
+          "geography_hint": "dc_dmv",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://context.applytojob.com/apply/nz5x7o5CKo/Expert-Tour-Guide-Bilbao-And-San-Sebastian-Opportunities?source=GS",
+          "job_title_hint": "Expert Tour Guide Bilbao And San Sebastian Opportunities",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:context",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 7,
+        "metadata_retained": 7,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 7,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 1
+    },
+    {
+      "id": "a72e05108d0d8ffe77cf7554",
+      "url": "https://innovatingjustice.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://innovatingjustice.applytojob.com/apply",
+          "observed_url": "https://innovatingjustice.applytojob.com/apply/ewzJjWEL1P/Mentor"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://innovatingjustice.applytojob.com/apply/S7WCp7sD29/Associate-Director-Design-And-Construction?source=GS",
+          "job_title_hint": "Associate Director Design And Construction",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://innovatingjustice.applytojob.com/apply/q0vfGB8chd/AttorneyinCharge?source=GS",
+          "job_title_hint": "AttorneyinCharge",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://innovatingjustice.applytojob.com/apply/JnuhtpSOWJ/Case-Manager?source=GS",
+          "job_title_hint": "Case Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://innovatingjustice.applytojob.com/apply/GbZQWgDPGx/Case-Manager-Community-Site?source=GS",
+          "job_title_hint": "Case Manager Community Site",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:innovatingjustice",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 54,
+        "metadata_retained": 54,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 54,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "f75c637c961ff83d3ee4e7db",
+      "url": "https://brennancenter.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://brennancenter.applytojob.com/apply",
+          "observed_url": "https://brennancenter.applytojob.com/apply/n9gOj5sxRx/Summer-2027-Liberty-And-National-Security-Legal-Internship-NYC-And-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://brennancenter.applytojob.com/apply/IqgNxPIqoH/Program-Associate-Elections-And-Government-Program",
+          "observed_url": "https://brennancenter.applytojob.com/apply/IqgNxPIqoH/Program-Associate-Elections-And-Government-Program"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://brennancenter.applytojob.com/apply/feW5jI7XfP/Spring-2027-IT-Undergraduate-Internship",
+          "observed_url": "https://brennancenter.applytojob.com/apply/feW5jI7XfP/Spring-2027-IT-Undergraduate-Internship"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://brennancenter.applytojob.com/apply/njAfYq8QH4/Spring-2027-Legal-Department-Undergraduate-Internship",
+          "observed_url": "https://brennancenter.applytojob.com/apply/njAfYq8QH4/Spring-2027-Legal-Department-Undergraduate-Internship"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://brennancenter.applytojob.com/apply/SuEESwkhOF/Counsel-Democracy?source=GS",
+          "job_title_hint": "Counsel Democracy",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://brennancenter.applytojob.com/apply/jYZzg358e4/Spring-2027-Democracy-Undergraduate-Internship?source=GS",
+          "job_title_hint": "Spring 2027 Democracy Undergraduate Internship",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://brennancenter.applytojob.com/apply/RZSEq2ZEAt/Spring-2027-Multimedia-Producer-Undergraduate-Internship?source=GS",
+          "job_title_hint": "Spring 2027 Multimedia Producer Undergraduate Internship",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:brennancenter",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 23,
+        "metadata_retained": 23,
+        "metadata_complete": null,
+        "descriptions_observed": 5,
+        "description_denominator_observed_records": 23,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 7,
+      "in_market_labels": 5
+    },
+    {
+      "id": "4e2b5a211ddd6ac481b49bc1",
+      "url": "https://smylelogistics.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://smylelogistics.applytojob.com/apply",
+          "observed_url": "https://smylelogistics.applytojob.com/apply/VHsSZsimHW/Delivery-Driver-DKY9"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://smylelogistics.applytojob.com/apply/PLS7fjtLQm/Delivery-Driver-DKY9-?source=GS",
+          "job_title_hint": "Delivery Driver DKY9 ",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:smylelogistics",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 3,
+        "metadata_retained": 3,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 3,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "b7a77a00dee5d38f22971982",
+      "url": "https://thegatheringspot.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thegatheringspot.applytojob.com/apply",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/I0F5JtmOwk/Sous-Chef-The-Retreat"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thegatheringspot.applytojob.com/apply/IgnrDzGhUm/Consideration-For-Future-Openings-TGS-Washington-DC",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/IgnrDzGhUm/Consideration-For-Future-Openings-TGS-Washington-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thegatheringspot.applytojob.com/apply/jmL4zVK3M5/Community-Concierge-The-Gathering-Spot-DC",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/jmL4zVK3M5/Community-Concierge-The-Gathering-Spot-DC"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/pjiJOyZTzN/AV-Technician-Part-Time-The-Gathering-Spot-Atlanta?source=GS",
+          "job_title_hint": "AV Technician Part Time The Gathering Spot Atlanta",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/53wPmMT7k6/Dishwasher-Retreat-By-The-Gathering-Spot?source=GS",
+          "job_title_hint": "Dishwasher Retreat By The Gathering Spot",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/gNXA0ZBDE3/Kitchen-Expo-Food-Runner?source=GS",
+          "job_title_hint": "Kitchen Expo Food Runner",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thegatheringspot.applytojob.com/apply/Kn7VR3yCJe/Membership-Sales-Manager?source=GS",
+          "job_title_hint": "Membership Sales Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:thegatheringspot",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 29,
+        "metadata_retained": 29,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 29,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 5
+    },
+    {
+      "id": "622ce24cbdafc11914da0ffd",
+      "url": "https://techinsights.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://techinsights.applytojob.com/apply",
+          "observed_url": "https://techinsights.applytojob.com/apply/WrPbAvazDr/Technical-Fellow-Advanced-Packaging-Integration"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://techinsights.applytojob.com/apply/M9JKFVntw5/Technical-Product-Manager-Compliance-Solutions-Washington-DC",
+          "observed_url": "https://techinsights.applytojob.com/apply/M9JKFVntw5/Technical-Product-Manager-Compliance-Solutions-Washington-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://techinsights.applytojob.com/apply/i1cgqPtZzC/Subject-Matter-Expert-Government-And-Compliance-Washington-DC",
+          "observed_url": "https://techinsights.applytojob.com/apply/i1cgqPtZzC/Subject-Matter-Expert-Government-And-Compliance-Washington-DC"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://techinsights.applytojob.com/apply/h4AILTymkM/Segment-Marketing-Manager?source=GS",
+          "job_title_hint": "Segment Marketing Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://techinsights.applytojob.com/apply/3yhis78252/Software-Development-Coop-Student-Winter-2027?source=GS",
+          "job_title_hint": "Software Development Coop Student Winter 2027",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://techinsights.applytojob.com/apply/fQ0auZDE5z/Subject-Matter-Expert-Government-And-Compliance-San-Jose?source=GS",
+          "job_title_hint": "Subject Matter Expert Government And Compliance San Jose",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://techinsights.applytojob.com/apply/wgNjaRVu7q/Technical-Product-Manager-Compliance-Solutions-Remote-USA?source=GS",
+          "job_title_hint": "Technical Product Manager Compliance Solutions Remote USA",
+          "geography_hint": "us_remote",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:techinsights",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 42,
+        "metadata_retained": 42,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 42,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 3
+    },
+    {
+      "id": "0eeef527974ec3a5575d92cd",
+      "url": "https://aspwebsolutions.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://aspwebsolutions.applytojob.com/apply",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/9F6djGfz4r/Unified-Endpoint-Management-UEM-Senior-Mobility-Engineer-Washington-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://aspwebsolutions.applytojob.com/apply/6p4WyIS4y4/Crestron-Audio-Visual-Video-Teleconferencing-Technician-Washington-DC",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/6p4WyIS4y4/Crestron-Audio-Visual-Video-Teleconferencing-Technician-Washington-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://aspwebsolutions.applytojob.com/apply/Mj5DpwlpRj/Project-Coordinator-Falls-Church-VA",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/Mj5DpwlpRj/Project-Coordinator-Falls-Church-VA"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/MzbHryZXyY/Improvement-Sciences-Specialist-Portsmouth-VA?source=GS",
+          "job_title_hint": "Improvement Sciences Specialist Portsmouth VA",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/yOf5WuEE3H/Black-Belt-Performance-Improvement-Analyst-Pensacola-FL?source=GS",
+          "job_title_hint": "Black Belt Performance Improvement Analyst Pensacola FL",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/JRjk5bEIeK/Call-Center-Support?source=GS",
+          "job_title_hint": "Call Center Support",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://aspwebsolutions.applytojob.com/apply/6p4WyIS4y4/Crestron-Audio-Visual-Video-Teleconferencing-Technician-Washington-DC?source=GS",
+          "job_title_hint": "Crestron Audio Visual Video Teleconferencing Technician Washington DC",
+          "geography_hint": "dc_dmv",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:aspwebsolutions",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 22,
+        "metadata_retained": 22,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 22,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 7
+    },
+    {
+      "id": "2dea611bc4dc72bbd94315e2",
+      "url": "https://thresholdgroup.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thresholdgroup.applytojob.com/apply",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/NKszi41rvh/Humanitarian-Advocate-Fundraiser-For-The-International-Rescue-Committee"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thresholdgroup.applytojob.com/apply/BSVQkRkH7s/Canvass-Director-Washington-DC",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/BSVQkRkH7s/Canvass-Director-Washington-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://thresholdgroup.applytojob.com/apply/NKszi41rvh/Humanitarian-Advocate-Fundraiser-For-The-International-Rescue-Committee",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/NKszi41rvh/Humanitarian-Advocate-Fundraiser-For-The-International-Rescue-Committee"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/2d371411417e6a577e000b5f587f750a5c7413771c4667331f15003f25100b3e3f2400/Advocate-For-Refugees-And-The-International-Rescue-Committee?source=GS",
+          "job_title_hint": "Advocate For Refugees And The International Rescue Committee",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/NRiKimPtuk/Animal-Welfare-Advocate-Fundraiser-With-Humane-World-For-Animals?source=GS",
+          "job_title_hint": "Animal Welfare Advocate Fundraiser With Humane World For Animals",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/5a201705746378717a4c02000040717c025d0f34147c0a3f7a3d680c09030c276c0173/Advocate-Field-Canvasser-For-Boston-Childrens-Hospital?source=GS",
+          "job_title_hint": "Advocate Field Canvasser For Boston Childrens Hospital",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://thresholdgroup.applytojob.com/apply/230736097f617a6e63797143585b5f5d4205352f1465171c0614087828181d7d28183f/Animal-Welfare-Advocate-Fundraiser-With-Humane-World-For-Animals?source=GS",
+          "job_title_hint": "Animal Welfare Advocate Fundraiser With Humane World For Animals",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:thresholdgroup",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 16,
+        "metadata_retained": 16,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 16,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 2
+    },
+    {
+      "id": "718d4e0d30126faf5e6571b3",
+      "url": "https://butler.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://butler.applytojob.com/apply",
+          "observed_url": "https://butler.applytojob.com/apply/KSsPWj6gK4/Trailer-Shift-LeaderSupervisor"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://butler.applytojob.com/apply/IerdQLQqDq/Sous-Chef-DC",
+          "observed_url": "https://butler.applytojob.com/apply/IerdQLQqDq/Sous-Chef-DC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://butler.applytojob.com/apply/b9KnxC9z7c/Restaurant-Assistant-General-ManagerDC",
+          "observed_url": "https://butler.applytojob.com/apply/b9KnxC9z7c/Restaurant-Assistant-General-ManagerDC"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://butler.applytojob.com/apply/xUlNjzbqwp/Food-ExpeditorDC",
+          "observed_url": "https://butler.applytojob.com/apply/xUlNjzbqwp/Food-ExpeditorDC"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://butler.applytojob.com/apply/bFHgDzMD6U/Catering-Attendant?source=GS",
+          "job_title_hint": "Catering Attendant",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://butler.applytojob.com/apply/0f0a112f6352005c7979467a4665564347452b72597a42550d700502350a5d1a64022c/Commissary-Receiver-Packer?source=GS",
+          "job_title_hint": "Commissary Receiver Packer",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://butler.applytojob.com/apply/Wmw0TqJxXU/Delivery-Person?source=GS",
+          "job_title_hint": "Delivery Person",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:butler",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 161,
+        "metadata_retained": 161,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 161,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 5,
+      "in_market_labels": 9
+    },
+    {
+      "id": "46d0eb54cf44851c5826be4e",
+      "url": "https://ccmiretailservices.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://ccmiretailservices.applytojob.com/apply",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/SrZjTpiFJU/Merchandiser-Auditor-Position-Available-Visalia-CA"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://ccmiretailservices.applytojob.com/apply/Tl7LizBO7R/Merchandiser-Auditor-Position-Available-McLean-VA",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/Tl7LizBO7R/Merchandiser-Auditor-Position-Available-McLean-VA"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://ccmiretailservices.applytojob.com/apply/w8bvjCNeDr/Merchandiser-Auditor-Position-Available-Alexandria-VA",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/w8bvjCNeDr/Merchandiser-Auditor-Position-Available-Alexandria-VA"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/tUGnQCHXKu/Merchandiser-Auditor-Position-Available-Albuquerque-NM?source=GS",
+          "job_title_hint": "Merchandiser Auditor Position Available Albuquerque NM",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/hwolyoAlYK/Merchandiser-Auditor-Position-Available-Arlington-VA?source=GS",
+          "job_title_hint": "Merchandiser Auditor Position Available Arlington VA",
+          "geography_hint": "dc_dmv",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/h3NXgLaeW6/Merchandiser-Auditor-Position-Available-Atascadero-CA?source=GS",
+          "job_title_hint": "Merchandiser Auditor Position Available Atascadero CA",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://ccmiretailservices.applytojob.com/apply/Aogs1rB5eT/Merchandiser-Auditor-Position-Available-Austin-TX?source=GS",
+          "job_title_hint": "Merchandiser Auditor Position Available Austin TX",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:ccmiretailservices",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 393,
+        "metadata_retained": 393,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 393,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 4,
+      "in_market_labels": 4
+    },
+    {
+      "id": "b61679795c31666e0a748f96",
+      "url": "https://motaboards.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://motaboards.applytojob.com/apply",
+          "observed_url": "https://motaboards.applytojob.com/apply/RXPLRG/Zoning-Commission"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://motaboards.applytojob.com/apply/0OxJBWUrz0/District-Of-Columbia-State-Athletic-Commission",
+          "observed_url": "https://motaboards.applytojob.com/apply/0OxJBWUrz0/District-Of-Columbia-State-Athletic-Commission"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://motaboards.applytojob.com/apply/krAlWlF3uT/Rail-Advisory-Board",
+          "observed_url": "https://motaboards.applytojob.com/apply/krAlWlF3uT/Rail-Advisory-Board"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://motaboards.applytojob.com/apply/NWQ55gFQZg/Advisory-Committee-To-The-Office-On-Caribbean-Community-Affairs-Mayors-Office-On-Caribbean-Community-Affairs-MOCCA",
+          "observed_url": "https://motaboards.applytojob.com/apply/NWQ55gFQZg/Advisory-Committee-To-The-Office-On-Caribbean-Community-Affairs-Mayors-Office-On-Caribbean-Community-Affairs-MOCCA"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://motaboards.applytojob.com/apply/fimllPHuaJ/Commission-On-Climate-Change-And-Resiliency-CCCR?source=GS",
+          "job_title_hint": "Commission On Climate Change And Resiliency CCCR",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://motaboards.applytojob.com/apply/Ivlp1oJjbt/District-Waterways-Advisory-Commission-DWAC?source=GS",
+          "job_title_hint": "District Waterways Advisory Commission DWAC",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://motaboards.applytojob.com/apply/xHvkDdO1Ie/Urban-Forestry-Advisory-Committee?source=GS",
+          "job_title_hint": "Urban Forestry Advisory Committee",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:motaboards",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 45,
+        "metadata_retained": 45,
+        "metadata_complete": null,
+        "descriptions_observed": 4,
+        "description_denominator_observed_records": 45,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 3,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 6,
+      "in_market_labels": 42
+    },
+    {
+      "id": "cf37109d4bc61772432ab463",
+      "url": "https://landscapingbyjmichael.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://landscapingbyjmichael.applytojob.com/apply",
+          "observed_url": "https://landscapingbyjmichael.applytojob.com/apply/a8qUYiHNiQ/Snow-Plow-Drivers"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://landscapingbyjmichael.applytojob.com/apply/eQHHqoyWFy/BookkeeperOffice-Mgr-Onsite?source=GS",
+          "job_title_hint": "BookkeeperOffice Mgr Onsite",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://landscapingbyjmichael.applytojob.com/apply/axYdLctzhF/BookkeeperOffice-Mgr-Onsite?source=GS",
+          "job_title_hint": "BookkeeperOffice Mgr Onsite",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://landscapingbyjmichael.applytojob.com/apply/3g66PC5WMn/Full-Charge-Bookkeeper-Part-Time?source=GS",
+          "job_title_hint": "Full Charge Bookkeeper Part Time",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://landscapingbyjmichael.applytojob.com/apply/BXARZ8MYda/Snow-Plow-Drivers?source=GS",
+          "job_title_hint": "Snow Plow Drivers",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:landscapingbyjmichael",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 12,
+        "metadata_retained": 12,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 12,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "598d68bb889e3c3ecdfc5da0",
+      "url": "https://educationunlimited.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://educationunlimited.applytojob.com/apply",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/tI17lSHx5q/Writing-Instructor-For-Summer-Camp-2026"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://educationunlimited.applytojob.com/apply/qgUwbbjued/Summer-Camp-Assistant-Director-2026",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/qgUwbbjued/Summer-Camp-Assistant-Director-2026"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/GFa9PCGpHm/Engineering-Instructor-Elementary-One-Week-Summer-Camp-2026?source=GS",
+          "job_title_hint": "Engineering Instructor Elementary One Week Summer Camp 2026",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/0XdEObrnoX/Leadership-Instructor-Middle-And-High-School-Summer-Camps-2026?source=GS",
+          "job_title_hint": "Leadership Instructor Middle And High School Summer Camps 2026",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/1e0d341942657a7a42056844604501647d68677a7d08142943582c3a731d09392b2000/Middle-School-Science-Instructor-2026-biology-Cardiology-Anatomy-Or-Genetics?source=GS",
+          "job_title_hint": "Middle School Science Instructor 2026 biology Cardiology Anatomy Or Genetics",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://educationunlimited.applytojob.com/apply/QhrUgXW86P/Online-High-School-Astrophysics-Instructor-Summer-2026?source=GS",
+          "job_title_hint": "Online High School Astrophysics Instructor Summer 2026",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:educationunlimited",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 26,
+        "metadata_retained": 26,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 26,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 1
+    },
+    {
+      "id": "36639208d6eff2b299a3f7c7",
+      "url": "https://rhrgcareers.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://rhrgcareers.applytojob.com/apply",
+          "observed_url": "https://rhrgcareers.applytojob.com/apply/Yxu9sAVE6B/Construction-Superintendent"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://rhrgcareers.applytojob.com/apply/0f01246f40756003795f474165615f03577d301169113d182b74110308795b382a2e1d/Account-Executive-HR-Strategies-Division?source=GS",
+          "job_title_hint": "Account Executive HR Strategies Division",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:rhrgcareers",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 5,
+        "metadata_retained": 5,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 5,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "1f17b63770b01f5f08463424",
+      "url": "https://bluevoyant.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://bluevoyant.applytojob.com/apply",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/tuIVFUkkDc/VP-Sales-Americas"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://bluevoyant.applytojob.com/apply/urk3cQXBos/Federal-Client-Executive",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/urk3cQXBos/Federal-Client-Executive"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/V1kCQENyh1/Business-Development-Representative-SLED?source=GS",
+          "job_title_hint": "Business Development Representative SLED",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/qqvtT2cwYD/Client-Executive?source=GS",
+          "job_title_hint": "Client Executive",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/Q5vG0tzupi/Client-Executive-Atlanta?source=GS",
+          "job_title_hint": "Client Executive Atlanta",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://bluevoyant.applytojob.com/apply/wqf1ssHuun/Client-Success-Manager-III?source=GS",
+          "job_title_hint": "Client Success Manager III",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:bluevoyant",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 28,
+        "metadata_retained": 28,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 28,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 1
+    },
+    {
+      "id": "881cfd259d0313adf6896b52",
+      "url": "https://cleanchoiceenergy.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://cleanchoiceenergy.applytojob.com/apply",
+          "observed_url": "https://cleanchoiceenergy.applytojob.com/apply/W7IFup30Mr/Customer-Experience-Specialist"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://cleanchoiceenergy.applytojob.com/apply/SHkVdFEsxM/Pricing-Analyst",
+          "observed_url": "https://cleanchoiceenergy.applytojob.com/apply/SHkVdFEsxM/Pricing-Analyst"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://cleanchoiceenergy.applytojob.com/apply/SHkVdFEsxM/Pricing-Analyst?source=GS",
+          "job_title_hint": "Pricing Analyst",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://cleanchoiceenergy.applytojob.com/apply/6cEl3QYjBu/Customer-Experience-Supervisor?source=GS",
+          "job_title_hint": "Customer Experience Supervisor",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:cleanchoiceenergy",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 3,
+        "metadata_retained": 3,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 3,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 1
+    },
+    {
+      "id": "fb5748fed734c12f688f9774",
+      "url": "https://expertise.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://expertise.applytojob.com/apply",
+          "observed_url": "https://expertise.applytojob.com/apply/Izx5rZO1Lm/Manager-Consumer-Concierge-Services-Remote"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://expertise.applytojob.com/apply/BorO1i6dBH/Digital-Media-Buyer",
+          "observed_url": "https://expertise.applytojob.com/apply/BorO1i6dBH/Digital-Media-Buyer"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://expertise.applytojob.com/apply/BorO1i6dBH/Digital-Media-Buyer?source=GS",
+          "job_title_hint": "Digital Media Buyer",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:expertise",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 2,
+        "metadata_retained": 2,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 2,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 0
+    },
+    {
+      "id": "aa3bd5342f360745886e4285",
+      "url": "https://chinatowncdc.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "not_yet_covered",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://chinatowncdc.applytojob.com/apply",
+          "observed_url": "https://chinatowncdc.applytojob.com/apply/mg5A9OAfNd/Senior-Director-Of-Portfolio-Operations"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://chinatowncdc.applytojob.com/apply/0BA4USNt5Q/Community-Organizer-Youth-Programs?source=GS",
+          "job_title_hint": "Community Organizer Youth Programs",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://chinatowncdc.applytojob.com/apply/hT3dAXE3zJ/Desk-Clerk-Mary-Helen-Rogers-Parttime-Weekend-Swing-Shift?source=GS",
+          "job_title_hint": "Desk Clerk Mary Helen Rogers Parttime Weekend Swing Shift",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://chinatowncdc.applytojob.com/apply/msQehLq02P/Senior-Asset-Manager?source=GS",
+          "job_title_hint": "Senior Asset Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://chinatowncdc.applytojob.com/apply/vRxKOBNRoi/Assistant-Project-Manager?source=GS",
+          "job_title_hint": "Assistant Project Manager",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:chinatowncdc",
+      "verification": "URL_candidate_not_verified_live",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 0,
+        "metadata_retained": 0,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": null
+      },
+      "errors": [
+        "no_public_index_rows_or_schema_changed"
+      ],
+      "selection_evidence": {
+        "route": "weak_function_exploration",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "c45fc0a76bd4bba9d901c5ac",
+      "url": "https://westernachersolutions.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://westernachersolutions.applytojob.com/apply",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/Xl2qsKcdOw/Tech-Lead-wmd"
+        },
+        {
+          "kind": "explicit_public_document_link",
+          "url": "https://westernachersolutions.applytojob.com/apply/4v9FktMtZE/Berater-Notariatssoftware-wmd",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/4v9FktMtZE/Berater-Notariatssoftware-wmd"
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/135c362f765b447f01515e7c764b530c5c5f0d340174137c6c3f006b091d3c3b0e3f7c/Senior-Cloud-Kubernetes-Platform-Engineer-wmd?source=GS",
+          "job_title_hint": "Senior Cloud Kubernetes Platform Engineer wmd",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/0f1509095444676d57054402055b547f470214771a511f020a281825354122096f3e3f/System-Engineer-wmd?source=GS",
+          "job_title_hint": "System Engineer wmd",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/18182a0d63777e727272485b4476535d54552d5f150e7b3e373a617f105e74142d0a2e/Junior-Business-Consultant-Public-wmd?source=GS",
+          "job_title_hint": "Junior Business Consultant Public wmd",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        },
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/1",
+          "observed_url": "https://westernachersolutions.applytojob.com/apply/2d382c0c596150770148035e4b6244580b602c022b667b390e77606f2d1b1d09316a02/DevOps-Engineer-Azure-wmd?source=GS",
+          "job_title_hint": "DevOps Engineer Azure wmd",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "reason": "Inventory inspected within this run",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:westernachersolutions",
+      "verification": "live_public_inventory_observed",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 18,
+        "metadata_retained": 18,
+        "metadata_complete": null,
+        "descriptions_observed": 1,
+        "description_denominator_observed_records": 18,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 1,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 0
+    },
+    {
+      "id": "ac5f6e9ab69cc5ea5028ddb7",
+      "url": "https://careers.employment.senate.gov/l-district-of-columbia-jobs.html",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "inaccessible",
+      "discovery_evidence": [
+        {
+          "kind": "existing_source_collection",
+          "source": "senate"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "senate",
+      "errors": [
+        "Index http_404"
+      ],
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 0,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      }
+    },
+    {
+      "id": "3042bb9370e5efaddfe030ef",
+      "url": "https://www.unionjobs.com/location.php?state=District%20of%20Columbia",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "existing_source_collection",
+          "source": "unionjobs"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "unionjobs",
+      "errors": [],
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 58,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 20,
+        "description_denominator_observed_records": 58,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      }
+    },
+    {
+      "id": "e1fce99d922d140643955c35",
+      "url": "https://globaljobs.org/",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "existing_source_collection",
+          "source": "globaljobs"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "globaljobs",
+      "errors": [],
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 209,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 20,
+        "description_denominator_observed_records": 209,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      }
+    },
+    {
+      "id": "0db0d411ab593c62e455cf5e",
+      "url": "https://onthinktanks.org/jobsboard/",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "existing_source_collection",
+          "source": "onthinktanks"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "onthinktanks",
+      "errors": [],
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 15,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 15,
+        "description_denominator_observed_records": 15,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      }
+    },
+    {
+      "id": "e3d24f1ff2826317d2b1ee1a",
+      "url": "https://workfornonprofits.org/jobs/district-of-columbia",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "existing_source_collection",
+          "source": "workfornonprofits"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "workfornonprofits",
+      "errors": [],
+      "inventory": {
+        "scope": "observed existing-source index/feed union",
+        "metadata_retained": 21,
+        "publisher_inventory_total": null,
+        "inventory_completeness": null,
+        "descriptions_observed": 20,
+        "description_denominator_observed_records": 21,
+        "note": "Legacy received/capped fields mix overlapping feeds and detail limits. No full-source metadata denominator is inferred."
+      }
+    },
+    {
+      "id": "40924012798db31434ec8dcc",
+      "url": "https://vestalia.applytojob.com/apply",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "not_yet_covered",
+      "discovery_evidence": [
+        {
+          "kind": "public_provider_sitemap",
+          "url": "https://app.jazz.co/feeds/google/xml/0",
+          "observed_url": "https://vestalia.applytojob.com/apply/KLiaKFKE3q/Seasonal-Line-Cook-Cocinero-De-Lnea-De-Temporada-Pizzeria-Lola?source=GS",
+          "job_title_hint": "Seasonal Line Cook Cocinero De Lnea De Temporada Pizzeria Lola",
+          "geography_hint": "elsewhere",
+          "note": "Lossy URL hint only; timestamp is not a reliable original posting date."
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "jazzhr",
+      "board_key": "jazzhr:vestalia",
+      "verification": "URL_candidate_not_verified_live",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 0,
+        "metadata_retained": 0,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness.",
+        "retained_fraction_of_observed_inventory": null
+      },
+      "errors": [
+        "no_public_index_rows_or_schema_changed"
+      ],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "17b0f589c7831fff08cf676f",
+      "url": "https://job-boards.greenhouse.io/10beauty",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20241208150552",
+          "observed_url": "https://job-boards.greenhouse.io/10beauty"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20240919203628",
+          "observed_url": "https://job-boards.greenhouse.io/10beauty/jobs/4477853007"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20240919202943",
+          "observed_url": "https://job-boards.greenhouse.io/10beauty/jobs/4496027007"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20241011171209",
+          "observed_url": "https://job-boards.greenhouse.io/10beauty/jobs/4523976007"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:10beauty",
+      "verification": "live_public_inventory_observed",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 7,
+        "provider_claimed_total": 7,
+        "metadata_retained": 7,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 7,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "non_targeted_exploration",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "b745057ae59a78197439ef4f",
+      "url": "https://job-boards.greenhouse.io/21shares",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250323202028",
+          "observed_url": "https://job-boards.greenhouse.io/21shares"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250716093125",
+          "observed_url": "https://job-boards.greenhouse.io/21shares/jobs/5386451004"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250708115028",
+          "observed_url": "https://job-boards.greenhouse.io/21shares/jobs/5539250004"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "job-boards.greenhouse.io/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250716093125",
+          "observed_url": "https://job-boards.greenhouse.io/21shares/jobs/5568054004"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "greenhouse",
+      "board_key": "greenhouse:21shares",
+      "verification": "live_public_inventory_observed",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 0,
+        "provider_claimed_total": 0,
+        "metadata_retained": 0,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": null
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "1f8b41cf882f44cd3616010b",
+      "url": "https://jobs.lever.co/100ms",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.lever.co/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260116075422",
+          "observed_url": "https://jobs.lever.co/100ms"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.lever.co/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250821063551",
+          "observed_url": "https://jobs.lever.co/100ms/0b2a69de-9f53-40d9-870c-21295701a6ba"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.lever.co/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250824004735",
+          "observed_url": "https://jobs.lever.co/100ms/0b2a69de-9f53-40d9-870c-21295701a6ba/apply"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.lever.co/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250821025335",
+          "observed_url": "https://jobs.lever.co/100ms/71c00170-4270-4852-96f1-fd5d6aff62d0"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "lever",
+      "board_key": "lever:100ms",
+      "verification": "live_public_inventory_observed",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 10,
+        "provider_claimed_total": null,
+        "metadata_retained": 10,
+        "metadata_complete": true,
+        "pagination_page_lengths": [
+          10
+        ],
+        "descriptions_observed": 10,
+        "description_denominator_observed_records": 10,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 0
+    },
+    {
+      "id": "cf11a269ea56c62f1c81fd28",
+      "url": "https://jobs.ashbyhq.com/10xteam",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260930102048",
+          "observed_url": "https://jobs.ashbyhq.com/10xteam"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260227093907",
+          "observed_url": "https://jobs.ashbyhq.com/10xteam/00568784-cb90-460c-8c19-58b28472513b"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260517114936",
+          "observed_url": "https://jobs.ashbyhq.com/10xteam/0315c2f9-925c-47a0-bf88-89bdde9d2543"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260308035408",
+          "observed_url": "https://jobs.ashbyhq.com/10xteam/0ad6299d-1ce1-4668-ab78-b47bbe7aaa98"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "ashby",
+      "board_key": "ashby:10xteam",
+      "verification": "live_public_inventory_observed",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 134,
+        "provider_claimed_total": null,
+        "metadata_retained": 134,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 134,
+        "description_denominator_observed_records": 134,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 2,
+      "in_market_labels": 0
+    },
+    {
+      "id": "3be5047104afeb739e91d77a",
+      "url": "https://jobs.ashbyhq.com/1password",
+      "source_kind": "public_ats_candidate",
+      "discovery_state": "discovered",
+      "retrieval_state": "searched",
+      "discovery_evidence": [
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20250531164711",
+          "observed_url": "https://jobs.ashbyhq.com/1password"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20251004013658",
+          "observed_url": "https://jobs.ashbyhq.com/1password/00597136-df51-4cc1-916c-a54bb19dc455"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20251004013658",
+          "observed_url": "https://jobs.ashbyhq.com/1password/00597136-df51-4cc1-916c-a54bb19dc455?departmentId=f2de0151-4926-4164-9b2a-bad9e1dd5e6e"
+        },
+        {
+          "kind": "internet_archive_url_index",
+          "url": "https://web.archive.org/cdx/search/cdx",
+          "pattern": "jobs.ashbyhq.com/*",
+          "page": 0,
+          "family": "unrestricted",
+          "archive_timestamp": "20260227180236",
+          "observed_url": "https://jobs.ashbyhq.com/1password/005f5f65-b213-462e-9bce-4f45955b5cb8"
+        }
+      ],
+      "discovery_kinds": [
+        "public_ats_candidate"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "platform": "ashby",
+      "board_key": "ashby:1password",
+      "verification": "live_public_inventory_observed",
+      "reason": "Inventory inspected within this run",
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 78,
+        "provider_claimed_total": null,
+        "metadata_retained": 78,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 78,
+        "description_denominator_observed_records": 78,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.",
+        "retained_fraction_of_observed_inventory": 1.0
+      },
+      "errors": [],
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 0,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "requests": 3,
+      "in_market_labels": 0
+    },
+    {
+      "id": "1e3fce8029a5e072c954825b",
+      "url": "https://impactopportunity.org/rss/",
+      "source_kind": "rss",
+      "discovery_state": "discovered",
+      "retrieval_state": "partially_retrieved",
+      "discovery_evidence": [
+        {
+          "kind": "published_job_feed_adapter",
+          "source": "impactopportunity"
+        }
+      ],
+      "discovery_kinds": [
+        "rss"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "source": "impactopportunity",
+      "errors": [],
+      "inventory": {
+        "scope": "returned RSS window, not all publisher jobs",
+        "observed_available_items": 50,
+        "metadata_retained": 50,
+        "retained_fraction_of_observed_inventory": 1.0,
+        "publisher_inventory_total": null,
+        "descriptions_observed": 50,
+        "requirements_completeness": "not_established; a published body may omit qualifications",
+        "note": "Full returned feed window parsed; provider may limit its size. No publisher-wide completeness fraction."
+      }
+    },
+    {
+      "id": "903e42f23c9c6a9f109562d4",
+      "url": "https://www.house.gov/employment/positions-with-members-and-committees",
+      "source_kind": "institutional_career_channel",
+      "discovery_state": "discovered",
+      "retrieval_state": "not_yet_covered",
+      "discovery_evidence": [
+        {
+          "url": "https://www.house.gov/employment/positions-with-members-and-committees",
+          "kind": "official_public_channel_investigation"
+        }
+      ],
+      "discovery_kinds": [
+        "institutional_career_channel"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "not_yet_covered",
+        "reason": "Official page offers a weekly email bulletin and links a JavaScript career site. Public HTML did not expose an inventory; no internal/token API used.",
+        "evidence": {
+          "url": "https://www.house.gov/employment/positions-with-members-and-committees",
+          "kind": "official_public_channel_investigation"
+        }
+      },
+      "reason": "Official page offers a weekly email bulletin and links a JavaScript career site. Public HTML did not expose an inventory; no internal/token API used."
+    },
+    {
+      "id": "1c7b75e8069b5666bcb2ef87",
+      "url": "https://pac.org/jobs",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "inaccessible",
+      "discovery_evidence": [
+        {
+          "url": "https://pac.org/terms-of-use",
+          "kind": "published_access_restriction"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "Published terms restrict automated collection; no collector enabled.",
+        "evidence": {
+          "url": "https://pac.org/terms-of-use",
+          "kind": "published_access_restriction"
+        }
+      },
+      "reason": "Published terms restrict automated collection; no collector enabled."
+    },
+    {
+      "id": "c1207a3cbfda4b2aaffe2548",
+      "url": "https://careerhq.asaecenter.org/jobs/",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "inaccessible",
+      "discovery_evidence": [
+        {
+          "url": "https://careerhq.asaecenter.org/jobs/",
+          "kind": "actual_access_challenge"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "HTTP 200 returned an interactive bot challenge rather than searchable inventory. No bypass attempted.",
+        "evidence": {
+          "url": "https://careerhq.asaecenter.org/jobs/",
+          "kind": "actual_access_challenge"
+        }
+      },
+      "reason": "HTTP 200 returned an interactive bot challenge rather than searchable inventory. No bypass attempted."
+    },
+    {
+      "id": "241d5ae737ee983fd7f440d2",
+      "url": "https://www.foundationlist.org/",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "inaccessible",
+      "discovery_evidence": [
+        {
+          "url": "https://www.foundationlist.org/terms-conditions/",
+          "kind": "published_access_restriction"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "inaccessible",
+        "reason": "Advertised feed investigated, but broad published extraction restrictions prevent enabling collection without publisher authorization.",
+        "evidence": {
+          "url": "https://www.foundationlist.org/terms-conditions/",
+          "kind": "published_access_restriction"
+        }
+      },
+      "reason": "Advertised feed investigated, but broad published extraction restrictions prevent enabling collection without publisher authorization."
+    },
+    {
+      "id": "8793ef3f6a1165dd86fd76b6",
+      "url": "https://www.politicaljobhunt.com/",
+      "source_kind": "specialty_board",
+      "discovery_state": "discovered",
+      "retrieval_state": "not_yet_covered",
+      "discovery_evidence": [
+        {
+          "url": "https://www.politicaljobhunt.com/terms-of-service",
+          "kind": "source_policy_investigation"
+        }
+      ],
+      "discovery_kinds": [
+        "specialty_board"
+      ],
+      "observed_at": "2026-11-06T03:42:47+00:00",
+      "historical_access_observation": {
+        "observed_local_date": "2026-11-05",
+        "timezone": "America/Denver",
+        "not_rechecked_each_run": true,
+        "state": "not_yet_covered",
+        "reason": "An RSS channel was observed, but restrictive copying/scraping terms leave integration permission unresolved. Not used in the benchmark or enabled in production.",
+        "evidence": {
+          "url": "https://www.politicaljobhunt.com/terms-of-service",
+          "kind": "source_policy_investigation"
+        }
+      },
+      "reason": "An RSS channel was observed, but restrictive copying/scraping terms leave integration permission unresolved. Not used in the benchmark or enabled in production."
+    }
+  ]
+}

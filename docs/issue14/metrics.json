@@ -1,0 +1,375 @@
+{
+  "data_kind": "Actual public records, bounded source coverage diagnostic; no candidate-fit or independent validation",
+  "source_observation_window": {
+    "earliest": "2026-11-06T00:28:07+00:00",
+    "latest": "2026-11-06T03:30:56+00:00",
+    "responses_with_known_timestamp": 197,
+    "responses_without_timestamp": 0
+  },
+  "comparison": {
+    "kind": "CONTROLLED OFFLINE REPLAY OF ACTUAL RETRIEVAL; NOT INDEPENDENT VALIDATION",
+    "network_calls": 0,
+    "model_calls": 0,
+    "as_of": "2026-11-06T03:30:57+00:00",
+    "baseline_sha256": "1ba39b603c2d1f9240c11c1b817e87df2d8afd0f1f6e5bcd6e99aa64f79d5605",
+    "budgets_each": {
+      "boards": 30,
+      "logical_requests": 180,
+      "shared_extra_descriptions": 20
+    },
+    "arms": {
+      "legacy": {
+        "coverage": {
+          "worksite_evidence_counts": {
+            "remote_not_regional_worksite": 252,
+            "outside_region": 189,
+            "single_regional_label": 4,
+            "regional_option_multiple_locations": 1,
+            "remote_with_regional_label": 3
+          },
+          "raw_ATS_source_identities": 449,
+          "distinct_board_keys": 21,
+          "dc_dmv_labels": 8,
+          "us_remote_labels": 66,
+          "geography_review": 186,
+          "talent_or_prospect_pool_signals": 0,
+          "explicit_volunteer_appointments": 0,
+          "outside_region": 189,
+          "duplicates": {
+            "not_matched_to_five_source_capture": 445,
+            "possible_crosspost_review": 4
+          },
+          "dc_not_matched_to_five_sources": 4,
+          "dc_new_conservative_employer_title_groups": 4,
+          "dc_new_title_specialist_signals": 1,
+          "independent_review_quarantined": 0,
+          "dc_possible_crossposts": 4,
+          "dc_new_with_description": 4,
+          "dc_new_description_early_signals": 0,
+          "dc_new_title_only_signals": 0,
+          "dc_new_function_signals": {
+            "policy_government_affairs": 1,
+            "specialist_or_clinical_signal": 1
+          },
+          "note": "Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.",
+          "market": {
+            "schema_version": "market/v1",
+            "id": "dc-dmv",
+            "name": "Washington DC / nearby DMV",
+            "city": "Washington",
+            "state": "DC",
+            "scope": "DC plus existing nearby-MD/VA fixture"
+          },
+          "in_market_labels": 8,
+          "unmatched_in_market": 4
+        },
+        "logical_requests": 84,
+        "boards_checked": 30,
+        "boards_with_rows": 21,
+        "selection_routes": {
+          "legacy_provider_spread": 30
+        },
+        "bytes_observed": 10203901
+      },
+      "regional": {
+        "coverage": {
+          "worksite_evidence_counts": {
+            "outside_region": 929,
+            "single_regional_label": 103,
+            "regional_option_multiple_locations": 1,
+            "remote_not_regional_worksite": 281,
+            "remote_with_regional_label": 1,
+            "conflicting_title_and_provider_location": 1
+          },
+          "raw_ATS_source_identities": 1316,
+          "distinct_board_keys": 27,
+          "dc_dmv_labels": 105,
+          "us_remote_labels": 63,
+          "geography_review": 219,
+          "talent_or_prospect_pool_signals": 3,
+          "explicit_volunteer_appointments": 4,
+          "outside_region": 929,
+          "duplicates": {
+            "not_matched_to_five_source_capture": 1312,
+            "possible_crosspost_review": 4
+          },
+          "dc_not_matched_to_five_sources": 95,
+          "dc_new_conservative_employer_title_groups": 95,
+          "dc_new_title_specialist_signals": 15,
+          "independent_review_quarantined": 0,
+          "dc_possible_crossposts": 3,
+          "dc_new_with_description": 24,
+          "dc_new_description_early_signals": 4,
+          "dc_new_title_only_signals": 3,
+          "dc_new_function_signals": {
+            "specialist_or_clinical_signal": 15,
+            "research_consulting": 12,
+            "programs_operations": 10,
+            "development_associations": 3,
+            "advocacy_organizing": 1,
+            "policy_government_affairs": 1
+          },
+          "note": "Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.",
+          "market": {
+            "schema_version": "market/v1",
+            "id": "dc-dmv",
+            "name": "Washington DC / nearby DMV",
+            "city": "Washington",
+            "state": "DC",
+            "scope": "DC plus existing nearby-MD/VA fixture"
+          },
+          "in_market_labels": 105,
+          "unmatched_in_market": 95
+        },
+        "logical_requests": 100,
+        "boards_checked": 30,
+        "boards_with_rows": 27,
+        "selection_routes": {
+          "regional_or_function_evidence": 12,
+          "non_targeted_exploration": 6,
+          "weak_function_exploration": 7,
+          "broad_fill": 5
+        },
+        "bytes_observed": 12688262
+      }
+    }
+  },
+  "regional_ledger_summary": {
+    "catalogue_entries": 1634,
+    "discovered_source_candidates": 1626,
+    "unresolved_publication_links": 8,
+    "source_kinds": {
+      "sitemap": 7,
+      "rss": 5,
+      "public_ats_candidate": 1604,
+      "specialty_board": 9,
+      "unresolved_publication_link": 8,
+      "institutional_career_channel": 1
+    },
+    "retrieval_states": {
+      "not_yet_covered": 1594,
+      "searched": 6,
+      "partially_retrieved": 30,
+      "inaccessible": 4
+    },
+    "note": "Source candidates are not necessarily live employers. Counts describe this observed catalog, never all market sources/jobs."
+  },
+  "baseline": {
+    "records": 303,
+    "source_counts": {
+      "unionjobs": 58,
+      "globaljobs": 209,
+      "onthinktanks": 15,
+      "workfornonprofits": 21
+    },
+    "source_stats": {
+      "senate": {
+        "requests": 2,
+        "received": 0,
+        "malformed": 0,
+        "pages": 0,
+        "capped": true,
+        "status": "failed",
+        "unique": 0,
+        "inspection_strategy": "diverse",
+        "details_planned": 0,
+        "details_attempted": 0,
+        "descriptions_observed": 0,
+        "index_only": 0,
+        "errors": [
+          "Index http_404"
+        ]
+      },
+      "unionjobs": {
+        "requests": 25,
+        "received": 108,
+        "malformed": 0,
+        "pages": 4,
+        "capped": true,
+        "status": "ok",
+        "unique": 58,
+        "inspection_strategy": "diverse",
+        "details_planned": 20,
+        "details_attempted": 20,
+        "descriptions_observed": 20,
+        "index_only": 38,
+        "errors": []
+      },
+      "globaljobs": {
+        "requests": 24,
+        "received": 405,
+        "malformed": 0,
+        "pages": 2,
+        "capped": true,
+        "status": "ok",
+        "unique": 209,
+        "inspection_strategy": "diverse",
+        "details_planned": 20,
+        "details_attempted": 20,
+        "descriptions_observed": 20,
+        "index_only": 189,
+        "errors": []
+      },
+      "onthinktanks": {
+        "requests": 17,
+        "received": 15,
+        "malformed": 0,
+        "pages": 1,
+        "capped": false,
+        "status": "ok",
+        "unique": 15,
+        "inspection_strategy": "diverse",
+        "details_planned": 15,
+        "details_attempted": 15,
+        "descriptions_observed": 15,
+        "index_only": 0,
+        "errors": []
+      },
+      "workfornonprofits": {
+        "requests": 22,
+        "received": 21,
+        "malformed": 0,
+        "pages": 1,
+        "capped": true,
+        "status": "ok",
+        "unique": 21,
+        "inspection_strategy": "diverse",
+        "details_planned": 20,
+        "details_attempted": 20,
+        "descriptions_observed": 20,
+        "index_only": 1,
+        "errors": []
+      }
+    },
+    "preserved_as_original_combined_prefix": true
+  },
+  "additional_diagnostics": {
+    "regional_local_board_count": 15,
+    "legacy_local_board_count": 4,
+    "regional_local_identities_absent_from_legacy_arm": 101,
+    "regional_all_descriptions": 260,
+    "legacy_all_descriptions": 292,
+    "unchanged_capture_seen_again": {
+      "first_observed_by_registry": 0,
+      "previously_observed": 1316,
+      "history_entries": 1366,
+      "history_evicted": 0,
+      "note": "First observation by this saved registry, not proof of a new vacancy. Missing/expired artifacts reset history."
+    },
+    "warning": "Repeat diagnostic is the identical captured corpus, not a second live search."
+  },
+  "cold_start_tests": [
+    {
+      "market": {
+        "schema_version": "market/v1",
+        "id": "tampa-fl",
+        "name": "Tampa, FL",
+        "city": "Tampa",
+        "state": "FL",
+        "scope": "City/state label test; no inferred metro radius or remote eligibility."
+      },
+      "cold_start": true,
+      "seed_employers": 0,
+      "known_boards_before_run": 0,
+      "coverage": {
+        "worksite_evidence_counts": {
+          "remote_not_regional_worksite": 39,
+          "outside_region": 63
+        },
+        "raw_ATS_source_identities": 102,
+        "distinct_board_keys": 4,
+        "us_remote_labels": 0,
+        "geography_review": 39,
+        "talent_or_prospect_pool_signals": 0,
+        "explicit_volunteer_appointments": 0,
+        "outside_region": 63,
+        "duplicates": {
+          "not_matched_to_five_source_capture": 102
+        },
+        "independent_review_quarantined": 0,
+        "note": "Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.",
+        "market": {
+          "schema_version": "market/v1",
+          "id": "tampa-fl",
+          "name": "Tampa, FL",
+          "city": "Tampa",
+          "state": "FL",
+          "scope": "City/state label test; no inferred metro radius or remote eligibility."
+        },
+        "in_market_labels": 0,
+        "unmatched_in_market": 0,
+        "market_dmv_labels": 0,
+        "market_not_matched_to_five_sources": 0,
+        "market_new_conservative_employer_title_groups": 0,
+        "market_new_title_specialist_signals": 0,
+        "market_possible_crossposts": 0,
+        "market_new_with_description": 0,
+        "market_new_description_early_signals": 0,
+        "market_new_title_only_signals": 0,
+        "market_new_function_signals": {}
+      },
+      "logical_requests": 19
+    },
+    {
+      "market": {
+        "schema_version": "market/v1",
+        "id": "tampa-fl",
+        "name": "Tampa, FL",
+        "city": "Tampa",
+        "state": "FL",
+        "scope": "City/state label test; no inferred metro radius or remote eligibility."
+      },
+      "cold_start": true,
+      "seed_employers": 0,
+      "known_boards_before_run": 0,
+      "coverage": {
+        "worksite_evidence_counts": {},
+        "raw_ATS_source_identities": 0,
+        "distinct_board_keys": 0,
+        "us_remote_labels": 0,
+        "geography_review": 0,
+        "talent_or_prospect_pool_signals": 0,
+        "explicit_volunteer_appointments": 0,
+        "outside_region": 0,
+        "duplicates": {},
+        "independent_review_quarantined": 0,
+        "note": "Source identities are not necessarily distinct vacancies. No match to a bounded baseline does not prove market-wide novelty or relevance; signals are not qualification findings.",
+        "market": {
+          "schema_version": "market/v1",
+          "id": "tampa-fl",
+          "name": "Tampa, FL",
+          "city": "Tampa",
+          "state": "FL",
+          "scope": "City/state label test; no inferred metro radius or remote eligibility."
+        },
+        "in_market_labels": 0,
+        "unmatched_in_market": 0,
+        "market_dmv_labels": 0,
+        "market_not_matched_to_five_sources": 0,
+        "market_new_conservative_employer_title_groups": 0,
+        "market_new_title_specialist_signals": 0,
+        "market_possible_crossposts": 0,
+        "market_new_with_description": 0,
+        "market_new_description_early_signals": 0,
+        "market_new_title_only_signals": 0,
+        "market_new_function_signals": {}
+      },
+      "logical_requests": 6
+    }
+  ],
+  "verification": {
+    "unit_tests_passed": 197,
+    "existing_tests_removed": 0,
+    "compileall": "passed",
+    "unranked_baseline_preserved": true,
+    "experimental_publisher": {
+      "status": "completed_with_partial_sources",
+      "input_preserved": true,
+      "network_calls": 0,
+      "model_calls": 0,
+      "ranker_sha256": "22eeaea408d245af83dc476ea734286f1ac773cbbb7a5b7f0d71d2e3e0fa6266"
+    },
+    "real_combined_rows_retained_by_publisher": 1669,
+    "independent_review_packet": "Sealed; no matching records in this capture; not used for fit evaluation."
+  }
+}

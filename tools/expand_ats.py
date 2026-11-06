@@ -11,6 +11,27 @@ from career_engine.ats import PublicTransport,retrieve_board,stamp,enrich_region
 from career_engine.ats_registry import empty_registry,validate_registry,source_seeds,discover_commoncrawl,register,select_boards
 from career_engine.ats_coverage import assess_increment
 from career_engine.extract import safe_public_url
+from career_engine.employer_discovery import EmployerTransport,discover_directory,discover_employer_links
+from career_engine.public_sources import retrieve_impact,discover_jazz_sitemap
+from career_engine.regional_selection import select_regional_boards,mark_seen
+from career_engine.ats import FetchError
+from career_engine.markets import DC_MARKET
+from career_engine.publication_audit import build_ledger,write_ledger
+
+
+def regional_candidates(transport,registry,base,employer_budget=0,sitemap_budget=2,market=DC_MARKET):
+    """Collection evidence, not fit scores; callers may freeze it for a paired run."""
+    rows,stats=retrieve_impact(transport)
+    source_seeds(registry,base['records']+rows,market)
+    logs={'public_sitemaps':discover_jazz_sitemap(transport,registry,sitemap_budget,market)}
+    if employer_budget and market.identifier=='dc-dmv':
+        try:logs['employer_directory']=discover_directory(transport,registry)
+        except (FetchError,ValueError) as e:logs['employer_directory']={'status':str(e),'new_employer_sites':0}
+        logs['employer_link_checks']=discover_employer_links(transport,registry,base['records']+rows,employer_budget)
+    else:
+        logs['employer_directory']={'status':'not_requested_optional_zero_budget','new_employer_sites':0}
+        logs['employer_link_checks']=[]
+    return {'records':rows,'stats':{'impactopportunity':stats},'discovery':logs}
 
 
 def write_capture(path,data):
@@ -18,69 +39,90 @@ def write_capture(path,data):
     path.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     columns=['identity','source','source_id','board_key','title','company','company_evidence','location','geography',
              'url','posted_at','updated_at','closing_at','retrieved_at','record_kind','evidence_status','detail_status',
-             'duplicate_status','description','description_truncated','early_career_signal','function_signals']
+             'duplicate_status','description','description_truncated','early_career_signal','function_signals',
+             'market_id','collection_mode','worksite_evidence','board_selection_route','previously_seen_in_this_registry','first_observed_run','description_changed_since_prior_observation']
     with path.with_suffix('.csv').open('w',newline='',encoding='utf-8') as f:
         w=csv.DictWriter(f,fieldnames=columns);w.writeheader()
         for r in data['records']:
-            w.writerow({k:json.dumps(r.get(k),ensure_ascii=False) if isinstance(r.get(k),(list,dict)) else r.get(k,'') for k in columns})
+            values={k:json.dumps(r.get(k),ensure_ascii=False) if isinstance(r.get(k),(list,dict)) else r.get(k,'') for k in columns}
+            values['collection_mode']=data.get('collection_context',{}).get('mode','')
+            w.writerow(values)
 
 
-def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed_queries=6,imports=None,transport=None,extra_details=20):
+def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed_queries=6,imports=None,transport=None,extra_details=20,
+           strategy='legacy',employer_budget=0,sitemap_budget=2,candidate_capture=None,as_of=None,market=DC_MARKET):
     base_path,registry_path,output_dir,combined_path=map(Path,(base_path,registry_path,output_dir,combined_path))
     output_dir.mkdir(parents=True,exist_ok=True)
     original=base_path.read_bytes();base=json.loads(original)
     if not isinstance(base.get('records'),list) or not isinstance(base.get('stats'),dict):raise ValueError('Expected an unranked source audit')
     registry=validate_registry(json.loads(registry_path.read_text())) if registry_path.exists() else empty_registry()
-    transport=transport or PublicTransport(max_requests=min(300,board_budget*6+seed_queries*4+10))
+    if strategy not in ('legacy','regional'):raise ValueError('Invalid discovery strategy')
+    transport=transport or (EmployerTransport if strategy=='regional' else PublicTransport)(max_requests=min(300,board_budget*6+seed_queries*4+10))
     for host,until in registry.get('host_not_before',{}).items():
         try:
             if datetime.fromisoformat(until)>datetime.now(timezone.utc):transport.blocked.add(host)
         except (ValueError,TypeError):pass
-    before=set(registry['boards']);source_added=source_seeds(registry,base['records'])
+    before=set(registry['boards']);source_added=source_seeds(registry,base['records'],market)
+    supplemental=candidate_capture or (regional_candidates(transport,registry,base,employer_budget,sitemap_budget,market) if strategy=='regional' else {'records':[],'stats':{},'discovery':{}})
     if imports:
         for entry in imports:
             if not isinstance(entry,dict) or not isinstance(entry.get('url'),str) or not safe_public_url(str(entry.get('evidence_url',''))):continue
             register(registry,entry['url'],{'kind':'explicit_public_URL_evidence_import','url':entry['evidence_url'],
                      'query_family':entry.get('query_family','unrestricted'),'note':'Imported URL evidence, not an employer name allowlist; live provider response still required.'})
     seed_log=discover_commoncrawl(transport,registry,seed_queries)
-    selected=select_boards(registry,board_budget)
+    selected=select_regional_boards(registry,board_budget,market=market) if strategy=='regional' else select_boards(registry,board_budget)
     records=[];board_stats=[]
     for entry in selected:
-        rows,stats=retrieve_board(transport,entry)
+        rows,stats=retrieve_board(transport,entry,detail_budget=1 if strategy=='regional' else 3,market=market)
+        stats['selection_evidence']=entry.get('selection_evidence',{'route':'legacy_provider_spread'})
         entry.update({k:stats[k] for k in ('status','dc_dmv','unique','descriptions')})
         entry['last_checked_run']=registry['run'];entry['last_checked_at']=stamp();entry['last_errors']=stats['errors']
-        for row in rows:row['board_discovery_evidence']=entry['evidence']
+        for row in rows:
+            row['board_discovery_evidence']=entry['evidence']
+            row['board_selection_route']=stats['selection_evidence']['route']
         records+=rows;board_stats.append(stats)
         if len(records)>=20000:
             board_stats[-1]['errors'].append('run_record_cap');break
         if any('budget' in str(x) or 'byte_limit' in str(x) for x in stats['errors']):break
-    extra_log=enrich_regional_metadata(transport,records,registry['boards'],extra_details,registry['run'])
+    extra_log=enrich_regional_metadata(transport,records,registry['boards'],extra_details,registry['run'],market)
     for stats in board_stats:
         related=[x for x in extra_log if x['board_key']==stats['board_key']]
         stats['extra_detail_requests']=sum(x['requests'] for x in related);stats['requests']+=stats['extra_detail_requests']
         stats['descriptions']=sum(bool(r['description']) for r in records if r['board_key']==stats['board_key'])
+        if 'inventory' in stats:stats['inventory']['descriptions_observed']=stats['descriptions']
         stats['errors'] += ['extra_detail_'+x['status'] for x in related if x['status']!='ok']
         if stats['errors'] and stats['unique']:stats['status']='partial_failure'
         registry['boards'][stats['board_key']]['descriptions']=stats['descriptions']
-    coverage=assess_increment(base['records'],records)
+    coverage=assess_increment(base['records'],records,as_of,market)
+    supplemental_coverage=assess_increment(base['records'],supplemental['records'],as_of,market)
+    seen=mark_seen(registry,records+supplemental['records'])
     status='partial_failure' if any(s['errors'] for s in board_stats) or any(q.get('status')!='ok' for q in seed_log) else 'ok'
     stats={'requests':len(transport.requests),'received':len(records),'unique':len(records),'status':status,
            'errors':(['Some seed queries or boards failed; inspect ATS discovery report'] if status!='ok' else []),
            'capped':len(selected)<len(registry['boards']) or any(s['capped'] for s in board_stats)}
     data={'kind':'UNRANKED PUBLIC ATS DISCOVERY; NOT EMPLOYER-CONFIRMED ACTIVE OR FIT RECOMMENDATIONS',
-          'captured_at':stamp(),'records':records,'stats':{'public_ats':stats},'coverage':coverage,
+          'schema_version':'job-source-audit/v1','market':market.asdict(),'collection_context':getattr(transport.session,'collection_context',{'mode':'live_public_get'}),
+          'captured_at':stamp(),'records':records,'stats':{'public_ats':stats},'additional_source_stats':supplemental['stats'],'coverage':coverage,
           'discovery':{'registry_boards':len(registry['boards']),'new_registry_boards':len(set(registry['boards'])-before),
+                       'strategy':strategy,'regional_evidence':supplemental['discovery'],'cross_run_observations':seen,
+                       'publication_observations':transport.publication_observations,
                        'source_link_boards_added':source_added,'seed_queries':seed_log,'selected_boards':len(selected),
                        'boards':board_stats,'extra_detail_inspections':extra_log,'unsupported_platform_links':registry['unsupported']},
           'transport':{'requests':transport.requests,'bytes':transport.bytes,'maximum_requests':transport.max_requests},
           'baseline_sha256':hashlib.sha256(original).hexdigest(),
           'limits':'Bounded index samples and boards; wildcard/prefix metadata search is not a full-text DC employment index. Every retrieved row remains auditable; no fit filtering.'}
     write_capture(output_dir/'ats-source-audit.json',data)
-    combined={'kind':'FULL UNRANKED FIVE-SOURCE + PUBLIC ATS AUDIT; DUPLICATE SIGHTINGS RETAINED',
-              'captured_at':data['captured_at'],'original_five_source_capture_at':base.get('captured_at',''),
-              'records':base['records']+records,'stats':{**base['stats'],'public_ats':stats},
-              'ats_coverage':coverage,'original_five_source_sha256':data['baseline_sha256']}
+    supplemental_audit={'kind':'UNRANKED ADDITIONAL PUBLIC FEED AUDIT; NOT CONFIRMED OPENINGS OR RECOMMENDATIONS',
+                        'captured_at':data['captured_at'],**supplemental,'coverage':supplemental_coverage}
+    write_capture(output_dir/'regional-source-audit.json',supplemental_audit)
+    combined={'kind':'FULL UNRANKED FIVE-SOURCE + PUBLIC ATS + ADDITIONAL FEED AUDIT; DUPLICATE SIGHTINGS RETAINED',
+              'schema_version':'job-collection/v1','market':market.asdict(),'collection_context':data['collection_context'],'captured_at':data['captured_at'],'original_five_source_capture_at':base.get('captured_at',''),
+              'records':base['records']+records+supplemental['records'],'stats':{**base['stats'],'public_ats':stats,**supplemental['stats']},
+              'ats_coverage':coverage,'additional_source_coverage':supplemental_coverage,'cross_run_observations':seen,
+              'original_five_source_sha256':data['baseline_sha256']}
     write_capture(combined_path,combined)
+    ledger=build_ledger(base,data,supplemental,registry,market)
+    write_ledger(output_dir/'coverage-audit.json',ledger)
     for request in transport.requests:
         if request.get('status') in (403,429):
             wait=86400
@@ -96,12 +138,15 @@ def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed
     for s in board_stats:lines.append(f"| {c(s['board_key'])} | {s['status']} | {s['unique']} | {s['dc_dmv']} | {s['descriptions']} | {c(', '.join(s['errors']))} |")
     lines+=['','## New regional records requiring review','',
             'No match to this bounded five-source capture is not proof of unique vacancy, suitability, pay, level or comprehensive discovery. Title/description signals are for review only.','',
-            '| Role | Employer label | Original location | Duplicate status | Early-career signal |','|---|---|---|---|---|']
+            '| Role | Employer label | Original location | Duplicate status | Inspection signal (not fit) |','|---|---|---|---|---|']
     for r in records:
         if r['geography']=='dc_dmv':lines.append(f"| [{c(r['title'])}]({r['url']}) | {c(r['company'])} | {c(r['location'])} | {r['duplicate_status']} | {r['early_career_signal']['kind']} |")
     lines+=['','## Seed query outcomes','', '```json',json.dumps(seed_log,indent=2),'```','',data['limits'],'']
+    lines+=['## Regional discovery and additional feed evidence','','```json',json.dumps(supplemental['discovery'],indent=2),'```',
+            '', 'Additional RSS records are retained in regional-source-audit.json/.csv, with their source attribution. These are separate from ATS counts.',
+            '', '```json',json.dumps(supplemental_coverage,indent=2),'```','','Cross-run first observations are specific to this saved registry, not new market vacancies.','']
     (output_dir/'ats-source-audit.md').write_text('\n'.join(lines),encoding='utf-8')
-    combined_path.with_suffix('.md').write_text('# Expanded unranked audit\n\nThe full JSON/CSV retains every original and ATS record, including duplicates and uncertain/off-market records. See the original dc-source-audit.md and ats-discovery/ats-source-audit.md.\n',encoding='utf-8')
+    combined_path.with_suffix('.md').write_text('# Expanded unranked audit\n\nThe full JSON/CSV retains every original, ATS and additional public-feed record, including duplicates and uncertain/off-market records. See the original dc-source-audit.md, ats-discovery/ats-source-audit.md and regional-source-audit.json/.csv.\n',encoding='utf-8')
     if base_path.read_bytes()!=original:raise RuntimeError('Original five-source audit changed')
     return data
 
@@ -113,17 +158,21 @@ def main(argv=None):
     p.add_argument('--board-budget',type=int,default=30);p.add_argument('--seed-queries',type=int,default=6)
     p.add_argument('--extra-details',type=int,default=20,help='Shared regional metadata description budget (0–30), after board discovery')
     p.add_argument('--evidence-import',help='Optional JSON list of public ATS URLs with evidence_url; never company-name guesses')
+    p.add_argument('--strategy',choices=('regional','legacy'),default='regional',help='Regional source evidence with at least 20%% non-targeted board exploration, or prior provider spread')
+    p.add_argument('--employer-budget',type=int,default=0,help='Optional observed employer websites to inspect (0–30, off by default), up to three public HTML pages each')
+    p.add_argument('--sitemap-budget',type=int,default=2,help='Advertised JazzHR sitemap prefixes (0–5), 1.5 MB per prefix')
     args=p.parse_args(argv)
-    if not 1<=args.board_budget<=100 or not 0<=args.seed_queries<=20 or not 0<=args.extra_details<=30:p.error('Invalid ATS budget')
+    if not 1<=args.board_budget<=100 or not 0<=args.seed_queries<=20 or not 0<=args.extra_details<=30 or not 0<=args.employer_budget<=30 or not 0<=args.sitemap_budget<=5:p.error('Invalid ATS budget')
     try:
         imports=json.loads(Path(args.evidence_import).read_text()) if args.evidence_import else None
         if imports is not None and not isinstance(imports,list):p.error('Evidence import must be a list')
-        data=expand(args.base,args.registry,args.output_dir,args.combined_output,args.board_budget,args.seed_queries,imports,extra_details=args.extra_details)
+        data=expand(args.base,args.registry,args.output_dir,args.combined_output,args.board_budget,args.seed_queries,imports,extra_details=args.extra_details,
+                    strategy=args.strategy,employer_budget=args.employer_budget,sitemap_budget=args.sitemap_budget)
     except (OSError,ValueError,RuntimeError,KeyError) as e:
         print(json.dumps({'status':'failed','error_type':type(e).__name__,'original_audit':'preserved; see existing files'}));return 1
     print(json.dumps({'coverage':data['coverage'],'discovered_boards':data['discovery']['registry_boards'],
                       'selected_boards':data['discovery']['selected_boards'],'status':data['stats']['public_ats']['status']}))
-    return 0 if any(s['status']!='failed' for s in data['discovery']['boards']) else 1
+    return 0 if any(s['status']!='failed' for s in data['discovery']['boards']) or any(s.get('status')=='ok' for s in data['additional_source_stats'].values()) else 1
 
 
 if __name__=='__main__':raise SystemExit(main())

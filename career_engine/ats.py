@@ -14,6 +14,7 @@ from urllib.parse import quote, unquote, urlsplit, urlunsplit
 import requests
 from career_engine.extract import safe_public_url, strip_html, USER_AGENT
 from career_engine.discovery import geography
+from career_engine.worksite_evidence import worksite_evidence
 
 PROVIDERS=('greenhouse','lever','ashby')
 PUBLIC_HOSTS={'job-boards.greenhouse.io':'greenhouse','boards.greenhouse.io':'greenhouse',
@@ -36,6 +37,8 @@ def board_from_url(url):
         if u.scheme not in ('http','https') or u.username or u.password or u.port not in (None,443):return None
         parts=[unquote(x) for x in u.path.strip('/').split('/')]
         provider=PUBLIC_HOSTS.get(host);token=parts[0] if parts else ''
+        jazz=re.fullmatch(r'([a-z0-9][a-z0-9-]{0,99})\.applytojob\.com',host)
+        if jazz and parts and parts[0]=='apply':provider,token='jazzhr',jazz[1]
         if host=='boards-api.greenhouse.io' and parts[:2]==['v1','boards'] and len(parts)>=3:
             provider,token='greenhouse',parts[2]
         elif host in ('api.lever.co','api.eu.lever.co') and parts[:2]==['v0','postings'] and len(parts)>=3:
@@ -49,6 +52,7 @@ def board_from_url(url):
 
 
 def public_board_url(provider,token):
+    if provider=='jazzhr':return 'https://'+token.lower()+'.applytojob.com/apply'
     host={'greenhouse':'job-boards.greenhouse.io','lever':'jobs.lever.co',
           'lever_eu':'jobs.eu.lever.co','ashby':'jobs.ashbyhq.com'}[provider]
     return 'https://'+host+'/'+quote(token,safe='._-')
@@ -60,6 +64,8 @@ def posting_key(url):
     parts=[unquote(x) for x in urlsplit(url).path.strip('/').split('/')]
     if b['provider']=='greenhouse':
         if len(parts)>=3 and parts[1]=='jobs' and re.fullmatch(r'\d+',parts[2]):return b['key']+':'+parts[2]
+    elif b['provider']=='jazzhr':
+        if len(parts)>=3 and parts[0]=='apply' and re.fullmatch(r'[A-Za-z0-9]{8,100}',parts[1]):return b['key']+':'+parts[1]
     elif len(parts)>=2 and re.fullmatch(r'[a-zA-Z0-9-]{8,80}',parts[1]):
         return b['key']+':'+parts[1].lower()
     return ''
@@ -69,6 +75,7 @@ def canonical_posting_url(url):
     key=posting_key(url)
     if key:
         b=board_from_url(url);post=key.rsplit(':',1)[1]
+        if b['provider']=='jazzhr':return urlunsplit(('https',urlsplit(url).hostname,urlsplit(url).path.rstrip('/'),'',''))
         return b['url']+('/jobs/' if b['provider']=='greenhouse' else '/')+post
     if not safe_public_url(str(url)):return ''
     u=urlsplit(url)
@@ -89,7 +96,7 @@ class PublicTransport:
         self.session=session if session is not None else requests.Session()
         self.max_requests=max_requests;self.pause=pause;self.max_bytes=max_bytes
         self.started=time.monotonic();self.max_seconds=max_seconds
-        self.requests=[];self.bytes=0;self.blocked=set();self.robots={}
+        self.requests=[];self.bytes=0;self.blocked=set();self.robots={};self.publication_observations=[]
 
     @staticmethod
     def allowed(url):
@@ -104,9 +111,17 @@ class PublicTransport:
             return p=='/robots.txt' or (board_from_url(url) is not None and len(p.strip('/').split('/'))==1)
         if u.hostname=='web.archive.org':return p=='/cdx/search/cdx'
         if u.hostname=='index.commoncrawl.org':return p=='/collinfo.json' or bool(re.fullmatch(r'/CC-MAIN-\d{4}-\d{2}-index',p))
+        if u.hostname=='query.wikidata.org':return p=='/sparql'
+        if u.hostname=='impactopportunity.org':return p in ('/robots.txt','/rss/')
+        if u.hostname=='app.jazz.co':return p=='/robots.txt' or bool(re.fullmatch(r'/feeds/google/xml/[0-4]',p))
+        if re.fullmatch(r'[a-z0-9][a-z0-9-]{0,99}\.applytojob\.com',u.hostname or ''):
+            return p=='/robots.txt' or bool(re.fullmatch(r'/apply/?(?:[A-Za-z0-9]{8,100}/[A-Za-z0-9_-]+/?)?',p))
         return False
 
-    def get(self,url,params=None,max_bytes=8_000_000,kind='api'):
+    def redirect_allowed(self,original_host,target):
+        return self.allowed(target) and urlsplit(target).hostname==original_host
+
+    def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False):
         if not self.allowed(url):raise FetchError('unsafe_endpoint')
         original_host=urlsplit(url).hostname
         if original_host in self.blocked:raise FetchError('host_stopped_after_denial')
@@ -117,7 +132,8 @@ class PublicTransport:
             self.pause(1)
             item={'url':url,'params':params or {},'kind':kind,'observed_at':stamp()};self.requests.append(item)
             try:
-                r=self.session.get(url,params=params,headers={'User-Agent':USER_AGENT,'Accept':'application/json'},
+                accept='text/html' if kind=='public_html' else 'text/plain' if kind=='robots' else 'application/rss+xml, application/xml, text/xml' if kind in ('public_feed','seed_sitemap') else 'application/json'
+                r=self.session.get(url,params=params,headers={'User-Agent':USER_AGENT+' (+https://github.com/murphym123/career-discovery-engine)','Accept':accept},
                                    timeout=20,allow_redirects=False,stream=True)
             except requests.RequestException:
                 item['status']='network_error';raise FetchError('network_error') from None
@@ -128,18 +144,27 @@ class PublicTransport:
                 if r.status_code in (301,302,303,307,308):
                     from urllib.parse import urljoin
                     target=urljoin(url,r.headers.get('Location',''))
-                    if not self.allowed(target) or urlsplit(target).hostname!=original_host:raise FetchError('unsafe_redirect')
+                    if not self.redirect_allowed(original_host,target):raise FetchError('unsafe_redirect')
                     url=target;params=None;continue
                 if r.status_code!=200:raise FetchError('http_'+str(r.status_code))
                 content_type=r.headers.get('Content-Type','').split(';')[0].strip().lower()
-                if content_type and not any(x in content_type for x in (('text/html','text/plain') if kind in ('public_html','robots') else ('json','text/plain','octet-stream'))):raise FetchError('unexpected_content_type')
+                expected=('text/html','text/plain') if kind in ('public_html','robots') else ('xml','text/plain') if kind in ('public_feed','seed_sitemap') else ('json','text/plain','octet-stream')
+                if content_type and not any(x in content_type for x in expected):raise FetchError('unexpected_content_type')
                 data=bytearray()
                 for chunk in r.iter_content(65536):
                     self.bytes+=len(chunk);data.extend(chunk)
                     if time.monotonic()-self.started>self.max_seconds:raise FetchError('time_budget')
-                    if len(data)>max_bytes or self.bytes>self.max_bytes:raise FetchError('response_or_byte_limit')
+                    if self.bytes>self.max_bytes:raise FetchError('response_or_byte_limit')
+                    if len(data)>max_bytes:
+                        if not prefix:raise FetchError('response_or_byte_limit')
+                        del data[max_bytes:];item.update(truncated=True,sha256_kind='retrieved_prefix_only');break
                 item.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
-                try:return bytes(data).decode('utf-8')
+                try:
+                    text=bytes(data).decode('utf-8')
+                    if kind in ('public_html','robots','public_feed','seed_sitemap'):
+                        from career_engine.publication_audit import offered_channels
+                        self.publication_observations.append({'url':url,'status':200,'channels':offered_channels(text,url)})
+                    return text
                 except UnicodeError:raise FetchError('invalid_encoding') from None
             except requests.RequestException:
                 item['error']='stream_error';raise FetchError('stream_error') from None
@@ -239,19 +264,27 @@ def normalize_posting(board,item,company=''):
                 evidence_status='employer_managed_public_ATS_record_observed_not_independently_verified_accepting_applications')
 
 
-def retrieve_board(transport,board,max_pages=3,detail_budget=3):
+def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
     parsed=board_from_url(board.get('url',''))
     if not parsed or parsed['key']!=board.get('key') or parsed['provider']!=board.get('provider') or parsed['token']!=board.get('token'):raise ValueError('Invalid observed board')
     if not 1<=max_pages<=10 or not 0<=detail_budget<=30:raise ValueError('Invalid ATS page/detail cap')
     provider=board['provider'];token=quote(board['token'],safe='._-')
+    if provider=='jazzhr':
+        from career_engine.jazzhr import retrieve_jazzhr
+        return retrieve_jazzhr(transport,board,detail_budget,market)
     stats={'board_key':board['key'],'status':'ok','errors':[],'warnings':[],'received':0,'malformed':0,'unlisted_omitted':0,'capped':False,'requests':0}
-    start=len(transport.requests);rows=[];company=''
+    start=len(transport.requests);rows=[];company='';available_total=None;inventory_complete=False;page_lengths=[]
     try:
         if provider=='greenhouse':
             base='https://boards-api.greenhouse.io/v1/boards/'+token
             data=transport.json(base+'/jobs')
             items=data.get('jobs') if isinstance(data,dict) else None
             if not isinstance(items,list):raise FetchError('invalid_schema')
+            available_total=len(items)
+            stats['provider_claimed_total']=data.get('meta',{}).get('total') if isinstance(data.get('meta'),dict) else None
+            inventory_complete=len(items)<=5000
+            if isinstance(stats['provider_claimed_total'],int) and stats['provider_claimed_total']!=len(items):
+                inventory_complete=False;stats['warnings'].append('provider_total_differs_from_returned_inventory')
             try:
                 info=transport.json(base);company=str(info.get('name') or '') if isinstance(info,dict) else ''
             except FetchError as e:
@@ -262,6 +295,8 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3):
             data=transport.json('https://api.ashbyhq.com/posting-api/job-board/'+token,{'includeCompensation':'true'})
             items=data.get('jobs') if isinstance(data,dict) else None
             if not isinstance(items,list):raise FetchError('invalid_schema')
+            available_total=sum(not isinstance(x,dict) or x.get('isListed') is not False for x in items)
+            inventory_complete=len(items)<=5000
             batches=[items];stats['capped']=len(items)>5000
         else:batches=None
         seen=set()
@@ -270,6 +305,7 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3):
                 host='api.eu.lever.co' if provider=='lever_eu' else 'api.lever.co'
                 items=transport.json('https://'+host+'/v0/postings/'+token,{'mode':'json','limit':100,'skip':page*100})
                 if not isinstance(items,list):raise FetchError('invalid_schema')
+                page_lengths.append(len(items))
             else:items=batches[0][:5000]
             added=0
             for item in items:
@@ -278,9 +314,11 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3):
                 stats['received']+=1
                 try:row=normalize_posting(board,item,company)
                 except (ValueError,TypeError,AttributeError):stats['malformed']+=1;continue
+                row.update(worksite_evidence(row,market))
                 if row['identity'] not in seen:rows.append(row);seen.add(row['identity']);added+=1
             if provider.startswith('lever'):
-                if len(items)<100:break
+                if len(items)<100:
+                    inventory_complete=True;available_total=sum(page_lengths);break
                 if not added:stats['errors'].append('repeated_page');break
                 if page==max_pages-1:stats['capped']=True
         if rows and not company and provider!='greenhouse':
@@ -291,13 +329,14 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3):
         if provider=='greenhouse':
             # Metadata-first avoids downloading thousands of global descriptions.
             # Only geography guides detail priority; no fit scores or title gates.
-            targets=sorted(rows,key=lambda r:({'dc_dmv':0,'us_remote':1,'regional_worksite_unknown':2,'unknown':3,'remote_eligibility_unknown':3,'elsewhere':4}[r['geography']],hashlib.sha256(r['url'].encode()).hexdigest()))
+            targets=sorted(rows,key=lambda r:({'dc_dmv':0,'in_market':0,'us_remote':1,'regional_worksite_unknown':2,'unknown':3,'remote_eligibility_unknown':3,'elsewhere':4}[r['geography']],hashlib.sha256(r['url'].encode()).hexdigest()))
             targets=[r for r in targets if r['geography']!='elsewhere'][:detail_budget]
             for r in targets:
                 try:
                     detail=transport.json(base+'/jobs/'+r['identity'].rsplit(':',1)[-1]);new=normalize_posting(board,detail,company)
                     if new['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
                     r.update(new)
+                    r.update(worksite_evidence(r,market))
                 except (FetchError,ValueError,TypeError) as e:
                     r['detail_status']=str(e)[:80];stats['errors'].append('detail_'+str(e)[:80])
                     if isinstance(e,FetchError) and any(x in str(e) for x in ('403','429','budget','host_stopped')):break
@@ -306,10 +345,16 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3):
     stats['requests']=len(transport.requests)-start;stats['unique']=len(rows)
     stats['dc_dmv']=sum(r['geography']=='dc_dmv' for r in rows);stats['descriptions']=sum(bool(r['description']) for r in rows)
     stats['status']='partial_failure' if rows and stats['errors'] else 'failed' if stats['errors'] else 'ok'
+    stats['inventory']={'scope':'documented public listed-job endpoint','observed_available_items':available_total,
+        'provider_claimed_total':stats.get('provider_claimed_total'),
+        'metadata_retained':len(rows),'metadata_complete':inventory_complete and not stats['malformed'],
+        'pagination_page_lengths':page_lengths,'descriptions_observed':stats['descriptions'],
+        'description_denominator_observed_records':len(rows),'unlisted_omitted':stats['unlisted_omitted'],
+        'note':'A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.'}
     return rows,stats
 
 
-def enrich_regional_metadata(transport,records,boards,budget=20,seed=0):
+def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=None):
     """A shared post-discovery detail budget; never remove an index record.
 
     Reuses broad inspection strata (including atypical exploration), independent
@@ -318,10 +363,10 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0):
     """
     from career_engine.inspection import plan_inspections,identity as inspection_identity
     if not 0<=budget<=30:raise ValueError('Extra detail budget must be 0–30')
-    candidates=[r for r in records if r['provider']=='greenhouse' and not r.get('description')
+    candidates=[r for r in records if r['provider'] in ('greenhouse','jazzhr') and not r.get('description')
                 and r.get('detail_status')=='index_only' and r['geography']!='elsewhere']
     candidates.sort(key=lambda r:(r.get('updated_at',''),r['identity']),reverse=True)
-    plan=plan_inspections(candidates,budget,seed)
+    plan=plan_inspections(candidates,budget,seed,location_classifier=market.label if market else geography)
     available={inspection_identity(r):r for r in candidates};log=[]
     for choice in plan:
         r=available[choice['identity']];board=boards[r['board_key']]
@@ -329,11 +374,18 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0):
         before=len(transport.requests)
         item={'identity':r['identity'],'board_key':r['board_key'],'stratum':choice['stratum'],'status':'ok'}
         try:
-            data=transport.json(endpoint)
-            company=r['company'] if r.get('company_evidence')!='board_identifier_only_not_legal_employer_verified' else ''
-            fields=normalize_posting(board,data,company)
-            if fields['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
-            r.update(fields);r['detail_inspection_stratum']=choice['stratum']
+            if r['provider']=='jazzhr':
+                from career_engine.jazzhr import jazz_detail
+                from career_engine.public_sources import public_text
+                jazz_detail(public_text(transport,r['url'],max_bytes=1_000_000,kind='public_html'),r,market)
+            else:
+                data=transport.json(endpoint)
+                company=r['company'] if r.get('company_evidence')!='board_identifier_only_not_legal_employer_verified' else ''
+                fields=normalize_posting(board,data,company)
+                if fields['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
+                r.update(fields)
+                r.update(worksite_evidence(r,market))
+            r['detail_inspection_stratum']=choice['stratum']
         except (FetchError,ValueError,TypeError) as e:
             item['status']=str(e)[:100];r['detail_status']=item['status']
         item['requests']=len(transport.requests)-before;log.append(item)
