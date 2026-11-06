@@ -1,0 +1,258 @@
+{
+  "before_ref": "b0fbaabef2f3390fc36519bf6d09b1225d8aba5e",
+  "before_module_sha256": "32d76217253b2f972950fb8bf4dd5f43d983dfac77901b326049ee5c92a6a2a5",
+  "budgets_each": {
+    "max_requests": 30,
+    "max_bytes": 64000000,
+    "response_bytes": 8000000,
+    "detail_budget": 3
+  },
+  "boards": {
+    "nationalnursesunited": {
+      "before": {
+        "records": 14,
+        "regional_records": 3,
+        "regional_descriptions": 3,
+        "descriptions": 3,
+        "requests": 5,
+        "extra_detail_requests": 3,
+        "bytes": 52527,
+        "status": "ok",
+        "capped": false,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "metadata_and_bounded_details",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 9782,
+            "sha256": "2bdc52983c433b650609b82ba73e21985d032bfe367298080bad4250826ce7a8"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 732,
+            "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432987009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 16047,
+            "sha256": "1cb9f5cd157442e31ead1c6c20627716cf92d4ce66740eb0c579c7ca1ed7101f"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4432191009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 15288,
+            "sha256": "95d65d53cd11e0deba341abd77c80834c24a7def668fbb5a58be05687a2e0d8a"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs/4462499009",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 10678,
+            "sha256": "004f8951d2e2a1a32224d39ecda31a35f6590951a1b2d8202ed5c08f14d4a088"
+          }
+        ]
+      },
+      "after": {
+        "records": 14,
+        "regional_records": 3,
+        "regional_descriptions": 3,
+        "descriptions": 14,
+        "requests": 2,
+        "extra_detail_requests": 0,
+        "bytes": 203598,
+        "status": "ok",
+        "capped": false,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 14,
+          "provider_claimed_total": 14,
+          "metadata_retained": 14,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 14,
+          "descriptions_complete": true,
+          "description_denominator_observed_records": 14,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "content_list",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+            "params": {
+              "content": "true"
+            },
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 202866,
+            "sha256": "04467b90f5679d7a7f23ce8fd9dcb92d6f494d344aebe9f91c8d5a415fe81f9e"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 732,
+            "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1"
+          }
+        ]
+      },
+      "all_before_identities_retained": true
+    },
+    "acornhealth": {
+      "before": {
+        "records": 126,
+        "regional_records": 9,
+        "regional_descriptions": 3,
+        "descriptions": 3,
+        "requests": 5,
+        "extra_detail_requests": 3,
+        "bytes": 192316,
+        "status": "ok",
+        "capped": true,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 126,
+          "provider_claimed_total": 126,
+          "metadata_retained": 126,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 3,
+          "description_denominator_observed_records": 126,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "metadata_and_bounded_details",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth/jobs",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 119937,
+            "sha256": "29a1f3c64a413c114b9306f8bec3eaa9eea1b27d0d876837c90d9c4dd087b5f8"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 36,
+            "sha256": "481f8c5b9fbb97b6419627593ebf18ae6297985cc1d43cd11a9b865d01c76ebd"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth/jobs/4668336005",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 11219,
+            "sha256": "8bc7f6eb437f2ffa71ae48bba3e86e224b47f121ecc143de2408e566328dc0b5"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth/jobs/4651472005",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 30377,
+            "sha256": "6a83dfc19f8293e9fee299478178f5ac479ba20a8a23eb638609e688b867552c"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth/jobs/4635398005",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 30747,
+            "sha256": "c3cd479ffbccd4a76f727a870affebb585c1429047ca2aa0daa461923cbdc18c"
+          }
+        ]
+      },
+      "after": {
+        "records": 126,
+        "regional_records": 9,
+        "regional_descriptions": 9,
+        "descriptions": 126,
+        "requests": 2,
+        "extra_detail_requests": 0,
+        "bytes": 3387555,
+        "status": "ok",
+        "capped": false,
+        "errors": [],
+        "inventory": {
+          "scope": "documented public listed-job endpoint",
+          "observed_available_items": 126,
+          "provider_claimed_total": 126,
+          "metadata_retained": 126,
+          "metadata_complete": true,
+          "pagination_page_lengths": [],
+          "descriptions_observed": 126,
+          "descriptions_complete": true,
+          "description_denominator_observed_records": 126,
+          "unlisted_omitted": 0,
+          "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+        },
+        "description_mode": "content_list",
+        "request_log": [
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth/jobs",
+            "params": {
+              "content": "true"
+            },
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 3387519,
+            "sha256": "564a53028b63cb75e1221aa09ffab9d61164e1d712a4db6809be8f836287e0ef"
+          },
+          {
+            "url": "https://boards-api.greenhouse.io/v1/boards/acornhealth",
+            "params": {},
+            "kind": "api",
+            "observed_at": "2026-11-06T21:15:14+00:00",
+            "status": 200,
+            "bytes": 36,
+            "sha256": "481f8c5b9fbb97b6419627593ebf18ae6297985cc1d43cd11a9b865d01c76ebd"
+          }
+        ]
+      },
+      "all_before_identities_retained": true
+    }
+  }
+}

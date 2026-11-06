@@ -299,3 +299,12 @@ labels; synthetic stress expansions do not represent additional vacancies. The b
 implementation and current runner on controlled fixtures. [Coverage assessment](docs/COVERAGE.md),
 [fixture measurements](docs/benchmark.json), and [live connectivity/replay counts](docs/live-check.json)
 separate test recall from real feed retrieval; neither measures market recall.
+
+
+### Issue 23 foundation behavior
+
+Greenhouse lists request `content=true`; oversized bodies fall back to the metadata index and existing bounded detail allocation, with explicit partial status. See [measured results and limits](docs/issue23/RESULTS.md).
+
+Expanded manual DC regional runs also check the existing USAJOBS collector. Configure repository secrets `USAJOBS_API_KEY`, `USAJOBS_USER_AGENT` (registered email), and repository variable `USAJOBS_TERMS_ACCEPTED=true` only after confirming authorized use and terms. Missing configuration is reported as `configured=false` / `not_collected`; no request is made. The original five-source audit is preserved; federal rows appear separately in regional/combined artifacts.
+
+Registry state is staged and verified before restore, written atomically, and saved only after pipeline success. Explicit partial collection can still be a valid state snapshot. Inspect `registry-restore.json` for provenance or restore failures. Artifacts still expire after 30–90 days; history is not durable cloud storage.

@@ -253,16 +253,31 @@ def _location(value):
 def _description(value):return strip_html(html.unescape(str(value or '')))
 
 
+def _greenhouse_description(value):
+    # Decode wrapper layers only. Once markup is present, HTMLParser decodes
+    # text entities itself, preserving literal examples such as &lt;formula&gt;.
+    text=str(value or '')
+    tags=r'(?:p|div|br|ul|ol|li|span|strong|em|b|i|a|h[1-6]|table|section|blockquote)\b'
+    for _ in range(2):
+        if re.search(r'</?'+tags,text,re.I) or not re.search(r'&(?:amp;)?lt;/?'+tags,text,re.I):break
+        text=html.unescape(text)
+    return strip_html(text)
+
+
 def normalize_posting(board,item,company=''):
     if not isinstance(item,dict):raise ValueError('posting not an object')
     provider=board['provider'];token=board['token'];raw=[]
     if provider=='greenhouse':
         post=str(item.get('id',''));title=item.get('title','');url=item.get('absolute_url','')
-        raw=[_location(item.get('location'))];body=_description(item.get('content'))
+        raw=[_location(item.get('location'))]
+        offices=item.get('offices') if isinstance(item.get('offices'),list) else []
+        raw += [str(o.get('location') or o.get('name') or '') for o in offices if isinstance(o,dict)]
+        # Greenhouse may entity-encode HTML twice; retain the exact fields below.
+        body=_greenhouse_description(item.get('content'))
         company=item.get('company_name') or company;published=item.get('first_published','')
         updated=item.get('updated_at','');closing=item.get('application_deadline','') or ''
         kind='prospect_pool' if 'internal_job_id' in item and item['internal_job_id'] is None else 'advertised_position'
-        employment='';workplace='';dept='; '.join(str(d.get('name','')) for d in item.get('departments',[]) if isinstance(d,dict))
+        employment='';workplace='';dept='; '.join(str(d.get('name','')) for d in item.get('departments') or [] if isinstance(d,dict))
     elif provider.startswith('lever'):
         post=str(item.get('id',''));title=item.get('text','');url=item.get('hostedUrl','')
         c=item.get('categories') or {};raw=[_location(c.get('location'))]+[_location(x) for x in c.get('allLocations',[]) or []]
@@ -295,7 +310,8 @@ def normalize_posting(board,item,company=''):
                 description_sha256=hashlib.sha256(body.encode()).hexdigest() if body else '',posted_at=published,updated_at=updated,closing_at=closing,
                 employment_type=employment,work_arrangement=workplace,category=dept,record_kind=kind,
                 index_url=board['url'],retrieved_at=stamp(),detail_status='public_description_observed' if body else 'index_only',
-                evidence_status='employer_managed_public_ATS_record_observed_not_independently_verified_accepting_applications')
+                evidence_status='employer_managed_public_ATS_record_observed_not_independently_verified_accepting_applications',
+                **({'raw_provider_record':item,'offices':offices} if provider=='greenhouse' else {}))
 
 
 def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
@@ -314,7 +330,15 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
     try:
         if provider=='greenhouse':
             base='https://boards-api.greenhouse.io/v1/boards/'+token
-            data=transport.json(base+'/jobs')
+            stats['description_mode']='content_list'
+            try:
+                data=transport.json(base+'/jobs',{'content':'true'})
+            except FetchError as e:
+                if str(e)!='response_too_large':raise
+                stats['description_mode']='metadata_fallback_bounded_details'
+                stats['errors'].append('content_list_response_too_large')
+                # No fallback after denial or global limits: transport enforces both.
+                data=transport.json(base+'/jobs')
             items=data.get('jobs') if isinstance(data,dict) else None
             if not isinstance(items,list):raise FetchError('invalid_schema')
             available_total=len(items)
@@ -364,14 +388,14 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
                 for row in rows:
                     row['company']=company;row['company_evidence']='public_board_page_title'
         if provider=='greenhouse':
-            # Metadata-first avoids downloading thousands of global descriptions.
-            # Only geography guides detail priority; no fit scores or title gates.
+            # Missing bodies only; geography guides bounded fallback, never title/fit.
             targets=sorted(rows,key=lambda r:({'dc_dmv':0,'in_market':0,'us_remote':1,'regional_worksite_unknown':2,'unknown':3,'remote_eligibility_unknown':3,'elsewhere':4}[r['geography']],hashlib.sha256(r['url'].encode()).hexdigest()))
-            targets=[r for r in targets if r['geography']!='elsewhere'][:detail_budget]
+            targets=[r for r in targets if r['geography']!='elsewhere' and not r['description']][:detail_budget]
             for r in targets:
                 try:
                     detail=transport.json(base+'/jobs/'+r['identity'].rsplit(':',1)[-1]);new=normalize_posting(board,detail,company)
                     if new['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
+                    r.setdefault('index_fields',r['raw_provider_record'])
                     r.update(new)
                     r.update(worksite_evidence(r,market))
                 except (FetchError,ValueError,TypeError) as e:
@@ -386,6 +410,7 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
         'provider_claimed_total':stats.get('provider_claimed_total'),
         'metadata_retained':len(rows),'metadata_complete':inventory_complete and not stats['malformed'],
         'pagination_page_lengths':page_lengths,'descriptions_observed':stats['descriptions'],
+        'descriptions_complete':inventory_complete and not stats['malformed'] and all(r['description'] and not r['description_truncated'] for r in rows),
         'description_denominator_observed_records':len(rows),'unlisted_omitted':stats['unlisted_omitted'],
         'note':'A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately.'}
     return rows,stats
@@ -435,6 +460,7 @@ def enrich_regional_metadata(transport,records,boards,budget=20,seed=0,market=No
                 company=r['company'] if r.get('company_evidence')!='board_identifier_only_not_legal_employer_verified' else ''
                 fields=normalize_posting(board,data,company)
                 if fields['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
+                r.setdefault('index_fields',r.get('raw_provider_record',{}))
                 r.update(fields)
                 r.update(worksite_evidence(r,market))
             r['detail_inspection_stratum']=choice['stratum']
