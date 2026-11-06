@@ -1,0 +1,4225 @@
+{
+  "schema_version": "employer-discovery-evidence/v1",
+  "frame": {
+    "schema_version": "employer-frame/v1",
+    "frame_source": "https://hub.arcgis.com/datasets/dc299bc701f84f12b927eee9b3ec5a57_33/about",
+    "attribution": "Open Data DC / DSLBD, CC BY 4.0",
+    "as_of": "2026-11-06T21:32:04.435802+00:00",
+    "source_requests": [
+      {
+        "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "params": {
+          "f": "json",
+          "where": "1=1",
+          "outFields": "OBJECTID,CERTIFICATIONNUMBER,BUSINESSNAME,WEBSITE,ORGANIZATIONTYPE,STARTDATE,EXPIRATIONDATE,GIS_LAST_MOD_DTTM",
+          "returnGeometry": "false",
+          "orderByFields": "OBJECTID ASC",
+          "resultOffset": 0,
+          "resultRecordCount": 1000
+        },
+        "observed_at": "2026-11-06T21:32:06+00:00",
+        "sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "bytes": 268584
+      },
+      {
+        "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "params": {
+          "f": "json",
+          "where": "1=1",
+          "outFields": "OBJECTID,CERTIFICATIONNUMBER,BUSINESSNAME,WEBSITE,ORGANIZATIONTYPE,STARTDATE,EXPIRATIONDATE,GIS_LAST_MOD_DTTM",
+          "returnGeometry": "false",
+          "orderByFields": "OBJECTID ASC",
+          "resultOffset": 1000,
+          "resultRecordCount": 1000
+        },
+        "observed_at": "2026-11-06T21:32:07+00:00",
+        "sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "bytes": 267600
+      }
+    ],
+    "scope": "DC certified-business headquarters frame only; not all employers, hiring status or market recall.",
+    "privacy_postprocessing": {
+      "original_normalized_frame_sha256": "a0a978838b49e055bf8ce157b81f01f52f594f7d93afbe454747bb7a248c82c4",
+      "website_contact_values_not_retained": 5,
+      "entity_membership_and_eligibility_unchanged": true,
+      "selection_note": "Original 30 selected rows contained none of these values; frozen batch and acquisition hashes remain unchanged."
+    }
+  },
+  "selection": {
+    "seed": "issue25-development-v1",
+    "rule": "SHA256(seed|frame_id), eligible rows only; no website, sector, title or platform selection",
+    "eligible_frame_entities": 1994,
+    "selected": 30,
+    "input_sha256": "a0a978838b49e055bf8ce157b81f01f52f594f7d93afbe454747bb7a248c82c4",
+    "ineligible": 0,
+    "unknown_eligibility": 0
+  },
+  "full_normalized_frame_sha256": "a0a978838b49e055bf8ce157b81f01f52f594f7d93afbe454747bb7a248c82c4",
+  "starting_registry": {
+    "run_url": "https://github.com/murphym123/career-discovery-engine/actions/runs/42193251891",
+    "artifact_id": 13491735450,
+    "sha256": "1da6c940b4fdbe273a1d70ac7ac6fa0a0237fc19e5ecbc2718fd6a35c36e93ce",
+    "boards": 2368,
+    "issue_examples": {
+      "greenhouse:democracydefendersaction": {
+        "present": true,
+        "last_checked_run": null
+      },
+      "jazzhr:giffords": {
+        "present": true,
+        "last_checked_run": null
+      },
+      "greenhouse:analyticservicesinc": {
+        "present": false,
+        "last_checked_run": null
+      }
+    }
+  },
+  "employers": [
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274059",
+        "legal_name": "Rodia, LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.rodiaresearch.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1705640400000, EXPIRATIONDATE=1800334800000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.rodiaresearch.com",
+        "url": "https://www.rodiaresearch.com/",
+        "evidence_url": "https://www.rodiaresearch.com/",
+        "name_evidence": [
+          "rodia"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "RODIA | public health and social policy consulting",
+        "matching_name_tokens": [
+          "rodia"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.rodiaresearch.com/",
+          "status": "retrieved",
+          "final_url": "https://www.rodiaresearch.com/",
+          "observed_at": "2026-11-06T21:42:27+00:00",
+          "sha256": "b9687ea3472a21b5d39c3666b05ef10732448f0c6b52e0d286aeb1a8b0f283bd",
+          "sha256_scope": "retrieved_prefix_only",
+          "bytes": 600000,
+          "prefix_limited": true
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "page_prefix_limited",
+          "url": "https://www.rodiaresearch.com/",
+          "next_action": "review_remaining_publication_links_without_increasing_caps"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273514",
+        "legal_name": "H.E.P. Construction, Inc.",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.HEPconstruction.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1754366400000, EXPIRATIONDATE=1849060800000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "identity_unresolved",
+        "candidate": "https://www.HEPconstruction.com",
+        "url": "https://www.hepconstruction.com/",
+        "evidence_url": "https://www.hepconstruction.com/",
+        "name_evidence": [
+          "construction"
+        ]
+      },
+      "entity_relationship": {
+        "status": "identity_unresolved",
+        "operating_label_observed": "HEP CONSTRUCTION",
+        "matching_name_tokens": [
+          "construction"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.hepconstruction.com/",
+          "status": "retrieved",
+          "final_url": "https://hepconstruction.com/",
+          "observed_at": "2026-11-06T21:42:31+00:00",
+          "sha256": "7b20ecdfd870054005328a6d27fcc8789fa5fea190d1cafec0b6044bab8cf974",
+          "sha256_scope": "retrieved_prefix_only",
+          "bytes": 600000,
+          "prefix_limited": true
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://hepconstruction.com/hep-careers",
+          "kind": "employer_html",
+          "observed_on": "https://hepconstruction.com/",
+          "link_text": "WORK WITH US",
+          "identity_verified": false,
+          "access_state": "observed_link_not_inventory_verified",
+          "next_action": "review_public_hiring_channel"
+        },
+        {
+          "url": "https://hepconstruction.com/careers",
+          "kind": "employer_html",
+          "observed_on": "https://hepconstruction.com/",
+          "link_text": "Folder: CAREERS",
+          "identity_verified": false,
+          "access_state": "observed_link_not_inventory_verified",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "page_prefix_limited",
+          "url": "https://www.hepconstruction.com/",
+          "next_action": "review_remaining_publication_links_without_increasing_caps"
+        },
+        {
+          "reason": "identity_conflict_or_insufficient_name_evidence",
+          "next_action": "verify_operating_entity_parent_or_rebrand"
+        },
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://hepconstruction.com/hep-careers",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        },
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://hepconstruction.com/careers",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273003",
+        "legal_name": "Coast 2 Coast Travel Inc.",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.travelcoast2coast.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1721793600000, EXPIRATIONDATE=1816401600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.travelcoast2coast.com",
+        "url": "https://www.travelcoast2coast.com/",
+        "evidence_url": "https://www.travelcoast2coast.com/",
+        "name_evidence": [
+          "2",
+          "coast",
+          "travel"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Coast 2 Coast Travel Inc. - Home",
+        "matching_name_tokens": [
+          "2",
+          "coast",
+          "travel"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.travelcoast2coast.com/",
+          "status": "retrieved",
+          "final_url": "https://www.travelcoast2coast.com/",
+          "observed_at": "2026-11-06T21:42:34+00:00",
+          "sha256": "6ef52e1e244f64575cb3e422f265ac5375ee238d67d3920fd32935b58f86c7a7",
+          "sha256_scope": "complete_response",
+          "bytes": 70405,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273641",
+        "legal_name": "Griffis CRE Holdings LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1750824000000, EXPIRATIONDATE=1845518400000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": ""
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_safe_official_site",
+          "next_action": "research_official_site_from_public_entity_evidence"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274056",
+        "legal_name": "Robtco Property Management",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.robtco.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1718164800000, EXPIRATIONDATE=1812772800000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://www.robtco.com"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://www.robtco.com/",
+          "status": "robots_disallowed_or_unavailable"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "robots_disallowed_or_unavailable",
+          "url": "https://www.robtco.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273719",
+        "legal_name": "Micon Constructions, Inc.",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.miconconstructions.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1773201600000, EXPIRATIONDATE=1867899600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.miconconstructions.com",
+        "url": "https://www.miconconstructions.com/",
+        "evidence_url": "https://www.miconconstructions.com/",
+        "name_evidence": [
+          "constructions",
+          "micon"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Micon Constructions - General Contracting Services in Washington DC",
+        "matching_name_tokens": [
+          "constructions",
+          "micon"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.miconconstructions.com/",
+          "status": "retrieved",
+          "final_url": "https://miconconstructions.com/",
+          "observed_at": "2026-11-06T21:42:49+00:00",
+          "sha256": "06f58b1537552404c4c43db95868f9a2fa95892d413cb66f80f3bd3dc3e79b01",
+          "sha256_scope": "complete_response",
+          "bytes": 142119,
+          "prefix_limited": false
+        },
+        {
+          "url": "https://miconconstructions.com/careers/",
+          "status": "retrieved",
+          "final_url": "https://miconconstructions.com/careers/",
+          "observed_at": "2026-11-06T21:42:51+00:00",
+          "sha256": "ff2e3f1967008e711a6ee0d55e62dddc45d79d2cf3f35637c1464070fed22eae",
+          "sha256_scope": "complete_response",
+          "bytes": 103465,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://miconconstructions.com/careers/",
+          "kind": "employer_html",
+          "observed_on": "https://miconconstructions.com/",
+          "link_text": "Careers",
+          "identity_verified": true,
+          "access_state": "public_endpoint_retrieved_inventory_unknown",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://miconconstructions.com/careers/",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274344",
+        "legal_name": "The Robert Bobb Group",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.robertbobbgroup.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1719979200000, EXPIRATIONDATE=1814587200000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.robertbobbgroup.com",
+        "url": "https://www.robertbobbgroup.com/",
+        "evidence_url": "https://www.robertbobbgroup.com/",
+        "name_evidence": [
+          "bobb",
+          "robert"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "The Robert Bobb Group | Management consulting company",
+        "matching_name_tokens": [
+          "bobb",
+          "robert"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.robertbobbgroup.com/",
+          "status": "retrieved",
+          "final_url": "https://www.robertbobbgroup.com/",
+          "observed_at": "2026-11-06T21:42:54+00:00",
+          "sha256": "0b135a86c35eaa8a6f2a436e0199002adde921ee0a121ed3ccf5901e349752e3",
+          "sha256_scope": "retrieved_prefix_only",
+          "bytes": 600000,
+          "prefix_limited": true
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "page_prefix_limited",
+          "url": "https://www.robertbobbgroup.com/",
+          "next_action": "review_remaining_publication_links_without_increasing_caps"
+        },
+        {
+          "reason": "javascript_shell_or_sparse_page",
+          "url": "https://www.robertbobbgroup.com/",
+          "next_action": "optional_public_research_no_hidden_API"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5272975",
+        "legal_name": "BonstraHaresign Architects, LLP",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.bonstra.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1708664400000, EXPIRATIONDATE=1803358800000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.bonstra.com",
+        "url": "https://www.bonstra.com/",
+        "evidence_url": "https://www.bonstra.com/",
+        "name_evidence": [
+          "architects",
+          "bonstra",
+          "haresign"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Home - Bonstra | Haresign Architects",
+        "matching_name_tokens": [
+          "architects",
+          "bonstra",
+          "haresign"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.bonstra.com/",
+          "status": "retrieved",
+          "final_url": "https://www.bonstra.com/",
+          "observed_at": "2026-11-06T21:42:56+00:00",
+          "sha256": "24fb00632da79c51d9d211814e7cf9687055eb18d2a2ca32d62d74bba2ccef8d",
+          "sha256_scope": "complete_response",
+          "bytes": 63476,
+          "prefix_limited": false
+        },
+        {
+          "url": "https://www.bonstra.com/studio/careers/",
+          "status": "retrieved",
+          "final_url": "https://www.bonstra.com/studio/careers/",
+          "observed_at": "2026-11-06T21:42:57+00:00",
+          "sha256": "2732bdf828a987057b271b1b770def7d19ba0d8de1997c1e1408c1a7ad25747d",
+          "sha256_scope": "complete_response",
+          "bytes": 34233,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://www.bonstra.com/studio/careers/",
+          "kind": "employer_html",
+          "observed_on": "https://www.bonstra.com/",
+          "link_text": "Careers",
+          "identity_verified": true,
+          "access_state": "public_endpoint_retrieved_inventory_unknown",
+          "next_action": "review_public_hiring_channel"
+        },
+        {
+          "url": "mailto:employment@bonstra.com",
+          "kind": "email_application",
+          "observed_on": "https://www.bonstra.com/studio/careers/",
+          "link_text": "[email redacted]",
+          "original_uri_sha256": "20a6bcb15b2e87a36a5c72074ea7caa1cbe7ea7c1d0ff25b7278b45d605b1d4b",
+          "identity_verified": true,
+          "access_state": "observed_link_not_inventory_verified",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://www.bonstra.com/studio/careers/",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        },
+        {
+          "reason": "inventory_unknown_email_application",
+          "url": "mailto:employment@bonstra.com",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273569",
+        "legal_name": "Kahak Inc",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1714017600000, EXPIRATIONDATE=1808625600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": ""
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_safe_official_site",
+          "next_action": "research_official_site_from_public_entity_evidence"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273018",
+        "legal_name": "Capitol Services Management, Inc.",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "http://thecsmi.com/",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1718251200000, EXPIRATIONDATE=1812859200000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "http://thecsmi.com/"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://thecsmi.com/",
+          "status": "unsafe_redirect"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "unsafe_redirect",
+          "url": "https://thecsmi.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5272792",
+        "legal_name": "Barrow Consulting Services",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.barrowcs.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1755835200000, EXPIRATIONDATE=1850529600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://www.barrowcs.com"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://www.barrowcs.com/",
+          "status": "unapproved_or_nonpublic_employer_URL"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "unapproved_or_nonpublic_employer_URL",
+          "url": "https://www.barrowcs.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273246",
+        "legal_name": "Dale Curtis Communications LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.dalecurtiscommunications.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1746763200000, EXPIRATIONDATE=1841457600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.dalecurtiscommunications.com",
+        "url": "https://www.dalecurtiscommunications.com/",
+        "evidence_url": "https://www.dalecurtiscommunications.com/",
+        "name_evidence": [
+          "communications",
+          "curtis",
+          "dale"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Dale Curtis Communications, LLC",
+        "matching_name_tokens": [
+          "communications",
+          "curtis",
+          "dale"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.dalecurtiscommunications.com/",
+          "status": "retrieved",
+          "final_url": "https://www.dalecurtiscommunications.com/",
+          "observed_at": "2026-11-06T21:43:03+00:00",
+          "sha256": "b5386691b56195a2f084c4a82eb370ebf7c6a220087a4e088bfe0ded6ab98507",
+          "sha256_scope": "complete_response",
+          "bytes": 126720,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274137",
+        "legal_name": "Smile Therapy Services LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "http://www.smiletherapyservices.com/",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1704949200000, EXPIRATIONDATE=1799643600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "http://www.smiletherapyservices.com/",
+        "url": "https://www.smiletherapyservices.com/",
+        "evidence_url": "https://www.smiletherapyservices.com/",
+        "name_evidence": [
+          "smile",
+          "therapy"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Workplace Culture & Leadership Consulting | SMILE",
+        "matching_name_tokens": [
+          "smile",
+          "therapy"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.smiletherapyservices.com/",
+          "status": "retrieved",
+          "final_url": "https://smiletherapyservices.com/",
+          "observed_at": "2026-11-06T21:43:09+00:00",
+          "sha256": "4ede640426e1a871f5ae6b8ba09a324f8722a4a679d9e10f4e577f755379beb4",
+          "sha256_scope": "complete_response",
+          "bytes": 560817,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273912",
+        "legal_name": "Piedmont Atlantic LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://none",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1739336400000, EXPIRATIONDATE=1833944400000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://none"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_safe_official_site",
+          "next_action": "research_official_site_from_public_entity_evidence"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273208",
+        "legal_name": "Cubicle Griot, LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.cubiclegriot.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1789012800000, EXPIRATIONDATE=1883707200000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.cubiclegriot.com",
+        "url": "https://www.cubiclegriot.com/",
+        "evidence_url": "https://www.cubiclegriot.com/",
+        "name_evidence": [
+          "cubicle",
+          "griot"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Cubicle Griot, LLC | People + Purpose First",
+        "matching_name_tokens": [
+          "cubicle",
+          "griot"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.cubiclegriot.com/",
+          "status": "retrieved",
+          "final_url": "https://www.cubiclegriot.com/",
+          "observed_at": "2026-11-06T21:43:12+00:00",
+          "sha256": "319fc667bb6f1a2d9975dc541777b14886a779f589f820ac821ca19cb523a34c",
+          "sha256_scope": "retrieved_prefix_only",
+          "bytes": 600000,
+          "prefix_limited": true
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "page_prefix_limited",
+          "url": "https://www.cubiclegriot.com/",
+          "next_action": "review_remaining_publication_links_without_increasing_caps"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274602",
+        "legal_name": "Williams, Adley & Company, LLP",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "http://www.williamsadley.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1744603200000, EXPIRATIONDATE=1839297600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "http://www.williamsadley.com",
+        "url": "https://www.williamsadley.com/",
+        "evidence_url": "https://www.williamsadley.com/",
+        "name_evidence": [
+          "adley",
+          "williams"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Williams Adley — Expert Accounting, Auditing, and Consulting",
+        "matching_name_tokens": [
+          "adley",
+          "williams"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.williamsadley.com/",
+          "status": "retrieved",
+          "final_url": "https://www.williamsadley.com/",
+          "observed_at": "2026-11-06T21:43:14+00:00",
+          "sha256": "c0b1880a355f2dc1924a963887623bd3ce34a3a743bb250231b943c1f775254a",
+          "sha256_scope": "complete_response",
+          "bytes": 180872,
+          "prefix_limited": false
+        },
+        {
+          "url": "https://www.williamsadley.com/careers",
+          "status": "retrieved",
+          "final_url": "https://www.williamsadley.com/careers",
+          "observed_at": "2026-11-06T21:43:15+00:00",
+          "sha256": "76ccab218110a1db4a264ff9704f722c7b1a1663446c828e6c407ea8f7e462fc",
+          "sha256_scope": "complete_response",
+          "bytes": 116543,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://www.williamsadley.com/careers",
+          "kind": "employer_html",
+          "observed_on": "https://www.williamsadley.com/",
+          "link_text": "Job Openings",
+          "identity_verified": true,
+          "access_state": "public_endpoint_retrieved_inventory_unknown",
+          "next_action": "review_public_hiring_channel"
+        },
+        {
+          "url": "https://workforcenow.adp.com/mascsr/default/mdf/recwebcomponents/recruitment/main-config/recruitment.js",
+          "kind": "unsupported_platform_reference",
+          "observed_on": "https://www.williamsadley.com/careers",
+          "link_text": "embedded public ATS URL",
+          "identity_verified": true,
+          "access_state": "observed_link_not_inventory_verified",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://www.williamsadley.com/careers",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        },
+        {
+          "reason": "inventory_unknown_unsupported_platform_reference",
+          "url": "https://workforcenow.adp.com/mascsr/default/mdf/recwebcomponents/recruitment/main-config/recruitment.js",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274496",
+        "legal_name": "Wellness Diagnostics",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "http://www.wellnessdiagnosticllc.com/",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1700110800000, EXPIRATIONDATE=1794805200000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "http://www.wellnessdiagnosticllc.com/"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://www.wellnessdiagnosticllc.com/",
+          "status": "http_404"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "http_404",
+          "url": "https://www.wellnessdiagnosticllc.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274245",
+        "legal_name": "Rana Labs LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://ranalabs.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1792728000000, EXPIRATIONDATE=1887422400000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://ranalabs.com",
+        "url": "https://ranalabs.com/",
+        "evidence_url": "https://ranalabs.com/",
+        "name_evidence": [
+          "labs",
+          "rana"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Rana Labs LLC – A digital media agency in Washington D.C.",
+        "matching_name_tokens": [
+          "labs",
+          "rana"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://ranalabs.com/",
+          "status": "retrieved",
+          "final_url": "https://ranalabs.com/",
+          "observed_at": "2026-11-06T21:43:24+00:00",
+          "sha256": "dc7f6559a7e2506cff2615d5f1e3af95dcba7304c3a06f58be68612739e08c9f",
+          "sha256_scope": "complete_response",
+          "bytes": 150778,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "javascript_shell_or_sparse_page",
+          "url": "https://ranalabs.com/",
+          "next_action": "optional_public_research_no_hidden_API"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273046",
+        "legal_name": "Coretec LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.coretecusa.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1703221200000, EXPIRATIONDATE=1797915600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.coretecusa.com",
+        "url": "https://www.coretecusa.com/",
+        "evidence_url": "https://www.coretecusa.com/",
+        "name_evidence": [
+          "coretec"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Coretec",
+        "matching_name_tokens": [
+          "coretec"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.coretecusa.com/",
+          "status": "retrieved",
+          "final_url": "https://www.coretecusa.com/",
+          "observed_at": "2026-11-06T21:43:27+00:00",
+          "sha256": "c25f9072451854e9360e3b12cd4c98a53437bd9ba13ceb60e25fcfcaada711e7",
+          "sha256_scope": "complete_response",
+          "bytes": 39325,
+          "prefix_limited": false
+        },
+        {
+          "url": "https://www.coretecusa.com/careers/working-at-coretec",
+          "status": "retrieved",
+          "final_url": "https://www.coretecusa.com/careers/working-at-coretec",
+          "observed_at": "2026-11-06T21:43:28+00:00",
+          "sha256": "441f5073e4c775bcc3a06770a38cd87f5e1e865966c98f0d9e1a2d31ef2d8b84",
+          "sha256_scope": "complete_response",
+          "bytes": 22989,
+          "prefix_limited": false
+        },
+        {
+          "url": "https://www.coretecusa.com/careers/available-opportunities",
+          "status": "retrieved",
+          "final_url": "https://www.coretecusa.com/careers/available-opportunities",
+          "observed_at": "2026-11-06T21:43:29+00:00",
+          "sha256": "74b317506fd42642f27bd9299d67b2898599ac51eee61f5f4fc0e09375cd4740",
+          "sha256_scope": "complete_response",
+          "bytes": 19575,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://www.coretecusa.com/careers/working-at-coretec",
+          "kind": "employer_html",
+          "observed_on": "https://www.coretecusa.com/",
+          "link_text": "Working at Coretec",
+          "identity_verified": true,
+          "access_state": "public_endpoint_retrieved_inventory_unknown",
+          "next_action": "review_public_hiring_channel"
+        },
+        {
+          "url": "https://www.coretecusa.com/careers/available-opportunities",
+          "kind": "employer_html",
+          "observed_on": "https://www.coretecusa.com/",
+          "link_text": "Available Opportunities",
+          "identity_verified": true,
+          "access_state": "public_endpoint_retrieved_inventory_unknown",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://www.coretecusa.com/careers/working-at-coretec",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        },
+        {
+          "reason": "inventory_unknown_employer_html",
+          "url": "https://www.coretecusa.com/careers/available-opportunities",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274098",
+        "legal_name": "Olan Williams & Associates, LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://olanwilliamsandassociates.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1731992400000, EXPIRATIONDATE=1826600400000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://olanwilliamsandassociates.com",
+        "url": "https://olanwilliamsandassociates.com/",
+        "evidence_url": "https://olanwilliamsandassociates.com/",
+        "name_evidence": [
+          "olan",
+          "williams"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Construction Project Management | Olan Williams & Associates | Maryland",
+        "matching_name_tokens": [
+          "olan",
+          "williams"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://olanwilliamsandassociates.com/",
+          "status": "retrieved",
+          "final_url": "https://www.olanwilliamsandassociates.com/",
+          "observed_at": "2026-11-06T21:43:34+00:00",
+          "sha256": "f0efb1e1115bdf287a95b06b93e58376b46fbc51215076dacd3569f4744b2ac9",
+          "sha256_scope": "complete_response",
+          "bytes": 502030,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273977",
+        "legal_name": "North Coast Communications LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://northcoastcomms.com/",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1723176000000, EXPIRATIONDATE=1817784000000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://northcoastcomms.com/"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://northcoastcomms.com/",
+          "status": "robots_disallowed_or_unavailable"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "robots_disallowed_or_unavailable",
+          "url": "https://northcoastcomms.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274515",
+        "legal_name": "Tiber Hudson LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://tiberhudson.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1745899200000, EXPIRATIONDATE=1840593600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://tiberhudson.com",
+        "url": "https://tiberhudson.com/",
+        "evidence_url": "https://tiberhudson.com/",
+        "name_evidence": [
+          "hudson",
+          "tiber"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Tiber Hudson – Dedication. Principled Advocacy. Experience.",
+        "matching_name_tokens": [
+          "hudson",
+          "tiber"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://tiberhudson.com/",
+          "status": "retrieved",
+          "final_url": "https://tiberhudson.com/",
+          "observed_at": "2026-11-06T21:43:37+00:00",
+          "sha256": "484588df1f873f5916eef7cd2414f66c266b6dbedd07ef3c6e433c88d152bc8e",
+          "sha256_scope": "complete_response",
+          "bytes": 166336,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273265",
+        "legal_name": "DC Caulking LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1703653200000, EXPIRATIONDATE=1798347600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": ""
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_safe_official_site",
+          "next_action": "research_official_site_from_public_entity_evidence"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5272842",
+        "legal_name": "1013 Enterprise",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.1013enterprise.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1767934800000, EXPIRATIONDATE=1862629200000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "identity_unresolved",
+        "candidate": "https://www.1013enterprise.com",
+        "url": "https://www.1013enterprise.com/",
+        "evidence_url": "https://www.1013enterprise.com/",
+        "name_evidence": [
+          "enterprise"
+        ]
+      },
+      "entity_relationship": {
+        "status": "identity_unresolved",
+        "operating_label_observed": "10.13 Enterprise — Cybersecurity & IT Modernization",
+        "matching_name_tokens": [
+          "enterprise"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.1013enterprise.com/",
+          "status": "retrieved",
+          "final_url": "https://1013enterprise.com/",
+          "observed_at": "2026-11-06T21:43:43+00:00",
+          "sha256": "7f26a242cea64133ef2ef0da5fc147a6dff9f347be6093b7a388c4cef1d11eec",
+          "sha256_scope": "complete_response",
+          "bytes": 157687,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "identity_conflict_or_insufficient_name_evidence",
+          "next_action": "verify_operating_entity_parent_or_rebrand"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273625",
+        "legal_name": "I AM Konsulting LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.iamkonsulting.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1764133200000, EXPIRATIONDATE=1858827600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.iamkonsulting.com",
+        "url": "https://www.iamkonsulting.com/",
+        "evidence_url": "https://www.iamkonsulting.com/",
+        "name_evidence": [
+          "am",
+          "i",
+          "konsulting"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "I AM Konsulting",
+        "matching_name_tokens": [
+          "am",
+          "i",
+          "konsulting"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.iamkonsulting.com/",
+          "status": "retrieved",
+          "final_url": "https://www.iamkonsulting.com/",
+          "observed_at": "2026-11-06T21:43:46+00:00",
+          "sha256": "9dd769d158e66656c21f4782e6977b321e932bc1cdd5cc712c4ef1b36440ae1a",
+          "sha256_scope": "retrieved_prefix_only",
+          "bytes": 600000,
+          "prefix_limited": true
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "page_prefix_limited",
+          "url": "https://www.iamkonsulting.com/",
+          "next_action": "review_remaining_publication_links_without_increasing_caps"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274165",
+        "legal_name": "Softmax",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.softmaxintel.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1714536000000, EXPIRATIONDATE=1809144000000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.softmaxintel.com",
+        "url": "https://www.softmaxintel.com/",
+        "evidence_url": "https://www.softmaxintel.com/",
+        "name_evidence": [
+          "softmax"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Reliable IT Staffing | Softmax",
+        "matching_name_tokens": [
+          "softmax"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.softmaxintel.com/",
+          "status": "retrieved",
+          "final_url": "https://softmaxintel.com/",
+          "observed_at": "2026-11-06T21:43:50+00:00",
+          "sha256": "1fa4c2eb1da6cf58f20d342ced522dc86d2210c2d64b7c1d04679c2491de8670",
+          "sha256_scope": "complete_response",
+          "bytes": 96512,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [
+        {
+          "url": "https://softmax.conrep.com/conrep/web/open_jobs.php?params=Q01QQ0Q9NjMwNDUmRElWSUQ9",
+          "kind": "external_hiring_channel",
+          "observed_on": "https://softmaxintel.com/",
+          "link_text": "Careers",
+          "identity_verified": true,
+          "access_state": "observed_link_not_inventory_verified",
+          "next_action": "review_public_hiring_channel"
+        }
+      ],
+      "review_queue": [
+        {
+          "reason": "inventory_unknown_external_hiring_channel",
+          "url": "https://softmax.conrep.com/conrep/web/open_jobs.php?params=Q01QQ0Q9NjMwNDUmRElWSUQ9",
+          "next_action": "review_public_channel_without_new_adapter_or_submissions"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry",
+        "unsupported_or_unconventional_channel_evidence"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5273255",
+        "legal_name": "Darnamic Applied Solutions LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://darnamicappliedsolutions.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1726718400000, EXPIRATIONDATE=1821326400000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://darnamicappliedsolutions.com"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://darnamicappliedsolutions.com/",
+          "status": "robots_disallowed_or_unavailable"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "robots_disallowed_or_unavailable",
+          "url": "https://darnamicappliedsolutions.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274177",
+        "legal_name": "Stemulum LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://Stemulum LLC",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1715745600000, EXPIRATIONDATE=1810353600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://Stemulum LLC"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_safe_official_site",
+          "next_action": "research_official_site_from_public_entity_evidence"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5272896",
+        "legal_name": "A. Wash & Associates, Inc.",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:06+00:00",
+        "source_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://awashassociates.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1745467200000, EXPIRATIONDATE=1840161600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "unresolved",
+        "candidate": "https://awashassociates.com"
+      },
+      "entity_relationship": {
+        "status": "not_established"
+      },
+      "pages": [
+        {
+          "url": "https://awashassociates.com/",
+          "status": "robots_disallowed_or_unavailable"
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "robots_disallowed_or_unavailable",
+          "url": "https://awashassociates.com/",
+          "next_action": "review_access_or_official_site_evidence_no_bypass"
+        },
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    },
+    {
+      "frame_entity": {
+        "frame_id": "dc-cbe:5274181",
+        "legal_name": "Stockbridge Construction LLC",
+        "source_url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Business_Licensing_and_Grants_WebMercator/MapServer/33/query",
+        "source_observed_at": "2026-11-06T21:32:07+00:00",
+        "source_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+        "eligibility": "eligible",
+        "footprint": "Washington, DC headquarters per DSLBD CBE frame; job worksites unverified",
+        "website_candidate": "https://www.stockbridgedc.com",
+        "eligibility_basis": "DSLBD listed CBE; STARTDATE=1714449600000, EXPIRATIONDATE=1809057600000; evaluated 2026-11-06T21:32:04.435802+00:00",
+        "operating_name_claim": "",
+        "parent_affiliate_claim": ""
+      },
+      "official_site": {
+        "status": "verified",
+        "candidate": "https://www.stockbridgedc.com",
+        "url": "https://www.stockbridgedc.com/",
+        "evidence_url": "https://www.stockbridgedc.com/",
+        "name_evidence": [
+          "construction",
+          "stockbridge"
+        ]
+      },
+      "entity_relationship": {
+        "status": "name_corroborated",
+        "operating_label_observed": "Stockbridge Design & Construction — Washington, DC",
+        "matching_name_tokens": [
+          "construction",
+          "stockbridge"
+        ],
+        "legal_entity_match": "public_name_corroboration_not_legal_employer_verification",
+        "parent_affiliate_status": "not_established",
+        "employing_legal_entity_status": "not_established_from_website_title",
+        "relationship_leads": []
+      },
+      "pages": [
+        {
+          "url": "https://www.stockbridgedc.com/",
+          "status": "retrieved",
+          "final_url": "https://www.stockbridgedc.com/",
+          "observed_at": "2026-11-06T21:44:20+00:00",
+          "sha256": "0a925ec55a0b7b5af1af2ae3ef84d41e3eb823e7bbd1f1f3a1127c1cea24aa36",
+          "sha256_scope": "complete_response",
+          "bytes": 86029,
+          "prefix_limited": false
+        }
+      ],
+      "channels": [],
+      "review_queue": [
+        {
+          "reason": "no_hiring_channel_observed",
+          "next_action": "research_publication_evidence_not_zero_vacancies"
+        }
+      ],
+      "discovery_state_before": "not_matched_to_saved_registry",
+      "vacancy_state": "unknown_not_zero",
+      "known_board_keys_before": [],
+      "coverage_gaps": [
+        "employer_not_linked_in_saved_registry"
+      ]
+    }
+  ],
+  "review_queue": [
+    {
+      "frame_id": "dc-cbe:5274059",
+      "legal_name": "Rodia, LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.rodiaresearch.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5274059",
+      "legal_name": "Rodia, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "page_prefix_limited",
+      "url": "https://www.hepconstruction.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "identity_conflict_or_insufficient_name_evidence",
+      "next_action": "verify_operating_entity_parent_or_rebrand"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://hepconstruction.com/hep-careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273514",
+      "legal_name": "H.E.P. Construction, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://hepconstruction.com/careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273003",
+      "legal_name": "Coast 2 Coast Travel Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273641",
+      "legal_name": "Griffis CRE Holdings LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5274056",
+      "legal_name": "Robtco Property Management",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://www.robtco.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5274056",
+      "legal_name": "Robtco Property Management",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273719",
+      "legal_name": "Micon Constructions, Inc.",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://miconconstructions.com/careers/",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "page_prefix_limited",
+      "url": "https://www.robertbobbgroup.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "javascript_shell_or_sparse_page",
+      "url": "https://www.robertbobbgroup.com/",
+      "next_action": "optional_public_research_no_hidden_API"
+    },
+    {
+      "frame_id": "dc-cbe:5274344",
+      "legal_name": "The Robert Bobb Group",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5272975",
+      "legal_name": "BonstraHaresign Architects, LLP",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.bonstra.com/studio/careers/",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5272975",
+      "legal_name": "BonstraHaresign Architects, LLP",
+      "reason": "inventory_unknown_email_application",
+      "url": "mailto:employment@bonstra.com",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273569",
+      "legal_name": "Kahak Inc",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5273018",
+      "legal_name": "Capitol Services Management, Inc.",
+      "reason": "unsafe_redirect",
+      "url": "https://thecsmi.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273018",
+      "legal_name": "Capitol Services Management, Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5272792",
+      "legal_name": "Barrow Consulting Services",
+      "reason": "unapproved_or_nonpublic_employer_URL",
+      "url": "https://www.barrowcs.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5272792",
+      "legal_name": "Barrow Consulting Services",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273246",
+      "legal_name": "Dale Curtis Communications LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274137",
+      "legal_name": "Smile Therapy Services LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273912",
+      "legal_name": "Piedmont Atlantic LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5273208",
+      "legal_name": "Cubicle Griot, LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.cubiclegriot.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273208",
+      "legal_name": "Cubicle Griot, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274602",
+      "legal_name": "Williams, Adley & Company, LLP",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.williamsadley.com/careers",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274602",
+      "legal_name": "Williams, Adley & Company, LLP",
+      "reason": "inventory_unknown_unsupported_platform_reference",
+      "url": "https://workforcenow.adp.com/mascsr/default/mdf/recwebcomponents/recruitment/main-config/recruitment.js",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274496",
+      "legal_name": "Wellness Diagnostics",
+      "reason": "http_404",
+      "url": "https://www.wellnessdiagnosticllc.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5274496",
+      "legal_name": "Wellness Diagnostics",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274245",
+      "legal_name": "Rana Labs LLC",
+      "reason": "javascript_shell_or_sparse_page",
+      "url": "https://ranalabs.com/",
+      "next_action": "optional_public_research_no_hidden_API"
+    },
+    {
+      "frame_id": "dc-cbe:5274245",
+      "legal_name": "Rana Labs LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273046",
+      "legal_name": "Coretec LLC",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.coretecusa.com/careers/working-at-coretec",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273046",
+      "legal_name": "Coretec LLC",
+      "reason": "inventory_unknown_employer_html",
+      "url": "https://www.coretecusa.com/careers/available-opportunities",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5274098",
+      "legal_name": "Olan Williams & Associates, LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273977",
+      "legal_name": "North Coast Communications LLC",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://northcoastcomms.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273977",
+      "legal_name": "North Coast Communications LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274515",
+      "legal_name": "Tiber Hudson LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273265",
+      "legal_name": "DC Caulking LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5272842",
+      "legal_name": "1013 Enterprise",
+      "reason": "identity_conflict_or_insufficient_name_evidence",
+      "next_action": "verify_operating_entity_parent_or_rebrand"
+    },
+    {
+      "frame_id": "dc-cbe:5272842",
+      "legal_name": "1013 Enterprise",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5273625",
+      "legal_name": "I AM Konsulting LLC",
+      "reason": "page_prefix_limited",
+      "url": "https://www.iamkonsulting.com/",
+      "next_action": "review_remaining_publication_links_without_increasing_caps"
+    },
+    {
+      "frame_id": "dc-cbe:5273625",
+      "legal_name": "I AM Konsulting LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274165",
+      "legal_name": "Softmax",
+      "reason": "inventory_unknown_external_hiring_channel",
+      "url": "https://softmax.conrep.com/conrep/web/open_jobs.php?params=Q01QQ0Q9NjMwNDUmRElWSUQ9",
+      "next_action": "review_public_channel_without_new_adapter_or_submissions"
+    },
+    {
+      "frame_id": "dc-cbe:5273255",
+      "legal_name": "Darnamic Applied Solutions LLC",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://darnamicappliedsolutions.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5273255",
+      "legal_name": "Darnamic Applied Solutions LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274177",
+      "legal_name": "Stemulum LLC",
+      "reason": "no_safe_official_site",
+      "next_action": "research_official_site_from_public_entity_evidence"
+    },
+    {
+      "frame_id": "dc-cbe:5272896",
+      "legal_name": "A. Wash & Associates, Inc.",
+      "reason": "robots_disallowed_or_unavailable",
+      "url": "https://awashassociates.com/",
+      "next_action": "review_access_or_official_site_evidence_no_bypass"
+    },
+    {
+      "frame_id": "dc-cbe:5272896",
+      "legal_name": "A. Wash & Associates, Inc.",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    },
+    {
+      "frame_id": "dc-cbe:5274181",
+      "legal_name": "Stockbridge Construction LLC",
+      "reason": "no_hiring_channel_observed",
+      "next_action": "research_publication_evidence_not_zero_vacancies"
+    }
+  ],
+  "postprocessing": {
+    "mode": "deterministic_evidence_labels_only_no_network",
+    "original_capture_sha256": "888a4ba67cf2e09c5bd6131e1e8acd54d5cc8e8d7235f8053403fb7f30c1302b",
+    "changes": [
+      "distinguish script reference from unsupported inventory endpoint",
+      "include unconventional inventory unknowns in review export",
+      "explicit legal-employer uncertainty"
+    ]
+  },
+  "transport": {
+    "discovery": {
+      "requests": [
+        {
+          "url": "https://www.rodiaresearch.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:25+00:00",
+          "status": 200,
+          "bytes": 495,
+          "sha256": "250fd9ed67d6afdf2938d01fda3911cb4135299b9eb62c0bd391a1ff43a9b12b"
+        },
+        {
+          "url": "https://www.rodiaresearch.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:26+00:00",
+          "status": 200,
+          "truncated": true,
+          "sha256_kind": "retrieved_prefix_only",
+          "bytes": 600000,
+          "sha256": "b9687ea3472a21b5d39c3666b05ef10732448f0c6b52e0d286aeb1a8b0f283bd"
+        },
+        {
+          "url": "https://www.hepconstruction.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:28+00:00",
+          "status": 200,
+          "bytes": 1510,
+          "sha256": "7d5e8c92fc4059d8a76a2db34ecb3413f90478f38f2f049b829fb8248327ee15"
+        },
+        {
+          "url": "https://www.hepconstruction.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:29+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://hepconstruction.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:30+00:00",
+          "status": 200,
+          "bytes": 1510,
+          "sha256": "7d5e8c92fc4059d8a76a2db34ecb3413f90478f38f2f049b829fb8248327ee15"
+        },
+        {
+          "url": "https://hepconstruction.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:31+00:00",
+          "status": 200,
+          "truncated": true,
+          "sha256_kind": "retrieved_prefix_only",
+          "bytes": 600000,
+          "sha256": "7b20ecdfd870054005328a6d27fcc8789fa5fea190d1cafec0b6044bab8cf974"
+        },
+        {
+          "url": "https://www.travelcoast2coast.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:33+00:00",
+          "status": 200,
+          "bytes": 83,
+          "sha256": "b633681568fd391261f7b3a6dfcd2fdc685079264a5e3ab3ee679f95dae2a75c"
+        },
+        {
+          "url": "https://www.travelcoast2coast.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:34+00:00",
+          "status": 200,
+          "bytes": 70405,
+          "sha256": "6ef52e1e244f64575cb3e422f265ac5375ee238d67d3920fd32935b58f86c7a7"
+        },
+        {
+          "url": "https://www.robtco.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:35+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://robtco.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:36+00:00",
+          "status": 200,
+          "bytes": 88,
+          "sha256": "36db135c825bc15ce9e3b97fc8e27f3d3e197a4d0548619f9c50634e820dc73e"
+        },
+        {
+          "url": "https://www.miconconstructions.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:38+00:00",
+          "status": 200,
+          "bytes": 240,
+          "sha256": "2c5d3d421cb063b3fc8be20b6b598d198204dcf921c22cfa3ee22c8d22a17efd"
+        },
+        {
+          "url": "https://www.miconconstructions.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:39+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://miconconstructions.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:47+00:00",
+          "status": 200,
+          "bytes": 240,
+          "sha256": "2c5d3d421cb063b3fc8be20b6b598d198204dcf921c22cfa3ee22c8d22a17efd"
+        },
+        {
+          "url": "https://miconconstructions.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:48+00:00",
+          "status": 200,
+          "bytes": 142119,
+          "sha256": "06f58b1537552404c4c43db95868f9a2fa95892d413cb66f80f3bd3dc3e79b01"
+        },
+        {
+          "url": "https://miconconstructions.com/careers/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:50+00:00",
+          "status": 200,
+          "bytes": 103465,
+          "sha256": "ff2e3f1967008e711a6ee0d55e62dddc45d79d2cf3f35637c1464070fed22eae"
+        },
+        {
+          "url": "https://www.robertbobbgroup.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:52+00:00",
+          "status": 200,
+          "bytes": 497,
+          "sha256": "bada00e2a9b0e0b50f9cae81c366b01a130433f4e6ebf929580e9efc709203cf"
+        },
+        {
+          "url": "https://www.robertbobbgroup.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:53+00:00",
+          "status": 200,
+          "truncated": true,
+          "sha256_kind": "retrieved_prefix_only",
+          "bytes": 600000,
+          "sha256": "0b135a86c35eaa8a6f2a436e0199002adde921ee0a121ed3ccf5901e349752e3"
+        },
+        {
+          "url": "https://www.bonstra.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:55+00:00",
+          "status": 200,
+          "bytes": 9363,
+          "sha256": "331641ee19d1f41a4f97ddf1fe3ec1de07f960a6090dade623f9bf175a85ed1d"
+        },
+        {
+          "url": "https://www.bonstra.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:56+00:00",
+          "status": 200,
+          "bytes": 63476,
+          "sha256": "24fb00632da79c51d9d211814e7cf9687055eb18d2a2ca32d62d74bba2ccef8d"
+        },
+        {
+          "url": "https://www.bonstra.com/studio/careers/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:42:57+00:00",
+          "status": 200,
+          "bytes": 34233,
+          "sha256": "2732bdf828a987057b271b1b770def7d19ba0d8de1997c1e1408c1a7ad25747d"
+        },
+        {
+          "url": "https://thecsmi.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:42:58+00:00",
+          "status": 404,
+          "error": "http_404"
+        },
+        {
+          "url": "https://thecsmi.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:00+00:00",
+          "status": 301,
+          "error": "unsafe_redirect"
+        },
+        {
+          "url": "https://www.dalecurtiscommunications.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:01+00:00",
+          "status": 200,
+          "bytes": 1523,
+          "sha256": "51efc05980803b09ffa036d84d15372e162c178be801b2b0b779a6ea06616ad0"
+        },
+        {
+          "url": "https://www.dalecurtiscommunications.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:02+00:00",
+          "status": 200,
+          "bytes": 126720,
+          "sha256": "b5386691b56195a2f084c4a82eb370ebf7c6a220087a4e088bfe0ded6ab98507"
+        },
+        {
+          "url": "https://www.smiletherapyservices.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:04+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://smiletherapyservices.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:05+00:00",
+          "status": 200,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "url": "https://www.smiletherapyservices.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:07+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://smiletherapyservices.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:08+00:00",
+          "status": 200,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "url": "https://smiletherapyservices.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:09+00:00",
+          "status": 200,
+          "bytes": 560817,
+          "sha256": "4ede640426e1a871f5ae6b8ba09a324f8722a4a679d9e10f4e577f755379beb4"
+        },
+        {
+          "url": "https://www.cubiclegriot.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:10+00:00",
+          "status": 200,
+          "bytes": 494,
+          "sha256": "41b5717c4cad3505cc14e495f9df8cf0fdf1dc192c5a8d8d39447eea7a6025da"
+        },
+        {
+          "url": "https://www.cubiclegriot.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:12+00:00",
+          "status": 200,
+          "truncated": true,
+          "sha256_kind": "retrieved_prefix_only",
+          "bytes": 600000,
+          "sha256": "319fc667bb6f1a2d9975dc541777b14886a779f589f820ac821ca19cb523a34c"
+        },
+        {
+          "url": "https://www.williamsadley.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:13+00:00",
+          "status": 200,
+          "bytes": 1512,
+          "sha256": "4380581faef18c7690ecd37f79a69f7c33fb27a8cd0179a0d696e01f929cdc38"
+        },
+        {
+          "url": "https://www.williamsadley.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:14+00:00",
+          "status": 200,
+          "bytes": 180872,
+          "sha256": "c0b1880a355f2dc1924a963887623bd3ce34a3a743bb250231b943c1f775254a"
+        },
+        {
+          "url": "https://www.williamsadley.com/careers",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:15+00:00",
+          "status": 200,
+          "bytes": 116543,
+          "sha256": "76ccab218110a1db4a264ff9704f722c7b1a1663446c828e6c407ea8f7e462fc"
+        },
+        {
+          "url": "https://www.wellnessdiagnosticllc.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:17+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://wellnessdiagnosticllc.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:18+00:00",
+          "status": 404,
+          "error": "http_404"
+        },
+        {
+          "url": "https://www.wellnessdiagnosticllc.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:19+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://wellnessdiagnosticllc.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:20+00:00",
+          "status": 404,
+          "error": "http_404"
+        },
+        {
+          "url": "https://wellnessdiagnosticllc.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:21+00:00",
+          "status": 404,
+          "error": "http_404"
+        },
+        {
+          "url": "https://ranalabs.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:23+00:00",
+          "status": 200,
+          "bytes": 194,
+          "sha256": "898dd21a980c3db9552011857397b453ab567adeb3f455a8af82f07937ea787a"
+        },
+        {
+          "url": "https://ranalabs.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:24+00:00",
+          "status": 200,
+          "bytes": 150778,
+          "sha256": "dc7f6559a7e2506cff2615d5f1e3af95dcba7304c3a06f58be68612739e08c9f"
+        },
+        {
+          "url": "https://www.coretecusa.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:25+00:00",
+          "status": 200,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "url": "https://www.coretecusa.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:27+00:00",
+          "status": 200,
+          "bytes": 39325,
+          "sha256": "c25f9072451854e9360e3b12cd4c98a53437bd9ba13ceb60e25fcfcaada711e7"
+        },
+        {
+          "url": "https://www.coretecusa.com/careers/working-at-coretec",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:28+00:00",
+          "status": 200,
+          "bytes": 22989,
+          "sha256": "441f5073e4c775bcc3a06770a38cd87f5e1e865966c98f0d9e1a2d31ef2d8b84"
+        },
+        {
+          "url": "https://www.coretecusa.com/careers/available-opportunities",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:29+00:00",
+          "status": 200,
+          "bytes": 19575,
+          "sha256": "74b317506fd42642f27bd9299d67b2898599ac51eee61f5f4fc0e09375cd4740"
+        },
+        {
+          "url": "https://olanwilliamsandassociates.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:30+00:00",
+          "status": 200,
+          "bytes": 507,
+          "sha256": "ec6c6bfd254c4e56e33440a2717e6900efd840a265f8d1ad2b1ab620f6fddfe8"
+        },
+        {
+          "url": "https://olanwilliamsandassociates.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:31+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://www.olanwilliamsandassociates.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:32+00:00",
+          "status": 200,
+          "bytes": 507,
+          "sha256": "ec6c6bfd254c4e56e33440a2717e6900efd840a265f8d1ad2b1ab620f6fddfe8"
+        },
+        {
+          "url": "https://www.olanwilliamsandassociates.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:33+00:00",
+          "status": 200,
+          "bytes": 502030,
+          "sha256": "f0efb1e1115bdf287a95b06b93e58376b46fbc51215076dacd3569f4744b2ac9"
+        },
+        {
+          "url": "https://northcoastcomms.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:35+00:00",
+          "status": "network_error"
+        },
+        {
+          "url": "https://tiberhudson.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:36+00:00",
+          "status": 200,
+          "bytes": 24,
+          "sha256": "e1f21c9aa28d50ca112ed357f34b67c550597effd4d42fd55b4e27300dd8f9c1"
+        },
+        {
+          "url": "https://tiberhudson.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:37+00:00",
+          "status": 200,
+          "bytes": 166336,
+          "sha256": "484588df1f873f5916eef7cd2414f66c266b6dbedd07ef3c6e433c88d152bc8e"
+        },
+        {
+          "url": "https://www.1013enterprise.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:38+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://1013enterprise.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:40+00:00",
+          "status": 200,
+          "bytes": 61,
+          "sha256": "3af486d8634704281a78fdd7b813a78ed4017e28210e22e5b49e9068dfccc7b7"
+        },
+        {
+          "url": "https://www.1013enterprise.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:41+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://1013enterprise.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:42+00:00",
+          "status": 200,
+          "bytes": 61,
+          "sha256": "3af486d8634704281a78fdd7b813a78ed4017e28210e22e5b49e9068dfccc7b7"
+        },
+        {
+          "url": "https://1013enterprise.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:43+00:00",
+          "status": 200,
+          "bytes": 157687,
+          "sha256": "7f26a242cea64133ef2ef0da5fc147a6dff9f347be6093b7a388c4cef1d11eec"
+        },
+        {
+          "url": "https://www.iamkonsulting.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:44+00:00",
+          "status": 200,
+          "bytes": 1512,
+          "sha256": "5e25bd2f65421023c0b37a84348de54c4b8abf7dbd665e531f85442fc04bcde0"
+        },
+        {
+          "url": "https://www.iamkonsulting.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:45+00:00",
+          "status": 200,
+          "truncated": true,
+          "sha256_kind": "retrieved_prefix_only",
+          "bytes": 600000,
+          "sha256": "9dd769d158e66656c21f4782e6977b321e932bc1cdd5cc712c4ef1b36440ae1a"
+        },
+        {
+          "url": "https://www.softmaxintel.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:47+00:00",
+          "status": 200,
+          "bytes": 24,
+          "sha256": "e1f21c9aa28d50ca112ed357f34b67c550597effd4d42fd55b4e27300dd8f9c1"
+        },
+        {
+          "url": "https://www.softmaxintel.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:48+00:00",
+          "status": 301
+        },
+        {
+          "url": "https://softmaxintel.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:49+00:00",
+          "status": 200,
+          "bytes": 24,
+          "sha256": "e1f21c9aa28d50ca112ed357f34b67c550597effd4d42fd55b4e27300dd8f9c1"
+        },
+        {
+          "url": "https://softmaxintel.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:43:50+00:00",
+          "status": 200,
+          "bytes": 96512,
+          "sha256": "1fa4c2eb1da6cf58f20d342ced522dc86d2210c2d64b7c1d04679c2491de8670"
+        },
+        {
+          "url": "https://darnamicappliedsolutions.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:43:52+00:00",
+          "status": "network_error"
+        },
+        {
+          "url": "https://awashassociates.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:44:13+00:00",
+          "status": 403,
+          "retry_after": "",
+          "error": "http_403"
+        },
+        {
+          "url": "https://www.stockbridgedc.com/robots.txt",
+          "params": {},
+          "kind": "robots",
+          "observed_at": "2026-11-06T21:44:16+00:00",
+          "status": 200,
+          "bytes": 595,
+          "sha256": "be0aa18a46f797458a2e1b9a1f7eb3ae42fe9672eef46d059e855884fff51be0"
+        },
+        {
+          "url": "https://www.stockbridgedc.com/",
+          "params": {},
+          "kind": "public_html",
+          "observed_at": "2026-11-06T21:44:18+00:00",
+          "status": 200,
+          "bytes": 86029,
+          "sha256": "0a925ec55a0b7b5af1af2ae3ef84d41e3eb823e7bbd1f1f3a1127c1cea24aa36"
+        }
+      ],
+      "bytes": 5922461
+    },
+    "collection": {
+      "requests": [],
+      "bytes": 0
+    }
+  },
+  "global_inventories": [
+    {
+      "board_key": "ashby:rain",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 41,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 3,
+      "unique": 41,
+      "dc_dmv": 3,
+      "descriptions": 41,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 41,
+        "provider_claimed_total": null,
+        "metadata_retained": 41,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 41,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 41,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "greenhouse:cssmerge",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 341,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "description_mode": "content_list",
+      "provider_claimed_total": 341,
+      "unique": 341,
+      "dc_dmv": 3,
+      "descriptions": 341,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 341,
+        "provider_claimed_total": 341,
+        "metadata_retained": 341,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 341,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 341,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "icims:bowheadcareers-uicalaska",
+      "status": "partial_failure",
+      "errors": [],
+      "warnings": [
+        "regional_form_window_prioritized_global_pagination_incomplete"
+      ],
+      "received": 56,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": true,
+      "requests": 8,
+      "observed_regional_search_options": [
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+          "option_label": "DC,Washington, DC,United States",
+          "option_value": "12781-12832-Washington, DC",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-Hyattsville",
+          "option_label": "MD,Hyattsville,United States",
+          "option_value": "12781-12804-Hyattsville",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-Rockville",
+          "option_label": "MD,Rockville,United States",
+          "option_value": "12781-12804-Rockville",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12804-West+Bethesda",
+          "option_label": "MD,West Bethesda,United States",
+          "option_value": "12781-12804-West Bethesda",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12830-Arlington",
+          "option_label": "VA,Arlington,United States",
+          "option_value": "12781-12830-Arlington",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        },
+        {
+          "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12830-Falls+Church",
+          "option_label": "VA,Falls Church,United States",
+          "option_value": "12781-12830-Falls Church",
+          "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+        }
+      ],
+      "selected_regional_search": {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "option_label": "DC,Washington, DC,United States",
+        "option_value": "12781-12832-Washington, DC",
+        "form_action": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654"
+      },
+      "regional_options_not_attempted": 5,
+      "regional_window_complete": true,
+      "unique": 56,
+      "dc_dmv": 10,
+      "descriptions": 5,
+      "inventory": {
+        "scope": "permitted public iCIMS search HTML window",
+        "observed_available_items": null,
+        "provider_claimed_total": null,
+        "metadata_complete": false,
+        "metadata_retained": 56,
+        "pagination_pages": [
+          {
+            "page": 1,
+            "pages": 6,
+            "provider_claimed_total": null,
+            "next_url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?pr=1&searchRelation=keyword_all",
+            "explicit_empty": false,
+            "malformed": 0,
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search"
+          },
+          {
+            "page": 1,
+            "pages": 1,
+            "provider_claimed_total": null,
+            "next_url": "",
+            "explicit_empty": false,
+            "malformed": 0,
+            "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC"
+          }
+        ],
+        "descriptions_observed": 5,
+        "description_denominator_observed_records": 56,
+        "verified_empty": false
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 2
+    },
+    {
+      "board_key": "jazzhr:inspiring",
+      "status": "failed",
+      "errors": [
+        "no_public_index_rows_or_schema_changed"
+      ],
+      "warnings": [],
+      "received": 0,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "unique": 0,
+      "dc_dmv": 0,
+      "descriptions": 0,
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 0,
+        "metadata_retained": 0,
+        "metadata_complete": null,
+        "descriptions_observed": 0,
+        "description_denominator_observed_records": 0,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "lever:publicprep",
+      "status": "failed",
+      "errors": [
+        "http_404"
+      ],
+      "warnings": [],
+      "received": 0,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 1,
+      "unique": 0,
+      "dc_dmv": 0,
+      "descriptions": 0,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": null,
+        "provider_claimed_total": null,
+        "metadata_retained": 0,
+        "metadata_complete": false,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "descriptions_complete": false,
+        "description_denominator_observed_records": 0,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "ashby:stepful",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 35,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "unique": 35,
+      "dc_dmv": 0,
+      "descriptions": 35,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 35,
+        "provider_claimed_total": null,
+        "metadata_retained": 35,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 35,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 35,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "greenhouse:curiholdingsinc",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 0,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "description_mode": "content_list",
+      "provider_claimed_total": 0,
+      "unique": 0,
+      "dc_dmv": 0,
+      "descriptions": 0,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 0,
+        "provider_claimed_total": 0,
+        "metadata_retained": 0,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 0,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 0,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "jazzhr:westernachersolutions",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 18,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": true,
+      "requests": 5,
+      "unique": 18,
+      "dc_dmv": 0,
+      "descriptions": 3,
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 18,
+        "metadata_retained": 18,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 18,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "ashby:talos-trading",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 19,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "unique": 19,
+      "dc_dmv": 0,
+      "descriptions": 19,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 19,
+        "provider_claimed_total": null,
+        "metadata_retained": 19,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 19,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 19,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "greenhouse:digitalbridge",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 6,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "description_mode": "content_list",
+      "provider_claimed_total": 6,
+      "unique": 6,
+      "dc_dmv": 0,
+      "descriptions": 6,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 6,
+        "provider_claimed_total": 6,
+        "metadata_retained": 6,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 6,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 6,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "jazzhr:consultbfrench",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 54,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 4,
+      "unique": 54,
+      "dc_dmv": 0,
+      "descriptions": 2,
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 54,
+        "metadata_retained": 54,
+        "metadata_complete": null,
+        "descriptions_observed": 2,
+        "description_denominator_observed_records": 54,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "ashby:vanta",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 84,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "unique": 84,
+      "dc_dmv": 1,
+      "descriptions": 84,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 84,
+        "provider_claimed_total": null,
+        "metadata_retained": 84,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 84,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 84,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "legacy_provider_spread"
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "greenhouse:nationalnursesunited",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 14,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 2,
+      "description_mode": "content_list",
+      "provider_claimed_total": 14,
+      "unique": 14,
+      "dc_dmv": 3,
+      "descriptions": 14,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 14,
+        "provider_claimed_total": 14,
+        "metadata_retained": 14,
+        "metadata_complete": true,
+        "pagination_page_lengths": [],
+        "descriptions_observed": 14,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 14,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 6,
+        "platform_cap": 15,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "jazzhr:street",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 3,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 5,
+      "unique": 3,
+      "dc_dmv": 3,
+      "descriptions": 3,
+      "inventory": {
+        "scope": "one public hosted-career index response",
+        "observed_available_items": 3,
+        "metadata_retained": 3,
+        "metadata_complete": null,
+        "descriptions_observed": 3,
+        "description_denominator_observed_records": 3,
+        "note": "Visible index rows retained. No independently reported total or proof of undisplayed/paginated inventory completeness."
+      },
+      "selection_evidence": {
+        "route": "regional_or_function_evidence",
+        "strength": 6,
+        "platform_cap": 15,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "extra_detail_requests": 0
+    },
+    {
+      "board_key": "lever:researchinnovations.com",
+      "status": "ok",
+      "errors": [],
+      "warnings": [],
+      "received": 13,
+      "malformed": 0,
+      "unlisted_omitted": 0,
+      "capped": false,
+      "requests": 3,
+      "unique": 13,
+      "dc_dmv": 1,
+      "descriptions": 13,
+      "inventory": {
+        "scope": "documented public listed-job endpoint",
+        "observed_available_items": 13,
+        "provider_claimed_total": null,
+        "metadata_retained": 13,
+        "metadata_complete": true,
+        "pagination_page_lengths": [
+          13
+        ],
+        "descriptions_observed": 13,
+        "descriptions_complete": true,
+        "description_denominator_observed_records": 13,
+        "unlisted_omitted": 0,
+        "note": "A finite provider inventory denominator, not employment-market coverage. Description availability is measured separately."
+      },
+      "selection_evidence": {
+        "route": "broad_fill",
+        "strength": 0,
+        "platform_cap": 15,
+        "note": "Board retrieval priority only; no candidate profile, score or suitability inference."
+      },
+      "extra_detail_requests": 0
+    }
+  ],
+  "global_transport": {
+    "requests": [
+      {
+        "url": "https://index.commoncrawl.org/collinfo.json",
+        "params": {},
+        "kind": "seed_catalog",
+        "observed_at": "2026-11-06T21:40:06+00:00",
+        "status": 200,
+        "bytes": 35501,
+        "sha256": "a683312f4448cdda63b38f40c7289853fa82eb1e7e3cd5a3674e46142b01891a"
+      },
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index",
+        "params": {
+          "url": "job-boards.greenhouse.io/consult*",
+          "output": "json",
+          "filter": "status:200",
+          "fl": "url,timestamp,status",
+          "limit": 2500,
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index",
+        "observed_at": "2026-11-06T21:40:07+00:00",
+        "status": 504,
+        "error": "http_504"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx",
+        "params": {
+          "url": "job-boards.greenhouse.io/consult*",
+          "output": "json",
+          "filter": "statuscode:200",
+          "collapse": "urlkey",
+          "fl": "original,timestamp",
+          "limit": 1000,
+          "from": "2024",
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index_fallback",
+        "observed_at": "2026-11-06T21:40:18+00:00",
+        "status": 200,
+        "bytes": 93,
+        "sha256": "d120f233603f1463c612ad09faf8a353fd25c315f7e96f18d26950db3d860186"
+      },
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index",
+        "params": {
+          "url": "jobs.lever.co/consult*",
+          "output": "json",
+          "filter": "status:200",
+          "fl": "url,timestamp,status",
+          "limit": 2500,
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index",
+        "observed_at": "2026-11-06T21:40:23+00:00",
+        "status": 504,
+        "error": "http_504"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx",
+        "params": {
+          "url": "jobs.lever.co/consult*",
+          "output": "json",
+          "filter": "statuscode:200",
+          "collapse": "urlkey",
+          "fl": "original,timestamp",
+          "limit": 1000,
+          "from": "2024",
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index_fallback",
+        "observed_at": "2026-11-06T21:40:34+00:00",
+        "status": 200,
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      {
+        "url": "https://index.commoncrawl.org/CC-MAIN-2026-43-index",
+        "params": {
+          "url": "jobs.ashbyhq.com/consult*",
+          "output": "json",
+          "filter": "status:200",
+          "fl": "url,timestamp,status",
+          "limit": 2500,
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index",
+        "observed_at": "2026-11-06T21:40:35+00:00",
+        "status": 504,
+        "error": "http_504"
+      },
+      {
+        "url": "https://web.archive.org/cdx/search/cdx",
+        "params": {
+          "url": "jobs.ashbyhq.com/consult*",
+          "output": "json",
+          "filter": "statuscode:200",
+          "collapse": "urlkey",
+          "fl": "original,timestamp",
+          "limit": 1000,
+          "from": "2024",
+          "pageSize": 1,
+          "page": 0
+        },
+        "kind": "seed_index_fallback",
+        "observed_at": "2026-11-06T21:40:47+00:00",
+        "status": 200,
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/rain",
+        "params": {
+          "includeCompensation": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:40:56+00:00",
+        "status": 200,
+        "bytes": 640719,
+        "sha256": "8462d8f183b7d06da8a07132337e8e407fa8e37f2e1d6742839a4c952407fa36"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:40:57+00:00",
+        "status": 200,
+        "bytes": 63,
+        "sha256": "d3ccab98eafadd5f808f9622b93f8176c2f89845489a5f6a949b9792d6b1431d"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/rain",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:40:59+00:00",
+        "status": 200,
+        "bytes": 32168,
+        "sha256": "6e48f0ff0534246bc45735a3ba191f72a69664ef884a3c43c30fffd064603753"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/cssmerge/jobs",
+        "params": {
+          "content": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:00+00:00",
+        "status": 200,
+        "bytes": 3283249,
+        "sha256": "a6a0b3d57f485ece2a81437298ba8f6666a816ba82ab4b2b88872c347eaf838c"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/cssmerge",
+        "params": {},
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:01+00:00",
+        "status": 200,
+        "bytes": 42,
+        "sha256": "2c95cceaf8232fe3c1cc5b60a48ec970c969e1ba9df2921e40314a44a2c4ead0"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:03+00:00",
+        "status": 200,
+        "bytes": 381,
+        "sha256": "c0bbb9c54cff27b79ff55f5316f7166599e910bd765e5e37268b9357312ba35c"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:04+00:00",
+        "status": 200,
+        "bytes": 144606,
+        "sha256": "7d9bb4e52fcc9f060dca1e2457060ee6346e500a8b104b697dcdedf6b5fdc1d3"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/search?hashed=-625943654&ss=1&searchLocation=12781-12832-Washington%2C+DC",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:06+00:00",
+        "status": 200,
+        "bytes": 50191,
+        "sha256": "6c4a07c8eca11bd616bad65b91c633d55b63b09eb0b3be41cb0e409a20fdd6ac"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25009/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:09+00:00",
+        "status": 200,
+        "bytes": 43801,
+        "sha256": "6d1147c609d8a7f791d875d48f0d2772e0b41236ebcd445e6715f2676514c551"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25624/program-manager/job",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:11+00:00",
+        "status": 200,
+        "bytes": 38291,
+        "sha256": "a0ee16cf4f841e91e747789dc426688a082abc0e0dbb1884cb8f994e7ca06ea8"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26236/emergency-operations---telecommunications-specialist/job",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:12+00:00",
+        "status": 200,
+        "bytes": 51664,
+        "sha256": "dd6f8e967046f1d884f51fe4e08ff9ebb35ad28e6a7f9366be7d87831409ae2a"
+      },
+      {
+        "url": "https://inspiring.applytojob.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:14+00:00",
+        "status": 200,
+        "bytes": 319,
+        "sha256": "75870809a7d05640d5a3ae67ba046a011cc719d9742cfa59373f52dfef508b6c"
+      },
+      {
+        "url": "https://inspiring.applytojob.com/apply",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:15+00:00",
+        "status": 200,
+        "bytes": 95719,
+        "sha256": "635082c3d2716eb9261d9222f5dae9adfd92ea9f950f6bbb4c0fda50c4969a5c"
+      },
+      {
+        "url": "https://api.lever.co/v0/postings/publicprep",
+        "params": {
+          "mode": "json",
+          "limit": 100,
+          "skip": 0
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:16+00:00",
+        "status": 404,
+        "error": "http_404"
+      },
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/Stepful",
+        "params": {
+          "includeCompensation": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:18+00:00",
+        "status": 200,
+        "bytes": 615982,
+        "sha256": "51478c2b2c02860e83c856da3393036711fd3f67319ffff57c33cd0d12acf4a5"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/Stepful",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:19+00:00",
+        "status": 200,
+        "bytes": 27354,
+        "sha256": "d455e26437dbe0abb3008db8bce0757d9e2a381f569c4c01c95aa7fb4a66a302"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/curiholdingsinc/jobs",
+        "params": {
+          "content": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:20+00:00",
+        "status": 200,
+        "bytes": 30,
+        "sha256": "09aefc0c2d96e9c065aab057f04eaa352d63f19114f01783cfa12c890427f7f8"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/curiholdingsinc",
+        "params": {},
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:21+00:00",
+        "status": 200,
+        "bytes": 524,
+        "sha256": "64da2713d296c4c51a4339d96d219b48bc5d2ac71d9447dc2bce6305595026cb"
+      },
+      {
+        "url": "https://westernachersolutions.applytojob.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:22+00:00",
+        "status": 200,
+        "bytes": 319,
+        "sha256": "75870809a7d05640d5a3ae67ba046a011cc719d9742cfa59373f52dfef508b6c"
+      },
+      {
+        "url": "https://westernachersolutions.applytojob.com/apply",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:24+00:00",
+        "status": 200,
+        "bytes": 112925,
+        "sha256": "ffd129fc5b195d7d0bf375aed79d909d4904be57e7116c272c78250bffb7136e"
+      },
+      {
+        "url": "https://westernachersolutions.applytojob.com/apply/4v9FktMtZE/Berater-Notariatssoftware-wmd",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:25+00:00",
+        "status": 200,
+        "bytes": 121722,
+        "sha256": "d86b3b476d4ffbe3084b7e7a815f8152fa6d124ea8cdbb211392721a119fc80b"
+      },
+      {
+        "url": "https://westernachersolutions.applytojob.com/apply/G0rrKpZliz/Junior-Business-Consultant-Public-wmd",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:27+00:00",
+        "status": 200,
+        "bytes": 122483,
+        "sha256": "8ff1d571ebddaa656516fe5e36b23db173943a4fcce7788e091b097e6ed5600c"
+      },
+      {
+        "url": "https://westernachersolutions.applytojob.com/apply/LjOUBa3TRG/Senior-Software-Engineer-Java-wmd",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:29+00:00",
+        "status": 200,
+        "bytes": 118603,
+        "sha256": "b64573e4cb55ef2ec11ce2b8346b3acd26e56eab5d3e405d613b05cb18bc2efb"
+      },
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/Talos-Trading",
+        "params": {
+          "includeCompensation": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:31+00:00",
+        "status": 200,
+        "bytes": 397502,
+        "sha256": "c234739ddb26f00ac36c26309e79a7f4c902f1f10a60664247354466fcde5abf"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/Talos-Trading",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:32+00:00",
+        "status": 200,
+        "bytes": 21467,
+        "sha256": "3bd69451c5f9113b92f7b21db62ff614e8384d3532ffcf53eb66219b7baf9428"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/digitalbridge/jobs",
+        "params": {
+          "content": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:33+00:00",
+        "status": 200,
+        "bytes": 51514,
+        "sha256": "720304ff566af5cf4e29f8d9ebcc335d9c756bad31dcf7bf438180cacf1bc099"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/digitalbridge",
+        "params": {},
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:34+00:00",
+        "status": 200,
+        "bytes": 608,
+        "sha256": "0e4ca0155538a543dfb5e6037c9cdb738ff08e3530b8ce3b4072e8d59dcd8bc6"
+      },
+      {
+        "url": "https://consultbfrench.applytojob.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:35+00:00",
+        "status": 200,
+        "bytes": 319,
+        "sha256": "75870809a7d05640d5a3ae67ba046a011cc719d9742cfa59373f52dfef508b6c"
+      },
+      {
+        "url": "https://consultbfrench.applytojob.com/apply",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:37+00:00",
+        "status": 200,
+        "bytes": 142006,
+        "sha256": "b48c02e0f2b3ce9b965e84dd25174eb841c28ff30a924a879cb25fff79551525"
+      },
+      {
+        "url": "https://consultbfrench.applytojob.com/apply/2akUl8qQKG/Regional-Program-Associate",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:38+00:00",
+        "status": 200,
+        "bytes": 135469,
+        "sha256": "b37807ea2e0d7a4ca425aeea57f9b2fc04f57f007349347b4dee8ecae80a8bbb"
+      },
+      {
+        "url": "https://consultbfrench.applytojob.com/apply/wBB5fJOnDU/Recruiting-Coordinator",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:40+00:00",
+        "status": 200,
+        "bytes": 121401,
+        "sha256": "a7b3e7c65d47d3a7ffe2112447eb745ae0a8665278446c231b478009762500c8"
+      },
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/vanta",
+        "params": {
+          "includeCompensation": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:42+00:00",
+        "status": 200,
+        "bytes": 1413554,
+        "sha256": "5d7a811205dc67bdce8495f7303ad422efbdede3fe35fbd294f869d2dfade214"
+      },
+      {
+        "url": "https://jobs.ashbyhq.com/vanta",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:43+00:00",
+        "status": 200,
+        "bytes": 50264,
+        "sha256": "502b3b92546419d9dec2bae15ec4baf374a493857258822da81760b82a125e37"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited/jobs",
+        "params": {
+          "content": "true"
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:44+00:00",
+        "status": 200,
+        "bytes": 202866,
+        "sha256": "04467b90f5679d7a7f23ce8fd9dcb92d6f494d344aebe9f91c8d5a415fe81f9e"
+      },
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/nationalnursesunited",
+        "params": {},
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:45+00:00",
+        "status": 200,
+        "bytes": 732,
+        "sha256": "fd84b9ec97829a44a5b41182de8b99e13637998d804d20b66fab26f3eb024fc1"
+      },
+      {
+        "url": "https://street.applytojob.com/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:46+00:00",
+        "status": 200,
+        "bytes": 319,
+        "sha256": "75870809a7d05640d5a3ae67ba046a011cc719d9742cfa59373f52dfef508b6c"
+      },
+      {
+        "url": "https://street.applytojob.com/apply",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:48+00:00",
+        "status": 200,
+        "bytes": 97666,
+        "sha256": "65d513b2ebc7b73b5ec74833ba557af97a26867bcdb0edea1d03904db3d008a9"
+      },
+      {
+        "url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:49+00:00",
+        "status": 200,
+        "bytes": 177665,
+        "sha256": "02603972e97c4e23dd728d8ed03ed5ac62a72ec00e7fc669f9af7b35de78a9fc"
+      },
+      {
+        "url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:51+00:00",
+        "status": 200,
+        "bytes": 170472,
+        "sha256": "ca1c4626f37bafdb1e14e610c42918368256afc34f17058bbd04c5dc4617b38a"
+      },
+      {
+        "url": "https://street.applytojob.com/apply/PUezjYTzxG/Senior-Fellow-Energy-And-Environment",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:53+00:00",
+        "status": 200,
+        "bytes": 171666,
+        "sha256": "eeff86360f440782e5736912267753d3a3335e22f7bbe67d003477df47d617d8"
+      },
+      {
+        "url": "https://api.lever.co/v0/postings/researchinnovations.com",
+        "params": {
+          "mode": "json",
+          "limit": 100,
+          "skip": 0
+        },
+        "kind": "api",
+        "observed_at": "2026-11-06T21:41:55+00:00",
+        "status": 200,
+        "bytes": 138652,
+        "sha256": "f683630e134ea0ea76babe8dcbfdfaf8525049b4f47b601ee31a61eea3b2f645"
+      },
+      {
+        "url": "https://jobs.lever.co/robots.txt",
+        "params": {},
+        "kind": "robots",
+        "observed_at": "2026-11-06T21:41:56+00:00",
+        "status": 200,
+        "bytes": 2714,
+        "sha256": "09faf18d25b1e7dc9ced65db7eae6a653e2d19be60434b5ecea2f50ce41a5e36"
+      },
+      {
+        "url": "https://jobs.lever.co/researchinnovations.com",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:57+00:00",
+        "status": 200,
+        "bytes_observed": 731636,
+        "error": "response_too_large",
+        "response_limit": 600000
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26590/navsea-program-analyst/job",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:41:59+00:00",
+        "status": 200,
+        "bytes": 45370,
+        "sha256": "c47ebf471ab6461a5b2f4b16fead4ec988c4da3996b8c41aa58894f7e4af50c8"
+      },
+      {
+        "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26443/outreach-coordinator/job",
+        "params": {},
+        "kind": "public_html",
+        "observed_at": "2026-11-06T21:42:00+00:00",
+        "status": 200,
+        "bytes": 39864,
+        "sha256": "7754f7ab9c4c8b473281f76267e82dd60240b9c7713df1646f330f8ac900ae35"
+      }
+    ],
+    "bytes": 9650481,
+    "maximum_requests": 180
+  },
+  "global_regional_records": [
+    {
+      "identity": "ashby:rain:acfe80ba-5983-4d35-9375-870b1f906acf",
+      "title": "Financial Crimes Risk Senior Data Analyst/Data Scientist",
+      "company": "Rain",
+      "location": "District of Columbia",
+      "url": "https://jobs.ashbyhq.com/rain/acfe80ba-5983-4d35-9375-870b1f906acf",
+      "retrieved_at": "2026-11-06T21:40:56+00:00",
+      "description_sha256": "7b1680eaee58183479294bb6e0ebd4a1fe25618571e49e575edb546deefa5657",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "ashby:rain:0ef85bfc-257f-4627-b779-903f07b399d6",
+      "title": "Associate Counsel, Corporate",
+      "company": "Rain",
+      "location": "District of Columbia ; New York, NY",
+      "url": "https://jobs.ashbyhq.com/rain/0ef85bfc-257f-4627-b779-903f07b399d6",
+      "retrieved_at": "2026-11-06T21:40:56+00:00",
+      "description_sha256": "5a36bf2aba783e2c76686a23c83f1ab51e9506c19001d8baac67c96a8d54f1f0",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "ashby:rain:610fac50-ebb8-49a8-9ce5-1070d46d928f",
+      "title": "Product Counsel",
+      "company": "Rain",
+      "location": "Washington, DC ; New York, NY",
+      "url": "https://jobs.ashbyhq.com/rain/610fac50-ebb8-49a8-9ce5-1070d46d928f",
+      "retrieved_at": "2026-11-06T21:40:56+00:00",
+      "description_sha256": "7b8257e36807a3eadab83a753dadbb83adca1e97a0107c6c6464b8ac1d642727",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "greenhouse:cssmerge:8457951002",
+      "title": "Delivery Driver",
+      "company": "ATOMS Careers page",
+      "location": "Washington, D.C. ; Washington D.C.",
+      "url": "https://job-boards.greenhouse.io/cssmerge/jobs/8457951002",
+      "retrieved_at": "2026-11-06T21:41:02+00:00",
+      "description_sha256": "dde218e7c95d082e7b47160d65bf8557dbaee866d2d0d819198c60da4c7a27f2",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "greenhouse:cssmerge:8457880002",
+      "title": "Kitchen Ambassador",
+      "company": "ATOMS Careers page",
+      "location": "Washington, D.C. ; Washington D.C.",
+      "url": "https://job-boards.greenhouse.io/cssmerge/jobs/8457880002",
+      "retrieved_at": "2026-11-06T21:41:02+00:00",
+      "description_sha256": "26d3b6cea3dfb8e4cbe02bde17b2a4f4edda73efbcaca8344a9560f062a47820",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "greenhouse:cssmerge:8909754002",
+      "title": "Light Commercial HVAC/R Technician ",
+      "company": "ATOMS Careers page",
+      "location": "Washington, D.C. ; Washington D.C.",
+      "url": "https://job-boards.greenhouse.io/cssmerge/jobs/8909754002",
+      "retrieved_at": "2026-11-06T21:41:02+00:00",
+      "description_sha256": "1647f22658d99a659dd1e4bf2c7de30b2f7ce76e2d7758630b0e235556c0fc9e",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26590",
+      "title": "NAVSEA Program Analyst",
+      "company": "UIC Alaska",
+      "location": "US-MD-West Bethesda",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26590/navsea-program-analyst/job",
+      "retrieved_at": "2026-11-06T21:41:05+00:00",
+      "description_sha256": "56a865fa72977173e57695934958862707c0619a36e5a8378b71c6988ca9207e",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26588",
+      "title": "NEPS Training Instructor",
+      "company": "UIC Alaska",
+      "location": "West Bethesda, MD, USA",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26588/neps-training-instructor/job",
+      "retrieved_at": "2026-11-06T21:41:05+00:00",
+      "description_sha256": "",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26586",
+      "title": "NEPS Requirements Development Subject Matter Expert",
+      "company": "UIC Alaska",
+      "location": "West Bethesda, MD, USA",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26586/neps-requirements-development-subject-matter-expert/job",
+      "retrieved_at": "2026-11-06T21:41:05+00:00",
+      "description_sha256": "",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26541",
+      "title": "Indian Health Service Network Operations & Support Center:",
+      "company": "UIC Alaska",
+      "location": "Rockville,MD,USA",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26541/indian-health-service-network-operations-%26-support-center%3a/job",
+      "retrieved_at": "2026-11-06T21:41:05+00:00",
+      "description_sha256": "",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26443",
+      "title": "Outreach Coordinator",
+      "company": "UIC Alaska",
+      "location": "US-DC-Washington, DC",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26443/outreach-coordinator/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "75a203d116f2e88df91dbdf15ffda0e82ef016e54469f93c87c1bbee0ce1263f",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26442",
+      "title": "Senior Maritime Data and Infrastructure Subject Matter Expert",
+      "company": "UIC Alaska",
+      "location": "Washington, DC, USA",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26442/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26284",
+      "title": "Crash Simulation Engineer",
+      "company": "UIC Alaska",
+      "location": "Washington, DC, USA",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26284/crash-simulation-engineer/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:26236",
+      "title": "Emergency Operations / Telecommunications Specialist",
+      "company": "UIC Alaska",
+      "location": "US-DC-Washington, DC",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/26236/emergency-operations---telecommunications-specialist/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "6f91144638cfee45c4bd8e2a0a03fe6d233ee33bc7db07c34139d556d53d38f1",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:25624",
+      "title": "Program Manager",
+      "company": "UIC Alaska",
+      "location": "US-DC-Washington, DC",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25624/program-manager/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "2f2cfce814f03063770bffbc6d68ea8908433200b0d4e514f029c1c902278765",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "icims:bowheadcareers-uicalaska:25009",
+      "title": "Senior Maritime Data and Infrastructure Subject Matter Expert",
+      "company": "UIC Alaska",
+      "location": "US-DC-Washington, DC",
+      "url": "https://bowheadcareers-uicalaska.icims.com/jobs/25009/senior-maritime-data-and-infrastructure-subject-matter-expert/job",
+      "retrieved_at": "2026-11-06T21:41:08+00:00",
+      "description_sha256": "e578cbc5bcdde0cad60c0f3f323ba376d11483db013fe9cbccff9df3645cad6e",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "ashby:vanta:c3b74285-982c-4648-bb79-d62c5b0adaf4",
+      "title": "Account Executive, SLED Government - East",
+      "company": "Vanta",
+      "location": "Remote; Washington, D.C.",
+      "url": "https://jobs.ashbyhq.com/vanta/c3b74285-982c-4648-bb79-d62c5b0adaf4",
+      "retrieved_at": "2026-11-06T21:41:42+00:00",
+      "description_sha256": "012f8a584916997440d26a53e23dbb2071c18517e146b01f923952bf24bd0526",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": false
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432191009",
+      "title": "Labor Representative - Washington, DC",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "location": "Washington, DC ; Silver Spring",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432191009",
+      "retrieved_at": "2026-11-06T21:41:45+00:00",
+      "description_sha256": "f773787189d5271372cb31f3c8cf774dea5db3b3a13f81e9e4be759a8996410f",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4432987009",
+      "title": "National Organizer",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "location": "California; Illinois; DC; Colorado ; California ; Illinois ; Maryland",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4432987009",
+      "retrieved_at": "2026-11-06T21:41:45+00:00",
+      "description_sha256": "91aad4950ec138c318c749791fa36f07706f4c417de46e49c814c9566c3e02ff",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "greenhouse:nationalnursesunited:4462499009",
+      "title": "Regulatory/Policy Specialist",
+      "company": "California Nurses Association / National Nurses Organizing Committee / National Nurses United",
+      "location": "Silver Spring/Washington, DC ; Silver Spring",
+      "url": "https://job-boards.greenhouse.io/nationalnursesunited/jobs/4462499009",
+      "retrieved_at": "2026-11-06T21:41:45+00:00",
+      "description_sha256": "4db58fc251c25d1fa20cdf1f7c0f37e5c73fcf2d779941ce4216bf6e6e80898a",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "jazzhr:street:PUezjYTzxG",
+      "title": "Senior Fellow, Energy and Environment",
+      "company": "R Street Institute",
+      "location": "Washington, DC",
+      "url": "https://street.applytojob.com/apply/PUezjYTzxG/Senior-Fellow-Energy-And-Environment",
+      "retrieved_at": "2026-11-06T21:41:54+00:00",
+      "description_sha256": "4b8e091734a973995b9451b1f95ddd40560db3c3ddaf18231dec6713d5eb3482",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "jazzhr:street:BnH7DBB0Yh",
+      "title": "Senior Fellow, Finance and Insurance",
+      "company": "R Street Institute",
+      "location": "Washington, DC",
+      "url": "https://street.applytojob.com/apply/BnH7DBB0Yh/Senior-Fellow-Finance-And-Insurance",
+      "retrieved_at": "2026-11-06T21:41:50+00:00",
+      "description_sha256": "4197298f9fe1458f88ea682e06f2b00c8eaa70523f0fcd4e075ac0dcf3b881c7",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "jazzhr:street:ssxWOdjd2D",
+      "title": "Senior Fellow, Financial Services and Insurance Policy",
+      "company": "R Street Institute",
+      "location": "Washington, DC",
+      "url": "https://street.applytojob.com/apply/ssxWOdjd2D/Senior-Fellow-Financial-Services-And-Insurance-Policy",
+      "retrieved_at": "2026-11-06T21:41:52+00:00",
+      "description_sha256": "5e7ffe0a946e08972e3de1e5a1b3828d4c1cb89cefb63b546e1a5effe2ebaacd",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    },
+    {
+      "identity": "lever:researchinnovations.com:901de5a8-33d5-4f08-96bc-9e0a7b990bd3",
+      "title": "Senior Principal FPGA & Digital Signals Processing Engineer",
+      "company": "researchinnovations.com",
+      "location": "Alexandria, VA",
+      "url": "https://jobs.lever.co/researchinnovations.com/901de5a8-33d5-4f08-96bc-9e0a7b990bd3",
+      "retrieved_at": "2026-11-06T21:41:55+00:00",
+      "description_sha256": "801ae8a814784db55d957f622ecc3b8467cba5087a66bed9fdf7639d7d1e38e6",
+      "description_truncated": false,
+      "previously_seen_in_this_registry": true
+    }
+  ],
+  "acquisition_windows": {
+    "employer": {
+      "earliest": "2026-11-06T21:42:25+00:00",
+      "latest": "2026-11-06T21:44:18+00:00"
+    },
+    "global": {
+      "earliest": "2026-11-06T21:40:06+00:00",
+      "latest": "2026-11-06T21:42:00+00:00"
+    }
+  },
+  "retained_normalized_frame_sha256": "95edcc7afc1d0bdb1981f158e21f1a63b952321f385f7ada268d7dd1f83d432e",
+  "directory_source_copy_privacy": [
+    {
+      "file": "source-000.json",
+      "original_response_sha256": "a1c73ac807889ea9467cac2e1d568bbf53b04fb72ddbf1bd26f01b4ee5deacf7",
+      "retained_copy_sha256": "a3a783ce0dfff4b06c93fc99b0a1329b6e2249563622911e913c9373aed5b13b",
+      "website_contact_values_redacted": 5
+    },
+    {
+      "file": "source-001.json",
+      "original_response_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+      "retained_copy_sha256": "9bc6d03d1578e226913f5e64a7d849c920af7d4ee0aa1da596ba66a707ee3fca",
+      "website_contact_values_redacted": 0
+    }
+  ]
+}
