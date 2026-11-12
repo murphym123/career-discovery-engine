@@ -43,14 +43,20 @@ class BoundedSession:
                 body.extend(chunk);self.bytes+=len(chunk)
                 if len(body)>8_000_000 or self.bytes>64_000_000 or time.monotonic()-self.started>=600:
                     item['error']='response_too_large';self.stopped=True;raise ValueError('usajobs_response_too_large')
-            item.update(bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
-            if self.capture_body is not None:
-                self.capture_body(bytes(body))
+            item['bytes'] = len(body)
+            withheld = self.capture_body is not None and self.capture_body(bytes(body))
+            if withheld:
+                item['capture_withheld'] = 'secret_echo'
+            else:
+                item['sha256'] = hashlib.sha256(body).hexdigest()
             data=json.loads(body)
             result=data.get('SearchResult',{}) if isinstance(data,dict) else {}
             self.total=result.get('SearchResultCountAll')
-            for row in result.get('SearchResultItems',[]) or []:
-                if isinstance(row,dict):self.raw[str(row.get('MatchedObjectId',''))]=row
+            if withheld and type(self.total) is not int:
+                self.total = None
+            if not withheld:
+                for row in result.get('SearchResultItems',[]) or []:
+                    if isinstance(row,dict):self.raw[str(row.get('MatchedObjectId',''))]=row
             class Parsed:
                 status_code=200
                 prospect_captured=self.capture_body is not None

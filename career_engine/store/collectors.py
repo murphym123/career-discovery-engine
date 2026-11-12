@@ -6,7 +6,7 @@ import re
 from contextlib import contextmanager
 
 from career_engine.store import Store, git_sha, timestamp
-from career_engine.store.privacy import Projection
+from career_engine.store.privacy import REDACTED, Projection, contains_configured_secret
 
 USAJOBS_CHANNEL = dict(kind="api", platform="usajobs", locator="https://www.usajobs.gov/",
                        channel_key="usajobs:dc-radius-35")
@@ -68,29 +68,65 @@ class _ObservationBatch:
         self.privacy = Projection()
         self.private_values = tuple(value for value in private_values if value)
 
+    def _echoes_request_credential(self, body):
+        if not self.private_values:
+            return False
+        text = body.decode("utf-8", errors="replace")
+        if contains_configured_secret(text, self.private_values):
+            return True
+        # JSON escapes can encode a credential without its literal bytes.
+        if b"\\" not in body and b"\x00" not in body:
+            return False
+        try:
+            pending = [json.loads(body)]
+        except (ValueError, RecursionError):
+            return False
+        while pending:
+            value = pending.pop()
+            if isinstance(value, str) and contains_configured_secret(value, self.private_values):
+                return True
+            if isinstance(value, dict):
+                pending.extend(value)
+                pending.extend(value.values())
+            elif isinstance(value, list):
+                pending.extend(value)
+        return False
+
     def capture(self, body, role):
         page = None
         if role == "inventory":
             page = dict(disposition="missing", raw_sha=None, sightings=0)
             self.inventory.append(page)
         if not isinstance(body, bytes):
-            return
-        if any(value.encode() in body for value in self.private_values):
+            return False
+        if self._echoes_request_credential(body):
             if page is not None:
                 page["disposition"] = "secret_echo"
-            return  # Only public response bodies belong in the capture store.
+            return True  # Tell the opt-in regional report to withhold this body as well.
         sha = self.store.blobs.put(body, "public")
         self.receipts.append((sha, role, len(body), self.store.now()))
         if page is not None:
             page.update(disposition="retained", raw_sha=sha)
+        return False
 
     def usajobs_response(self, body):
-        self.capture(body, "inventory")
+        return self.capture(body, "inventory")
+
+    def _request_secret(self, value):
+        return value is not None and contains_configured_secret(str(value), self.private_values)
+
+    def usajobs_report_row(self, row):
+        # Keep the legacy row shape while excluding known request credentials.
+        return {
+            key: ("" if key in ("source_id", "url") else REDACTED)
+            if self._request_secret(value) else value
+            for key, value in row.items()
+        }
 
     def usajobs_page(self, total, items):
         from career_engine.sources import normalize
 
-        self.declared_total = _total(total)
+        self.declared_total = None if self._request_secret(total) else _total(total)
         self.received += len(items)
         # Account for the fetched page even if a legacy caller stops iterating.
         for item in items:
@@ -103,11 +139,13 @@ class _ObservationBatch:
                 fields = item.get("MatchedObjectDescriptor")
                 fields = fields if isinstance(fields, dict) else {}
                 row = dict(
-                    source_id=str(item.get("MatchedObjectId") or ""), title=fields.get("PositionTitle"),
-                    url=fields.get("PositionURI"), company=fields.get("OrganizationName"),
+                    title=fields.get("PositionTitle"), url=fields.get("PositionURI"),
+                    company=fields.get("OrganizationName"),
                     location=fields.get("PositionLocationDisplay"),
                 )
-            self.usajobs_sighting(row)
+            source_id = item.get("MatchedObjectId")
+            native_id = str(source_id) if type(source_id) in (str, int) else None
+            self.usajobs_sighting(row, native_id)
 
     def observe(self, row, identity_key, native_id):
         if not self.inventory:
@@ -116,9 +154,9 @@ class _ObservationBatch:
         page["sightings"] += 1
         self.observations.append((row.copy(), identity_key, native_id, page["raw_sha"], self.store.now()))
 
-    def usajobs_sighting(self, row):
-        native_id = row["source_id"]
-        if native_id == "None" or self.privacy.native(native_id) is None or native_id in self.private_values:
+    def usajobs_sighting(self, row, native_id):
+        if (native_id == "None" or self.privacy.native(native_id) is None
+                or self._request_secret(native_id)):
             native_id = None
         url = str(row["url"] or "")
         if native_id is None:
@@ -163,8 +201,8 @@ class _ObservationBatch:
                 continue
             self.observe(row, row["identity"], row["identity"].rsplit(":", 1)[-1])
 
-    def _without_request_secrets(self, value):
-        return "" if any(secret in value for secret in self.private_values) else value
+    def _safe_text(self, value):
+        return REDACTED if self._request_secret(value) else self.privacy.text(str(value or ""))
 
     def greenhouse_detail(self, row):
         self.details[row["identity"]] = row
@@ -188,18 +226,19 @@ class _ObservationBatch:
                 description_row = detail if detail and detail.get("description") else row
                 description = description_row.get("description")
                 description_sha = None
-                if description and not any(value in description for value in self.private_values):
+                if description and not self._request_secret(description):
                     description_sha = description_row.get("description_sha256") or hashlib.sha256(description.encode()).hexdigest()
                 canonical_url = str(row["url"] or "")
                 observed_url = str(row.get("original_posting_url") or canonical_url)
                 self.store.record_sighting(
                     poll_id, identity_key=identity_key, native_id=native_id,
-                    url=self._without_request_secrets(observed_url),
-                    canonical_url=self._without_request_secrets(canonical_url),
-                    title=self.privacy.text(str(row.get("title") or "")),
-                    employer_name_raw=self.privacy.text(str(row.get("company") or "")),
-                    location_raw=self.privacy.text(str(row.get("location") or "")),
-                    posted_at=_source_date(row.get("posted_at")), closing_at=_source_date(row.get("closing_at")),
+                    url="" if self._request_secret(observed_url) else observed_url,
+                    canonical_url="" if self._request_secret(canonical_url) else canonical_url,
+                    title=self._safe_text(row.get("title")),
+                    employer_name_raw=self._safe_text(row.get("company")),
+                    location_raw=self._safe_text(row.get("location")),
+                    posted_at=None if self._request_secret(row.get("posted_at")) else _source_date(row.get("posted_at")),
+                    closing_at=None if self._request_secret(row.get("closing_at")) else _source_date(row.get("closing_at")),
                     observed_at=observed_at, description_sha=description_sha, raw_sha=capture_sha,
                 )
 
@@ -218,7 +257,8 @@ def collect_usajobs(store, run_id, session, max_pages=3, stats=None):
         session.capture_body = batch.usajobs_response
     finished = False
     try:
-        yield from retrieve(session, "usajobs", max_pages, stats, _evidence=batch)
+        for row in retrieve(session, "usajobs", max_pages, stats, _evidence=batch):
+            yield batch.usajobs_report_row(row)
         finished = True
     finally:
         if streaming:

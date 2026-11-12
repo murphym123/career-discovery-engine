@@ -43,6 +43,13 @@ def _decoded(value):
     return html.unescape(unquote(unquote(value)))
 
 
+def contains_configured_secret(value, secrets):
+    if not secrets:
+        return False
+    decoded = _decoded(value)
+    return any(secret in value or secret in decoded for secret in secrets)
+
+
 class Projection:
     def __init__(self):
         self.secrets = tuple(value for key, value in os.environ.items() if len(value) >= 6 and (
@@ -55,7 +62,7 @@ class Projection:
         return (
             any(ord(char) < 32 or ord(char) == 127 for char in decoded)
             or bool(SENSITIVE_TEXT.search(decoded))
-            or any(secret in decoded for secret in self.secrets)
+            or any(secret in value or secret in decoded for secret in self.secrets)
         )
 
     def text(self, value):

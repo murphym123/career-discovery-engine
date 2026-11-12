@@ -422,6 +422,69 @@ class CollectorTests(StoreTestCase):
         self.assertIsNone(self.store.connection.execute("SELECT description_sha FROM sighting").fetchone()[0])
 
 
+    def test_encoded_usajobs_credentials_are_withheld_and_cannot_escape_after_restart(self):
+        secret = CREDS["USAJOBS_API_KEY"]
+        percent = "".join(f"%{ord(char):02X}" for char in secret)
+        escaped = "".join(f"\\u{ord(char):04x}" for char in secret)
+        pages = [
+            federal_page(1, federal_job(901, PositionURI="https://www.usajobs.gov/job/" + percent)),
+            federal_page(1, federal_job(902, QualificationSummary=secret)),
+        ]
+        pages[1].content = pages[1].content.replace(secret.encode(), escaped.encode())
+        with patch.dict(os.environ, CREDS, clear=True):
+            for page in pages:
+                run_id = self.run_id()
+                row, = collect_usajobs(self.store, run_id, Session(page))
+                for encoding in (secret, percent, escaped):
+                    self.assertNotIn(encoding, json.dumps(row))
+                self.store.end_run(run_id)
+        with patch.dict(os.environ, {}, clear=True), Store.in_data_dir(self.data, create=False) as reopened:
+            bundle = export_snapshot(reopened, self.data / "exports", code_sha=CODE_SHA,
+                                     created_at="2026-11-18T14:01:00Z")
+        for poll in read_rows(bundle, "polls"):
+            self.assertEqual((poll["status"], poll["raw_sha"], poll["capture_withheld"]),
+                             ("ok", None, "secret_echo"))
+        for page in pages:
+            self.assertFalse(self.store.blobs.exists(hashlib.sha256(page.content).hexdigest()))
+        payload = b"".join(snapshot_files(bundle).values())
+        for encoding in (secret, percent, escaped):
+            self.assertNotIn(encoding.encode(), payload)
+        sightings = {s["native_id"]: s for s in read_rows(bundle, "sightings")}
+        self.assertTrue(sightings["901"]["url"].startswith("https://redacted.invalid/"))
+        self.assertIsNone(sightings["902"]["description_sha"])
+
+    def test_opt_in_regional_report_omits_withheld_fields_and_digest(self):
+        secret = CREDS["USAJOBS_API_KEY"]
+        echoed = federal_page(1, federal_job(903, QualificationSummary=secret))
+        env = CREDS | {"PROSPECT_DATA_DIR": str(self.data), "PROSPECT_CODE_SHA": CODE_SHA,
+                       "USAJOBS_TERMS_ACCEPTED": "true"}
+        with patch.dict(os.environ, env, clear=True):
+            rows, stats = collect_regional(session=Session(echoed), pause=lambda _: None)
+        row, = rows
+        request, = stats["transport"]["requests"]
+        self.assertEqual((row["source_id"], row["raw_provider_record"]), ("903", {}))
+        self.assertEqual(request["capture_withheld"], "secret_echo")
+        self.assertNotIn("sha256", request)
+        self.assertNotIn(secret, json.dumps((rows, stats)))
+
+    def test_malformed_usajobs_native_types_do_not_create_posting_identities(self):
+        rows = [
+            {"MatchedObjectId": False, "MatchedObjectDescriptor": {"PositionTitle": "No identity"}},
+            federal_job(904) | {"MatchedObjectId": True},
+            federal_job(905),
+        ]
+        run_id = self.run_id()
+        with patch.dict(os.environ, CREDS, clear=True):
+            list(collect_usajobs(self.store, run_id, Session(federal_page(3, *rows))))
+        self.store.end_run(run_id)
+        bundle = self.export()
+        poll, = read_rows(bundle, "polls")
+        self.assertEqual((poll["received"], poll["unrepresented"], poll["status"]), (3, 1, "partial"))
+        self.assertEqual(
+            {row["identity_key"] for row in read_rows(bundle, "postings")},
+            {"url:https://www.usajobs.gov/job/904", "usajobs:usajobs:905"},
+        )
+
 class PollAccountingTests(StoreTestCase):
     def collect_exceptional_polls(self):
         def federal(number, **fields):
