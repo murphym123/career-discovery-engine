@@ -1,4 +1,4 @@
-"""Write an immutable prospect-export/1 snapshot from the local SQLite store."""
+"""Write an immutable Prospect snapshot from the local SQLite store."""
 import argparse
 import hashlib
 import json
@@ -7,7 +7,6 @@ import re
 import secrets
 import shutil
 import sqlite3
-import sys
 import tempfile
 from collections import Counter
 from datetime import datetime
@@ -17,8 +16,8 @@ from career_engine.store import Store, git_sha, timestamp
 from career_engine.store.blobs import outside_git
 from career_engine.store.privacy import Projection
 
-VERSION = "prospect-export/1"
-DRAFT_VERSION = "prospect-export/1.1"
+VERSION = "prospect-export/1.1"
+LEGACY_VERSION = "prospect-export/1"
 ULID_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 LABEL_FIELDS = "subject, subject_id, dimension, value, method, classifier_version, created_at"
 LABEL_ORDER = "subject, subject_id, dimension, created_at, classifier_version, method, value"
@@ -47,7 +46,8 @@ FIELDS = {
     "run": "run_id, started_at, finished_at, code_sha, config_sha, trigger, arm",
     "channel": "channel_id, employer_id, kind, platform, locator, retention_class, evidence_role, verification_state",
     "poll": """poll_id, run_id, channel_id, started_at, status, declared_total, received, raw_sha,
-               unrepresented, capture_withheld, poll_accounting.poll_id IS NOT NULL AS accounted""",
+               unrepresented, capture_withheld, poll_accounting.poll_id IS NOT NULL AS accounted,
+               coalesce(withheld_inventory_responses, 0) AS withheld_responses""",
     "employer": "employer_id, canonical_name, status, origin, merged_into",
     "posting": "posting_id, employer_id, identity_key, first_seen, last_seen, closed_observed_at",
     "sighting": """sighting_id, posting_id, poll_id, channel_id, native_id, url, canonical_url,
@@ -110,9 +110,15 @@ def _select_rows(db, window_from, window_to):
         SELECT {LABEL_FIELDS} FROM label JOIN included ON subject = entity AND subject_id = id
         ORDER BY {LABEL_ORDER}
     """)]
+    inventory = {}
+    for page in db.execute("""
+        SELECT poll_id, disposition, raw_sha, sightings FROM poll_inventory
+        JOIN export_poll USING (poll_id) ORDER BY poll_id, ordinal
+    """):
+        inventory.setdefault(page["poll_id"], []).append(page)
     for entity in SELECTIONS:
         db.execute(f"DROP TABLE export_{entity}")
-    return records, aliases
+    return records, aliases, inventory
 
 
 def _safe_projection(store, records, aliases, privacy):
@@ -194,8 +200,10 @@ def _safe_projection(store, records, aliases, privacy):
     records["label"].sort(key=lambda row: tuple(row[field] for field in order))
 
 
-def _account_for_polls(records, *, draft_1_1):
-    counts = Counter(sighting["poll_id"] for sighting in records["sighting"])
+def _account_for_polls(records, inventory, *, contract_version):
+    sightings = {}
+    for sighting in records["sighting"]:
+        sightings.setdefault(sighting["poll_id"], Counter())[sighting["raw_sha"]] += 1
     retention = {channel["channel_id"]: channel["retention_class"] for channel in records["channel"]}
     for poll in records["poll"]:
         poll_id = poll["poll_id"]
@@ -203,20 +211,42 @@ def _account_for_polls(records, *, draft_1_1):
         unrepresented = poll["unrepresented"]
         withheld = poll["capture_withheld"]
         public = retention[poll["channel_id"]] == "public"
-        if counts[poll_id] + unrepresented != received:
+        by_capture = sightings.get(poll_id, Counter())
+        if sum(by_capture.values()) + unrepresented != received:
             raise ValueError(f"Poll {poll_id} has unreconciled records")
-        if unrepresented and (not poll["accounted"] or poll["status"] not in ("partial", "failed")):
+        accounted = poll.pop("accounted")
+        if unrepresented and (not accounted or poll["status"] not in ("partial", "failed")):
             raise ValueError(f"Poll {poll_id} has unverified unrepresented records")
-        if withheld is not None and (withheld != "secret_echo" or not public or poll["raw_sha"] is not None):
+        withheld_count = poll.pop("withheld_responses")
+        pages = inventory.get(poll_id, ())
+        if pages or withheld_count:
+            _check_inventory(poll, pages, by_capture, withheld_count)
+        if withheld is not None and (withheld != "secret_echo" or not public or not withheld_count):
             raise ValueError(f"Poll {poll_id} has an invalid capture withholding record")
         if public and poll["status"] in ("ok", "partial") and received and poll["raw_sha"] is None and not withheld:
             raise ValueError(f"Poll {poll_id} is missing an inventory capture without an audited reason")
-        if not draft_1_1:
+        if contract_version == VERSION and public and by_capture[None] and not withheld:
+            raise ValueError(f"Poll {poll_id} has public sightings with unexplained missing page evidence")
+        if contract_version == LEGACY_VERSION:
             if unrepresented or withheld:
-                raise ValueError(f"Poll {poll_id} requires proposed {DRAFT_VERSION} accounting. "
-                                 "No approved snapshot was published")
+                raise ValueError(f"Poll {poll_id} requires {VERSION} accounting. No v1 snapshot was published")
             del poll["unrepresented"], poll["capture_withheld"]
-        del poll["accounted"]
+
+
+def _check_inventory(poll, pages, by_capture, withheld_count):
+    poll_id = poll["poll_id"]
+    if any(page["disposition"] == "missing" for page in pages):
+        raise ValueError(f"Poll {poll_id} has an unexplained missing inventory response")
+    observed_withholding = sum(page["disposition"] == "secret_echo" for page in pages)
+    primary = next((page["raw_sha"] for page in pages if page["disposition"] == "retained"), None)
+    if (observed_withholding != withheld_count or bool(observed_withholding) != bool(poll["capture_withheld"])
+            or primary != poll["raw_sha"]):
+        raise ValueError(f"Poll {poll_id} has incomplete or inconsistent inventory accounting")
+    expected = Counter()
+    for page in pages:
+        expected[page["raw_sha"]] += page["sightings"]
+    if expected != by_capture:
+        raise ValueError(f"Poll {poll_id} has sightings that do not match its inventory accounting")
 
 
 def _classifier_versions(labels):
@@ -228,8 +258,10 @@ def _classifier_versions(labels):
 
 def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to=None,
                     market_id="dc", code_sha=None, created_at=None, snapshot_id=None,
-                    classifier_versions=None, draft_1_1=False):
+                    classifier_versions=None, contract_version=VERSION):
     """Return the new snapshot directory. For reproduction supply the original metadata."""
+    if contract_version not in (VERSION, LEGACY_VERSION):
+        raise ValueError("Unsupported Prospect export version")
     created_at = timestamp(created_at) if created_at is not None else store.now()
     start = timestamp(window_from)
     end = timestamp(window_to) if window_to is not None else created_at
@@ -250,9 +282,9 @@ def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to
     staged = Path(tempfile.mkdtemp(prefix=".snapshot-", dir=directory))
     try:
         with store.blobs.locked(), store.transaction(write=False) as db:
-            records, aliases = _select_rows(db, start, end)
+            records, aliases, inventory = _select_rows(db, start, end)
             _safe_projection(store, records, aliases, privacy)
-            _account_for_polls(records, draft_1_1=draft_1_1)
+            _account_for_polls(records, inventory, contract_version=contract_version)
         versions = _classifier_versions(records["label"]) if classifier_versions is None else {
             privacy.text(dimension): privacy.text(version) for dimension, version in classifier_versions.items()
         }
@@ -261,7 +293,7 @@ def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to
             for entity, rows in records.items()
         }
         manifest = {
-            "contract_version": DRAFT_VERSION if draft_1_1 else VERSION, "snapshot_id": snapshot_id, "created_at": created_at,
+            "contract_version": contract_version, "snapshot_id": snapshot_id, "created_at": created_at,
             "market_id": market_id, "prospect_code_sha": sha, "store_schema_version": store.schema_version,
             "classifier_versions": versions, "window": {"from": start, "to": end},
             "run_ids": [row["run_id"] for row in records["run"]], "files": files,
@@ -288,18 +320,17 @@ def main():
     parser.add_argument("--to", dest="window_to", help="Exclusive poll start (default: snapshot creation time)")
     parser.add_argument("--market", default="dc", help="Market identifier in the manifest")
     parser.add_argument("--code-sha", help="Source Git commit (default: PROSPECT_CODE_SHA or checkout HEAD)")
-    parser.add_argument("--draft-1-1", action="store_true",
-                        help="Write the proposed 1.1 format for synthetic compatibility testing only")
+    parser.add_argument("--contract-version", choices=(VERSION, LEGACY_VERSION), default=VERSION,
+                        help="Export version (default: %(default)s)")
     args = parser.parse_args()
     if not args.data_dir:
         parser.error("Supply --data-dir or set PROSPECT_DATA_DIR")
-    if args.draft_1_1:
-        print(f"Warning: {DRAFT_VERSION} is unapproved and cannot be used for scoring.", file=sys.stderr)
     try:
         with Store.in_data_dir(args.data_dir, create=False) as store:
             snapshot = export_snapshot(
                 store, args.out or store.path.parent / "exports", window_from=args.window_from,
-                window_to=args.window_to, market_id=args.market, code_sha=args.code_sha, draft_1_1=args.draft_1_1,
+                window_to=args.window_to, market_id=args.market, code_sha=args.code_sha,
+                contract_version=args.contract_version,
             )
     except (ValueError, OSError, sqlite3.Error) as error:
         parser.exit(1, f"Export failed: {error}\n")

@@ -61,10 +61,7 @@ class _ObservationBatch:
         self.receipts = []
         self.observations = []
         self.details = {}
-        self.current_inventory = None
-        self.current_inventory_withheld = False
-        self.withheld_inventory_responses = 0
-        self.unexplained_inventory = False
+        self.inventory = []
         self.unrepresented = 0
         self.declared_total = None
         self.received = 0
@@ -72,20 +69,20 @@ class _ObservationBatch:
         self.private_values = tuple(value for value in private_values if value)
 
     def capture(self, body, role):
+        page = None
         if role == "inventory":
-            self.current_inventory = None
-            self.current_inventory_withheld = False
+            page = dict(disposition="missing", raw_sha=None, sightings=0)
+            self.inventory.append(page)
         if not isinstance(body, bytes):
             return
         if any(value.encode() in body for value in self.private_values):
-            if role == "inventory":
-                self.current_inventory_withheld = True
-                self.withheld_inventory_responses += 1
+            if page is not None:
+                page["disposition"] = "secret_echo"
             return  # Only public response bodies belong in the capture store.
         sha = self.store.blobs.put(body, "public")
         self.receipts.append((sha, role, len(body), self.store.now()))
-        if role == "inventory":
-            self.current_inventory = sha
+        if page is not None:
+            page.update(disposition="retained", raw_sha=sha)
 
     def usajobs_response(self, body):
         self.capture(body, "inventory")
@@ -95,8 +92,6 @@ class _ObservationBatch:
 
         self.declared_total = _total(total)
         self.received += len(items)
-        if items and self.current_inventory is None and not self.current_inventory_withheld:
-            self.unexplained_inventory = True
         # Account for the fetched page even if a legacy caller stops iterating.
         for item in items:
             try:
@@ -115,7 +110,11 @@ class _ObservationBatch:
             self.usajobs_sighting(row)
 
     def observe(self, row, identity_key, native_id):
-        self.observations.append((row.copy(), identity_key, native_id, self.current_inventory, self.store.now()))
+        if not self.inventory:
+            self.capture(None, "inventory")
+        page = self.inventory[-1]
+        page["sightings"] += 1
+        self.observations.append((row.copy(), identity_key, native_id, page["raw_sha"], self.store.now()))
 
     def usajobs_sighting(self, row):
         native_id = row["source_id"]
@@ -124,10 +123,10 @@ class _ObservationBatch:
         url = str(row["url"] or "")
         if native_id is None:
             canonical = self.privacy.url(url)
-            if not canonical and (not url or not row["title"]):
+            if not canonical:
                 self.unrepresented += 1
                 return
-            identity = "url:" + canonical if canonical else "unshareable:" + hashlib.sha256(url.encode()).hexdigest()
+            identity = "url:" + canonical
         else:
             identity = "usajobs:usajobs:" + native_id
         self.observe(row, identity, native_id)
@@ -136,6 +135,8 @@ class _ObservationBatch:
         from career_engine.ats import normalize_posting, posting_key
 
         self.received = len(items)
+        if not self.inventory:
+            self.capture(None, "inventory")
         for item in items:
             try:
                 row = normalize_posting(board, item, company)
@@ -172,9 +173,6 @@ class _ObservationBatch:
         raw_sha = next((sha for sha, role, _, _ in self.receipts if role == "inventory"), None)
         if self.unrepresented and status == "ok":
             status = "partial"
-        capture_withheld = None
-        if raw_sha is None and self.withheld_inventory_responses and not self.unexplained_inventory:
-            capture_withheld = "secret_echo"
         with self.store.transaction():
             for sha, _, byte_count, captured_at in self.receipts:
                 self.store.register_capture(sha, byte_count, captured_at=captured_at)
@@ -182,8 +180,8 @@ class _ObservationBatch:
                 self.run_id, self.channel_id, started_at=self.started_at, status=status,
                 received=self.received, declared_total=self.declared_total, raw_sha=raw_sha,
                 captures=((sha, role) for sha, role, _, _ in self.receipts),
-                unrepresented=self.unrepresented, capture_withheld=capture_withheld,
-                withheld_inventory_responses=self.withheld_inventory_responses,
+                unrepresented=self.unrepresented,
+                inventory=((page["disposition"], page["raw_sha"], page["sightings"]) for page in self.inventory),
             )
             for row, identity_key, native_id, capture_sha, observed_at in self.observations:
                 detail = self.details.pop(identity_key, None)

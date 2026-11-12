@@ -97,6 +97,18 @@ CREATE TABLE IF NOT EXISTS poll_accounting (
                                  (capture_withheld = 'secret_echo' AND withheld_inventory_responses > 0))
 );
 
+-- Ordered local receipts let an export verify which inventory pages were
+-- retained, withheld, or unexplained, without recording a withheld digest.
+CREATE TABLE IF NOT EXISTS poll_inventory (
+    poll_id TEXT NOT NULL REFERENCES poll(poll_id),
+    ordinal INTEGER NOT NULL CHECK (ordinal >= 0),
+    disposition TEXT NOT NULL CHECK (disposition IN ('retained', 'secret_echo', 'missing')),
+    raw_sha TEXT REFERENCES raw_capture(raw_sha),
+    sightings INTEGER NOT NULL CHECK (sightings >= 0),
+    CHECK ((disposition = 'retained') = (raw_sha IS NOT NULL)),
+    PRIMARY KEY (poll_id, ordinal)
+);
+
 CREATE TABLE IF NOT EXISTS posting (
     posting_id TEXT PRIMARY KEY NOT NULL,
     employer_id TEXT REFERENCES employer(employer_id),

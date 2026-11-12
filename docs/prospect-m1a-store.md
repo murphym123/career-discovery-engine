@@ -32,7 +32,7 @@ never hands to a collector remains in that workflow's own status report.
 
 The SQL migration in `career_engine/store/schema.sql` defines employers and
 aliases, employer merges, frames and memberships, channels, runs, polls,
-captures, postings, sightings, and append-only labels. Frames have storage for
+captures, ordered inventory receipts, postings, sightings, and append-only labels. Frames have storage for
 later work. A posting is identified by its provider, tenant and native job ID,
 or by its URL when a native ID is unavailable. Employer references remain
 nullable until there is evidence to resolve them. The store does not infer
@@ -46,8 +46,9 @@ evidence for those rows. Denials, interrupted streams, and response bodies the
 existing collector does not read are represented by poll status and available
 counts. The adapter never reads extra bytes to obtain a capture. USAJOBS request
 headers are never stored, and a body that echoes a configured USAJOBS credential
-is refused. The store records the withholding event without storing or hashing
-that body. Counts of unrepresentable records are recorded at intake, independently
+is refused. The store records which inventory responses were retained or
+withheld and the number of sightings each supplied. The withheld body and its
+digest are absent. Counts of unrepresentable records are recorded at intake, independently
 of how many sightings were written. Offline tests use synthetic responses and
 credentials.
 
@@ -77,19 +78,23 @@ default window starts at the Unix epoch and ends at snapshot creation. The
 exporter prints the path it created. Set `--code-sha` or `PROSPECT_CODE_SHA`
 when running outside a Git checkout. If a selected poll belongs to an unfinished
 run, the exporter fails clearly and leaves the destination free of partial
-snapshots. It also refuses unexplained missing primary inventory captures, counts that
-do not reconcile, and polls whose accounting requires an unapproved version.
+snapshots. It also refuses unexplained missing inventory responses and counts
+that do not reconcile.
 
 The exporter reads a consistent store view and writes the seven ordered JSONL
 files and the JSON manifest from the
-[approved export contract](decisions/0001-export-contract.md). The manifest
+[approved export contract](decisions/0001-export-contract.md). The default is
+`prospect-export/1.1`. Each poll discloses known capture withholding and counts
+unrepresentable source records. Use `--contract-version prospect-export/1` for
+historical v1 output when the selected polls can be expressed without those
+disclosures. The manifest
 carries the count and SHA-256 of each file. The projection excludes raw bodies,
 descriptions, credentials, mailbox locators, and restricted or licensed
 source rows. It strips tracking parameters and fragments, preserves recognized
 public job identifiers, and uses the contract's redacted URL when it lacks a
 shareable link. Snapshot IDs and creation times are fresh for normal exports.
-With fixed manifest inputs, the offline fixture test reproduces all eight
-golden files byte for byte.
+With fixed manifest inputs, the offline tests reproduce both eight-file golden
+bundles byte for byte.
 
 ```sh
 python -m unittest discover -s tests -p 'test_prospect_store.py' -v
@@ -100,10 +105,13 @@ The fixture test seeds a temporary SQLite store with the approved synthetic
 records, reconstructs their posting lifecycles, recreates the synthetic public
 bodies, and purges the designated body before exporting. It compares each
 resulting file with the shared fixture. Collector tests use in-memory responses
-and no live credentials.
+and no live credentials. The separate
+[1.1 golden bundle](../fixtures/export-v1.1-example/) is generated from the real
+adapters with synthetic responses and covers a withheld-only poll, a mixed
+safe/withheld poll, and a poll with an unrepresentable row.
 
-For the two cases in the [proposed poll accounting decision](decisions/0002-poll-evidence-accounting.md),
-run the cross-repository test with the M2a validator available locally:
+To check the [approved poll accounting rules](decisions/0003-poll-evidence-accounting.md)
+across repositories, run the cross-repository test with the M2a validator available locally:
 
 ```sh
 PROSPECT_EVAL_CHECKOUT=/path/to/prospect-evaluation \
@@ -111,10 +119,9 @@ PROSPECT_EVAL_CHECKOUT=/path/to/prospect-evaluation \
 ```
 
 The test uses the evaluator's CLI against actual synthetic collector exports.
-The review tested evaluator commit `1ff14f189ac78b034eb5aed2f4ded23f156e2fe9`.
-The public CI suite runs the producer tests and skips this one external check
-when the private evaluation checkout is unavailable. `--draft-1-1` generates the
-proposed format for compatibility testing. Production exports still use v1.
+Use the evaluator revision that supports 1.1 by default. The public CI suite
+runs the producer tests and skips this one external check when the private
+evaluation checkout is unavailable.
 
 ## Open operational and privacy decisions
 

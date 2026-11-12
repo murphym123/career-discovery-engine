@@ -12,11 +12,13 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import closing
 from datetime import datetime, timedelta, timezone
+from itertools import count
 from pathlib import Path
 from unittest.mock import patch
+from uuid import UUID
 
 from career_engine.ats import PublicTransport, board_from_url, retrieve_board
-from career_engine.export import export_snapshot
+from career_engine.export import LEGACY_VERSION, VERSION, export_snapshot
 from career_engine.regional_usajobs import collect_usajobs as collect_regional
 from career_engine.sources import SourceStats, retrieve
 from career_engine.store import Store
@@ -24,6 +26,7 @@ from career_engine.store.collectors import collect_greenhouse, collect_usajobs
 
 ROOT = Path(__file__).resolve().parents[1]
 GOLDEN = ROOT / "fixtures" / "export-v1-example"
+GOLDEN_1_1 = ROOT / "fixtures" / "export-v1.1-example"
 START = "2026-11-18T14:00:00Z"
 CODE_SHA = "11" * 20
 CONFIG_SHA = hashlib.sha256(b"synthetic public collection settings").hexdigest()
@@ -117,7 +120,8 @@ class StoreTestCase(unittest.TestCase):
         values = dict(identity_key="greenhouse:synthetic:1", native_id="1",
                       url=GH_BOARD["url"] + "/jobs/1", canonical_url=GH_BOARD["url"] + "/jobs/1",
                       title="Policy researcher", employer_name_raw="Synthetic employer", location_raw="Washington")
-        return self.store.record_sighting(poll_id, **(values | fields))
+        poll = self.store.connection.execute("SELECT raw_sha FROM poll WHERE poll_id = ?", (poll_id,)).fetchone()
+        return self.store.record_sighting(poll_id, **(values | {"raw_sha": poll["raw_sha"] if poll else None} | fields))
 
     def export(self, **options):
         self.advance()
@@ -249,7 +253,7 @@ class StoreTests(StoreTestCase):
                     poll, identity_key="greenhouse:synthetic:1", native_id="1",
                     url=GH_BOARD["url"] + "/jobs/1", canonical_url=GH_BOARD["url"] + "/jobs/1",
                     title="Synthetic role", employer_name_raw="Synthetic employer", location_raw="Unknown",
-                    observed_at=when,
+                    observed_at=when, raw_sha=sha,
                 )
 
         with ThreadPoolExecutor(max_workers=2) as workers:
@@ -420,81 +424,97 @@ class CollectorTests(StoreTestCase):
 
 class PollAccountingTests(StoreTestCase):
     def collect_exceptional_polls(self):
-        echoed = federal_page(1, federal_job(810, QualificationSummary=CREDS["USAJOBS_API_KEY"]))
-        run = self.run_id()
-        with patch.dict(os.environ, CREDS, clear=True):
-            original = list(collect_usajobs(self.store, run, Session(echoed)))
-        self.assertEqual(len(original), 1)
+        def federal(number, **fields):
+            return federal_job(number, PositionURI=f"https://federal.example/jobs/{number}", **fields)
+
+        secret = {"QualificationSummary": CREDS["USAJOBS_API_KEY"]}
+        echoed = federal_page(1, federal(810, **secret))
+        safe = federal_page(101, federal(820))
+        echoed_second = federal_page(101, federal(821, **secret))
         board = Session(
-            Response({"jobs": [greenhouse_job(811), {"title": "Unidentifiable fragment"}]}),
+            Response({"jobs": [
+                greenhouse_job(811, absolute_url="https://synthetic-gh.example/jobs/811"),
+                {"title": "Unidentifiable fragment"},
+            ]}),
             Response({"name": "Synthetic employer"}),
         )
-        rows, stats = collect_greenhouse(self.store, run, PublicTransport(board, pause=lambda _: None),
-                                         GH_BOARD, detail_budget=0)
-        self.assertEqual((len(rows), stats["received"], stats["malformed"]), (1, 2, 1))
-        self.store.end_run(run)
-        return echoed
+        with patch("career_engine.store.uuid4", side_effect=(UUID(int=i) for i in count(1))):
+            run = self.run_id(run_id="run-accounting")
+            self.channel(platform="usajobs", kind="api", locator="https://federal.example/",
+                         channel_key="usajobs:dc-radius-35")
+            self.channel(locator="https://synthetic-gh.example/", channel_key=GH_BOARD["key"])
+            with patch.dict(os.environ, CREDS, clear=True):
+                self.assertEqual(len(list(collect_usajobs(self.store, run, Session(echoed)))), 1)
+                self.advance()
+                self.assertEqual(len(list(collect_usajobs(self.store, run, Session(safe, echoed_second)))), 2)
+            self.advance()
+            rows, stats = collect_greenhouse(self.store, run, PublicTransport(board, pause=lambda _: None),
+                                             GH_BOARD, detail_budget=0)
+            self.assertEqual((len(rows), stats["received"], stats["malformed"]), (1, 2, 1))
+            self.store.end_run(run)
+        return echoed, safe, echoed_second
 
-    def test_draft_discloses_withholding_and_counted_source_rows(self):
-        echoed = self.collect_exceptional_polls()
-        with self.assertRaisesRegex(ValueError, "requires proposed prospect-export/1.1"):
-            self.export()
+    def accounting_bundle(self):
+        return self.export(snapshot_id="01M7QFWDP00000000000000000",
+                           window_from=START, created_at="2026-11-18T14:10:00Z")
+
+    def test_1_1_golden_discloses_all_three_accounting_cases(self):
+        echoed, safe, echoed_second = self.collect_exceptional_polls()
+        with self.assertRaisesRegex(ValueError, "requires prospect-export/1.1 accounting"):
+            self.export(contract_version=LEGACY_VERSION)
         self.assertEqual(list((self.data / "exports").iterdir()), [])
-        bundle = self.export(draft_1_1=True)
-        manifest = json.loads((bundle / "manifest.json").read_bytes())
-        self.assertEqual(manifest["contract_version"], "prospect-export/1.1")
-        polls = {p["received"]: p for p in read_rows(bundle, "polls")}
-        withheld, malformed = polls[1], polls[2]
+        bundle = self.accounting_bundle()
+        self.assertEqual(snapshot_files(bundle), snapshot_files(GOLDEN_1_1))
+
+        sightings = {row["native_id"]: row for row in read_rows(bundle, "sightings")}
+        polls = {row["poll_id"]: row for row in read_rows(bundle, "polls")}
+        withheld, malformed, mixed = (polls[sightings[native]["poll_id"]] for native in ("810", "811", "820"))
         self.assertEqual((withheld["status"], withheld["capture_withheld"], withheld["unrepresented"], withheld["raw_sha"]),
                          ("ok", "secret_echo", 0, None))
         self.assertEqual((malformed["status"], malformed["capture_withheld"], malformed["unrepresented"]),
                          ("partial", None, 1))
         self.assertIsNotNone(malformed["raw_sha"])
-        sightings = {s["poll_id"]: s for s in read_rows(bundle, "sightings")}
-        self.assertEqual(len(sightings), 2)
-        refused = sightings[withheld["poll_id"]]
-        for field in ("raw_sha", "raw_locator", "description_sha"):
-            self.assertIsNone(refused[field])
-        sha = hashlib.sha256(echoed.content).hexdigest()
-        self.assertFalse(self.store.blobs.exists(sha))
+        self.assertEqual(mixed["capture_withheld"], "secret_echo")
+        self.assertEqual(mixed["raw_sha"], hashlib.sha256(safe.content).hexdigest())
+        self.assertEqual(sightings["820"]["raw_sha"], mixed["raw_sha"])
+        for native in ("810", "821"):
+            for field in ("raw_sha", "raw_locator", "description_sha"):
+                self.assertIsNone(sightings[native][field])
+        pages = self.store.connection.execute(
+            "SELECT ordinal, disposition, raw_sha, sightings FROM poll_inventory WHERE poll_id = ? ORDER BY ordinal",
+            (mixed["poll_id"],),
+        )
+        self.assertEqual([tuple(row) for row in pages],
+                         [(0, "retained", mixed["raw_sha"], 1), (1, "secret_echo", None, 1)])
         data = b"".join(snapshot_files(bundle).values())
-        self.assertNotIn(sha.encode(), data)
+        for body in (echoed, echoed_second):
+            sha = hashlib.sha256(body.content).hexdigest()
+            self.assertFalse(self.store.blobs.exists(sha))
+            self.assertNotIn(sha.encode(), data)
         self.assertNotIn(CREDS["USAJOBS_API_KEY"].encode(), data)
         self.assertNotIn(b"Unidentifiable fragment", data)
-
-    def test_a_safe_inventory_page_keeps_its_hash_when_another_is_withheld(self):
-        safe = federal_page(101, federal_job(820))
-        echoed = federal_page(101, federal_job(821, QualificationSummary=CREDS["USAJOBS_API_KEY"]))
-        run = self.run_id()
-        with patch.dict(os.environ, CREDS, clear=True):
-            list(collect_usajobs(self.store, run, Session(safe, echoed)))
-        self.store.end_run(run)
-        approved = self.export()
-        approved_poll, = read_rows(approved, "polls")
-        self.assertNotIn("capture_withheld", approved_poll)
-        poll, = read_rows(self.export(draft_1_1=True), "polls")
-        self.assertIsNone(poll["capture_withheld"])
-        self.assertEqual(poll["raw_sha"], hashlib.sha256(safe.content).hexdigest())
-        by_native = {s["native_id"]: s["raw_sha"] for s in read_rows(approved, "sightings")}
-        self.assertEqual(by_native, {"820": poll["raw_sha"], "821": None})
-        row, = self.store.connection.execute("SELECT withheld_inventory_responses FROM poll_accounting")
-        self.assertEqual(row[0], 1)
 
     def test_missing_capture_cannot_borrow_a_withheld_reason_from_another_page(self):
         class NoBody:
             status_code = 200
 
             def json(self):
-                return {"SearchResult": {"SearchResultCountAll": 101, "SearchResultItems": [federal_job(831)]}}
+                return {"SearchResult": {"SearchResultCountAll": 201, "SearchResultItems": [federal_job(831)]}}
 
-        echoed = federal_page(101, federal_job(830, QualificationSummary=CREDS["USAJOBS_API_KEY"]))
+        safe = federal_page(201, federal_job(829))
+        echoed = federal_page(201, federal_job(830, QualificationSummary=CREDS["USAJOBS_API_KEY"]))
         run = self.run_id()
         with patch.dict(os.environ, CREDS, clear=True):
-            list(collect_usajobs(self.store, run, Session(echoed, NoBody())))
+            list(collect_usajobs(self.store, run, Session(safe, echoed, NoBody())))
         self.store.end_run(run)
-        for draft in (False, True):
-            with self.assertRaisesRegex(ValueError, "missing an inventory capture without an audited reason"):
-                self.export(draft_1_1=draft)
+        with self.assertRaisesRegex(ValueError, "unexplained missing inventory response"):
+            self.export()
+
+    def test_withholding_cannot_hide_a_lost_sighting_capture(self):
+        self.collect_exceptional_polls()
+        self.store.connection.execute("UPDATE sighting SET raw_sha = NULL WHERE native_id = '820'")
+        with self.assertRaisesRegex(ValueError, "sightings that do not match its inventory accounting"):
+            self.export()
 
     def test_early_usa_jobs_iterator_close_preserves_the_fetched_page(self):
         run = self.run_id()
@@ -515,9 +535,9 @@ class PollAccountingTests(StoreTestCase):
                                       raw_sha=self.capture(), unrepresented=1)
         self.post(poll)
         self.store.end_run(run)
-        for draft in (False, True):
+        for version in (LEGACY_VERSION, VERSION):
             with self.assertRaisesRegex(ValueError, "unreconciled records"):
-                self.export(draft_1_1=draft)
+                self.export(contract_version=version)
 
     def test_earlier_m1a_store_is_upgraded_without_certifying_old_counts(self):
         run = self.run_id()
@@ -531,19 +551,17 @@ class PollAccountingTests(StoreTestCase):
             self.assertEqual(reopened.connection.execute("SELECT unrepresented FROM poll").fetchone()[0], 1)
             with self.assertRaisesRegex(ValueError, "unverified unrepresented records"):
                 export_snapshot(reopened, self.data / "upgrade", code_sha=CODE_SHA,
-                                created_at="2026-11-18T15:00:00Z", draft_1_1=True)
+                                created_at="2026-11-18T15:00:00Z")
 
     @unittest.skipUnless(os.environ.get("PROSPECT_EVAL_CHECKOUT"),
                          "set PROSPECT_EVAL_CHECKOUT to an M2a checkout for cross-repository validation")
     def test_m2a_validator_checks_real_producer_output(self):
         self.collect_exceptional_polls()
-        bundle = self.export(draft_1_1=True)
+        bundle = self.accounting_bundle()
         evaluator = Path(os.environ["PROSPECT_EVAL_CHECKOUT"]).resolve()
 
-        def validate(directory, *, proposed):
+        def validate(directory):
             command = [sys.executable, "-m", "contract.validate", str(directory), "--json"]
-            if proposed:
-                command.append("--allow-proposed")
             process = subprocess.run(command, cwd=evaluator, capture_output=True, text=True)
             self.assertIn(process.returncode, (0, 1), process.stderr)
             report = json.loads(process.stdout)
@@ -578,18 +596,18 @@ class PollAccountingTests(StoreTestCase):
             for row in rows:
                 del row["capture_withheld"], row["unrepresented"]
 
-        def remove_reason(rows):
-            next(row for row in rows if row["capture_withheld"])["capture_withheld"] = None
+        def remove_mixed_reason(rows):
+            next(row for row in rows if row["capture_withheld"] and row["raw_sha"])["capture_withheld"] = None
 
-        self.assertEqual(validate(GOLDEN, proposed=False), set())
-        self.assertEqual(validate(bundle, proposed=False), {"unsupported_version"})
-        self.assertEqual(validate(bundle, proposed=True), set())
-        approved_shape = mutate("v1", change_polls=legacy, version="prospect-export/1")
-        self.assertEqual(validate(approved_shape, proposed=False), {"invariant", "silent_drop"})
-        without_reason = mutate("missing-reason", change_polls=remove_reason)
-        self.assertEqual(validate(without_reason, proposed=True), {"invariant"})
+        self.assertEqual(validate(GOLDEN), set())
+        self.assertEqual(validate(GOLDEN_1_1), set())
+        self.assertEqual(validate(bundle), set())
+        legacy_shape = mutate("v1", change_polls=legacy, version=LEGACY_VERSION)
+        self.assertEqual(validate(legacy_shape), {"invariant", "silent_drop"})
+        without_reason = mutate("missing-mixed-reason", change_polls=remove_mixed_reason)
+        self.assertEqual(validate(without_reason), {"invariant"})
         with_drop = mutate("dropped-sighting", drop_sighting=True)
-        self.assertEqual(validate(with_drop, proposed=True), {"silent_drop"})
+        self.assertEqual(validate(with_drop), {"silent_drop"})
 
 
 class GoldenSnapshotTests(StoreTestCase):
@@ -638,7 +656,7 @@ class GoldenSnapshotTests(StoreTestCase):
         expected = json.loads((GOLDEN / "manifest.json").read_bytes())
         metadata = dict(window_from=expected["window"]["from"], window_to=expected["window"]["to"],
                         created_at=expected["created_at"], snapshot_id=expected["snapshot_id"],
-                        code_sha=expected["prospect_code_sha"])
+                        code_sha=expected["prospect_code_sha"], contract_version=LEGACY_VERSION)
         first = export_snapshot(self.store, self.data / "exports", **metadata)
         second = export_snapshot(self.store, self.data / "repeat", **metadata)
         self.assertEqual(snapshot_files(first), snapshot_files(GOLDEN))
@@ -659,7 +677,7 @@ class GoldenSnapshotTests(StoreTestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         created = Path(result.stdout.strip())
         manifest = json.loads((created / "manifest.json").read_bytes())
-        self.assertEqual(manifest["contract_version"], "prospect-export/1")
+        self.assertEqual(manifest["contract_version"], VERSION)
         self.assertNotEqual(created.name, expected.name)
         self.assertEqual(manifest["files"], json.loads((expected / "manifest.json").read_bytes())["files"])
         for name, info in manifest["files"].items():

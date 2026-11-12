@@ -3,6 +3,8 @@
 **Status:** Approved by the product owner and merged in [PR #32](https://github.com/murphym123/career-discovery-engine/pull/32) (2026-11-11, America/Denver).
 **Authority:** [Prospect M0–M2 implementation specification](../specs/prospect-m0-m2-spec.md), especially §§4–5 and §8.1. The specification's review-era text is preserved verbatim. This record defines the exchange details and applies the approval clarifications on blinding, reproducibility, and execution.
 
+**Current version:** [Decision 0003](0003-poll-evidence-accounting.md) adds required poll evidence fields in `prospect-export/1.1`. The rest of this contract applies to 1.1. The layout and [golden fixture](../../fixtures/export-v1-example/) below still define historical `prospect-export/1` for backward validation and reproduction.
+
 ## Decision
 
 `prospect-export/1` is the shared interface between Prospect discovery and the evaluation repository. Prospect supplies an immutable snapshot with collection evidence and label history. Evaluation validates it and matches independently collected reference evidence. A contract change requires a new decision record and a version bump.
