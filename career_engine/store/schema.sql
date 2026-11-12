@@ -88,6 +88,15 @@ CREATE TABLE IF NOT EXISTS poll_capture (
     PRIMARY KEY (poll_id, ordinal)
 );
 
+-- An entry distinguishes newly accounted exceptions from any inferred counts
+-- in a database made with the earlier M1a review branch.
+CREATE TABLE IF NOT EXISTS poll_accounting (
+    poll_id TEXT PRIMARY KEY NOT NULL REFERENCES poll(poll_id),
+    withheld_inventory_responses INTEGER NOT NULL CHECK (withheld_inventory_responses >= 0),
+    capture_withheld TEXT CHECK (capture_withheld IS NULL OR
+                                 (capture_withheld = 'secret_echo' AND withheld_inventory_responses > 0))
+);
+
 CREATE TABLE IF NOT EXISTS posting (
     posting_id TEXT PRIMARY KEY NOT NULL,
     employer_id TEXT REFERENCES employer(employer_id),

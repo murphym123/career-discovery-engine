@@ -46,7 +46,10 @@ evidence for those rows. Denials, interrupted streams, and response bodies the
 existing collector does not read are represented by poll status and available
 counts. The adapter never reads extra bytes to obtain a capture. USAJOBS request
 headers are never stored, and a body that echoes a configured USAJOBS credential
-is refused. Offline tests use synthetic responses and credentials.
+is refused. The store records the withholding event without storing or hashing
+that body. Counts of unrepresentable records are recorded at intake, independently
+of how many sightings were written. Offline tests use synthetic responses and
+credentials.
 
 The blob store refuses restricted and licensed raw captures and fails closed for
 private email until M4 provides sanitization. Public bodies are pruned after 18
@@ -74,7 +77,8 @@ default window starts at the Unix epoch and ends at snapshot creation. The
 exporter prints the path it created. Set `--code-sha` or `PROSPECT_CODE_SHA`
 when running outside a Git checkout. If a selected poll belongs to an unfinished
 run, the exporter fails clearly and leaves the destination free of partial
-snapshots.
+snapshots. It also refuses unexplained missing primary inventory captures, counts that
+do not reconcile, and polls whose accounting requires an unapproved version.
 
 The exporter reads a consistent store view and writes the seven ordered JSONL
 files and the JSON manifest from the
@@ -97,6 +101,20 @@ records, reconstructs their posting lifecycles, recreates the synthetic public
 bodies, and purges the designated body before exporting. It compares each
 resulting file with the shared fixture. Collector tests use in-memory responses
 and no live credentials.
+
+For the two cases in the [proposed poll accounting decision](decisions/0002-poll-evidence-accounting.md),
+run the cross-repository test with the M2a validator available locally:
+
+```sh
+PROSPECT_EVAL_CHECKOUT=/path/to/prospect-evaluation \
+  python -m unittest discover -s tests -p 'test_prospect_store.py' -v
+```
+
+The test uses the evaluator's CLI against actual synthetic collector exports.
+The review tested evaluator commit `1ff14f189ac78b034eb5aed2f4ded23f156e2fe9`.
+The public CI suite runs the producer tests and skips this one external check
+when the private evaluation checkout is unavailable. `--draft-1-1` generates the
+proposed format for compatibility testing. Production exports still use v1.
 
 ## Open operational and privacy decisions
 

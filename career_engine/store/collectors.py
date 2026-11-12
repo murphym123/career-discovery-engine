@@ -62,28 +62,57 @@ class _ObservationBatch:
         self.observations = []
         self.details = {}
         self.current_inventory = None
+        self.current_inventory_withheld = False
+        self.withheld_inventory_responses = 0
+        self.unexplained_inventory = False
+        self.unrepresented = 0
         self.declared_total = None
         self.received = 0
         self.privacy = Projection()
         self.private_values = tuple(value for value in private_values if value)
 
     def capture(self, body, role):
+        if role == "inventory":
+            self.current_inventory = None
+            self.current_inventory_withheld = False
         if not isinstance(body, bytes):
             return
         if any(value.encode() in body for value in self.private_values):
-            return  # The API may authenticate the request, but only public response bodies belong here.
+            if role == "inventory":
+                self.current_inventory_withheld = True
+                self.withheld_inventory_responses += 1
+            return  # Only public response bodies belong in the capture store.
         sha = self.store.blobs.put(body, "public")
         self.receipts.append((sha, role, len(body), self.store.now()))
         if role == "inventory":
             self.current_inventory = sha
 
     def usajobs_response(self, body):
-        self.current_inventory = None
         self.capture(body, "inventory")
 
-    def usajobs_page(self, total, received):
+    def usajobs_page(self, total, items):
+        from career_engine.sources import normalize
+
         self.declared_total = _total(total)
-        self.received += received
+        self.received += len(items)
+        if items and self.current_inventory is None and not self.current_inventory_withheld:
+            self.unexplained_inventory = True
+        # Account for the fetched page even if a legacy caller stops iterating.
+        for item in items:
+            try:
+                row = normalize("usajobs", item)
+            except (ValueError, TypeError, AttributeError):
+                if not isinstance(item, dict):
+                    self.unrepresented += 1
+                    continue
+                fields = item.get("MatchedObjectDescriptor")
+                fields = fields if isinstance(fields, dict) else {}
+                row = dict(
+                    source_id=str(item.get("MatchedObjectId") or ""), title=fields.get("PositionTitle"),
+                    url=fields.get("PositionURI"), company=fields.get("OrganizationName"),
+                    location=fields.get("PositionLocationDisplay"),
+                )
+            self.usajobs_sighting(row)
 
     def observe(self, row, identity_key, native_id):
         self.observations.append((row.copy(), identity_key, native_id, self.current_inventory, self.store.now()))
@@ -94,16 +123,17 @@ class _ObservationBatch:
             native_id = None
         url = str(row["url"] or "")
         if native_id is None:
-            if not url or not row["title"]:
-                return
             canonical = self.privacy.url(url)
+            if not canonical and (not url or not row["title"]):
+                self.unrepresented += 1
+                return
             identity = "url:" + canonical if canonical else "unshareable:" + hashlib.sha256(url.encode()).hexdigest()
         else:
             identity = "usajobs:usajobs:" + native_id
         self.observe(row, identity, native_id)
 
     def greenhouse_inventory(self, board, items, company):
-        from career_engine.ats import normalize_posting
+        from career_engine.ats import normalize_posting, posting_key
 
         self.received = len(items)
         for item in items:
@@ -113,14 +143,22 @@ class _ObservationBatch:
                 # A provider ID still identifies the posting when its link is
                 # missing or fails the legacy URL checks.
                 native_id = str(item.get("id", "")) if isinstance(item, dict) else ""
-                if native_id.isdigit():
-                    self.observe(
-                        dict(title=item.get("title"), company=item.get("company_name") or company,
-                             location=item.get("location", {}).get("name") if isinstance(item.get("location"), dict)
-                             else item.get("location"), url="", posted_at=item.get("first_published"),
-                             closing_at=item.get("application_deadline")),
-                        f"{board['key']}:{native_id}", native_id,
-                    )
+                public_url = ""
+                if not native_id.isdigit() and isinstance(item, dict):
+                    public_url = self.privacy.url(str(item.get("absolute_url") or ""))
+                    url_key = posting_key(public_url) if public_url else ""
+                    if url_key.startswith(board["key"] + ":"):
+                        native_id = url_key.rsplit(":", 1)[-1]
+                if not native_id.isdigit():
+                    self.unrepresented += 1
+                    continue
+                self.observe(
+                    dict(title=item.get("title"), company=item.get("company_name") or company,
+                         location=item.get("location", {}).get("name") if isinstance(item.get("location"), dict)
+                         else item.get("location"), url=public_url, posted_at=item.get("first_published"),
+                         closing_at=item.get("application_deadline")),
+                    f"{board['key']}:{native_id}", native_id,
+                )
                 continue
             self.observe(row, row["identity"], row["identity"].rsplit(":", 1)[-1])
 
@@ -132,7 +170,11 @@ class _ObservationBatch:
 
     def commit(self, status):
         raw_sha = next((sha for sha, role, _, _ in self.receipts if role == "inventory"), None)
-        raw_sha = raw_sha or next((receipt[0] for receipt in self.receipts), None)
+        if self.unrepresented and status == "ok":
+            status = "partial"
+        capture_withheld = None
+        if raw_sha is None and self.withheld_inventory_responses and not self.unexplained_inventory:
+            capture_withheld = "secret_echo"
         with self.store.transaction():
             for sha, _, byte_count, captured_at in self.receipts:
                 self.store.register_capture(sha, byte_count, captured_at=captured_at)
@@ -140,7 +182,8 @@ class _ObservationBatch:
                 self.run_id, self.channel_id, started_at=self.started_at, status=status,
                 received=self.received, declared_total=self.declared_total, raw_sha=raw_sha,
                 captures=((sha, role) for sha, role, _, _ in self.receipts),
-                unrepresented=self.received - len(self.observations),
+                unrepresented=self.unrepresented, capture_withheld=capture_withheld,
+                withheld_inventory_responses=self.withheld_inventory_responses,
             )
             for row, identity_key, native_id, capture_sha, observed_at in self.observations:
                 detail = self.details.pop(identity_key, None)

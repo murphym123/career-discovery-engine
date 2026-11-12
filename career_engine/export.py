@@ -7,7 +7,9 @@ import re
 import secrets
 import shutil
 import sqlite3
+import sys
 import tempfile
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -16,6 +18,7 @@ from career_engine.store.blobs import outside_git
 from career_engine.store.privacy import Projection
 
 VERSION = "prospect-export/1"
+DRAFT_VERSION = "prospect-export/1.1"
 ULID_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 LABEL_FIELDS = "subject, subject_id, dimension, value, method, classifier_version, created_at"
 LABEL_ORDER = "subject, subject_id, dimension, created_at, classifier_version, method, value"
@@ -43,7 +46,8 @@ SELECTIONS = {
 FIELDS = {
     "run": "run_id, started_at, finished_at, code_sha, config_sha, trigger, arm",
     "channel": "channel_id, employer_id, kind, platform, locator, retention_class, evidence_role, verification_state",
-    "poll": "poll_id, run_id, channel_id, started_at, status, declared_total, received, raw_sha",
+    "poll": """poll_id, run_id, channel_id, started_at, status, declared_total, received, raw_sha,
+               unrepresented, capture_withheld, poll_accounting.poll_id IS NOT NULL AS accounted""",
     "employer": "employer_id, canonical_name, status, origin, merged_into",
     "posting": "posting_id, employer_id, identity_key, first_seen, last_seen, closed_observed_at",
     "sighting": """sighting_id, posting_id, poll_id, channel_id, native_id, url, canonical_url,
@@ -87,6 +91,7 @@ def _select_rows(db, window_from, window_to):
     records = {
         entity: [dict(row) for row in db.execute(f"""
             SELECT {fields} FROM {entity} JOIN export_{entity} USING ({entity}_id)
+            {"LEFT JOIN poll_accounting USING (poll_id)" if entity == "poll" else ""}
             ORDER BY {entity}_id
         """)]
         for entity, fields in FIELDS.items()
@@ -189,6 +194,31 @@ def _safe_projection(store, records, aliases, privacy):
     records["label"].sort(key=lambda row: tuple(row[field] for field in order))
 
 
+def _account_for_polls(records, *, draft_1_1):
+    counts = Counter(sighting["poll_id"] for sighting in records["sighting"])
+    retention = {channel["channel_id"]: channel["retention_class"] for channel in records["channel"]}
+    for poll in records["poll"]:
+        poll_id = poll["poll_id"]
+        received = poll["received"]
+        unrepresented = poll["unrepresented"]
+        withheld = poll["capture_withheld"]
+        public = retention[poll["channel_id"]] == "public"
+        if counts[poll_id] + unrepresented != received:
+            raise ValueError(f"Poll {poll_id} has unreconciled records")
+        if unrepresented and (not poll["accounted"] or poll["status"] not in ("partial", "failed")):
+            raise ValueError(f"Poll {poll_id} has unverified unrepresented records")
+        if withheld is not None and (withheld != "secret_echo" or not public or poll["raw_sha"] is not None):
+            raise ValueError(f"Poll {poll_id} has an invalid capture withholding record")
+        if public and poll["status"] in ("ok", "partial") and received and poll["raw_sha"] is None and not withheld:
+            raise ValueError(f"Poll {poll_id} is missing an inventory capture without an audited reason")
+        if not draft_1_1:
+            if unrepresented or withheld:
+                raise ValueError(f"Poll {poll_id} requires proposed {DRAFT_VERSION} accounting. "
+                                 "No approved snapshot was published")
+            del poll["unrepresented"], poll["capture_withheld"]
+        del poll["accounted"]
+
+
 def _classifier_versions(labels):
     versions = {"geo": "none", "in_scope": "none"}
     for label in sorted(labels, key=lambda row: (row["created_at"].removesuffix("Z"), row["classifier_version"])):
@@ -198,7 +228,7 @@ def _classifier_versions(labels):
 
 def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to=None,
                     market_id="dc", code_sha=None, created_at=None, snapshot_id=None,
-                    classifier_versions=None):
+                    classifier_versions=None, draft_1_1=False):
     """Return the new snapshot directory. For reproduction supply the original metadata."""
     created_at = timestamp(created_at) if created_at is not None else store.now()
     start = timestamp(window_from)
@@ -222,6 +252,7 @@ def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to
         with store.blobs.locked(), store.transaction(write=False) as db:
             records, aliases = _select_rows(db, start, end)
             _safe_projection(store, records, aliases, privacy)
+            _account_for_polls(records, draft_1_1=draft_1_1)
         versions = _classifier_versions(records["label"]) if classifier_versions is None else {
             privacy.text(dimension): privacy.text(version) for dimension, version in classifier_versions.items()
         }
@@ -230,7 +261,7 @@ def export_snapshot(store, out, *, window_from="1970-01-01T00:00:00Z", window_to
             for entity, rows in records.items()
         }
         manifest = {
-            "contract_version": VERSION, "snapshot_id": snapshot_id, "created_at": created_at,
+            "contract_version": DRAFT_VERSION if draft_1_1 else VERSION, "snapshot_id": snapshot_id, "created_at": created_at,
             "market_id": market_id, "prospect_code_sha": sha, "store_schema_version": store.schema_version,
             "classifier_versions": versions, "window": {"from": start, "to": end},
             "run_ids": [row["run_id"] for row in records["run"]], "files": files,
@@ -257,14 +288,18 @@ def main():
     parser.add_argument("--to", dest="window_to", help="Exclusive poll start (default: snapshot creation time)")
     parser.add_argument("--market", default="dc", help="Market identifier in the manifest")
     parser.add_argument("--code-sha", help="Source Git commit (default: PROSPECT_CODE_SHA or checkout HEAD)")
+    parser.add_argument("--draft-1-1", action="store_true",
+                        help="Write the proposed 1.1 format for synthetic compatibility testing only")
     args = parser.parse_args()
     if not args.data_dir:
         parser.error("Supply --data-dir or set PROSPECT_DATA_DIR")
+    if args.draft_1_1:
+        print(f"Warning: {DRAFT_VERSION} is unapproved and cannot be used for scoring.", file=sys.stderr)
     try:
         with Store.in_data_dir(args.data_dir, create=False) as store:
             snapshot = export_snapshot(
                 store, args.out or store.path.parent / "exports", window_from=args.window_from,
-                window_to=args.window_to, market_id=args.market, code_sha=args.code_sha,
+                window_to=args.window_to, market_id=args.market, code_sha=args.code_sha, draft_1_1=args.draft_1_1,
             )
     except (ValueError, OSError, sqlite3.Error) as error:
         parser.exit(1, f"Export failed: {error}\n")

@@ -63,6 +63,9 @@ class Store:
             self.schema_version = self.connection.execute("SELECT max(version) FROM schema_version").fetchone()[0]
             if self.schema_version != SCHEMA_VERSION:
                 raise ValueError("Unsupported Prospect store schema version")
+            if tables and "poll_accounting" not in tables:
+                # Add the review-time table to existing M1a stores in place.
+                self.connection.executescript(Path(__file__).with_name("schema.sql").read_text())
             self.connection.execute("PRAGMA journal_mode = WAL")
         except BaseException:
             self.connection.close()
@@ -201,9 +204,20 @@ class Store:
         """, (digest(sha), timestamp(captured_at) if captured_at is not None else self.now(), byte_count))
 
     def record_poll(self, run_id, channel_id, *, status, received, declared_total=None,
-                    raw_sha=None, started_at=None, poll_id=None, captures=(), unrepresented=0):
+                    raw_sha=None, started_at=None, poll_id=None, captures=(), unrepresented=0,
+                    withheld_inventory_responses=0, capture_withheld=None):
         if not re.fullmatch(r"(?:ok|partial|failed|skipped:[a-z][a-z0-9_]{0,39})", status):
             raise ValueError("Invalid poll status or skip reason")
+        if type(unrepresented) is not int or not 0 <= unrepresented <= received:
+            raise ValueError("Unrepresented count must be between zero and received")
+        if unrepresented and status not in ("partial", "failed"):
+            raise ValueError("A poll with unrepresented records cannot be complete")
+        if type(withheld_inventory_responses) is not int or withheld_inventory_responses < 0:
+            raise ValueError("Invalid withheld inventory response count")
+        if capture_withheld is not None and (
+            capture_withheld != "secret_echo" or raw_sha is not None or not withheld_inventory_responses
+        ):
+            raise ValueError("Invalid reason for a withheld primary capture")
         poll_id = poll_id or uuid4().hex
         started_at = timestamp(started_at) if started_at is not None else self.now()
         captures = tuple(captures)
@@ -213,12 +227,15 @@ class Store:
             if channel is None or run is None or run["finished_at"] is not None or started_at[:-1] < run["started_at"][:-1]:
                 raise ValueError("Poll requires a known channel and an open run")
             retention = channel["retention_class"]
-            if retention != "public" and (raw_sha is not None or captures):
+            if retention != "public" and (raw_sha is not None or captures or withheld_inventory_responses):
                 raise ValueError("Poll capture requires a public channel")
             if retention in ("licensed", "restricted") and (received or status != f"skipped:{retention}"):
                 raise ValueError("This channel can only record a skip")
             db.execute("INSERT INTO poll VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        (poll_id, run_id, channel_id, started_at, status, declared_total, received, unrepresented, raw_sha))
+            if unrepresented or withheld_inventory_responses:
+                db.execute("INSERT INTO poll_accounting VALUES (?, ?, ?)",
+                           (poll_id, withheld_inventory_responses, capture_withheld))
             db.executemany("INSERT INTO poll_capture VALUES (?, ?, ?, ?)",
                            ((poll_id, i, sha, role) for i, (sha, role) in enumerate(captures)))
         return poll_id

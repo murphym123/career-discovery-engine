@@ -177,7 +177,7 @@ def retrieve(session, source, max_pages=3, stats=None, *, _evidence=None):
             if not isinstance(rows, list):
                 raise ValueError("missing record array")
             if _evidence is not None:
-                _evidence.usajobs_page(result.get("SearchResultCountAll"), len(rows))
+                _evidence.usajobs_page(result.get("SearchResultCountAll"), rows)
             stats.pages += 1
             for item in rows:
                 stats.received += 1
@@ -186,8 +186,6 @@ def retrieve(session, source, max_pages=3, stats=None, *, _evidence=None):
                 except (ValueError, TypeError, AttributeError):
                     stats.malformed += 1
                     continue
-                if _evidence is not None:
-                    _evidence.usajobs_sighting(record)
                 if not record.get("title") or not record.get("url"):
                     stats.malformed += 1
                     continue
