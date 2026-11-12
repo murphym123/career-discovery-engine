@@ -1,9 +1,10 @@
-"""Opt-in persistence at the existing USAJOBS and Greenhouse collector boundaries."""
+"""Opt-in persistence at the existing USAJOBS, Greenhouse, and Lever boundaries."""
 import hashlib
 import json
 import os
 import re
 from contextlib import contextmanager
+from urllib.parse import urlsplit
 
 from career_engine.store import Store, git_sha, timestamp
 from career_engine.store.privacy import REDACTED, Projection, contains_configured_secret
@@ -52,11 +53,12 @@ def _total(value):
 
 
 class _ObservationBatch:
-    def __init__(self, store, run_id, channel, *, private_values=()):
+    def __init__(self, store, run_id, channel, *, private_values=(), require_matching_role=False):
         self.store = store
         self.run_id = run_id
         self.channel_id = store.ensure_channel(**channel, retention_class="public",
-                                              evidence_role="discovery", verification_state="verified")
+                                              evidence_role="discovery", verification_state="verified",
+                                              require_matching_role=require_matching_role)
         self.started_at = store.now()
         self.receipts = []
         self.observations = []
@@ -207,7 +209,7 @@ class _ObservationBatch:
     def greenhouse_detail(self, row):
         self.details[row["identity"]] = row
 
-    def commit(self, status):
+    def commit(self, status, *, employer_name=None):
         raw_sha = next((sha for sha, role, _, _ in self.receipts if role == "inventory"), None)
         if self.unrepresented and status == "ok":
             status = "partial"
@@ -235,12 +237,131 @@ class _ObservationBatch:
                     url="" if self._request_secret(observed_url) else observed_url,
                     canonical_url="" if self._request_secret(canonical_url) else canonical_url,
                     title=self._safe_text(row.get("title")),
-                    employer_name_raw=self._safe_text(row.get("company")),
+                    employer_name_raw=self._safe_text(employer_name if employer_name is not None else row.get("company")),
                     location_raw=self._safe_text(row.get("location")),
                     posted_at=None if self._request_secret(row.get("posted_at")) else _source_date(row.get("posted_at")),
                     closing_at=None if self._request_secret(row.get("closing_at")) else _source_date(row.get("closing_at")),
                     observed_at=observed_at, description_sha=description_sha, raw_sha=capture_sha,
                 )
+
+
+class _LeverObservationBatch(_ObservationBatch):
+    def __init__(self, store, run_id, board):
+        privacy = Projection()
+        locator = privacy.url(board["url"])
+        if locator != board["url"]:
+            raise ValueError("Expected a shareable public Lever board")
+        channel = dict(kind="ats", platform=board["provider"], locator=locator, channel_key=board["key"])
+        super().__init__(store, run_id, channel, private_values=privacy.secrets, require_matching_role=True)
+        self.board = board
+        self.pages_observed = 0
+        self.board_display_name = ""
+        self.withheld_capture = False
+
+    def capture(self, body, role):
+        withheld = super().capture(body, role)
+        self.withheld_capture |= withheld
+        return withheld
+
+    def report_rows(self, rows):
+        if not self.withheld_capture:
+            return rows
+
+        def redact(value):
+            if isinstance(value, dict):
+                return {key: redact(field) for key, field in value.items()}
+            if isinstance(value, list):
+                return [redact(field) for field in value]
+            return REDACTED if isinstance(value, str) and self._request_secret(value) else value
+
+        return redact(rows)
+
+    def lever_page(self, count):
+        if len(self.inventory) == self.pages_observed:
+            self.capture(None, "inventory")
+        self.pages_observed += 1
+        self.received += count
+
+    def lever_sighting(self, item, row):
+        from career_engine.ats import LEVER_REMOTE_LOCATION, _location, canonical_posting_url, posting_key
+        from career_engine.extract import safe_public_url
+
+        if not isinstance(item, dict):
+            self.unrepresented += 1
+            return
+
+        prefix = self.board["key"] + ":"
+        native_id = item.get("id")
+        if (not isinstance(native_id, str) or not re.fullmatch(r"[A-Za-z0-9-]{1,100}", native_id)
+                or native_id.lower() in ("none", "null") or not self.privacy.native(native_id)):
+            native_id = None
+        else:
+            native_id = self.privacy.native(native_id.lower())
+
+        raw_url = item.get("hostedUrl")
+        raw_url = raw_url if isinstance(raw_url, str) and safe_public_url(raw_url) else ""
+        url_key = posting_key(raw_url) if raw_url else ""
+        parsed_url = urlsplit(raw_url)
+        parts = parsed_url.path.strip("/").split("/")
+        lever_route = (parsed_url.hostname in ("jobs.lever.co", "jobs.eu.lever.co")
+                       and (len(parts) == 2 or len(parts) == 3 and parts[2] == "apply"))
+        canonical = self.privacy.url(canonical_posting_url(raw_url)) if raw_url else None
+        if native_id is None and lever_route and url_key.startswith(prefix) and canonical:
+            native_id = self.privacy.native(url_key.removeprefix(prefix))
+        if native_id is None:
+            self.unrepresented += 1
+            return
+        identity = prefix + native_id
+
+        observed = self.privacy.url(raw_url)
+        if url_key and url_key != identity:
+            # A link to a different opening cannot identify or match this sighting.
+            observed = canonical = None
+        if not observed and lever_route and url_key == identity:
+            # An independently recognizable public Lever route is usable without
+            # the sensitive query on the originally supplied URL.
+            observed = canonical
+        if not observed:
+            canonical = None
+
+        categories = item.get("categories")
+        categories = categories if isinstance(categories, dict) else {}
+        additional = categories.get("allLocations")
+        if row is None:
+            row = {"title": item.get("text") if isinstance(item.get("text"), str) else ""}
+            additional = [additional] if isinstance(additional, str) else additional
+            additional = additional if isinstance(additional, list) else []
+            locations = [_location(value) for value in [categories.get("location"), *additional]]
+        elif isinstance(additional, str):
+            locations = [_location(categories.get("location")), additional]
+        else:
+            locations = row["raw_locations"]
+        if str(item.get("workplaceType")).lower() == "remote":
+            locations = [LEVER_REMOTE_LOCATION, *locations]
+        location = " ; ".join(dict.fromkeys(self._safe_text(place) for place in locations if place))
+        if self.inventory[-1]["disposition"] == "secret_echo":
+            if "description_sha256" in row:
+                row["description_sha256"] = ""
+            row = dict(row, description="")
+        self.observe(dict(row, location=location, url=canonical or observed or "",
+                          original_posting_url=observed or ""), identity, native_id)
+
+    def _safe_text(self, value):
+        value = super()._safe_text(value)
+        return REDACTED if any(0xD800 <= ord(char) <= 0xDFFF for char in value) else value
+
+    def commit(self, status):
+        if not self.pages_observed:
+            return super().commit(status)
+        display = self._safe_text(self.board_display_name)
+        if not display or display == REDACTED:
+            display = self._safe_text(self.board["token"])
+        with self.store.transaction():
+            self.store.ensure_channel_employer(
+                self.channel_id, display, "lever_board",
+                aliases=({"kind": "lever_tenant", "value": self._safe_text(self.board["key"])},),
+            )
+            super().commit(status, employer_name=display)
 
 
 def collect_usajobs(store, run_id, session, max_pages=3, stats=None):
@@ -302,4 +423,29 @@ def collect_greenhouse(store, run_id, transport, board, max_pages=3, detail_budg
             status = "ok"
         else:
             status = "partial" if batch.observations or inventory.get("observed_available_items") is not None else "failed"
+        batch.commit(status)
+
+
+def collect_lever(store, run_id, transport, board, max_pages=3, detail_budget=3, market=None):
+    """Keep Lever's existing return values and persist every fetched inventory page."""
+    from career_engine.ats import LEVER_PROVIDERS, board_from_url, retrieve_board
+
+    parsed = board_from_url(board.get("url", ""))
+    if (not parsed or parsed["provider"] not in LEVER_PROVIDERS
+            or any(board.get(field) != value for field, value in parsed.items())):
+        raise ValueError("Invalid observed Lever board")
+    batch = _LeverObservationBatch(store, run_id, board)
+    start = len(transport.requests)
+    stats = None
+    try:
+        rows, stats = retrieve_board(transport, board, max_pages, detail_budget, market, _evidence=batch)
+        return batch.report_rows(rows), stats
+    finally:
+        errors = stats["errors"] if stats is not None else []
+        if len(transport.requests) == start and errors and errors[0] in SKIP_REASONS:
+            status = "skipped:" + errors[0]
+        elif stats is not None and not errors and stats["inventory"]["metadata_complete"]:
+            status = "ok"
+        else:
+            status = "partial" if batch.pages_observed else "failed"
         batch.commit(status)

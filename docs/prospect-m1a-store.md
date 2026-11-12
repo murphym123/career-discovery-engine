@@ -1,6 +1,6 @@
 # Prospect M1a collection store and snapshot export
 
-Prospect now keeps a history of what USAJOBS and Greenhouse returned. A job keeps
+Prospect keeps a history of what USAJOBS, Greenhouse, and Lever returned. A job keeps
 the same record ID when it appears again, and each appearance records where and
 when Prospect saw it. The exported snapshot gives evaluation a checkable copy of
 that evidence. It includes unsuccessful and incomplete searches so a missing job
@@ -8,11 +8,12 @@ can be interpreted in the context of what Prospect actually searched.
 
 ## Local storage
 
-Set `PROSPECT_DATA_DIR` to a directory outside Git to opt the existing USAJOBS
-and Greenhouse collection paths into persistence. The setting works with direct
-structured collection, the regional USAJOBS handoff, and calls to the Greenhouse
-board collector. Collection requests, budgets, ranking and report deduplication
-use their existing paths. The adapter observes rows before report deduplication.
+Set `PROSPECT_DATA_DIR` to a directory outside Git to opt the existing USAJOBS,
+Greenhouse, and Lever collection paths into persistence. The setting works with
+direct structured collection, the regional USAJOBS handoff, and calls to the ATS
+board collector for those providers. Collection requests, budgets, ranking and
+report deduplication use their existing paths. The adapter observes rows before
+report deduplication.
 It also retains identifiable Greenhouse postings from the fetched inventory
 beyond the report cap. This adds no requests.
 
@@ -60,6 +61,53 @@ history and digest intact. An export marks a sighting `raw_purged` whenever its
 recorded public body is absent, including a body missing from a restored backup.
 Keep the SQLite backups and public blobs together if the ability to replay
 original bodies matters.
+
+### Lever
+
+The M1c adapter uses the existing public U.S. and European Lever endpoints and
+their existing page and request limits. Each poll records every returned row,
+including repeated occurrences. Its ordered receipts point to the exact retained
+inventory pages. The optional public board title uses the existing lookup and
+has a separate receipt when captured. A board with a valid inventory gets a
+provisional employer keyed to its channel unless the channel already has an
+employer. The public title, when safe and available, supplies the display name.
+Otherwise the tenant supplies it. The same display name can belong to multiple
+tenants. Native posting IDs are scoped to the tenant and Lever region.
+
+A completed empty inventory is `ok` with zero records. A transport or schema
+failure before any valid inventory page is `failed`. A poll with a valid page
+is `partial` if collection stops early or any rows are malformed. Identifiable
+rows are retained and unidentifiable rows are counted under decision 0003.
+Lever does not declare a total in these responses. A job missing from a later
+poll retains its previous observation history. Prospect derives no publication
+or closure date from the inventory.
+
+Public discovery channels use the existing retention and snapshot rules.
+An existing channel with a different retention class or evidence role is refused
+before requesting inventory. The adapter imports no historical or evaluation
+evidence. A response that echoes a configured credential is withheld. The snapshot
+records `secret_echo` for an affected inventory poll, even when another page was
+retained. The legacy report also omits the withheld response's digest and
+redacts the echoed credential. URLs and display fields are projected to shareable
+values at intake.
+The snapshot contains metadata and eligible digests under the unchanged 1.1
+contract. Exact public captures stay under `PROSPECT_DATA_DIR`.
+
+The adapter keeps the reported location options and puts a leading `Remote`
+label on an explicitly remote posting. Geography replay can use that designation
+even when the raw capture was withheld or purged. Any stated US or DC
+eligibility remains subject to the existing gazetteer rules. M0.2 deployment,
+M0.3/M0.4 geography and scope policy, and M0.5 evidence partitioning follow
+their own decision points.
+
+To exercise Lever with synthetic responses:
+
+```sh
+python -m unittest discover -s tests -p 'test_prospect_lever.py' -v
+```
+
+Set `PROSPECT_EVAL_CHECKOUT` to a local evaluator checkout to also validate
+the produced Lever 1.1 bundle with the independent validator.
 
 ## Export and reproduce
 

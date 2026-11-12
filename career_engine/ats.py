@@ -22,6 +22,8 @@ PUBLIC_HOSTS={'job-boards.greenhouse.io':'greenhouse','boards.greenhouse.io':'gr
               'jobs.lever.co':'lever','jobs.eu.lever.co':'lever_eu','jobs.ashbyhq.com':'ashby'}
 API_HOSTS={'boards-api.greenhouse.io','api.lever.co','api.eu.lever.co','api.ashbyhq.com'}
 MAX_DESCRIPTION=30000
+LEVER_PROVIDERS = {"lever", "lever_eu"}
+LEVER_REMOTE_LOCATION = "Remote"
 
 
 def stamp():return datetime.now(timezone.utc).isoformat(timespec='seconds')
@@ -193,12 +195,15 @@ class PublicTransport:
                             item.update(bytes_observed=len(data),error='response_too_large',response_limit=max_bytes)
                             raise FetchError('response_too_large')
                         del data[max_bytes:];item.update(truncated=True,sha256_kind='retrieved_prefix_only');break
-                item.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
-                if capture is not None and not item.get('truncated'):
-                    capture(bytes(data))
+                item['bytes']=len(data)
+                withheld=capture is not None and not item.get('truncated') and capture(bytes(data))
+                if withheld:
+                    item['capture_withheld']='secret_echo'
+                else:
+                    item['sha256']=hashlib.sha256(data).hexdigest()
                 try:
                     text=bytes(data).decode('utf-8')
-                    if kind in ('public_html','robots','public_feed','seed_sitemap'):
+                    if not withheld and kind in ('public_html','robots','public_feed','seed_sitemap'):
                         from career_engine.publication_audit import offered_channels
                         self.publication_observations.append({'url':url,'status':200,'channels':offered_channels(text,url)})
                     return text
@@ -215,7 +220,7 @@ class PublicTransport:
         except (ValueError,UnicodeError):raise FetchError('invalid_json') from None
 
 
-def board_name(transport,board):
+def board_name(transport,board,**capture_options):
     from urllib.robotparser import RobotFileParser
     from html.parser import HTMLParser
     url=board['url'];host=urlsplit(url).hostname
@@ -229,7 +234,7 @@ def board_name(transport,board):
     if rp is False or (rp is not True and not rp.can_fetch(USER_AGENT,url)):return ''
     delay=rp.crawl_delay(USER_AGENT) if rp is not True else None
     if delay and delay>1: return ''  # Metadata is optional; do not exceed a stricter site pacing rule.
-    try:text=transport.get(url,max_bytes=600000,kind='public_html')
+    try:text=transport.get(url,max_bytes=600000,kind='public_html',**capture_options)
     except FetchError:return ''
     class Title(HTMLParser):
         def __init__(self):super().__init__(convert_charrefs=True);self.active=False;self.parts=[];self.og=''
@@ -328,14 +333,15 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_ev
     if provider=='jazzhr':
         from career_engine.jazzhr import retrieve_jazzhr
         return retrieve_jazzhr(transport,board,detail_budget,market)
-    if provider == 'greenhouse' and _evidence is None and os.getenv('PROSPECT_DATA_DIR'):
-        from career_engine.store.collectors import collect_greenhouse, configured_run
+    if (provider == 'greenhouse' or provider in LEVER_PROVIDERS) and _evidence is None and os.getenv('PROSPECT_DATA_DIR'):
+        from career_engine.store.collectors import collect_greenhouse, collect_lever, configured_run
 
-        config = dict(collector='greenhouse', max_pages=max_pages, detail_budget=detail_budget,
+        config = dict(collector=provider, max_pages=max_pages, detail_budget=detail_budget,
                       max_requests=transport.max_requests, max_bytes=transport.max_bytes,
                       max_seconds=transport.max_seconds, market=getattr(market, 'identifier', 'default'))
+        collect = collect_greenhouse if provider == 'greenhouse' else collect_lever
         with configured_run(config) as run:
-            return collect_greenhouse(*run, transport, board, max_pages, detail_budget, market)
+            return collect(*run, transport, board, max_pages, detail_budget, market)
 
     def capture_options(role):
         if _evidence is None:
@@ -383,9 +389,12 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_ev
         for page in range(max_pages if provider.startswith('lever') else 1):
             if provider.startswith('lever'):
                 host='api.eu.lever.co' if provider=='lever_eu' else 'api.lever.co'
-                items=transport.json('https://'+host+'/v0/postings/'+token,{'mode':'json','limit':100,'skip':page*100})
+                items=transport.json('https://'+host+'/v0/postings/'+token,{'mode':'json','limit':100,'skip':page*100},
+                                     **capture_options('inventory'))
                 if not isinstance(items,list):raise FetchError('invalid_schema')
                 page_lengths.append(len(items))
+                if _evidence is not None:
+                    _evidence.lever_page(len(items))
             else:items=batches[0][:5000]
             added=0
             for item in items:
@@ -393,7 +402,10 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_ev
                     stats['unlisted_omitted']+=1;continue
                 stats['received']+=1
                 try:row=normalize_posting(board,item,company)
-                except (ValueError,TypeError,AttributeError):stats['malformed']+=1;continue
+                except (ValueError,TypeError,AttributeError):row=None;stats['malformed']+=1
+                if _evidence is not None and provider in LEVER_PROVIDERS:
+                    _evidence.lever_sighting(item,row)
+                if row is None:continue
                 row.update(worksite_evidence(row,market))
                 if row['identity'] not in seen:rows.append(row);seen.add(row['identity']);added+=1
             if provider.startswith('lever'):
@@ -402,7 +414,9 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_ev
                 if not added:stats['errors'].append('repeated_page');break
                 if page==max_pages-1:stats['capped']=True
         if rows and not company and provider!='greenhouse':
-            company=board_name(transport,board)
+            company=board_name(transport,board,**capture_options('board'))
+            if _evidence is not None:
+                _evidence.board_display_name=company
             if company:
                 for row in rows:
                     row['company']=company;row['company_evidence']='public_board_page_title'
