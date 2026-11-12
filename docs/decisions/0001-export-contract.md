@@ -1,6 +1,6 @@
 # 0001 — Prospect export contract v1
 
-**Status:** Proposed — awaiting product-owner approval of PR #32
+**Status:** Approved by the product owner and merged in [PR #32](https://github.com/murphym123/career-discovery-engine/pull/32) (2026-11-11, America/Denver).
 **Authority:** [Prospect M0–M2 implementation specification](../specs/prospect-m0-m2-spec.md), especially §§4–5 and §8.1. The specification's review-era text is preserved verbatim. This record defines the exchange details and applies the approval clarifications on blinding, reproducibility, and execution.
 
 ## Decision
