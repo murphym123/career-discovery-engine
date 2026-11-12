@@ -1,0 +1,5 @@
+{"aliases":[{"kind":"display_name","value":"Civic Lantern"},{"kind":"tenant","value":"civic-lantern"}],"canonical_name":"Civic Lantern Lab","employer_id":"employer-001","merged_into":null,"origin":"synthetic_fixture","status":"active"}
+{"aliases":[{"kind":"tenant","value":"marblebridge-project"}],"canonical_name":"Marblebridge Project","employer_id":"employer-002","merged_into":"employer-003","origin":"synthetic_fixture","status":"merged"}
+{"aliases":[{"kind":"former_name","value":"Marblebridge Project"}],"canonical_name":"Marblebridge Institute","employer_id":"employer-003","merged_into":null,"origin":"synthetic_fixture","status":"active"}
+{"aliases":[],"canonical_name":"Linden Signal Studio","employer_id":"employer-004","merged_into":null,"origin":"synthetic_fixture","status":"provisional"}
+{"aliases":[],"canonical_name":"Cloudberry Stageworks","employer_id":"employer-005","merged_into":null,"origin":"synthetic_fixture","status":"rejected"}
