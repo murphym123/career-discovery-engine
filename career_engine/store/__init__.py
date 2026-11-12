@@ -311,7 +311,7 @@ class Store:
         """Stream sightings missing this version, grouping shared inventory captures."""
         return self.connection.execute("""
             SELECT s.sighting_id, s.location_raw, s.title, s.native_id, s.url, s.raw_sha,
-                   channel.platform, channel.retention_class
+                   s.poll_id, s.description_sha, channel.channel_key, channel.platform, channel.retention_class
             FROM sighting AS s JOIN channel USING (channel_id)
             WHERE NOT EXISTS (
                 SELECT 1 FROM label WHERE subject = 'sighting' AND subject_id = s.sighting_id
@@ -319,6 +319,12 @@ class Store:
             )
             ORDER BY channel.platform, s.raw_sha, s.sighting_id
         """, (dimension, classifier_version))
+
+    def poll_capture_sha(self, poll_id, role):
+        row = self.connection.execute("""
+            SELECT raw_sha FROM poll_capture WHERE poll_id = ? AND role = ? ORDER BY ordinal LIMIT 1
+        """, (poll_id, role)).fetchone()
+        return row["raw_sha"] if row else None
 
     def add_label(self, *, subject, subject_id, dimension, value, method, classifier_version, created_at=None):
         self.connection.execute("""

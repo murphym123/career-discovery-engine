@@ -206,6 +206,13 @@ class _ObservationBatch:
     def _safe_text(self, value):
         return REDACTED if self._request_secret(value) else self.privacy.text(str(value or ""))
 
+    def _redact_credential_echo(self, value):
+        if isinstance(value, dict):
+            return {key: self._redact_credential_echo(field) for key, field in value.items()}
+        if isinstance(value, list):
+            return [self._redact_credential_echo(field) for field in value]
+        return REDACTED if isinstance(value, str) and self._request_secret(value) else value
+
     def greenhouse_detail(self, row):
         self.details[row["identity"]] = row
 
@@ -264,17 +271,7 @@ class _LeverObservationBatch(_ObservationBatch):
         return withheld
 
     def report_rows(self, rows):
-        if not self.withheld_capture:
-            return rows
-
-        def redact(value):
-            if isinstance(value, dict):
-                return {key: redact(field) for key, field in value.items()}
-            if isinstance(value, list):
-                return [redact(field) for field in value]
-            return REDACTED if isinstance(value, str) and self._request_secret(value) else value
-
-        return redact(rows)
+        return self._redact_credential_echo(rows) if self.withheld_capture else rows
 
     def lever_page(self, count):
         if len(self.inventory) == self.pages_observed:

@@ -143,7 +143,7 @@ class PublicTransport:
         if time.monotonic()-self.started>self.max_seconds:return 'time_budget'
         return ''
 
-    def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False,*,capture=None):
+    def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False,*,capture=None,redirect_filter=None):
         if not self.allowed(url):raise FetchError('unsafe_endpoint')
         if urlsplit(url).hostname.endswith('.icims.com') and params:
             from career_engine.icims import public_url
@@ -179,7 +179,8 @@ class PublicTransport:
                 if r.status_code in (301,302,303,307,308):
                     from urllib.parse import urljoin
                     target=urljoin(url,r.headers.get('Location',''))
-                    if not self.redirect_allowed(original_host,target):raise FetchError('unsafe_redirect')
+                    if not self.redirect_allowed(original_host,target) or (redirect_filter and not redirect_filter(target)):
+                        raise FetchError('unsafe_redirect')
                     url=target;params=None;continue
                 if r.status_code!=200:raise FetchError('http_'+str(r.status_code))
                 content_type=r.headers.get('Content-Type','').split(';')[0].strip().lower()
@@ -196,14 +197,17 @@ class PublicTransport:
                             raise FetchError('response_too_large')
                         del data[max_bytes:];item.update(truncated=True,sha256_kind='retrieved_prefix_only');break
                 item['bytes']=len(data)
-                withheld=capture is not None and not item.get('truncated') and capture(bytes(data))
-                if withheld:
+                # Capture callbacks can suppress a digest for a known echo or reject a nonpublic page.
+                disposition=capture is not None and not item.get('truncated') and capture(bytes(data))
+                if disposition is True:
                     item['capture_withheld']='secret_echo'
+                elif disposition:
+                    item['capture_rejected']=disposition
                 else:
                     item['sha256']=hashlib.sha256(data).hexdigest()
                 try:
                     text=bytes(data).decode('utf-8')
-                    if not withheld and kind in ('public_html','robots','public_feed','seed_sitemap'):
+                    if not disposition and kind in ('public_html','robots','public_feed','seed_sitemap'):
                         from career_engine.publication_audit import offered_channels
                         self.publication_observations.append({'url':url,'status':200,'channels':offered_channels(text,url)})
                     return text
@@ -332,6 +336,15 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_ev
         return retrieve_icims(transport,board,max_pages,detail_budget,market)
     if provider=='jazzhr':
         from career_engine.jazzhr import retrieve_jazzhr
+        if os.getenv('PROSPECT_DATA_DIR'):
+            from career_engine.store.collectors import configured_run
+            from career_engine.store.jazzhr import collect_jazzhr
+
+            config = dict(collector=provider, detail_budget=detail_budget,
+                          max_requests=transport.max_requests, max_bytes=transport.max_bytes,
+                          max_seconds=transport.max_seconds, market=getattr(market, 'identifier', 'default'))
+            with configured_run(config) as run:
+                return collect_jazzhr(*run, transport, board, detail_budget, market)
         return retrieve_jazzhr(transport,board,detail_budget,market)
     if (provider == 'greenhouse' or provider in LEVER_PROVIDERS) and _evidence is None and os.getenv('PROSPECT_DATA_DIR'):
         from career_engine.store.collectors import collect_greenhouse, collect_lever, configured_run

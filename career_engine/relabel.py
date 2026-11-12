@@ -6,6 +6,7 @@ import sqlite3
 
 from career_engine.ats import LEVER_PROVIDERS, LEVER_REMOTE_LOCATION
 from career_engine.geography import _classify_geo, load_gazetteer
+from career_engine.jazzhr import DETAIL_CAPTURE_PREFIX, jazz_geography
 from career_engine.store import Store
 
 SUPPORTED_PLATFORMS = {"usajobs", "greenhouse"}
@@ -72,6 +73,20 @@ def _index_capture(blobs, sha, platform):
     return index
 
 
+def _jazz_detail_context(store, sighting):
+    native_id = sighting["native_id"]
+    if not sighting["description_sha"] or not native_id:
+        return {}
+    sha = store.poll_capture_sha(sighting["poll_id"], DETAIL_CAPTURE_PREFIX + native_id)
+    if not sha:
+        return {}
+    try:
+        html = store.blobs.get(sha).decode("utf-8")
+        return jazz_geography(html, sighting["title"], f"{sighting['channel_key']}:{native_id}")
+    except (FileNotFoundError, ValueError):
+        return {}
+
+
 def relabel(store, dimension, version):
     """Append one missing label per sighting atomically, preserving prior versions."""
     if dimension != "geo":
@@ -92,6 +107,8 @@ def relabel(store, dimension, version):
                 if arrangement == LEVER_REMOTE_LOCATION:
                     context["work_arrangement"] = "remote"
                     location = places if separator else ""
+            if platform == "jazzhr" and sighting["retention_class"] == "public":
+                context.update(_jazz_detail_context(store, sighting))
             if sha and platform in SUPPORTED_PLATFORMS and sighting["retention_class"] == "public":
                 key = (platform, sha)
                 if key != capture_key:
