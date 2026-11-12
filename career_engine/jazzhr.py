@@ -7,7 +7,7 @@ import hashlib
 import json
 import re
 from difflib import SequenceMatcher
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import unquote, urljoin, urlsplit
 
 from career_engine.ats import FetchError, posting_key, canonical_posting_url, stamp
 from career_engine.dc_sources import Document
@@ -80,23 +80,26 @@ def _jazz_index_row(board, name, link, url, key, location):
         evidence_status='employer_public_career_page_not_independently_verified_accepting_applications')
 
 
+def _same_board_job_link(board, node):
+    url, _ = _posting_link(board, node)
+    path = urlsplit(url)
+    return (path.hostname == urlsplit(board['url']).hostname
+            and unquote(path.path).rstrip('/').startswith('/apply/'))
+
+
 def _job_card(board, card, location):
     # Generic Bootstrap list items also occur in navigation. Require a job
     # heading/location template or a link that attempts this board's job route.
     if _has_class(card.parent, 'list-group') and (location or card.find(lambda n: n.tag == 'h3')):
         return True
-    for node in card.walk():
-        url, _ = _posting_link(board, node)
-        path = urlsplit(url)
-        if path.hostname == urlsplit(board['url']).hostname and path.path.startswith('/apply/'):
-            return True
-    return False
+    return any(_same_board_job_link(board, node) for node in card.walk())
 
 
-def _index_indicators(doc):
-    def visible(node):
+def _index_indicators(doc, board):
+    def visible(node, *, content_only=False):
         while node:
-            if (node.tag in ('form', 'footer', 'nav', 'template', 'noscript') or 'hidden' in node.attrs
+            if (node.tag in ('template', 'noscript') or 'hidden' in node.attrs
+                    or (content_only and node.tag in ('form', 'footer', 'nav'))
                     or node.attrs.get('aria-hidden') == 'true'
                     or any(_has_class(node, name) for name in ('hidden', 'd-none'))
                     or re.search(r'(?:^|;)\s*(?:display\s*:\s*none|visibility\s*:\s*hidden)\b',
@@ -112,12 +115,19 @@ def _index_indicators(doc):
             and not _has_class(n, 'disabled') and not _has_class(n.parent, 'disabled'))
     ))
     heading = doc.find(lambda n: n.tag in ('title', 'h1', 'h2', 'h3')
-                       and CAREER_HEADING.search(n.text()) and visible(n))
+                       and CAREER_HEADING.search(n.text()) and visible(n, content_only=True))
     empty_notice = heading and doc.find(
         lambda n: n.tag in ('p', 'div', 'li', 'span', 'h2', 'h3') and EMPTY_BOARD_TEXT.fullmatch(n.text())
-        and all(visible(child) for child in n.walk())
+        and all(visible(child, content_only=True) for child in n.walk())
     )
-    return bool(empty_notice), bool(continuation)
+    # The job parser covers one card template. A visible job link or card in
+    # another layout still contradicts an explicit empty notice.
+    job_evidence = empty_notice and doc.find(lambda n: visible(n) and (
+        _same_board_job_link(board, n)
+        or (_has_class(n, 'list-group-item') and not EMPTY_BOARD_TEXT.fullmatch(n.text())
+            and _job_card(board, n, n.find(lambda child: _has_class(child, 'list-group-item-text'))))
+    ))
+    return bool(empty_notice and not job_evidence), bool(continuation)
 
 
 def jazz_index(html,board,market=None,*,_evidence=None):
@@ -148,7 +158,7 @@ def jazz_index(html,board,market=None,*,_evidence=None):
             rows.append(row)
     for row in rows:row.update(worksite_evidence(row,market))
     if _evidence is not None:
-        _evidence.index_finished(name, *_index_indicators(doc))
+        _evidence.index_finished(name, *_index_indicators(doc, board))
     return rows
 
 

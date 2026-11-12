@@ -122,7 +122,8 @@ identify the posting. An identifiable card with no usable link keeps its identit
 and gets the contract's redacted URL. A card that cannot be identified contributes
 to `unrepresented`. The index declares no total, and a completed poll describes
 the visible page. A positive empty notice on a recognized career page supports
-an `ok` zero-result poll. Missing or unreadable markup is a failure. An indicated
+an `ok` zero-result poll only when visible same-board job links or unparsed job
+cards do not contradict it. Missing or unreadable markup is a failure. An indicated
 continuation, an unrepresentable card, or a failed attempted detail request can
 make an otherwise usable poll partial. Ordinary legacy output keeps its existing
 rows, caps, and empty-page status.

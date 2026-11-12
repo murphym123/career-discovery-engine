@@ -127,6 +127,36 @@ class JazzHRStoreTests(StoreTestCase):
         self.assertFalse(self.store.blobs.exists(hashlib.sha256(fixture("challenge").encode()).hexdigest()))
         self.assertEqual(len(read_rows(self.export(), "sightings")), 0)
 
+    def test_job_evidence_outside_supported_cards_blocks_a_confirmed_empty_poll(self):
+        fixture_html = fixture("contradictory-empty")
+        variants = {
+            "same-board job route": fixture_html,
+            "incomplete same-board job route": fixture_html.replace("AbC01234/Analyst", "short"),
+            "same-board job route in navigation": fixture_html.replace("<div><a", "<nav><a").replace("</div>", "</nav>"),
+            "unparsed job card": fixture("empty").replace(
+                "</main>", '<div class="list-group"><div class="list-group-item">'
+                '<h3>Policy Analyst</h3><p class="list-group-item-text">Washington, DC</p></div></div></main>'
+            ),
+        }
+        for case, html in variants.items():
+            with self.subTest(case=case):
+                rows, stats, poll, _, session = self.collect(Response(None, 404), html_response(html))
+                self.assertEqual((rows, stats["status"], stats["errors"]),
+                                 ([], "failed", ["no_public_index_rows_or_schema_changed"]))
+                self.assertEqual((poll["status"], poll["received"]), ("failed", 0))
+                self.assertEqual(poll["raw_sha"], hashlib.sha256(html.encode()).hexdigest())
+                self.assertEqual(len(session.calls), 2)
+
+        self.index("empty")
+        unrelated = fixture("empty").replace(
+            "</main>", '<a href="/apply/">Careers</a>'
+            '<a href="https://another-tenant.applytojob.com/apply/AbC01234/Analyst">Other board</a>'
+            '<div hidden><a href="/apply/AbC01234/Analyst">Hidden template link</a></div></main>'
+        )
+        self.collect(Response(None, 404), html_response(unrelated))
+        self.assertCountEqual([(poll["status"], poll["received"]) for poll in read_rows(self.export(), "polls")],
+                              [("failed", 0)] * len(variants) + [("ok", 0)] * 2)
+
     def test_report_cap_preserves_full_visible_page_and_continuation_is_partial(self):
         items = "".join(f'<li class="list-group-item"><h3><a href="/apply/Job{n:06d}/Role">Role</a></h3>'
                         '<ul class="list-group-item-text"><li>London, UK</li></ul></li>' for n in range(1001))
