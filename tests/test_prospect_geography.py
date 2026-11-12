@@ -1,9 +1,12 @@
 """M1b coverage, uncertainty, and offline replay regressions."""
+import hashlib
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -43,6 +46,24 @@ class GeographyTests(unittest.TestCase):
             actual.extend(row["location"] for row in rows if row.get("geography") == "dc_dmv" and row.get("location"))
         self.assertTrue(actual)
         for location in set(actual):
+            with self.subTest(location=location):
+                self.assertNotEqual(classify_geo(location)[0], "elsewhere")
+
+    @unittest.skipUnless(os.environ.get("PROSPECT_RUN8_ARCHIVE"), "set PROSPECT_RUN8_ARCHIVE to the original run-8 ZIP")
+    def test_original_run8_locations_have_no_false_elsewhere(self):
+        path = Path(os.environ["PROSPECT_RUN8_ARCHIVE"])
+        with path.open("rb") as source:
+            digest = hashlib.file_digest(source, "sha256").hexdigest()
+        self.assertEqual(digest, "874c61ee40c8114cd27e74a7ab94a3fe768e8bec9e419f755b0c007b8c67dd24")
+        with zipfile.ZipFile(path) as archive, archive.open("dc-expanded-audit.json") as audit:
+            records = json.load(audit)["records"]
+        regional = [row["location"] for row in records if row.get("geography") == "dc_dmv" and row.get("location")]
+        self.assertEqual((len(records), len(regional), len(set(regional))), (3288, 216, 74))
+        calculations = json.loads((ROOT / "docs/coverage/calculations.json").read_text())
+        reviewed = set(calculations["engine"]["latent_locations"])
+        self.assertEqual(len(reviewed), 15)
+        self.assertLessEqual(reviewed, {row.get("location") for row in records})
+        for location in set(regional) | reviewed:
             with self.subTest(location=location):
                 self.assertNotEqual(classify_geo(location)[0], "elsewhere")
 
@@ -100,6 +121,38 @@ class GeographyTests(unittest.TestCase):
         self.assertEqual(classify_geo("London, UK", {"worksites": ["Arlington, VA"]})[0], "unknown")
 
 
+    def test_structured_geography_disagreements_preserve_uncertainty(self):
+        cases = (
+            ("Baltimore, MD", {"state": "DC"}),
+            ("Washington, DC", {"state": "VA"}),
+            ("Washington, DC", {"country": "Canada"}),
+            ("Washington, DC", {"country": "CA"}),
+            ("London, UK", {"country": "United States"}),
+            ("Baltimore, MD", {"worksites": ["Silver Spring, MD"]}),
+            ("Arlington, TX", {"worksites": ["Arlington, VA"]}),
+            ("Arlington", {"worksites": ["Dallas, TX"]}),
+            ("Quantico, VA", {"worksites": ["Richmond, VA"]}),
+            ("Washington, DC", {"worksites": ["Arlington, VA"]}),
+            ("Washington, DC, Canada", {}),
+            ("Baltimore, MD", {"worksites": [{"location": "Baltimore, MD", "state": "DC"}]}),
+            ("Baltimore, MD", {"worksites": [{"location": "Washington, DC", "country": "Canada"}]}),
+            ("Remote, Canada only", {"worksites": ["Washington, DC"]}),
+            ("Remote, Canada only", {"state": "DC"}),
+            ("Remote in the US excluding DC", {"state": "DC"}),
+        )
+        for location, context in cases:
+            with self.subTest(location=location, context=context):
+                value, reason = classify_geo(location, context)
+                self.assertEqual(value, "unknown")
+                self.assertIn("conflict", reason)
+
+    def test_agreement_and_distinct_worksite_options_remain_usable(self):
+        self.assertEqual(classify_geo("Baltimore, MD", {"state": "MD", "country": "US"})[0], "elsewhere")
+        self.assertEqual(classify_geo("London, UK", {"country": "GB"})[0], "elsewhere")
+        self.assertEqual(classify_geo("Arlington", {"state": "Virginia"})[0], "dmv_va")
+        self.assertEqual(classify_geo("Washington, DC | Baltimore, MD", {"state": "DC"})[0], "dc")
+        self.assertEqual(classify_geo("Washington, DC", {"worksites": ["Washington, DC", "Arlington, VA"]})[0], "dc")
+
 class ReplayTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
@@ -150,6 +203,24 @@ class ReplayTests(unittest.TestCase):
         values = dict(self.store.connection.execute("SELECT subject_id, value FROM label"))
         self.assertEqual(values, {"usajobs-1": "dmv_va", "usajobs-2": "elsewhere", "usajobs-3": "unknown",
                                   "greenhouse-4": "dmv_md", "greenhouse-5": "unknown"})
+
+    def test_replay_keeps_conflicting_structured_address_fields_uncertain(self):
+        rows = [
+            {"MatchedObjectId": "1", "MatchedObjectDescriptor": {
+                "PositionLocation": [{"LocationName": "Baltimore, MD", "CountrySubDivisionCode": "DC",
+                                      "CountryCode": "US"}],
+            }},
+            {"MatchedObjectId": "2", "MatchedObjectDescriptor": {
+                "PositionLocation": [{"LocationName": "Washington, DC", "CountrySubDivisionCode": "DC",
+                                      "CountryCode": "Canada"}],
+            }},
+        ]
+        self.add_poll("usajobs", [("1", "Baltimore, MD"), ("2", "Washington, DC")],
+                      {"SearchResult": {"SearchResultItems": rows}})
+        self.assertEqual(relabel(self.store, "geo", DEFAULT_VERSION), 2)
+        for value, explanation in self.store.connection.execute("SELECT value, method FROM label"):
+            self.assertEqual(value, "unknown")
+            self.assertIn("conflict", explanation)
 
     def test_command_preserves_old_label_and_is_idempotent(self):
         self.add_poll("usajobs", [("1", "US-DC")], {"SearchResult": {"SearchResultItems": []}})

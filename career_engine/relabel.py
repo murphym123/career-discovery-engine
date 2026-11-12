@@ -2,7 +2,6 @@
 import argparse
 import json
 import os
-import re
 import sqlite3
 
 from career_engine.geography import _classify_geo, load_gazetteer
@@ -24,14 +23,11 @@ def _text(value):
 
 
 def _usa_worksite(address):
-    locality = _text(address.get("LocationName")) or _text(address.get("CityName"))
-    state = _text(address.get("CountrySubDivisionCode"))
-    country = _text(address.get("CountryCode"))
-    # These fields can already be present in LocationName.
-    for part in (state, country):
-        if part and not re.search(r"(?:^|[ ,])" + re.escape(part) + r"$", locality, re.I):
-            locality = ", ".join(filter(None, (locality, part)))
-    return locality
+    return {key: value for key, value in {
+        "location": _text(address.get("LocationName")) or _text(address.get("CityName")),
+        "state": _text(address.get("CountrySubDivisionCode")),
+        "country": _text(address.get("CountryCode")),
+    }.items() if value}
 
 
 def _record_contexts(body, platform):
@@ -58,7 +54,7 @@ def _index_capture(blobs, sha, platform):
     index = {}
     try:
         for native_id, url, sites in _record_contexts(body, platform):
-            places = tuple(dict.fromkeys(site for site in sites if site))
+            places = tuple(site for site in sites if site)
             keys = []
             if type(native_id) in (str, int) and str(native_id):
                 keys.append(("id", str(native_id)))

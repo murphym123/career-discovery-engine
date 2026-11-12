@@ -14,13 +14,30 @@ Belvoir, Beltsville, Lanham, and Landover. It uses YAML's JSON syntax so the
 replay command can run with the existing dependencies. The regression suite
 reads location strings from the committed coverage diagnostics and the Issue
 17 and 21 evidence. It includes a conflicting location/title example and
-synthetic ambiguity, remote, and replay cases. The exact run-8 artifact
-referenced in §7.2 was not identified among the available evidence. [Coverage
-research](coverage/DC_EMPLOYMENT_COVERAGE_INTELLIGENCE.md).
+synthetic ambiguity, remote, and replay cases. [Coverage research](coverage/DC_EMPLOYMENT_COVERAGE_INTELLIGENCE.md).
+
+GitHub identifies the November 6 discovery run `42193251891` as workflow run 8.
+Its original `career-report-42193251891` artifact contains
+`dc-expanded-audit.json` with 3,288 sightings. The 216 legacy regional rows
+contain 74 distinct location strings. The audit also contains all 15 distinct
+locations from the reviewed metro-locality diagnostics. None of either set
+classifies as `elsewhere`. Some remain uncertain under the current footprint
+and remote rules. This is a regression check against those location strings.
+The archive and its records stay outside Git. [Original run 8 and artifact](https://github.com/murphym123/career-discovery-engine/actions/runs/42193251891).
+
+To repeat the check with the original archive:
+
+```sh
+PROSPECT_RUN8_ARCHIVE=/path/to/career-report-42193251891.zip \
+  python -m unittest discover -s tests -p 'test_prospect_geography.py' -v
+```
 
 The optional context mapping can contain an explicit posting worksite
 `state` or `country`, offered `worksites`, a `work_arrangement`, a stated
-`remote_scope`, and the posting `title`. Country or employer location alone
+`remote_scope`, and the posting `title`. Worksites can be strings or structured
+addresses with separate location, state, and country fields. Contradictory
+jurisdiction evidence returns `unknown` with a conflict explanation.
+Country or employer location alone
 does not establish permission to work remotely from DC. Telework eligibility
 alone does not establish a remote role. A title is used only to flag the
 documented explicit nonlocal-suffix conflict.
