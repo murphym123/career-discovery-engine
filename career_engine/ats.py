@@ -6,6 +6,7 @@ Board IDs must come from a recorded public URL, never guessed company names.
 import hashlib
 import html
 import json
+import os
 import re
 import time
 from datetime import datetime, timezone
@@ -140,7 +141,7 @@ class PublicTransport:
         if time.monotonic()-self.started>self.max_seconds:return 'time_budget'
         return ''
 
-    def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False):
+    def get(self,url,params=None,max_bytes=8_000_000,kind='api',prefix=False,*,capture=None):
         if not self.allowed(url):raise FetchError('unsafe_endpoint')
         if urlsplit(url).hostname.endswith('.icims.com') and params:
             from career_engine.icims import public_url
@@ -193,6 +194,8 @@ class PublicTransport:
                             raise FetchError('response_too_large')
                         del data[max_bytes:];item.update(truncated=True,sha256_kind='retrieved_prefix_only');break
                 item.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
+                if capture is not None and not item.get('truncated'):
+                    capture(bytes(data))
                 try:
                     text=bytes(data).decode('utf-8')
                     if kind in ('public_html','robots','public_feed','seed_sitemap'):
@@ -314,7 +317,7 @@ def normalize_posting(board,item,company=''):
                 **({'raw_provider_record':item,'offices':offices} if provider=='greenhouse' else {}))
 
 
-def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
+def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None,*,_evidence=None):
     parsed=board_from_url(board.get('url',''))
     if not parsed or parsed['key']!=board.get('key') or parsed['provider']!=board.get('provider') or parsed['token']!=board.get('token'):raise ValueError('Invalid observed board')
     if not 1<=max_pages<=10 or not 0<=detail_budget<=30:raise ValueError('Invalid ATS page/detail cap')
@@ -325,6 +328,20 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
     if provider=='jazzhr':
         from career_engine.jazzhr import retrieve_jazzhr
         return retrieve_jazzhr(transport,board,detail_budget,market)
+    if provider == 'greenhouse' and _evidence is None and os.getenv('PROSPECT_DATA_DIR'):
+        from career_engine.store.collectors import collect_greenhouse, configured_run
+
+        config = dict(collector='greenhouse', max_pages=max_pages, detail_budget=detail_budget,
+                      max_requests=transport.max_requests, max_bytes=transport.max_bytes,
+                      max_seconds=transport.max_seconds, market=getattr(market, 'identifier', 'default'))
+        with configured_run(config) as run:
+            return collect_greenhouse(*run, transport, board, max_pages, detail_budget, market)
+
+    def capture_options(role):
+        if _evidence is None:
+            return {}
+        return {'capture': lambda body: _evidence.capture(body, role)}
+
     stats={'board_key':board['key'],'status':'ok','errors':[],'warnings':[],'received':0,'malformed':0,'unlisted_omitted':0,'capped':False,'requests':0}
     start=len(transport.requests);rows=[];company='';available_total=None;inventory_complete=False;page_lengths=[]
     try:
@@ -332,13 +349,13 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
             base='https://boards-api.greenhouse.io/v1/boards/'+token
             stats['description_mode']='content_list'
             try:
-                data=transport.json(base+'/jobs',{'content':'true'})
+                data=transport.json(base+'/jobs',{'content':'true'},**capture_options('inventory'))
             except FetchError as e:
                 if str(e)!='response_too_large':raise
                 stats['description_mode']='metadata_fallback_bounded_details'
                 stats['errors'].append('content_list_response_too_large')
                 # No fallback after denial or global limits: transport enforces both.
-                data=transport.json(base+'/jobs')
+                data=transport.json(base+'/jobs',**capture_options('inventory'))
             items=data.get('jobs') if isinstance(data,dict) else None
             if not isinstance(items,list):raise FetchError('invalid_schema')
             available_total=len(items)
@@ -347,10 +364,12 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
             if isinstance(stats['provider_claimed_total'],int) and stats['provider_claimed_total']!=len(items):
                 inventory_complete=False;stats['warnings'].append('provider_total_differs_from_returned_inventory')
             try:
-                info=transport.json(base);company=str(info.get('name') or '') if isinstance(info,dict) else ''
+                info=transport.json(base,**capture_options('board'));company=str(info.get('name') or '') if isinstance(info,dict) else ''
             except FetchError as e:
                 stats['warnings'].append('board_name_'+str(e))
                 if any(x in str(e) for x in ('403','429','host_stopped')):stats['errors'].append(str(e))
+            if _evidence is not None:
+                _evidence.greenhouse_inventory(board,items,company)
             batches=[items];stats['capped']=len(items)>5000
         elif provider=='ashby':
             data=transport.json('https://api.ashbyhq.com/posting-api/job-board/'+token,{'includeCompensation':'true'})
@@ -393,11 +412,13 @@ def retrieve_board(transport,board,max_pages=3,detail_budget=3,market=None):
             targets=[r for r in targets if r['geography']!='elsewhere' and not r['description']][:detail_budget]
             for r in targets:
                 try:
-                    detail=transport.json(base+'/jobs/'+r['identity'].rsplit(':',1)[-1]);new=normalize_posting(board,detail,company)
+                    detail=transport.json(base+'/jobs/'+r['identity'].rsplit(':',1)[-1],**capture_options('detail'));new=normalize_posting(board,detail,company)
                     if new['identity']!=r['identity']:raise ValueError('detail posting ID mismatch')
                     r.setdefault('index_fields',r['raw_provider_record'])
                     r.update(new)
                     r.update(worksite_evidence(r,market))
+                    if _evidence is not None:
+                        _evidence.greenhouse_detail(new)
                 except (FetchError,ValueError,TypeError) as e:
                     r['detail_status']=str(e)[:80];stats['errors'].append('detail_'+str(e)[:80])
                     if isinstance(e,FetchError) and any(x in str(e) for x in ('403','429','budget','host_stopped')):break

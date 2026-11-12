@@ -97,7 +97,7 @@ def normalize(source, item):
     raise ValueError("unsupported structured source")
 
 
-def retrieve(session, source, max_pages=3, stats=None):
+def retrieve(session, source, max_pages=3, stats=None, *, _evidence=None):
     """Yield usable records, preserving earlier pages when later pages fail.
 
     Never print exception URLs (Muse's free registration key is a query param).
@@ -108,6 +108,12 @@ def retrieve(session, source, max_pages=3, stats=None):
         raise ValueError("unsupported structured source")
     if not 1 <= max_pages <= 20:
         raise ValueError("page cap must be 1–20")
+    if source == "usajobs" and _evidence is None and os.getenv("PROSPECT_DATA_DIR"):
+        from career_engine.store.collectors import collect_usajobs, configured_run
+
+        with configured_run(dict(collector="usajobs", max_pages=max_pages)) as run:
+            yield from collect_usajobs(*run, session, max_pages, stats)
+        return
     missing = missing_credentials(source)
     if missing:
         stats.status = "not_configured"
@@ -156,6 +162,8 @@ def retrieve(session, source, max_pages=3, stats=None):
                 stats.status = "failed"
                 stats.errors.append(f"HTTP {response.status_code}")
                 return
+            if _evidence is not None and not getattr(response, "prospect_captured", False):
+                _evidence.usajobs_response(getattr(response, "content", None))
             data = response.json()
             if not isinstance(data, dict) or data.get("success") is False:
                 raise ValueError("invalid response")
@@ -168,14 +176,17 @@ def retrieve(session, source, max_pages=3, stats=None):
                 rows = data.get({"jobicy": "jobs", "muse": "results", "reliefweb": "data"}[source])
             if not isinstance(rows, list):
                 raise ValueError("missing record array")
+            if _evidence is not None:
+                _evidence.usajobs_page(result.get("SearchResultCountAll"), rows)
             stats.pages += 1
             for item in rows:
                 stats.received += 1
                 try:
                     record = normalize(source, item)
-                    if not record.get("title") or not record.get("url"):
-                        raise ValueError("missing title or URL")
                 except (ValueError, TypeError, AttributeError):
+                    stats.malformed += 1
+                    continue
+                if not record.get("title") or not record.get("url"):
                     stats.malformed += 1
                     continue
                 yield record

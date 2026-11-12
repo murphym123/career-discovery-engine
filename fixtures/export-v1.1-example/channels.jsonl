@@ -1,0 +1,2 @@
+{"channel_id":"00000000000000000000000000000001","employer_id":null,"evidence_role":"discovery","kind":"api","locator":"https://federal.example/","platform":"usajobs","retention_class":"public","verification_state":"verified"}
+{"channel_id":"00000000000000000000000000000002","employer_id":null,"evidence_role":"discovery","kind":"ats","locator":"https://synthetic-gh.example/","platform":"greenhouse","retention_class":"public","verification_state":"verified"}
