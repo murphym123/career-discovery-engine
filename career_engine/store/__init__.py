@@ -291,6 +291,19 @@ class Store:
         if changed.rowcount != 1:
             raise ValueError("Unknown posting")
 
+    def unlabeled_sightings(self, dimension, classifier_version):
+        """Stream sightings missing this version, grouping shared inventory captures."""
+        return self.connection.execute("""
+            SELECT s.sighting_id, s.location_raw, s.title, s.native_id, s.url, s.raw_sha,
+                   channel.platform, channel.retention_class
+            FROM sighting AS s JOIN channel USING (channel_id)
+            WHERE NOT EXISTS (
+                SELECT 1 FROM label WHERE subject = 'sighting' AND subject_id = s.sighting_id
+                  AND dimension = ? AND classifier_version = ?
+            )
+            ORDER BY channel.platform, s.raw_sha, s.sighting_id
+        """, (dimension, classifier_version))
+
     def add_label(self, *, subject, subject_id, dimension, value, method, classifier_version, created_at=None):
         self.connection.execute("""
             INSERT INTO label (subject, subject_id, dimension, value, method, classifier_version, created_at)
