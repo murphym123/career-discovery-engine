@@ -4,6 +4,7 @@ import json
 import os
 import sqlite3
 
+from career_engine.ats import LEVER_PROVIDERS, LEVER_REMOTE_LOCATION
 from career_engine.geography import _classify_geo, load_gazetteer
 from career_engine.store import Store
 
@@ -84,7 +85,13 @@ def relabel(store, dimension, version):
     with store.transaction():
         for sighting in store.unlabeled_sightings(dimension, version):
             platform, sha = sighting["platform"], sighting["raw_sha"]
+            location = sighting["location_raw"]
             context = {"title": sighting["title"]}
+            if platform in LEVER_PROVIDERS:
+                arrangement, separator, places = location.partition(" ; ")
+                if arrangement == LEVER_REMOTE_LOCATION:
+                    context["work_arrangement"] = "remote"
+                    location = places if separator else ""
             if sha and platform in SUPPORTED_PLATFORMS and sighting["retention_class"] == "public":
                 key = (platform, sha)
                 if key != capture_key:
@@ -93,7 +100,7 @@ def relabel(store, dimension, version):
                 native_id = sighting["native_id"]
                 identity = ("id", native_id) if native_id else ("url", sighting["url"])
                 context["worksites"] = captured.get(identity, ())
-            value, reason = _classify_geo(sighting["location_raw"], context, gazetteer)
+            value, reason = _classify_geo(location, context, gazetteer)
             store.add_label(subject="sighting", subject_id=sighting["sighting_id"], dimension=dimension,
                             value=value, method="gazetteer: " + reason, classifier_version=version)
             added += 1

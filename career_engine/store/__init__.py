@@ -180,7 +180,8 @@ class Store:
                 raise ValueError("Expected an existing employer that has not already been merged")
 
     def ensure_channel(self, *, kind, platform, locator, retention_class, evidence_role,
-                       verification_state, channel_key=None, employer_id=None, channel_id=None):
+                       verification_state, channel_key=None, employer_id=None, channel_id=None,
+                       require_matching_role=False):
         channel_id = channel_id or uuid4().hex
         with self.transaction() as db:
             db.execute("""
@@ -190,12 +191,27 @@ class Store:
                   evidence_role, verification_state))
             if channel_key is not None:
                 row = db.execute(
-                    "SELECT channel_id, retention_class FROM channel WHERE channel_key = ?", (channel_key,),
+                    "SELECT channel_id, retention_class, evidence_role FROM channel WHERE channel_key = ?",
+                    (channel_key,),
                 ).fetchone()
                 if row["retention_class"] != retention_class:
                     raise ValueError("Channel retention class conflicts with its existing record")
+                if require_matching_role and row["evidence_role"] != evidence_role:
+                    raise ValueError("Channel evidence role conflicts with its existing record")
                 channel_id = row["channel_id"]
         return channel_id
+
+    def ensure_channel_employer(self, channel_id, name, origin, *, aliases=()):
+        """Record a provisional employer for an observed channel without reassigning it."""
+        with self.transaction() as db:
+            channel = db.execute("SELECT employer_id FROM channel WHERE channel_id = ?", (channel_id,)).fetchone()
+            if channel is None:
+                raise ValueError("Unknown channel")
+            if channel["employer_id"] is not None:
+                return channel["employer_id"]
+            employer_id = self.add_employer(name, "provisional", origin, aliases=aliases)
+            db.execute("UPDATE channel SET employer_id = ? WHERE channel_id = ?", (employer_id, channel_id))
+            return employer_id
 
     def register_capture(self, sha, byte_count, *, captured_at=None):
         self.connection.execute("""
