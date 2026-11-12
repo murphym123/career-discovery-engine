@@ -207,7 +207,7 @@ class StoreTests(StoreTestCase):
         private_poll = self.store.record_poll(run_id, private, status="ok", received=1)
         public_poll = self.store.record_poll(run_id, public, status="ok", received=2)
         private_link = "https://newsletter.example/secret/embedded-secret?signature=auth-secret"
-        public_link = "https://careers.example/jobs/research?gh_jid=101&tracking=unique-recipient#private-fragment"
+        public_link = "https://careers.example/jobs/policy?gh_jid=101&tracking=unique-recipient#private-fragment"
         signed_link = "https://person:embedded-password@careers.example/job/555"
         self.post(private_poll, identity_key="url:" + private_link, url=private_link, canonical_url=private_link,
                   native_id="private-message-id", title="Reply to to-private@example.invalid",
@@ -225,7 +225,7 @@ class StoreTests(StoreTestCase):
             self.assertNotIn(marker.encode(), combined)
         self.assertEqual({row["poll_id"] for row in read_rows(bundle, "polls")}, {public_poll, private_poll})
         links = [row["url"] for row in read_rows(bundle, "sightings")]
-        self.assertIn("https://careers.example/jobs/research?gh_jid=101", links)
+        self.assertIn("https://careers.example/jobs/policy?gh_jid=101", links)
         self.assertEqual(sum(link.startswith("https://redacted.invalid/") for link in links), 2)
 
     def test_parallel_sightings_share_an_identity_and_keep_both_observations(self):

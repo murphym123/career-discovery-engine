@@ -174,7 +174,7 @@ def _safe_projection(store, records, aliases, privacy):
         identity = row["identity_key"]
         platform, _, remainder = identity.partition(":")
         tenant, _, native_id = remainder.partition(":")
-        if (privacy.native(platform) and privacy.native(tenant) and privacy.native(native_id)
+        if (privacy.native(platform) and privacy.tenant_is_shareable(tenant) and privacy.native(native_id)
                 and (row["posting_id"], platform, native_id) in native_keys):
             continue
         url = public_posting_urls.get(row["posting_id"])

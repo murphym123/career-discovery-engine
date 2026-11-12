@@ -15,6 +15,12 @@ SECRET_NAME = re.compile(
     r"login|log-in|sign-in|signin|sign-out|signout|logout|private|mail|webmail|verify|"
     r"x-amz(?:-[a-z]+)*|x-goog(?:-[a-z]+)*)", re.I,
 )
+AUTH_PATH = re.compile(
+    r"(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth(?:orization)?|token|"
+    r"password|secret|session(?:[_-]?id)?|subscription|unsubscribe|signature|"
+    r"sso|oauth|reset|invite|magic[_-]?link|login|log-in|sign-in|signin|logout|"
+    r"webmail|mail|private|verify)", re.I,
+)
 SENSITIVE_TEXT = re.compile(
     r"(?:[^\s<>@]+@[^\s<>@]+|https?://|mailto:|file:|"
     r"(?:^|[\s(])(?:~/|/[^\s/]+/|[A-Z]:[\\/])|"
@@ -56,9 +62,12 @@ class Projection:
         return REDACTED if self.unsafe(value) else value
 
     def native(self, value):
-        if value and OPAQUE_ID.fullmatch(value) and not self.unsafe(value) and not SECRET_NAME.fullmatch(value):
+        if value and OPAQUE_ID.fullmatch(value) and not self.unsafe(value):
             return value
         return None
+
+    def tenant_is_shareable(self, value):
+        return bool(value and PATH_PART.fullmatch(value) and not self.unsafe(value))
 
     def identifier(self, value):
         if self.native(value) is None:
@@ -71,12 +80,12 @@ class Projection:
         parsed = urlsplit(value)
         host = parsed.hostname
         if (not DNS_HOST.fullmatch(host) or host.endswith(".invalid")
-                or self.unsafe(host) or SECRET_NAME.fullmatch(host.split(".")[0])):
+                or self.unsafe(host) or AUTH_PATH.fullmatch(host.split(".")[0])):
             return None
         for segment in filter(None, parsed.path.split("/")):
             decoded = _decoded(segment)
             if (not PATH_PART.fullmatch(decoded) or decoded in (".", "..")
-                    or SECRET_NAME.fullmatch(decoded) or self.unsafe(decoded)
+                    or AUTH_PATH.fullmatch(decoded) or self.unsafe(decoded)
                     or re.match(r"(?:token|secret|signature|session|password|auth|subscription|api[_-]?key)[._-]", decoded, re.I)):
                 return None
         try:
