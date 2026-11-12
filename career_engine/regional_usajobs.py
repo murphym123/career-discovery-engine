@@ -25,6 +25,7 @@ class BoundedSession:
     """
     def __init__(self,session=None,pause=time.sleep):
         self.session=session if session is not None else requests.Session()
+        self.capture_body=None
         self.requests=[];self.raw={};self.bytes=0;self.total=None;self.stopped=False;self.pause=pause;self.started=time.monotonic()
     def get(self,url,params=None,headers=None,**kwargs):
         if url!=ENDPOINT or self.stopped:raise ValueError('usajobs_endpoint_or_stopped')
@@ -43,6 +44,8 @@ class BoundedSession:
                 if len(body)>8_000_000 or self.bytes>64_000_000 or time.monotonic()-self.started>=600:
                     item['error']='response_too_large';self.stopped=True;raise ValueError('usajobs_response_too_large')
             item.update(bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
+            if self.capture_body is not None:
+                self.capture_body(bytes(body))
             data=json.loads(body)
             result=data.get('SearchResult',{}) if isinstance(data,dict) else {}
             self.total=result.get('SearchResultCountAll')
@@ -50,6 +53,7 @@ class BoundedSession:
                 if isinstance(row,dict):self.raw[str(row.get('MatchedObjectId',''))]=row
             class Parsed:
                 status_code=200
+                prospect_captured=self.capture_body is not None
                 def json(self):return data
             return Parsed()
         finally:response.close()
@@ -62,6 +66,9 @@ def collect_usajobs(max_pages=6,session=None,pause=time.sleep):
     config={'configured':not missing,'terms_confirmed':terms,'missing_configuration':missing,
             'setup_requirements':SETUP,'affiliation':'Unofficial research tool; not operated, sponsored, approved or endorsed by OPM.'}
     if missing or not terms:
+        if os.getenv('PROSPECT_DATA_DIR'):
+            from career_engine.store.collectors import record_usajobs_skip
+            record_usajobs_skip('missing_credentials' if missing else 'terms_unconfirmed', max_pages)
         errors=(['Missing configuration: '+', '.join(missing)] if missing else [])
         if not terms:errors.append('Confirm authorized API use: USAJOBS_TERMS_ACCEPTED=true')
         return [],{**asdict(SourceStats(status='not_collected')),**config,'errors':errors}
