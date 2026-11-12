@@ -1,0 +1,49 @@
+{
+  "version": "gazetteer-dc/1",
+  "dc_aliases": [
+    "dc", "district of columbia", "washington dc", "washington district of columbia",
+    "washington dc dc guide community",
+    "dc washington", "district of columbia washington",
+    "us dc", "us dc washington", "usa dc", "usa dc washington",
+    "united states dc", "united states dc washington",
+    "us district of columbia", "us district of columbia washington",
+    "usa district of columbia", "usa district of columbia washington",
+    "united states district of columbia", "united states district of columbia washington"
+  ],
+  "nearby_places": {
+    "MD": [
+      "beltsville", "bethesda", "camp springs", "chevy chase", "college park", "forestville",
+      "gaithersburg", "greenbelt", "hyattsville", "landover", "lanham", "rockville", "silver spring",
+      "upper marlboro"
+    ],
+    "VA": [
+      "alexandria", "arlington", "arlington county", "ashburn", "chantilly", "dulles", "fairfax",
+      "fairfax county", "falls church", "fort belvoir", "ft belvoir", "herndon", "manassas",
+      "mclean", "reston", "tysons", "tysons corner", "woodbridge"
+    ]
+  },
+  "bare_nearby_places": {"bethesda": "MD", "silver spring": "MD"},
+  "ambiguous_names": ["alexandria", "arlington", "columbia", "washington"],
+  "outside_places": {
+    "MD": ["annapolis", "baltimore"],
+    "VA": ["charlottesville", "lynchburg", "norfolk", "richmond"]
+  },
+  "outside_countries": [
+    "australia", "canada", "france", "germany", "india", "ireland", "mexico", "uk", "united kingdom"
+  ],
+  "remote": {
+    "markers": [
+      "\\bremote\\b", "\\bworldwide\\b", "\\bwork from anywhere\\b", "^anywhere(?: in .+)?$"
+    ],
+    "negation": "\\b(?:not remote|no remote|remote work not available)\\b",
+    "eligible_scopes": [
+      "^(?:(?:fully )?remote )?(?:us|usa|united states)(?: only| national| remote)?$",
+      "^(?:fully )?remote (?:in|within|from) (?:the )?(?:us|usa|united states|washington dc|district of columbia)$",
+      "^(?:remote )?(?:work from )?(?:anywhere in (?:the )?(?:us|usa|united states|world)|worldwide)$"
+    ],
+    "dc_exclusion": "\\b(?:except|excluding|excludes|not available in) (?:the )?(?:washington dc|district of columbia|dc)(?:$| (?:and|or|residents)\\b)",
+    "restrictions": "\\b(?:except|excluding|excludes|not available|limited to|must (?:live|reside|be based)|approved states|eligible states|within commuting distance)\\b",
+    "country_only": "^(?:remote )?(?:(?:only in|must reside in|must be based in) (.+)|(.+) only)$"
+  },
+  "conflicting_title_places": ["montreal"]
+}
