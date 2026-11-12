@@ -1,0 +1,4 @@
+{"channel_id":"channel-001","employer_id":"employer-001","evidence_role":"discovery","kind":"ats","locator":"https://jobs.civic-lantern.example/","platform":"greenhouse","retention_class":"public","verification_state":"verified"}
+{"channel_id":"channel-002","employer_id":"employer-002","evidence_role":"discovery","kind":"ats","locator":"https://jobs.marblebridge.example/","platform":"greenhouse","retention_class":"public","verification_state":"verified"}
+{"channel_id":"channel-003","employer_id":null,"evidence_role":"discovery","kind":"public_job_board","locator":"https://regional-board.example/jobs","platform":null,"retention_class":"public","verification_state":"verified"}
+{"channel_id":"channel-004","employer_id":null,"evidence_role":"discovery","kind":"email","locator":"urn:prospect:channel:channel-004","platform":null,"retention_class":"private_email","verification_state":"verified"}

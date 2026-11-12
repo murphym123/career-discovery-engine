@@ -1,0 +1,8 @@
+{"channel_id":"channel-001","declared_total":7,"poll_id":"poll-001","raw_sha":"8378d6d739c11c5e967e2c6095da7d919cbc0b6b6566e8e051659bd96e643d56","received":7,"run_id":"run-001","started_at":"2026-11-18T14:01:00Z","status":"ok"}
+{"channel_id":"channel-002","declared_total":5,"poll_id":"poll-002","raw_sha":"27fa830385a6877f51a2cd8543a31e2e1382a79e694221e27945b633f59b0b32","received":5,"run_id":"run-001","started_at":"2026-11-18T14:02:00Z","status":"ok"}
+{"channel_id":"channel-003","declared_total":8,"poll_id":"poll-003","raw_sha":"d62ddf13b3d051c8d2a858bf946458698f30e490efab5d387e6da6f4421173f0","received":5,"run_id":"run-001","started_at":"2026-11-18T14:03:00Z","status":"partial"}
+{"channel_id":"channel-004","declared_total":null,"poll_id":"poll-004","raw_sha":null,"received":2,"run_id":"run-001","started_at":"2026-11-18T14:04:00Z","status":"ok"}
+{"channel_id":"channel-001","declared_total":3,"poll_id":"poll-005","raw_sha":"d17e7d2979c39ddb596363b97d7e10c59bb14d12b1c8d6af1ee046e475ae7702","received":3,"run_id":"run-002","started_at":"2026-11-19T14:01:00Z","status":"ok"}
+{"channel_id":"channel-002","declared_total":null,"poll_id":"poll-006","raw_sha":null,"received":0,"run_id":"run-002","started_at":"2026-11-19T14:02:00Z","status":"failed"}
+{"channel_id":"channel-003","declared_total":null,"poll_id":"poll-007","raw_sha":null,"received":0,"run_id":"run-002","started_at":"2026-11-19T14:03:00Z","status":"skipped:budget"}
+{"channel_id":"channel-004","declared_total":0,"poll_id":"poll-008","raw_sha":null,"received":0,"run_id":"run-002","started_at":"2026-11-19T14:04:00Z","status":"ok"}
