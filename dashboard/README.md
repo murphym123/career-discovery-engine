@@ -34,6 +34,9 @@ requirements into that instead of creating a new virtual environment.
   posting IDs observed, and incomplete or skipped polls. Recent runs include
   only runs with a stored public discovery poll. A missing finish time means the
   run was not finalized in the store.
+- **Run explorer** lets you choose a recorded run, inspect its start/finish status,
+  number of polls, returned and unrepresented rows, and a filterable table of
+  per-source poll outcomes. It does not display unattempted planned boards.
 - **Sources** shows public board and feed locators, platform, poll outcomes,
   received and unrepresented record counts, and last poll time. Received counts
   can include repeat observations.
@@ -50,7 +53,8 @@ metadata redaction to displayed text and links. Unsafe locators and links appear
 blank. It makes **no collection network requests** and has no access to raw
 captures, pilot transport logs, or the evaluator's sealed reference corpus.
 
-The tables show up to 1,000 sources, 500 recent polls, 100 recent runs, and 2,000
+The tables show up to 1,000 sources, 500 recent general polls, 100 recent runs,
+2,000 per-run polls, and 2,000
 distinct posting IDs. Filters apply within those windows. Listings with different
 stored IDs can still refer to the same vacancy. Poll status describes the
 collector's supported request, and listings record past observations. Coverage,
