@@ -89,13 +89,21 @@ class PilotTests(unittest.TestCase):
             ("<form>" + private_form, pilot.SOURCE_PRIVATE, ""),
             ('<form><input type="password"></form>', pilot.CHALLENGE, ""),
             ('<h1>Sign in</h1>', pilot.CHALLENGE, ""),
+            ('<form id="challenge-form"></form>', pilot.CHALLENGE, ""),
             ('<form action="/account/login"></form>', pilot.CHALLENGE, ""),
+            ('<script>const password = "fictional-password";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<script>const password = !"fictional-password";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<script>const password = helper("fictional-password");</script>', pilot.SOURCE_PRIVATE, ""),
             ('<script>const applicantId = "fictional-applicant-id";</script>', pilot.SOURCE_PRIVATE, ""),
             ('<div data-applicant-profile="fictional-profile"></div>', pilot.SOURCE_PRIVATE, ""),
+            ("""<div data-state='{"password":"fictional-password"}'></div>""", pilot.SOURCE_PRIVATE, ""),
             ('<script>window.accessToken = "fictional-access-token";</script>', pilot.SOURCE_PRIVATE, ""),
             ('<script>window["session-token"] = "fictional-session";</script>', pilot.SOURCE_PRIVATE, ""),
             ('<script type="application/json">{"applicantProfile":{"name":"Fictional Person"}}</script>',
              pilot.PRIVATE, pilot.PRIVATE),
+            ('<script type="application/json">{"sessionID":"fictional-private-session"}</script>',
+             pilot.PRIVATE, pilot.PRIVATE),
+            ('<script>{"sessionID":"fictional-private-session"}</script>', pilot.SOURCE_PRIVATE, ""),
             ('<script type="application/json">{"csrf-token":"\\u0066ictional-configured-value"}</script>',
              pilot.PRIVATE, pilot.PRIVATE),
             ('<script type="application/json">{invalid}</script>', "unreadable_public_html", ""),
@@ -121,7 +129,7 @@ class PilotTests(unittest.TestCase):
                 self.assertNotIn("sha256", transport.requests[-1])
                 self.assertNotIn("fictional-", json.dumps(transport.requests))
 
-        with patch.dict(os.environ, {"PROSPECT_TEST_SECRET": "fictional-script-state"}):
+        with patch.dict(os.environ, {"PROSPECT_TEST_SECRET": "fictional-anonymous-session"}):
             transport, _ = self.transport(
                 [robots(JAZZ_HOST), (JAZZ["url"], body(fixture, "text/html"))],
                 {(JAZZ_HOST, "/apply")}, JAZZ,
