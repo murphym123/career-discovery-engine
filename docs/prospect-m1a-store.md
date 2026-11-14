@@ -1,6 +1,6 @@
 # Prospect M1a collection store and snapshot export
 
-Prospect keeps a history of what USAJOBS, Greenhouse, and Lever returned. A job keeps
+Prospect keeps a history of what USAJOBS, Greenhouse, Lever, and JazzHR returned. A job keeps
 the same record ID when it appears again, and each appearance records where and
 when Prospect saw it. The exported snapshot gives evaluation a checkable copy of
 that evidence. It includes unsuccessful and incomplete searches so a missing job
@@ -9,7 +9,7 @@ can be interpreted in the context of what Prospect actually searched.
 ## Local storage
 
 Set `PROSPECT_DATA_DIR` to a directory outside Git to opt the existing USAJOBS,
-Greenhouse, and Lever collection paths into persistence. The setting works with
+Greenhouse, Lever, and JazzHR collection paths into persistence. The setting works with
 direct structured collection, the regional USAJOBS handoff, and calls to the ATS
 board collector for those providers. Collection requests, budgets, ranking and
 report deduplication use their existing paths. The adapter observes rows before
@@ -108,6 +108,48 @@ python -m unittest discover -s tests -p 'test_prospect_lever.py' -v
 
 Set `PROSPECT_EVAL_CHECKOUT` to a local evaluator checkout to also validate
 the produced Lever 1.1 bundle with the independent validator.
+
+### JazzHR
+
+The JazzHR adapter observes the existing robots-aware public employer board and
+the existing per-board detail requests. It uses the same request budgets. Sitemap
+discovery stays a source of board URLs, and the shared post-discovery enrichment
+continues to serve the legacy report.
+
+Each identifiable index card becomes a sighting, including duplicates and cards
+beyond the legacy display cap. The board tenant and the case-preserving JazzHR ID
+identify the posting. An identifiable card with no usable link keeps its identity
+and gets the contract's redacted URL. A card that cannot be identified contributes
+to `unrepresented`. The index declares no total, and a completed poll describes
+the visible page. A positive empty notice on a recognized career page supports
+an `ok` zero-result poll only when visible same-board job links or unparsed job
+cards do not contradict it. Missing or unreadable markup is a failure. An indicated
+continuation, an unrepresentable card, or a failed attempted detail request can
+make an otherwise usable poll partial. Ordinary legacy output keeps its existing
+rows, caps, and empty-page status.
+
+The index digest stays attached to each sighting. Accepted detail HTML gets a
+separate local receipt keyed to the native ID, and its description digest and
+dates go on the occurrence selected for inspection. Geography replay uses that
+receipt's structured worksites and explicit remote arrangement alongside the
+original index location. Purged or unavailable details leave the index location
+available for replay. A changed job URL or a different posting's metadata cannot
+enrich a sighting.
+
+Challenge pages and recognizable private application state are refused before
+storage. If a detail response is refused, the index evidence remains and the
+poll records the incomplete attempt. An inventory response that echoes a
+configured credential follows decision 0003. A detail echo cannot stand in for
+missing inventory evidence. The snapshot exchanges safe metadata and digests
+under the existing 1.1 contract. The offline fixtures exercise the supported
+markup and failure signals. Other templates and live access remain unverified.
+
+```sh
+python -m unittest discover -s tests -p 'test_prospect_jazzhr.py' -v
+```
+
+Set `PROSPECT_EVAL_CHECKOUT` to exercise the JazzHR snapshot against the
+independent evaluator.
 
 ## Export and reproduce
 
