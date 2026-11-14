@@ -136,15 +136,17 @@ class LiveTests(unittest.TestCase):
         self.assertEqual(output.getvalue().count('"phase": "attempt"'), 3)
 
     def test_missing_terms_and_unexpected_tenant_never_construct_request(self):
-        self.scripted([])
+        target = address(GH_HOST, META)
+        self.scripted([self.robots(GH_HOST), (target, response(b'{"name":"Example"}'))])
         t, output = self.transport(ads("seeded", GH_HOST, META))
         with self.assertRaisesRegex(FetchError, pilot.POLICY):
             t.get(address(GH_HOST, JOBS), {"content": "true"})
         with self.assertRaisesRegex(FetchError, "unsafe_endpoint"):
             t.get(address(GH_HOST, "/v1/boards/other"))
-        with self.assertRaisesRegex(FetchError, "unsafe_endpoint"):
-            t.get(address(GH_HOST, META))
         self.assertEqual(self.calls, [])
+        # An invalid path is rejected without poisoning a valid route.
+        self.assertIn("Example", t.get(target))
+        self.assertEqual(len(self.calls), 2)
         self.assertNotIn("other", output.getvalue())
         self.assertIn('"decision": "terms_unverified"', output.getvalue())
 
