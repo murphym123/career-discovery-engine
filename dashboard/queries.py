@@ -77,7 +77,7 @@ def overview(connection: sqlite3.Connection) -> dict:
 
 def runs(connection: sqlite3.Connection, limit: int = 100) -> list[dict]:
     rows = _rows(connection, f"""
-        SELECT r.started_at, r.finished_at, r.arm, r.trigger,
+        SELECT r.run_id, r.started_at, r.finished_at, r.arm, r.trigger,
                COUNT(*) AS polls, SUM(p.received) AS rows_received,
                SUM(p.unrepresented) AS unrepresented,
                COUNT(CASE WHEN p.status <> 'ok' THEN 1 END) AS incomplete_polls
@@ -131,7 +131,12 @@ def sources(connection: sqlite3.Connection, limit: int = 1000) -> list[dict]:
     return rows
 
 
-def polls(connection: sqlite3.Connection, limit: int = 500) -> list[dict]:
+def polls(connection: sqlite3.Connection, limit: int = 500, *,
+          run_id: str | None = None) -> list[dict]:
+    """Recent public collection polls, optionally restricted to one run.
+
+    Results are bounded for display, not a count of all collection work.
+    """
     rows = _rows(connection, f"""
         SELECT p.started_at, c.platform, c.locator, r.arm, p.status,
                p.received, p.unrepresented, p.declared_total
@@ -139,9 +144,10 @@ def polls(connection: sqlite3.Connection, limit: int = 500) -> list[dict]:
           JOIN run r ON r.run_id = p.run_id
           JOIN channel c ON c.channel_id = p.channel_id
          WHERE {PUBLIC_DISCOVERY}
+           AND (? IS NULL OR r.run_id = ?)
          ORDER BY rtrim(p.started_at, 'Z') DESC, p.poll_id DESC
          LIMIT ?
-    """, (min(max(int(limit), 1), 2000),))
+    """, (run_id, run_id, min(max(int(limit), 1), 2000),))
     privacy = Projection()
     for row in rows:
         row["platform"] = privacy.native(row["platform"])
