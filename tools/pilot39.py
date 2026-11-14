@@ -667,8 +667,13 @@ class LivePilotTransport(_GuardedTransport):
         self.journal(phase, event)
 
     def reject_endpoint(self):
-        self.halted = "unsafe_endpoint"
-        self.journal("policy_stop", {"reason": self.halted, "stage": self.stage})
+        # An unapproved URL must never be requested, but one adapter's bad
+        # endpoint should not cancel independent, correctly scoped boards.
+        self.journal("policy_skip", {
+            "reason": "unsafe_endpoint",
+            "stage": self.stage,
+            "board_key": self.board["key"] if self.board else None,
+        })
         return super().reject_endpoint()
 
     def close(self):
