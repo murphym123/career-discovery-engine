@@ -95,7 +95,7 @@ class StoreTestCase(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.data = Path(temporary.name)
-        self.instant = datetime.fromisoformat(START)
+        self.instant = datetime.fromisoformat(START.replace("Z", "+00:00"))
         self.store = Store.in_data_dir(self.data, clock=lambda: self.instant)
         self.addCleanup(self.store.__exit__)
 

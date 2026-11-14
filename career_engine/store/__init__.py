@@ -15,11 +15,20 @@ SCHEMA_VERSION = 1
 DATABASE_NAME = "prospect.sqlite"
 
 
+def parse_timestamp(value):
+    if value.endswith("Z"):
+        value = value[:-1] + "+00:00"
+    # Python 3.10 accepts three or six fractional digits. Canonical stored
+    # timestamps trim trailing zeroes and may have any fractional precision.
+    value = re.sub(r"(\.\d{1,6})(?=[+-]\d{2}:\d{2}$)", lambda part: part[0].ljust(7, "0"), value)
+    return datetime.fromisoformat(value)
+
+
 def timestamp(value=None):
     """Normalize a datetime or timestamp to UTC, preserving subsecond precision."""
     value = datetime.now(timezone.utc) if value is None else value
     if isinstance(value, str):
-        value = datetime.fromisoformat(value)
+        value = parse_timestamp(value)
     if value.utcoffset() is None:
         raise ValueError("Timestamp must specify a timezone")
     utc = value.astimezone(timezone.utc).isoformat().removesuffix("+00:00")

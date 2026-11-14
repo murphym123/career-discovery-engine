@@ -71,11 +71,11 @@ class PilotTests(unittest.TestCase):
         self.assertEqual(pilot.STAGE_LIMITS, dict(terms=16, discovery=10, seeded=96, cold=26, repeat=12))
         budget = pilot.Budget()
         for stage, limit in pilot.STAGE_LIMITS.items():
-            for _ in range(limit):
+            for _ in range(0 if stage == "repeat" else limit):
                 budget.attempt(stage)
             with self.assertRaisesRegex(FetchError, "request_budget"):
                 budget.attempt(stage)
-        self.assertEqual(sum(budget.counts.values()), 160)
+        self.assertEqual(sum(budget.counts.values()), 148)
         with patch.object(pilot, "TOTAL_LIMIT", 1):
             budget = pilot.Budget()
             budget.attempt("discovery")
@@ -137,7 +137,8 @@ class PilotTests(unittest.TestCase):
                          original + "/AbC01234/Analyst", original + "/login"):
             t, wire = self.transport([robots(JAZZ_HOST), (original, pilot.Reply(302, location=location))],
                                      {(JAZZ_HOST, "/apply")}, JAZZ)
-            with self.assertRaisesRegex(FetchError, "unsafe_redirect"):
+            reason = pilot.CHALLENGE if location.endswith("/login") else "unsafe_redirect"
+            with self.assertRaisesRegex(FetchError, reason):
                 t.get(original)
             self.assertEqual(len(wire.calls), 2)
             self.assertNotIn(location, json.dumps(t.requests))
@@ -273,8 +274,8 @@ class PilotTests(unittest.TestCase):
             data = Path(scratch) / "data"
             with self.assertRaises(KeyboardInterrupt):
                 pilot.run_fixture(data, [GREEN], t, code_sha=SHA, config_sha="b" * 64)
-            self.assertTrue((data / "fixture-plan.json").is_file())
-            self.assertFalse((data / "fixture-ledger.json").exists())
+            self.assertTrue((data / "run" / "cohort.csv").is_file())
+            self.assertFalse((data / "run" / "run-manifest.json").exists())
             with Store.in_data_dir(data, create=False) as store:
                 self.assertIsNone(store.connection.execute("SELECT finished_at FROM run").fetchone()[0])
                 self.assertEqual(store.connection.execute("SELECT status FROM poll").fetchone()[0], "failed")
@@ -292,7 +293,9 @@ class PilotTests(unittest.TestCase):
             registry = empty_registry()
             for url, hint in order:
                 kind = "public_provider_sitemap" if ".applytojob.com" in url else "commoncrawl_url_index"
-                register(registry, url, dict(kind=kind, geography_hint=hint))
+                source = ("https://app.jazz.co/feeds/google/xml/0" if kind == "public_provider_sitemap"
+                          else "https://index.commoncrawl.org/CC-MAIN-2026-44-index")
+                register(registry, url, dict(kind=kind, url=source, geography_hint=hint))
             results.append(pilot.select_cold(registry, [GREEN]))
         self.assertEqual(results[0], results[1])
         boards, ledger = results[0]

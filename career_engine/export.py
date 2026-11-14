@@ -9,10 +9,9 @@ import shutil
 import sqlite3
 import tempfile
 from collections import Counter
-from datetime import datetime
 from pathlib import Path
 
-from career_engine.store import Store, git_sha, timestamp
+from career_engine.store import Store, git_sha, parse_timestamp, timestamp
 from career_engine.store.blobs import outside_git
 from career_engine.store.privacy import Projection
 
@@ -56,7 +55,7 @@ FIELDS = {
 
 
 def _ulid(created_at):
-    milliseconds = int(datetime.fromisoformat(created_at).timestamp() * 1000)
+    milliseconds = int(parse_timestamp(created_at).timestamp() * 1000)
     if not 0 <= milliseconds < (1 << 48):
         raise ValueError("Snapshot creation time is outside the ULID range")
     value = (milliseconds << 80) | secrets.randbits(80)
