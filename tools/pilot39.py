@@ -81,23 +81,77 @@ def check_cohort(urls):
     return boards
 
 
-def select_cold(registry, seeded):
+# Explicitly public marketing attribution, never access tokens or arbitrary
+# query parameters. Query values are not retained, even in the candidate ledger.
+PUBLIC_DISCOVERY_QUERY = frozenset({
+    "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
+    "source", "src", "ref", "referrer",
+})
+COLD_SCREENING_KEYS = (
+    "registered_boards", "board_url_rejected", "no_eligible_route",
+    "evidence_source_rejected", "observation_rejected",
+    "observation_query_rejected", "observation_route_rejected",
+    "evidence_accepted", "qualified_boards", "seed_overlaps",
+    "cold_candidates", "selected_boards",
+)
+
+
+def _public_observation(value, board_url, projection):
+    """Return a sanitized public board/posting URL or a non-identifying reason.
+
+    Publisher sitemaps often append public referral tags. Requiring literal URL
+    equality rejected these otherwise valid hints. Only approved attribution
+    keys may be stripped; signed, unknown, or private query keys remain denied.
+    """
+    projected = projection.url(value)
+    if not projected:
+        return None, "observation_rejected"
+    original, safe = urlsplit(value), urlsplit(projected)
+    if original.fragment or original.scheme != "https" or original.hostname != safe.hostname or original.path != safe.path:
+        return None, "observation_rejected"
+    if projected != value:
+        try:
+            params = parse_qsl(original.query, keep_blank_values=True, max_num_fields=128)
+        except ValueError:
+            return None, "observation_query_rejected"
+        if (not params or any(
+            key not in PUBLIC_DISCOVERY_QUERY or len(val) > 80 or projection.unsafe(val)
+            for key, val in params
+        )):
+            return None, "observation_query_rejected"
+    board = board_from_url(board_url)
+    if (board_from_url(projected) != board
+            or projected != board_url and not posting_key(projected)
+            or board["provider"] == "jazzhr" and not PublicTransport.allowed(projected)):
+        return None, "observation_route_rejected"
+    return projected, None
+
+
+def select_cold(registry, seeded, screening=None):
+    """Choose bounded cold boards and optionally emit only aggregate counts."""
     selected, seen = [], []
+    counts = Counter(registered_boards=len(registry["boards"]))
     seed_keys = {b["key"] for b in seeded}
+    projection = Projection()
     for platform in COLLECTORS:
         candidates = []
         for key, board in registry["boards"].items():
-            if board["provider"] != platform or Projection().url(board["url"]) != board["url"]:
+            if board["provider"] != platform:
+                continue
+            if projection.url(board["url"]) != board["url"]:
+                counts["board_url_rejected"] += 1
                 continue
             routes = sorted({e["kind"] for e in board["evidence"]
                              if e["kind"] in {"commoncrawl_url_index", "public_provider_sitemap"}})
             if not routes:
+                counts["no_eligible_route"] += 1
                 continue
             local = False
             evidence = []
             for item in board["evidence"]:
                 source = item.get("url", "")
-                if item["kind"] not in routes or Projection().url(source) != source:
+                if item["kind"] not in routes or projection.url(source) != source:
+                    counts["evidence_source_rejected"] += 1
                     continue
                 receipt = {field: item[field] for field in ("kind", "page", "pattern", "archive_timestamp")
                            if field in item}
@@ -106,22 +160,30 @@ def select_cold(registry, seeded):
                 receipt["source"] = source
                 observation = item.get("observed_url")
                 if observation:
-                    if (Projection().url(observation) != observation
-                            or board_from_url(observation) != board_from_url(board["url"])
-                            or observation != board["url"] and not posting_key(observation)):
+                    public_observation, error = _public_observation(observation, board["url"], projection)
+                    if error:
+                        counts[error] += 1
                         continue
-                    receipt["observed_url"] = observation
+                    receipt["observed_url"] = public_observation
                 evidence.append(receipt)
+                counts["evidence_accepted"] += 1
                 local |= item.get("geography_hint") in {"dc_dmv", "in_market"}
             if not evidence:
                 continue
+            counts["qualified_boards"] += 1
             seen.append(dict(board_key=key, url=board["url"], seed_overlap=key in seed_keys,
                              routes=sorted({item["kind"] for item in evidence}), local_hint=local,
                              first_observed_at=board.get("first_seen_at"),
                              evidence=sorted(evidence, key=lambda e: json.dumps(e, sort_keys=True))))
             if key not in seed_keys:
                 candidates.append((not local, sha(("issue-39-v1|" + key).encode()), key, board))
+                counts["cold_candidates"] += 1
+            else:
+                counts["seed_overlaps"] += 1
         selected.extend(board_from_url(item[3]["url"]) for item in sorted(candidates)[:2])
+    counts["selected_boards"] = len(selected)
+    if screening is not None:
+        screening.update({key: counts[key] for key in COLD_SCREENING_KEYS})
     chosen = {b["key"] for b in selected}
     return selected, [dict(row, selected=row["board_key"] in chosen)
                       for row in sorted(seen, key=lambda r: r["board_key"])]
