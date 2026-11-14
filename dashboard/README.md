@@ -12,7 +12,7 @@ Run from the repository root. Your existing private data directory must contain
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r dashboard/requirements.txt
+python -m pip install -r requirements.txt -r dashboard/requirements.txt
 export PROSPECT_DATA_DIR="/your/private/path/to/prospect-data"
 python -m streamlit run dashboard/app.py \
   --server.address 127.0.0.1 \
@@ -30,25 +30,31 @@ requirements into that instead of creating a new virtual environment.
 
 ## What it shows
 
-- **Overview:** public source count, polls, distinct posting IDs observed,
-  incomplete/skipped polls, and recent collection runs.
-- **Sources:** source board/feed locators, platform, poll outcomes, raw record
-  counts, unrepresented record counts and last polling time.
-- **Listings:** most recent observed public-discovery sighting for each posting:
-  title, employer, location, source, timestamps and public job link. Text filter.
+- **Overview** counts registered public discovery sources, stored polls, distinct
+  posting IDs observed, and incomplete or skipped polls. Recent runs include
+  only runs with a stored public discovery poll. A missing finish time means the
+  run was not finalized in the store.
+- **Sources** shows public board and feed locators, platform, poll outcomes,
+  received and unrepresented record counts, and last poll time. Received counts
+  can include repeat observations.
+- **Listings** shows the most recent public discovery sighting per stored posting
+  ID. You can filter the displayed rows by title, employer, location, or source.
 
 The UI uses an existing SQLite connection opened with `mode=ro` plus
-`PRAGMA query_only=ON`. It only queries discovery channels with
-`retention_class='public'`, and never opens raw captures or the evaluator's
-sealed reference corpus. It makes **no collection network requests**, changes
-no storage state, and does not trigger the live pilot.
+`PRAGMA query_only=ON` and reads one consistent snapshot per view. SQLite may
+create or update WAL coordination sidecar files even on a read-only connection.
+The viewer never changes database records, creates a database, or runs migrations.
 
-The table windows currently cap sources at 1,000, recent polls at 500,
-runs at 100, and displayed distinct listings at 2,000. They are viewer limits,
-**not coverage denominators**. Poll success does not prove that a career site was
-fully covered. A stored listing is not proof that it is still open. Evaluation
-metrics are not shown because independently approved safe outputs are not wired
-into this first version.
+The viewer selects public discovery channels and applies Prospect's existing
+metadata redaction to displayed text and links. Unsafe locators and links appear
+blank. It makes **no collection network requests** and has no access to raw
+captures, pilot transport logs, or the evaluator's sealed reference corpus.
+
+The tables show up to 1,000 sources, 500 recent polls, 100 recent runs, and 2,000
+distinct posting IDs. Filters apply within those windows. Listings with different
+stored IDs can still refer to the same vacancy. Poll status describes the
+collector's supported request, and listings record past observations. Coverage,
+current vacancy status, and independent evaluation are outside the viewer's scope.
 
 If there is no `PROSPECT_DATA_DIR`, no existing database, or no public collection
 history, you will see an explicit message rather than invented results.
