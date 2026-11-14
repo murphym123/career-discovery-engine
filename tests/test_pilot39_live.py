@@ -18,7 +18,7 @@ from career_engine.ats import FetchError
 from test_pilot39 import GREEN, GH_HOST, JOBS, JAZZ, JAZZ_HOST, LEVER, LEVER_HOST, LEV_PATH, LEV_QUERY, META, SHA, address
 from tools import pilot39 as pilot
 from tools.pilot39_http import HTTPSWire
-from tools.pilot39_run import Journal, Terms, checked_config, collect, inspect_run
+from tools.pilot39_run import Journal, Terms, checked_config, collect, inspect_run, purge_diagnostic_bodies
 
 ROBOTS = b"User-agent: *\nDisallow:\n"
 INDEX = "/CC-MAIN-2026-44-index"
@@ -51,7 +51,7 @@ def reviewed(arm, host, path):
     return dict(arm=arm, host=host, path=path, checked_at=TERMS_DATE,
                 documentation="https://docs.example.com/public-routes", terms="https://docs.example.com/site-terms",
                 reviewer="Fixture reviewer", disposition="allowed",
-                retention="digest_only" if arm == "discovery" else "public_18_months")
+                retention="digest_only" if arm == "discovery" else "diagnostic_run_only")
 
 
 def ads(arm, host, *paths):
@@ -146,8 +146,9 @@ class LiveTests(unittest.TestCase):
             t.get(address(GH_HOST, META))
         self.assertEqual(self.calls, [])
         self.assertNotIn("other", output.getvalue())
+        self.assertIn('"decision": "terms_unverified"', output.getvalue())
 
-    def test_transport_rechecks_robots_on_slash_redirect_and_denies_ambiguous_rules(self):
+    def test_transport_rechecks_redirect_and_respects_mixed_rule_denial(self):
         initial = address(JAZZ_HOST, "/apply")
         self.scripted([self.robots(JAZZ_HOST, b"User-agent: *\nDisallow: /apply/\n"),
                        (initial, response(status=301, Location="/apply/")),
@@ -156,7 +157,7 @@ class LiveTests(unittest.TestCase):
         with self.assertRaisesRegex(FetchError, "robots_disallowed"):
             t.get(initial)
         t.stage_for_board("seeded", GREEN)
-        with self.assertRaisesRegex(FetchError, "robots_unsupported"):
+        with self.assertRaisesRegex(FetchError, "robots_disallowed"):
             t.get(address(GH_HOST, META))
         self.assertEqual(len(self.calls), 3)
 
@@ -261,6 +262,7 @@ class LiveTests(unittest.TestCase):
                     fl="url,timestamp,status", limit=2500, pageSize=1)
         role = dict(id="1234", title="Analyst", location={"name": "Washington, DC"},
                     absolute_url=f"{cold_url}/jobs/1234", content="Public role")
+        unknown = dict(role, id="4567", absolute_url=f"{cold_url}/jobs/4567", location={"name": ""})
         rules = [
             *ads("discovery", host, "/collinfo.json", "/CC-MAIN-{collection}-index"),
             *ads("seeded", LEVER_HOST, LEV_PATH), *ads("seeded", JAZZ_HOST, "/apply"),
@@ -280,7 +282,7 @@ class LiveTests(unittest.TestCase):
                 (Path(__file__).parent / "fixtures/jazzhr/empty.html").read_bytes(), media="text/html")),
             self.robots(cold_host),
             (address(cold_host, f"/v1/boards/{quote(token)}/jobs", {"content": "true"}),
-             response(json.dumps({"jobs": [role], "meta": {"total": 1}}).encode())),
+             response(json.dumps({"jobs": [role, unknown], "meta": {"total": 2}}).encode())),
             (address(cold_host, f"/v1/boards/{quote(token)}"), response(b'{"name":"Fixture"}')),
         ])
         raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=3, terms=rules)).encode()
@@ -294,7 +296,15 @@ class LiveTests(unittest.TestCase):
             manifest = json.loads((runtime / "run-manifest.json").read_text())
             self.assertEqual(manifest["config_sha256"], pilot.sha(raw))
             self.assertEqual(manifest["stage_attempts"], dict(terms=3, discovery=6, seeded=4, cold=3))
-            self.assertEqual(json.loads((snapshot / "labels.jsonl").read_text())["value"], "dc")
+            labels = [json.loads(line) for line in (snapshot / "labels.jsonl").read_text().splitlines()]
+            sightings = [json.loads(line) for line in (snapshot / "sightings.jsonl").read_text().splitlines()]
+            self.assertIn("dc", {label["value"] for label in labels})
+            self.assertEqual(len({label["value"] for label in labels}), 2)
+            self.assertTrue(all(row["raw_sha"] and row["raw_purged"] for row in sightings))
+            self.assertEqual(manifest["cold_discovered"], dict(candidates=1, new=1, selected=1))
+            self.assertTrue(all(row["allowed"] == row["retrieved"] == 1 for row in manifest["board_counts"]))
+            self.assertFalse(list((data / "blobs").rglob("*.gz")))
+            self.assertEqual(purge_diagnostic_bodies(data), [])
             self.assertEqual([row["status"] for row in inspect_run(data)["committed_polls"]], ["ok"] * 3)
             self.assertTrue(inspect_run(data)["finalized"])
             self.assertEqual(inspect_run(data)["requests_without_result"], [])
@@ -303,6 +313,29 @@ class LiveTests(unittest.TestCase):
                                         cwd=evaluator, capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertTrue(json.loads(result.stdout)["ok"])
+
+    def test_proposed_scope_skips_denied_index_and_unverified_tenant(self):
+        host = pilot.INDEX_HOST
+        denial = reviewed("discovery", host, "/CC-MAIN-{collection}-index")
+        denial.update(disposition="robots_disallowed", documentation=f"https://{host}/robots.txt", terms="")
+        unresolved = reviewed("seeded", JAZZ_HOST, "/apply")
+        unresolved["disposition"] = "unverified"
+        feed = "https://app.jazz.co/feeds/google/xml/0"
+        rules = [denial, unresolved, reviewed("discovery", pilot.FEED_HOST, "/feeds/google/xml/0")]
+        self.scripted([
+            self.robots(pilot.FEED_HOST, b"User-agent: *\nDisallow: /cb\n"
+                        b"Sitemap: http://app.jazz.co/feeds/google/xml/0\n"),
+            (feed, response(b"<urlset></urlset>", media="application/xml")),
+        ])
+        raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=16, terms=rules)).encode()
+        with tempfile.TemporaryDirectory() as scratch:
+            data = Path(scratch) / "pilot"
+            collect(data, [JAZZ], b"fixture cohort", raw, *checked_config(raw))
+            manifest = json.loads((data / "run/run-manifest.json").read_text())
+            self.assertEqual(manifest["discovery"][0]["status"], "robots_disallowed")
+            self.assertEqual(manifest["board_counts"][0]["skipped_by_reason"], {"terms_unverified": 1})
+            self.assertEqual(manifest["board_counts"][0]["potential_false_exclusions"], {"terms_unverified": 1})
+            self.assertEqual(len(self.calls), 2)
 
     def test_collect_interruption_keeps_partial_poll_and_prohibits_reuse(self):
         rules = ads("seeded", LEVER_HOST, LEV_PATH)
@@ -327,6 +360,7 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(poll["received"], 100)
             self.assertEqual(result["polls_without_ledger_result"], [poll["poll_id"]])
             self.assertFalse((data / "exports").exists())
+            self.assertFalse(list((data / "blobs").rglob("*.gz")))
             with (data / "run/operations.jsonl").open("ab") as stream:
                 stream.write(b'{"truncated')
             self.assertTrue(inspect_run(data)["incomplete_journal_tail"])

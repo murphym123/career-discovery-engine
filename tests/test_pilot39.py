@@ -99,9 +99,8 @@ class PilotTests(unittest.TestCase):
     def test_robots_allow_deny_unsupported_and_unavailable(self):
         for document, reason in (
             ("User-agent: *\nDisallow: /v1/\n", "robots_disallowed"),
-            ("User-agent: *\nDisallow: /*jobs$\n", "robots_unsupported"),
-            ("User-agent: *\nCrawl-delay: 4\n", "stricter_crawl_delay"),
-            ("User-agent: *\nRequest-rate: 1/60\n", "robots_unsupported"),
+            ("User-agent: *\nCrawl-delay: 400\n", "stricter_crawl_delay"),
+            ("User-agent: *\nRequest-rate: unknown\n", "robots_unsupported"),
         ):
             with self.subTest(document=document):
                 t, wire = self.transport([robots(GH_HOST, document)], {(GH_HOST, META)})
@@ -112,9 +111,10 @@ class PilotTests(unittest.TestCase):
         t, wire = self.transport([(robots_url, pilot.Reply(503))], {(GH_HOST, META)})
         with self.assertRaisesRegex(FetchError, "http_503"):
             t.get(address(GH_HOST, META))
-        with self.assertRaisesRegex(FetchError, "robots_disallowed"):
+        with self.assertRaisesRegex(FetchError, "http_503"):
             t.get(address(GH_HOST, META))
         self.assertEqual(wire.calls, [robots_url])
+        self.assertEqual(t.access[-1]["decision"], "robots_unavailable")
 
     def test_attempts_pacing_redirect_and_failure(self):
         original = address(JAZZ_HOST, "/apply")

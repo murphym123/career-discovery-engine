@@ -9,7 +9,6 @@ import json
 from pathlib import Path
 import re
 from urllib.parse import parse_qsl, quote, unquote, urlencode, urljoin, urlsplit
-from urllib.robotparser import RobotFileParser
 
 from career_engine.ats import FetchError, PublicTransport, board_from_url, posting_key, stamp
 from career_engine.dc_sources import Document
@@ -21,6 +20,7 @@ from career_engine.store.collectors import collect_greenhouse, collect_lever
 from career_engine.store.jazzhr import _capture_rejection, collect_jazzhr
 from career_engine.store.privacy import AUTH_PATH, Projection, SECRET_NAME, contains_configured_secret
 from tools.pilot39_http import HTTPSWire, Reply
+from tools.pilot39_robots import RobotsRules
 
 COHORT_SHA = "443ac7c071d35eed2349ae1a7d3f70b1b1a6dcd917e2ca296c900eee3a9ff7de"
 DETAIL_SLOTS = {2, 5, 8, 11, 14, 23}
@@ -34,7 +34,8 @@ DENIAL = {401, 403, 429}
 CHALLENGE = "access_challenge_not_bypassed"
 PRIVATE = "private_page_state"
 REDIRECT = "unsafe_redirect"
-POLICY = "terms_unverified_or_restricted"
+POLICY = "terms_unverified"
+TERMS_DENIED = "terms_disallowed"
 PRIVATE_FIELD = re.compile(
     r"api[_-]?key|(?:access|refresh|auth|session|csrf|xsrf)?[_-]?token|authorization|"
     r"password|secret|session[_-]?id|(?:candidate|applicant)[_-]?(?:id|email|phone|data|profile)|"
@@ -168,15 +169,17 @@ class Budget:
 class _GuardedTransport:
     """Shared collector interface. All HTTP attempts cross the same guard."""
 
+    checks_robots = True
+
     def __init__(self, wire, terms):
         self.wire = wire
         self.terms = terms
         self.budget = Budget()
         self.requests = []
         self.blocked = {}
-        self.robots = {}
-        self.robots_documents = {}
         self.robots_checked = {}
+        self.robots_errors = {}
+        self.access = []
         self.sitemaps = set()
         self.last_attempt = {}
         self.stage = "discovery"
@@ -264,80 +267,57 @@ class _GuardedTransport:
                 return "detail"
         return None
 
+    def _access(self, url, route, decision, **evidence):
+        event = dict(url=url, route=route, decision=decision, stage=self.stage,
+                     board_key=self.board["key"] if self.board else None, observed_at=stamp(), **evidence)
+        self.access.append(event)
+        self.record("source_access", event)
+
     def _terms(self, host, path, route):
         # A JazzHR detail permission covers only recognized links from this board's index.
         scope = "/apply/{posting}" if route == "detail" else path.rstrip("/") or "/"
         if not self.terms(host, scope, self.stage, self.board):
-            raise FetchError(POLICY)
+            decision = self.terms.reason(host, scope, self.stage) if hasattr(self.terms, "reason") else POLICY
+            self._access(f"https://{host}{scope}", route, decision)
+            raise FetchError(decision)
 
-    def _robots(self, host, path, params):
-        if host in self.blocked:
-            raise FetchError("host_stopped_after_denial")
-        if host not in self.robots_checked:
-            self._load_robots(host)
-        rule = self.robots_checked[host]
+    def _robots(self, host, path, params, route):
         url = f"https://{host}{path}" + ("?" + urlencode(params) if params else "")
-        if not rule:
-            raise FetchError("robots_disallowed_or_unavailable")
-        if rule is not True and not rule.can_fetch(USER_AGENT, url):
-            if not rule.can_fetch(USER_AGENT, f"https://{host}/"):
-                self.blocked[host] = "robots_disallowed"
-                self.record("host_stop", dict(host=host, stage=self.stage, host_stop="robots_disallowed"))
-            raise FetchError("robots_disallowed_or_unavailable")
-        if rule is not True and (rule.crawl_delay(USER_AGENT) or 0) > 2:
-            raise FetchError("stricter_crawl_delay_skip")
+        if host in self.blocked:
+            self._access(url, route, "host_stopped_after_denial", cause=self.blocked[host])
+            raise FetchError("host_stopped_after_denial")
+        if host not in self.robots_checked and host not in self.robots_errors:
+            self._load_robots(host)
+        evidence = {"robots_url": f"https://{host}/robots.txt"}
+        if host in self.robots_errors:
+            cause = self.robots_errors[host]
+            self._access(url, route, "robots_unavailable", cause=cause, **evidence)
+            raise FetchError(cause)
+        rule = self.robots_checked[host]
+        allowed, matched = rule.decision(url) if rule else (True, None)
+        if not allowed:
+            self._access(url, route, "robots_disallowed", rule=matched, **evidence)
+            raise FetchError("robots_disallowed")
+        if rule and rule.unsupported:
+            self._access(url, route, "robots_unsupported", rule=rule.unsupported, **evidence)
+            raise FetchError("robots_unsupported")
+        self._access(url, route, "allowed", rule=matched, robots_missing=rule is None, **evidence)
 
     def _load_robots(self, host):
-        self.robots[host] = False
-        self.robots_checked[host] = False
         try:
             body = self._read(host, "/robots.txt", {}, "robots", 100000, False, None)
         except FetchError as exc:
-            # The reviewed exact-route terms gate is required even with no robots file.
             if str(exc) in ("http_404", "http_410"):
-                self.robots_checked[host] = self.robots[host] = True
-                self.robots_documents[host] = ""
-                return
-            raise
-        rule = RobotFileParser()
-        directives = []
-        lines = [line.strip() for line in body.lstrip("\ufeff").splitlines()]
-        seen_agent = False
-        for line in lines:
-            if not line:
-                seen_agent = False
-            directive = line.split("#", 1)[0].strip()
-            if not directive:
-                continue
-            key, sep, value = directive.partition(":")
-            key, value = key.lower().strip(), value.strip()
-            if (not sep or key not in {"user-agent", "allow", "disallow", "crawl-delay", "sitemap"}
-                    or key in {"allow", "disallow"} and (value and not re.fullmatch(r"/[A-Za-z0-9/._~-]*", value))
-                    or key == "crawl-delay" and not re.fullmatch(r"[0-9]{1,6}", value)
-                    or key == "user-agent" and not re.fullmatch(r"[A-Za-z0-9_-]+|\*", value)
-                    or key in {"allow", "disallow", "crawl-delay"} and not seen_agent):
-                raise FetchError("robots_unsupported")
-            seen_agent |= key == "user-agent"
-            directives.append((key, value))
-        # RobotFileParser alone uses first-match rather than longest-match precedence.
-        # Refuse mixed allow/deny files until a reviewed parser can establish precedence.
-        if (any(key == "allow" or key == "disallow" and not value for key, value in directives)
-                and any(key == "disallow" and value for key, value in directives)):
-            raise FetchError("robots_unsupported")
-        rule.parse(lines)
-        matching_agents = [value for key, value in directives if key == "user-agent"
-                           and value.lower() in USER_AGENT.split("/")[0].lower()]
-        if (len(matching_agents) > 1
-                or (matching_agents and matching_agents[0].lower() != USER_AGENT.split("/")[0].lower())
-                or sum(pair == ("user-agent", "*") for pair in directives) > 1
-                or sum(key == "crawl-delay" for key, _ in directives) > 1):
-            raise FetchError("robots_unsupported")
-        if rule.default_entry and set(rule.default_entry.useragents) != {"*"}:
-            raise FetchError("robots_unsupported")
-        self.robots_checked[host] = self.robots[host] = rule
-        self.robots_documents[host] = body
+                self.robots_checked[host] = None
+            else:
+                self.robots_errors[host] = str(exc)
+            return
+        self.robots_checked[host] = RobotsRules(body, USER_AGENT)
         if host == FEED_HOST:
-            self.sitemaps.update(re.findall(r"(?im)^\s*sitemap:\s*(https://app\.jazz\.co/feeds/google/xml/[01])\s*$", body))
+            # The published sitemap can name HTTP. Only try the same host and
+            # advertised path over HTTPS, through the normal route and terms checks.
+            for page in re.findall(r"(?im)^\s*sitemap:\s*https?://app\.jazz\.co(/feeds/google/xml/[01])\s*$", body):
+                self.sitemaps.add(f"https://{FEED_HOST}{page}")
 
     def get(self, url, params=None, max_bytes=8_000_000, kind="api", prefix=False, *,
             capture=None, redirect_filter=None):
@@ -353,21 +333,6 @@ class _GuardedTransport:
                 or parsed.scheme != "https" or self.privacy.url(url) != url):
             return self.reject_endpoint()
         host, path = parsed.hostname, parsed.path
-        if path == "/robots.txt" and not params:
-            # Existing collectors request robots themselves. Authorize only their
-            # own current HTML host, or the exact JazzHR feed discovery host.
-            if not (self.stage == "discovery" and host == FEED_HOST
-                    and any(self.terms(host, f"/feeds/google/xml/{i}", self.stage, None) for i in (0, 1))
-                    or self.board and host == urlsplit(self.board["url"]).hostname
-                    and self.terms(host, urlsplit(self.board["url"]).path, self.stage, self.board)):
-                raise FetchError(POLICY)
-            if host not in self.robots_checked:
-                self._load_robots(host)
-            # Legacy robots callers do their own parsing. The stricter cached
-            # rules are already installed and every actual route is rechecked.
-            if not self.robots_checked[host]:
-                raise FetchError("robots_disallowed_or_unavailable")
-            return self.robots_documents[host]
         route = self._route(host, path, params)
         if route is None:
             # The existing Common Crawl helper probes its archive fallback
@@ -376,8 +341,9 @@ class _GuardedTransport:
                 raise FetchError("archive_fallback_disabled")
             return self.reject_endpoint()
         self._terms(host, path, route)
-        self._robots(host, path, params)
+        self._robots(host, path, params, route)
         if route == "sitemap" and url not in self.sitemaps:
+            self._access(url, route, "sitemap_not_advertised")
             raise FetchError("sitemap_not_advertised")
         request_key = (host, path.rstrip("/"), tuple(sorted(params.items())))
         requests = self.board_requests if self.board else self.discovery_requests
@@ -424,7 +390,12 @@ class _GuardedTransport:
                 raise FetchError("host_stopped_after_denial")
             if reason := self.global_stop_reason():
                 raise FetchError(reason)
-            self.wire.sleep(max(0, self.last_attempt.get(host, -2) + 2 - self.wire.time))
+            rule = self.robots_checked.get(host)
+            interval = max(2, rule.delay if rule else 0)
+            remaining_wait = self.last_attempt.get(host, self.wire.time - interval) + interval - self.wire.time
+            if self.wire.time + remaining_wait >= self.deadline:
+                raise FetchError("stricter_crawl_delay_skip" if interval > 2 else "time_budget")
+            self.wire.sleep(max(0, remaining_wait))
             if reason := self.global_stop_reason():
                 raise FetchError(reason)
             self.budget.attempt(self.stage)
@@ -465,7 +436,7 @@ class _GuardedTransport:
                                 if str(exc) in (CHALLENGE, PRIVATE, "byte_budget", "time_budget", "request_timeout"):
                                     raise
                                 if route == "robots" and str(exc) != "unexpected_content_type":
-                                    raise FetchError("robots_disallowed_or_unavailable") from None
+                                    raise
                         raise FetchError(f"http_{reply.status}")
                     body, data = self._body(reply, event, started, limit, prefix)
                 self._capture(data, event, capture)
@@ -491,7 +462,7 @@ class _GuardedTransport:
                 raise
             finally:
                 if route != "robots":
-                    event["robots"] = ("missing" if self.robots_checked.get(host) is True else "allowed")
+                    event["robots"] = ("missing" if self.robots_checked.get(host) is None else "allowed")
                     event["terms"] = "allowed"
                 event["duration_seconds"] = self.wire.time - started
                 self.record("result", event)
@@ -514,7 +485,7 @@ class _GuardedTransport:
                 or (redirect_filter and not redirect_filter(target.geturl()))):
             raise FetchError(REDIRECT)
         self._terms(host, target.path, route)
-        self._robots(host, target.path, params)
+        self._robots(host, target.path, params, route)
         return target.path
 
     @staticmethod
@@ -717,13 +688,17 @@ def run_fixture(data_dir, seeded, transport, *, code_sha, config_sha):
     if data.exists() and any(data.iterdir()):
         raise ValueError("Use a fresh fixture store")
     data.mkdir(mode=0o700, parents=True, exist_ok=True)
-    from tools.pilot39_run import Journal, execute
+    from tools.pilot39_run import BOARD_RETENTION, Journal, execute, purge_diagnostic_bodies, write_json
 
     run = data / "run"
     run.mkdir(mode=0o700)
-    provenance = {"code_sha": code_sha, "config_sha256": config_sha}
-    with (run / "operations.jsonl").open("x", encoding="utf-8") as stream:
-        snapshot = execute(data, run, seeded, transport, Journal(stream), provenance)
+    provenance = dict(code_sha=code_sha, config_sha256=config_sha, raw_retention=BOARD_RETENTION)
+    write_json(run / "provenance.json", provenance)
+    try:
+        with (run / "operations.jsonl").open("x", encoding="utf-8") as stream:
+            snapshot = execute(data, run, seeded, transport, Journal(stream), provenance)
+    finally:
+        purge_diagnostic_bodies(data)
     report = json.loads((run / "run-manifest.json").read_text())
     report["polls"] = json.loads((run / "board-polls.json").read_text())
     report["candidates"] = [json.loads(line) for line in

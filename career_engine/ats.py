@@ -228,16 +228,17 @@ def board_name(transport,board,**capture_options):
     from urllib.robotparser import RobotFileParser
     from html.parser import HTMLParser
     url=board['url'];host=urlsplit(url).hostname
-    if host not in transport.robots:
-        try:
-            text=transport.get('https://'+host+'/robots.txt',max_bytes=100000,kind='robots')
-            rp=RobotFileParser();rp.parse(text.splitlines());transport.robots[host]=rp
-        except FetchError as e:
-            transport.robots[host]=True if str(e)=='http_404' else False
-    rp=transport.robots[host]
-    if rp is False or (rp is not True and not rp.can_fetch(USER_AGENT,url)):return ''
-    delay=rp.crawl_delay(USER_AGENT) if rp is not True else None
-    if delay and delay>1: return ''  # Metadata is optional; do not exceed a stricter site pacing rule.
+    if not getattr(transport, "checks_robots", False):
+        if host not in transport.robots:
+            try:
+                text=transport.get('https://'+host+'/robots.txt',max_bytes=100000,kind='robots')
+                rp=RobotFileParser();rp.parse(text.splitlines());transport.robots[host]=rp
+            except FetchError as e:
+                transport.robots[host]=True if str(e)=='http_404' else False
+        rp=transport.robots[host]
+        if rp is False or (rp is not True and not rp.can_fetch(USER_AGENT,url)):return ''
+        delay=rp.crawl_delay(USER_AGENT) if rp is not True else None
+        if delay and delay>1: return ''  # Metadata is optional; do not exceed a stricter site pacing rule.
     try:text=transport.get(url,max_bytes=600000,kind='public_html',**capture_options)
     except FetchError:return ''
     class Title(HTMLParser):
