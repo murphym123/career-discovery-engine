@@ -161,6 +161,29 @@ class LiveTests(unittest.TestCase):
             t.get(address(GH_HOST, META))
         self.assertEqual(len(self.calls), 3)
 
+    def test_unsafe_redirect_does_not_stop_unrelated_public_board(self):
+        # Reject the first board's unapproved redirect without sacrificing
+        # the next provider's independent authorized inventory request.
+        initial = address(JAZZ_HOST, "/apply")
+        next_board = address(GH_HOST, META)
+        self.scripted([
+            self.robots(JAZZ_HOST),
+            (initial, response(status=302, Location="https://other.example/careers")),
+            self.robots(GH_HOST),
+            (next_board, response(b'{"name":"Example"}')),
+        ])
+        t, output = self.transport(
+            ads("seeded", JAZZ_HOST, "/apply") + ads("seeded", GH_HOST, META),
+            board=JAZZ,
+        )
+        with self.assertRaisesRegex(FetchError, pilot.REDIRECT):
+            t.get(initial)
+        self.assertEqual(t.global_stop_reason(), "")
+        t.stage_for_board("seeded", GREEN)
+        self.assertIn("Example", t.get(next_board))
+        self.assertEqual(len(self.calls), 4)
+        self.assertIn("unsafe_redirect", output.getvalue())
+
     def test_robots_missing_and_429_stop_same_host_across_arms(self):
         target = address(GH_HOST, META)
         denial = response(status=429, Retry_After="Wed, 18 Nov 2026 14:00:00 GMT")
