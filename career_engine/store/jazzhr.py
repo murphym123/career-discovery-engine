@@ -7,7 +7,7 @@ from career_engine.dc_sources import Document
 from career_engine.jazzhr import DETAIL_CAPTURE_PREFIX, retrieve_jazzhr
 from career_engine.public_sources import public_text
 from career_engine.store.collectors import SKIP_REASONS, _ObservationBatch
-from career_engine.store.privacy import AUTH_PATH, REDACTED, Projection
+from career_engine.store.privacy import AUTH_PATH, REDACTED, SENSITIVE_TEXT, Projection
 
 
 ACCESS_TITLE = re.compile(
@@ -27,7 +27,18 @@ PRIVATE_INVENTORY_STATE = re.compile(
     r"session[_-]?id|(?:candidate|applicant)[_-]?(?:data|profile|resume|email|phone|contact|name)|"
     r"candidates?|applicants?|private[_-]?key|signed[_-]?url", re.I
 )
-STATE_ASSIGNMENT = re.compile(r"""(?<![\w-])([\w-]+)["']?\s*(?:\]\s*)?[:=]\s*""")
+STATE_ASSIGNMENT = re.compile(r"""(?<![\w-])([\w-]+)["']?\s*(?:\]\s*)?(?::|=(?![=>]))\s*""")
+JAVASCRIPT_TYPES = {"", "module", "text/javascript", "application/javascript"}
+JS_IDENTIFIER = r"[$A-Za-z_][\w$]*"
+JS_VALUE_END = r"(?=\s*(?:[,;})\]]|$))"
+# Recognize field references and simple calls without credential literals.
+# Quoted selectors are allowed only as arguments to familiar DOM lookups.
+PASSWORD_EXPRESSION = re.compile(
+    rf"""(?:!\s*)?(?:(?:\$|document\.(?:getElementById|querySelector))\(\s*(["'])"""
+    rf"""(?:#?password|input\[name=password\])\1\s*\)|{JS_IDENTIFIER})"""
+    rf"""(?:\s*\.\s*{JS_IDENTIFIER}|\s*\(\s*(?:{JS_IDENTIFIER})?\s*\))*{JS_VALUE_END}"""
+)
+SESSION_LITERAL = re.compile(rf"""(["'])([A-Za-z0-9._-]{{1,128}})\1{JS_VALUE_END}""")
 PRIVATE_INVENTORY_TITLE = re.compile(
     r"\s*(?:(?:candidate|applicant)\s+(?:portal|profile|dashboard|account)|"
     r"(?:account|employee)\s+(?:login|sign[ -]?in)|my applications)\b", re.I
@@ -46,6 +57,33 @@ def _capture_rejection(body, *, public_inventory=False):
         if public_inventory and csrf_metadata and GENERIC_CSRF.fullmatch(name):
             return False
         return PRIVATE_STATE_NAME.search(name) or (public_inventory and PRIVATE_INVENTORY_STATE.fullmatch(name))
+
+    def private_script(script, *, executable=False):
+        for match in STATE_ASSIGNMENT.finditer(script):
+            name, value_start = match[1], match.end()
+            if not private_name(name, csrf_metadata=script[value_start:value_start + 1] not in ("{", "[")):
+                continue
+            if executable:
+                if name.lower() == "password":
+                    # On an anonymous public inventory, a negated JavaScript
+                    # expression computes a boolean; it is not a prefilled
+                    # password literal. Do not infer secret exposure from JS
+                    # syntax we do not recognize. Direct string values remain
+                    # withheld (including a negated string literal).
+                    rhs = script[value_start:].lstrip()
+                    if PASSWORD_EXPRESSION.match(script, value_start) or (
+                        rhs.startswith("!") and rhs.lstrip("!").lstrip()
+                        and not rhs.lstrip("!").lstrip().startswith(("\'", '"', chr(96)))
+                    ):
+                        continue
+                if name.lower() == "sessionid":
+                    # Anonymous inventory can carry a public page session ID.
+                    # Keep the exception to scalar state in executable scripts.
+                    session = SESSION_LITERAL.match(script, value_start)
+                    if session and not SENSITIVE_TEXT.search(session[2]):
+                        continue
+            return True
+        return False
 
     doc = Document(body.decode("utf-8", errors="replace")).root
     rejection = None
@@ -66,10 +104,14 @@ def _capture_rejection(body, *, public_inventory=False):
         if public_inventory and any(key.startswith("data-") and value and private_name(key[5:], csrf_metadata=True)
                                     for key, value in attrs.items()):
             rejection = "private_page_state"
+        if public_inventory and any(key.startswith(("data-", "on")) and value and private_script(value)
+                                    for key, value in attrs.items()):
+            rejection = "private_page_state"
         if node.tag == "script":
             script = "".join(child for child in node.children if isinstance(child, str))
-            if (any(private_name(match[1], csrf_metadata=script[match.end():match.end() + 1] not in ("{", "["))
-                    for match in STATE_ASSIGNMENT.finditer(script))
+            media = (attrs.get("type") or "").lower().split(";", 1)[0].strip()
+            executable = media in JAVASCRIPT_TYPES and not script.lstrip().startswith(("{", "["))
+            if (private_script(script, executable=executable)
                     if public_inventory else PRIVATE_STATE_SCRIPT.search(script)):
                 rejection = "private_page_state"
         if node.tag in ("input", "textarea"):

@@ -53,7 +53,6 @@ SECRET_ASSIGNMENT = re.compile(
 )
 URL_IN_BODY = re.compile(r"""https?://[^\s<>"'\\]+""", re.I)
 TOKEN_ASSIGNMENT = re.compile(r"""\b(?:token|password|sessionid|credential)\s*["']?\s*[:=]""", re.I)
-HTML_ASSIGNMENT = re.compile(r"""(?<![\w-])([\w-]+)\s*["']?\s*[:=]""")
 
 
 def unsafe_body(text):
@@ -646,8 +645,7 @@ class _GuardedTransport:
             and event["url"] in (self.board["url"], self.board["url"] + "/")
         )
         if jazz_inventory:
-            # Check structured state before deciding whether generic CSRF is
-            # the only privacy signal. This includes JSON without escapes.
+            # Structured state and URL checks precede the inventory HTML classifier.
             self._check_html_state(body, inventory_url=event["url"])
         try:
             rejection = _capture_rejection(data, public_inventory=jazz_inventory) if is_html else None
@@ -661,10 +659,7 @@ class _GuardedTransport:
             raise FetchError(SOURCE_PRIVATE if rejection == PRIVATE else rejection)
         if re.search(r"(?i)\b(?:captcha|cf-chl-)[_-]?[a-z0-9-]*\b", body[:4096]) and is_html:
             raise FetchError(CHALLENGE)
-        if is_html and TOKEN_ASSIGNMENT.search(body) and (not jazz_inventory or any(
-            TOKEN_ASSIGNMENT.search(match[0]) and not GENERIC_CSRF.fullmatch(match[1])
-            for match in HTML_ASSIGNMENT.finditer(body)
-        )):
+        if is_html and not jazz_inventory and TOKEN_ASSIGNMENT.search(body):
             raise FetchError(SOURCE_PRIVATE)
         if is_html and not jazz_inventory and "\\" in body:
             self._check_html_state(body)

@@ -77,10 +77,10 @@ class JazzHRStoreTests(StoreTestCase):
         self.assertEqual(len(durable[0]), 2)
         self.assertEqual(self.store.connection.execute("SELECT count(*) FROM sighting").fetchone()[0], 3)
 
-    def test_generic_csrf_inventory_captures_jobs(self):
+    def test_public_script_state_inventory_captures_jobs(self):
         page = fixture("projectable-index")
         markers = ("fictional-meta-state", "fictional-script-state", "fictional-json-state", "fictional-form-state",
-                   "fictional-search-value")
+                   "fictional-search-value", "fictional-anonymous-session")
         rows, stats, poll, transport, session = self.index("projectable-index")
         self.assertEqual([(row["source_id"], row["title"]) for row in rows], [
             ("synthetic-jazz:AbC01234", "Policy Analyst"),
@@ -96,6 +96,24 @@ class JazzHRStoreTests(StoreTestCase):
         self.assertEqual(self.captures(poll), {"inventory": sha})
         self.assertEqual(poll["raw_sha"], sha)
         self.assertEqual(self.store.blobs.get(sha), page.encode())
+
+    def test_public_script_exceptions_are_limited_to_inventory(self):
+        script = '<script>const sessionID = "fictional-anonymous-session";</script>'
+        _, stats, poll, transport, _ = self.collect(
+            Response(None, 404), html_response(fixture("index")),
+            html_response(fixture("detail") + script), detail_budget=1,
+        )
+        self.assertEqual(stats["errors"], ["private_page_state"])
+        self.assertEqual(set(self.captures(poll)), {"inventory"})
+        self.assertEqual(transport.requests[-1]["capture_rejected"], "private_page_state")
+
+    def test_inventory_capture_rejects_populated_password(self):
+        page = fixture("projectable-index") + '<script>const password = "fictional-password";</script>'
+        rows, stats, poll, transport, _ = self.collect(Response(None, 404), html_response(page))
+        self.assertEqual(rows, [])
+        self.assertEqual(stats["errors"], ["private_page_state"])
+        self.assertEqual(self.captures(poll), {})
+        self.assertNotIn("sha256", transport.requests[-1])
 
     def test_export_rejects_public_sightings_without_inventory_evidence(self):
         run_id = self.run_id()

@@ -399,7 +399,7 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(len(self.calls), 2)
             self.assertTrue((snapshot / "manifest.json").is_file())
 
-    def test_jazzhr_csrf_inventory_exports_after_raw_purge(self):
+    def test_jazzhr_public_script_state_exports_after_raw_purge(self):
         page = (Path(__file__).parent / "fixtures/jazzhr/projectable-index.html").read_bytes()
         digest = hashlib.sha256(page).hexdigest()
         gh_role = dict(id=1234, title="Policy Analyst",
@@ -451,7 +451,7 @@ class LiveTests(unittest.TestCase):
                 if artifact.is_file():
                     content = artifact.read_bytes()
                     for marker in (b"fictional-meta-state", b"fictional-script-state", b"fictional-json-state",
-                                   b"fictional-form-state", b"fictional-search-value"):
+                                   b"fictional-form-state", b"fictional-search-value", b"fictional-anonymous-session"):
                         self.assertNotIn(marker, content, str(artifact.relative_to(data)))
 
     def test_runtime_robots_for_public_jazzhr_seeds_uses_seeded_budget(self):
