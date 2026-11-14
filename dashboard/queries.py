@@ -75,6 +75,23 @@ def overview(connection: sqlite3.Connection) -> dict:
     """).fetchone())
 
 
+def collection_totals(connection: sqlite3.Connection) -> dict:
+    """Count committed public discovery records in the configured store."""
+    return dict(connection.execute(f"""
+        WITH public_polls AS (
+          SELECT p.poll_id, p.channel_id, p.received
+            FROM poll p JOIN channel c ON c.channel_id = p.channel_id
+           WHERE {PUBLIC_DISCOVERY}
+        )
+        SELECT
+          (SELECT COALESCE(SUM(received), 0) FROM public_polls) AS received,
+          COUNT(*) AS sightings,
+          COUNT(DISTINCT s.posting_id) AS posting_ids
+        FROM public_polls p
+        JOIN sighting s ON s.poll_id = p.poll_id AND s.channel_id = p.channel_id
+    """).fetchone())
+
+
 def runs(connection: sqlite3.Connection, limit: int = 100) -> list[dict]:
     rows = _rows(connection, f"""
         SELECT r.run_id, r.started_at, r.finished_at, r.arm, r.trigger,

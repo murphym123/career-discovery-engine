@@ -8,14 +8,20 @@ import sqlite3
 
 import streamlit as st
 
-from dashboard.queries import listings, open_store, overview, polls, runs, sources
+from dashboard.activity import activity
+from dashboard.queries import (
+    collection_totals, database_path, listings, open_store, overview, polls, runs, sources,
+)
 
 
 st.set_page_config(page_title="Prospect | Local viewer", page_icon="🔎", layout="wide")
 st.title("Prospect")
 st.caption("Local collection viewer · read-only · public discovery records only")
 
-section = st.sidebar.radio("View", ["Overview", "Run explorer", "Sources", "Listings"])
+section = st.sidebar.radio(
+    "View", ["Overview", "Run explorer", "Sources", "Listings", "Live activity"]
+)
+auto_refresh = st.sidebar.checkbox("Refresh every 4 seconds", value=True)
 st.sidebar.caption("No collectors or evaluations are launched from this interface.")
 
 data_dir = os.environ.get("PROSPECT_DATA_DIR", "").strip()
@@ -24,14 +30,84 @@ if not data_dir:
     st.code('export PROSPECT_DATA_DIR="/path/to/private/prospect-data"', language="bash")
     st.stop()
 
-try:
+def store_revision(data_dir):
+    path = database_path(data_dir)
+    revision = []
+    for candidate in (path, path.with_name(path.name + "-wal")):
+        try:
+            info = candidate.stat()
+            revision.append((info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns))
+        except FileNotFoundError:
+            revision.append(None)
+    return tuple(revision)
+
+
+@st.cache_data(max_entries=16, ttl=60, show_spinner=False)
+def read_view(data_dir, section, revision, run_id=None):
+    # The database and WAL signature invalidates cached results after commits.
     with open_store(data_dir) as connection:
         if section == "Overview":
-            counts, recent = overview(connection), runs(connection)
+            return overview(connection), runs(connection)
+        if section == "Run explorer":
+            return runs(connection) if run_id is None else polls(connection, limit=2000, run_id=run_id)
+        if section == "Sources":
+            return sources(connection), polls(connection)
+        if section == "Listings":
+            return listings(connection)
+        return collection_totals(connection)
+
+
+def render_activity():
+    progress = activity(data_dir)
+    st.subheader("Live activity")
+    st.write(progress["status"])
+    if progress["reason"]:
+        st.caption(f'Recorded reason: {progress["reason"]}')
+    if progress["snapshot"]:
+        st.caption(f'Export snapshot: {progress["snapshot"]}')
+    if not progress["journal_present"]:
+        st.info("No readable pilot journal is available in this data directory.")
+    for notice in progress["notices"]:
+        st.caption(notice)
+
+    try:
+        totals = read_view(data_dir, "Live activity", store_revision(data_dir))
+    except FileNotFoundError:
+        st.info("The collection database has not been created in this directory yet.")
+    except (OSError, sqlite3.DatabaseError, ValueError):
+        st.warning("Committed totals are temporarily unavailable.")
+    else:
+        a, b, c = st.columns(3)
+        a.metric("Received records", totals["received"])
+        b.metric("Persisted sightings", totals["sightings"])
+        c.metric("Persisted posting IDs", totals["posting_ids"])
+        st.caption(
+            "Totals cover public discovery in this store. A posting can have multiple sightings. "
+            "Different posting IDs can describe the same vacancy."
+        )
+
+    if progress["sources"]:
+        st.subheader("Source progress")
+        st.dataframe(progress["sources"], hide_index=True)
+    if progress["requests"]:
+        st.subheader("Request activity")
+        st.dataframe(progress["requests"], hide_index=True)
+    st.caption("Unfinished activity shows the last recorded state. The dashboard cannot detect a silent exit.")
+
+
+@st.fragment(run_every=4 if auto_refresh else None)
+def render():
+    if section == "Live activity":
+        render_activity()
+        return
+
+    try:
+        revision = store_revision(data_dir)
+        if section == "Overview":
+            counts, recent = read_view(data_dir, section, revision)
         elif section == "Run explorer":
-            recent = runs(connection)
+            recent = read_view(data_dir, section, revision)
             if recent:
-                # The selector displays friendly metadata, not internal IDs.
                 run_labels = {
                     row["run_id"]: (
                         f'{row["started_at"]}  ·  {row["arm"]}  ·  '
@@ -40,18 +116,23 @@ try:
                     for row in recent
                 }
                 run_id = st.selectbox(
-                    "Inspect a collection run",
-                    list(run_labels),
-                    format_func=lambda value: run_labels[value],
+                    "Inspect a collection run", list(run_labels),
+                    format_func=run_labels.get, key="inspected_run",
                 )
                 selected_run = next(row for row in recent if row["run_id"] == run_id)
-                run_poll_rows = polls(connection, limit=2000, run_id=run_id)
+                run_poll_rows = read_view(data_dir, section, revision, run_id)
             else:
                 selected_run, run_poll_rows = None, []
         elif section == "Sources":
-            source_rows, poll_rows = sources(connection), polls(connection)
+            source_rows, poll_rows = read_view(data_dir, section, revision)
         else:
-            all_rows = listings(connection)
+            all_rows = read_view(data_dir, section, revision)
+    except FileNotFoundError:
+        st.error("No prospect.sqlite found in PROSPECT_DATA_DIR.")
+        return
+    except (OSError, sqlite3.DatabaseError, ValueError):
+        st.error("Unable to read the Prospect store. Check its permissions and schema version.")
+        return
 
     if section == "Overview":
         a, b, c, d = st.columns(4)
@@ -101,10 +182,10 @@ try:
             if run_poll_rows:
                 status_options = sorted({row["status"] for row in run_poll_rows})
                 included = st.multiselect(
-                    "Filter poll status", status_options, default=status_options
+                    "Filter poll status", status_options, help="Leave empty to show all statuses."
                 )
                 filtered_polls = [
-                    row for row in run_poll_rows if row["status"] in included
+                    row for row in run_poll_rows if not included or row["status"] in included
                 ]
                 st.dataframe(filtered_polls, hide_index=True)
                 st.caption(
@@ -113,11 +194,7 @@ try:
                 )
             else:
                 st.info("This run has no public discovery polls.")
-            st.caption(
-                "This page shows persisted polls, not boards that were planned but never "
-                "dispatched or failures recorded only in pilot transport logs. "
-                "It does not measure market recall."
-            )
+            st.caption("Use Live activity for planned sources, request outcomes, and export status.")
 
     elif section == "Sources":
         st.subheader("Source boards and feeds")
@@ -169,8 +246,5 @@ try:
             st.info("No public job listings have been persisted yet.")
         st.caption("Repeated sightings of the same posting ID appear once.")
 
-except FileNotFoundError:
-    st.error("No prospect.sqlite found in PROSPECT_DATA_DIR.")
-except (OSError, sqlite3.DatabaseError, ValueError):
-    st.error("Unable to read the Prospect store. Check its permissions and schema version.")
-    st.info("See dashboard/README.md for the expected database and setup.")
+
+render()

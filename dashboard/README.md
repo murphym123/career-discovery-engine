@@ -36,7 +36,11 @@ requirements into that instead of creating a new virtual environment.
   run was not finalized in the store.
 - **Run explorer** lets you choose a recorded run, inspect its start/finish status,
   number of polls, returned and unrepresented rows, and a filterable table of
-  per-source poll outcomes. It does not display unattempted planned boards.
+  per-source poll outcomes.
+- **Live activity** combines cumulative committed totals with the pilot's
+  planned sources, dispatches, request results, and final export status.
+  Received records include repeat observations and may include records without
+  a sighting. Persisted posting IDs are distinct store identities.
 - **Sources** shows public board and feed locators, platform, poll outcomes,
   received and unrepresented record counts, and last poll time. Received counts
   can include repeat observations.
@@ -44,14 +48,26 @@ requirements into that instead of creating a new virtual environment.
   ID. You can filter the displayed rows by title, employer, location, or source.
 
 The UI uses an existing SQLite connection opened with `mode=ro` plus
-`PRAGMA query_only=ON` and reads one consistent snapshot per view. SQLite may
+`PRAGMA query_only=ON` and uses short read transactions. SQLite may
 create or update WAL coordination sidecar files even on a read-only connection.
 The viewer never changes database records, creates a database, or runs migrations.
 
 The viewer selects public discovery channels and applies Prospect's existing
 metadata redaction to displayed text and links. Unsafe locators and links appear
-blank. It makes **no collection network requests** and has no access to raw
-captures, pilot transport logs, or the evaluator's sealed reference corpus.
+blank. It makes **no collection network requests** and does not read raw
+captures or the evaluator's sealed reference corpus.
+
+The selected view refreshes every four seconds while the browser session is
+active. Uncheck **Refresh every 4 seconds** to pause. Committed query results are
+reused briefly until the database or WAL changes. Records appear as polls commit.
+
+Live activity reads `run/cohort.csv`, `run/operations.jsonl`, and
+`run/run-manifest.json` from the same explicitly configured data directory. It
+projects only allowlisted fields, skips unfinished journal lines until the next
+refresh, and shows the export snapshot ID once the pilot publishes the manifest.
+Missing pilot files are normal for collection outside the pilot. An unfinished
+dispatch or request is the last recorded state. Without a stop or final manifest
+the dashboard cannot establish whether the process is still running.
 
 The tables show up to 1,000 sources, 500 recent general polls, 100 recent runs,
 2,000 per-run polls, and 2,000
