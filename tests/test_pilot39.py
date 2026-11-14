@@ -304,6 +304,64 @@ class PilotTests(unittest.TestCase):
         self.assertEqual(sum(r["seed_overlap"] for r in ledger), 1)
         self.assertNotIn(GREEN, boards)
 
+    def test_sitemap_query_hints_keep_only_public_projection_and_count_rejections(self):
+        """Previously every public ?utm_source feed URL silently disappeared."""
+        from career_engine.public_sources import discover_jazz_sitemap
+
+        host = "example-policy.applytojob.com"
+        posting = f"https://{host}/apply/AbC01234/Policy-Analyst"
+        source = "https://app.jazz.co/feeds/google/xml/0"
+        feed = (
+            "<urlset>"
+            f"<url><loc>{posting}?utm_source=google&amp;utm_medium=organic</loc></url>"
+            f"<url><loc>{posting}?access_token=fixture-secret</loc></url>"
+            f"<url><loc>{posting}?unknown_parameter=abc</loc></url>"
+            f"<url><loc>{posting}/extra</loc></url>"
+            "</urlset>"
+        )
+
+        class FakeFeed:
+            checks_robots = True
+            def get(self, url, **kwargs):
+                assert url == source
+                return feed
+
+        registry = empty_registry()
+        logs = discover_jazz_sitemap(FakeFeed(), registry, page_budget=1)
+        self.assertEqual(logs[0]["status"], "ok")
+        self.assertEqual(logs[0]["new_boards"], 1)
+        self.assertEqual(logs[0]["complete_URL_entries"], 4)
+        aggregate = {}
+        selected, candidates = pilot.select_cold(registry, [], screening=aggregate)
+        self.assertEqual([board["key"] for board in selected], ["jazzhr:example-policy"])
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(aggregate["registered_boards"], 1)
+        self.assertEqual(aggregate["evidence_accepted"], 1)
+        self.assertEqual(aggregate["observation_rejected"], 1)
+        self.assertEqual(aggregate["observation_query_rejected"], 1)
+        self.assertEqual(aggregate["observation_route_rejected"], 1)
+        self.assertEqual(aggregate["cold_candidates"], 1)
+        self.assertEqual(aggregate["selected_boards"], 1)
+        self.assertEqual(candidates[0]["evidence"][0]["observed_url"], posting)
+        self.assertNotIn("utm_source", json.dumps(candidates))
+        self.assertNotIn("fixture-secret", json.dumps(candidates))
+        self.assertNotIn("unknown_parameter", json.dumps(candidates))
+        self.assertNotIn(host, json.dumps(aggregate))
+
+    def test_cold_public_board_tracking_hint_is_allowed_but_unknown_query_is_not(self):
+        base = "https://test-policy.applytojob.com/apply"
+        source = "https://app.jazz.co/feeds/google/xml/0"
+        registry = empty_registry()
+        for observed in (base + "?source=GoogleJobs", base + "?applicant=abc"):
+            register(registry, observed, dict(kind="public_provider_sitemap",
+                                              url=source, observed_url=observed))
+        counts = {}
+        selected, candidates = pilot.select_cold(registry, [], screening=counts)
+        self.assertEqual([b["url"] for b in selected], [base])
+        self.assertEqual(candidates[0]["evidence"][0]["observed_url"], base)
+        self.assertEqual(counts["observation_query_rejected"], 1)
+        self.assertEqual(counts["evidence_accepted"], 1)
+
     def test_partial_store_export_and_offline_reproduction(self):
         listing = dict(id="01234567-89ab-cdef-0123-456789abcdef", text="Analyst",
                        hostedUrl="https://jobs.lever.co/example/01234567-89ab-cdef-0123-456789abcdef",
