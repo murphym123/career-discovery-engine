@@ -11,6 +11,7 @@ from unittest.mock import patch
 from career_engine.ats import PublicTransport, board_from_url, retrieve_board
 from career_engine.ats_registry import empty_registry
 from career_engine.geography import DEFAULT_VERSION
+from career_engine.jazzhr import jazz_index
 from career_engine.public_sources import discover_jazz_sitemap
 from career_engine.relabel import relabel
 from career_engine.store.jazzhr import collect_jazzhr
@@ -76,6 +77,45 @@ class JazzHRStoreTests(StoreTestCase):
                                                         BOARD["url"], POST])
         self.assertEqual(len(durable[0]), 2)
         self.assertEqual(self.store.connection.execute("SELECT count(*) FROM sighting").fetchone()[0], 3)
+
+    def test_generic_csrf_inventory_has_parseable_jobs_but_is_withheld(self):
+        page = fixture("projectable-index")
+        markers = ("fictional-meta-state", "fictional-script-state", "fictional-form-state",
+                   "fictional-search-value")
+        parsed = jazz_index(page, BOARD)
+        self.assertEqual([(row["source_id"], row["title"]) for row in parsed], [
+            ("synthetic-jazz:AbC01234", "Policy Analyst"),
+            ("synthetic-jazz:abC01234", "Program Associate"),
+        ])
+        for marker in markers:
+            self.assertNotIn(marker, json.dumps(parsed))
+
+        rows, stats, poll, transport, session = self.index("projectable-index", detail_budget=1)
+        self.assertEqual((rows, stats["errors"], poll["status"]), ([], ["private_page_state"], "failed"))
+        self.assertEqual(len(session.calls), 2)
+        self.assertEqual(transport.requests[-1]["capture_rejected"], "private_page_state")
+        self.assertNotIn("sha256", transport.requests[-1])
+        self.assertEqual(self.captures(poll), {})
+        self.assertIsNone(poll["raw_sha"])
+        self.assertFalse(self.store.blobs.exists(hashlib.sha256(page.encode()).hexdigest()))
+
+    def test_export_rejects_public_sightings_without_inventory_evidence(self):
+        run_id = self.run_id()
+        channel_id = self.store.ensure_channel(
+            kind="ats", platform="jazzhr", locator=BOARD["url"], channel_key=BOARD["key"],
+            retention_class="public", evidence_role="discovery", verification_state="verified",
+        )
+        poll_id = self.store.record_poll(run_id, channel_id, status="partial", received=1,
+                                         inventory=(("missing", None, 1),))
+        self.store.record_sighting(
+            poll_id, identity_key=BOARD["key"] + ":AbC01234", native_id="AbC01234",
+            url=POST, canonical_url=POST, title="Program Associate",
+            employer_name_raw="Synthetic Civic Lab", location_raw="Washington, DC",
+        )
+        self.store.end_run(run_id)
+        self.advance()
+        with self.assertRaisesRegex(ValueError, "unexplained missing inventory response"):
+            self.export()
 
     def test_case_sensitive_tenant_identity_and_history_across_repeated_and_empty_polls(self):
         _, _, first, _, _ = self.index()
