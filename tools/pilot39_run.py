@@ -415,7 +415,8 @@ def safe_reason(value):
         "unexpected_content_encoding", "unexpected_content_type", "invalid_encoding",
         "invalid_content_length", "incomplete_response", "unreadable_public_html",
         "provider_total_differs_from_returned_inventory", "duplicate_request",
-        pilot.PRIVATE, pilot.CHALLENGE, pilot.POLICY, pilot.TERMS_DENIED, pilot.REDIRECT,
+        pilot.PRIVATE, pilot.SOURCE_PRIVATE, pilot.CHALLENGE, pilot.POLICY,
+        pilot.TERMS_DENIED, pilot.REDIRECT,
     }
     if value.startswith("board_name_"):
         return "board_name_" + safe_reason(value.removeprefix("board_name_"))
