@@ -285,7 +285,8 @@ def execute(data, run, seeded, transport, journal, provenance):
     else:
         queries = discover_commoncrawl(transport, registry, query_budget=2, include_icims=False)
     feeds = discover_jazz_sitemap(transport, registry, page_budget=2, market=DC_MARKET)
-    cold, candidates = pilot.select_cold(registry, seeded)
+    cold_screening = {}
+    cold, candidates = pilot.select_cold(registry, seeded, screening=cold_screening)
     with (run / "candidate-ledger.jsonl").open("x", encoding="utf-8") as stream:
         candidate_journal = Journal(stream)
         for candidate in candidates:
@@ -359,6 +360,7 @@ def execute(data, run, seeded, transport, journal, provenance):
         raw_bodies_purged=True,
         cold_discovered=dict(candidates=len(candidates), new=sum(not row["seed_overlap"] for row in candidates),
                              selected=len(cold)),
+        cold_screening=cold_screening,
         stopped_hosts=transport.blocked, snapshot_id=snapshot.name, post_replay_backup=backup.name,
         snapshot_manifest_sha256=pilot.sha((snapshot / "manifest.json").read_bytes()),
         board_counts=[
