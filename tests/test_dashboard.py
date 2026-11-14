@@ -117,6 +117,20 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(results[0]["declared_total"], 5)
         self.assertEqual({row["platform"] for row in results}, {"greenhouse"})
 
+    def test_run_explorer_scopes_polls_without_leaking_other_roles(self):
+        self.populate()
+        with open_store(self.data_dir) as connection:
+            recent = runs(connection)
+            self.assertEqual([row["run_id"] for row in recent], ["newer", "old"])
+            self.assertEqual(
+                [row["status"] for row in polls(connection, run_id="newer")],
+                ["partial", "skipped:budget", "failed"],
+            )
+            self.assertEqual([row["status"] for row in polls(connection, run_id="old")], ["ok"])
+            self.assertEqual(polls(connection, run_id="private"), [])
+            self.assertEqual(polls(connection, run_id="no-recorded-polls"), [])
+            self.assertEqual(polls(connection, run_id="unknown"), [])
+
     def test_latest_public_listing_excludes_newer_private_sightings(self):
         self.populate()
         with open_store(self.data_dir) as connection:
