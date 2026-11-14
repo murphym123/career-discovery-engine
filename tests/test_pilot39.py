@@ -15,6 +15,7 @@ from career_engine.ats_registry import empty_registry, register
 from career_engine.export import export_snapshot
 from career_engine.store import Store
 from tools import pilot39 as pilot
+from tools.pilot39_run import poll_board
 
 GREEN = board_from_url("https://job-boards.greenhouse.io/example")
 LEVER = board_from_url("https://jobs.lever.co/example")
@@ -266,6 +267,92 @@ class PilotTests(unittest.TestCase):
         with self.assertRaisesRegex(FetchError, "unsafe_endpoint"):
             t.get(known)
         self.assertEqual(len(wire.calls), 3)
+
+    def test_jazz_public_detail_is_captured_and_purged_with_separate_fingerprints(self):
+        index = (FIXTURES / "index.html").read_text()
+        detail = (FIXTURES / "public-application-detail.html").read_text()
+        post = JAZZ["url"] + "/AbC01234/Program-Associate"
+        terms = {(JAZZ_HOST, "/apply"), (JAZZ_HOST, "/apply/{posting}")}
+        t, wire = self.transport([robots(JAZZ_HOST), (JAZZ["url"], body(index, "text/html")),
+                                  (post, body(detail, "text/html"))], terms, JAZZ)
+        with tempfile.TemporaryDirectory() as scratch, patch.object(pilot, "DETAIL_SLOTS", {0}):
+            data = Path(scratch) / "data"
+            snapshot, report = pilot.run_fixture(data, [JAZZ], t, code_sha=SHA, config_sha="b" * 64)
+            poll = report["polls"][0]
+            self.assertEqual((poll["status"], poll["sightings"], poll["descriptions_observed"]), ("ok", 3, 1))
+            self.assertFalse(poll["confirmed_empty"])
+            self.assertEqual([event["route"] for event in t.requests], ["robots", "inventory", "detail"])
+            self.assertEqual(len(wire.calls), 3)
+            self.assertEqual({row["role"]: (row["raw_sha"], row["retained"]) for row in poll["captures"]}, {
+                "inventory": (pilot.sha(index.encode()), False),
+                "detail:AbC01234": (pilot.sha(detail.encode()), False),
+            })
+            self.assertEqual(t.requests[-1]["sha256"], pilot.sha(detail.encode()))
+            sightings = [json.loads(line) for line in (snapshot / "sightings.jsonl").read_text().splitlines()]
+            self.assertTrue(all(row["raw_purged"] and row["raw_sha"] == poll["raw_sha"] for row in sightings))
+            published = ("Coordinate civic education programs and maintain the session calendar. Qualifications "
+                         "Experience writing for public audiences. Strong project coordination skills.")
+            self.assertEqual([row["description_sha"] for row in sightings if row["description_sha"]],
+                             [pilot.sha(published.encode())])
+            self.assertFalse(list((data / "blobs").rglob("*.gz")))
+
+    def test_jazz_detail_privacy_and_challenge_stops(self):
+        index = (FIXTURES / "index.html").read_text()
+        detail = (FIXTURES / "public-application-detail.html").read_text()
+        post = JAZZ["url"] + "/AbC01234/Program-Associate"
+        terms = {(JAZZ_HOST, "/apply"), (JAZZ_HOST, "/apply/{posting}")}
+        cases = (
+            ('<input type="email" value="fixture@example.invalid">', pilot.SOURCE_PRIVATE, ""),
+            ('<input type="text" name="name" value="Fixture Person">', pilot.SOURCE_PRIVATE, ""),
+            ('<input type="radio" name="applicant_eligibility" checked value="yes">', pilot.SOURCE_PRIVATE, ""),
+            ('<input type="password">', pilot.CHALLENGE, ""),
+            ('<script>const password = "fixture-password";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<form action="/account/login"></form>', pilot.CHALLENGE, ""),
+            ('<h1>Candidate dashboard</h1>', pilot.CHALLENGE, ""),
+            ('<form id="challenge-form"></form>', pilot.CHALLENGE, ""),
+            ('<script type="application/json">{"applicantProfile":{"name":"Fixture Person"}}</script>',
+             pilot.PRIVATE, pilot.PRIVATE),
+            ('<script>const sessionID = "fixture-session";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<a href="/file?signature=fixture-signature">Download</a>', pilot.PRIVATE, pilot.PRIVATE),
+            (r'<script type="application/json">{"csrfToken":"\u0066ixture-configured-secret"}</script>',
+             pilot.PRIVATE, pilot.PRIVATE),
+        )
+        for extra, reason, stop in cases:
+            with self.subTest(extra=extra), tempfile.TemporaryDirectory() as scratch, patch.dict(
+                    os.environ, {"PROSPECT_TEST_SECRET": "fixture-configured-secret"}):
+                page = detail.replace("</form>", extra + "</form>") if extra.startswith("<input") else (
+                    detail.replace("<main>", "<main>" + extra)
+                )
+                t, _ = self.transport([robots(JAZZ_HOST), (JAZZ["url"], body(index, "text/html")),
+                                       (post, body(page, "text/html"))], terms, JAZZ)
+                with Store.in_data_dir(scratch) as store:
+                    run_id = store.begin_run(code_sha=SHA, config_sha="b" * 64, arm="seeded")
+                    poll = poll_board(store, run_id, t, JAZZ)
+                    self.assertFalse(store.blobs.exists(pilot.sha(page.encode())))
+                self.assertEqual((poll["status"], poll["sightings"], poll["descriptions_observed"]), ("partial", 3, 0))
+                self.assertEqual(poll["errors"], [reason])
+                self.assertFalse(poll["confirmed_empty"])
+                self.assertEqual([row["role"] for row in poll["captures"]], ["inventory"])
+                self.assertNotIn("sha256", t.requests[-1])
+                self.assertEqual(t.global_stop_reason(), stop)
+                self.assertEqual(t.blocked.get(JAZZ_HOST), pilot.CHALLENGE if reason == pilot.CHALLENGE else None)
+
+    def test_jazz_detail_skipped_by_terms_or_robots_preserves_inventory(self):
+        index = (FIXTURES / "index.html").read_text()
+        for reason, robot_text, detail_terms in (
+            (pilot.POLICY, "User-agent: *\nDisallow:\n", set()),
+            ("robots_disallowed", "User-agent: *\nDisallow: /apply/AbC01234\n", {(JAZZ_HOST, "/apply/{posting}")}),
+        ):
+            with self.subTest(reason=reason), tempfile.TemporaryDirectory() as scratch:
+                t, wire = self.transport([robots(JAZZ_HOST, robot_text),
+                                          (JAZZ["url"], body(index, "text/html"))],
+                                         {(JAZZ_HOST, "/apply")} | detail_terms, JAZZ)
+                with Store.in_data_dir(scratch) as store:
+                    run_id = store.begin_run(code_sha=SHA, config_sha="b" * 64, arm="seeded")
+                    poll = poll_board(store, run_id, t, JAZZ)
+                self.assertEqual((poll["status"], poll["sightings"], poll["confirmed_empty"]), ("partial", 3, False))
+                self.assertEqual(poll["errors"], [reason])
+                self.assertEqual(len(wire.calls), 2)
 
     def test_sitemap_requires_explicit_advertisement(self):
         host = pilot.FEED_HOST
