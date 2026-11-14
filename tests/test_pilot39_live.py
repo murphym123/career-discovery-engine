@@ -184,6 +184,20 @@ class LiveTests(unittest.TestCase):
         self.assertEqual(len(self.calls), 4)
         self.assertIn("unsafe_redirect", output.getvalue())
 
+    def test_unsafe_endpoint_is_rejected_without_canceling_other_boards(self):
+        target = address(GH_HOST, META)
+        self.scripted([
+            self.robots(GH_HOST),
+            (target, response(b'{"name":"Example"}')),
+        ])
+        t, output = self.transport(ads("seeded", GH_HOST, META), board=GREEN)
+        with self.assertRaisesRegex(FetchError, "unsafe_endpoint"):
+            t.get("https://api.lever.co/private-applicant-data")
+        self.assertEqual(t.global_stop_reason(), "")
+        self.assertIn("Example", t.get(target))
+        self.assertEqual(len(self.calls), 2)
+        self.assertIn('"phase": "policy_skip"', output.getvalue())
+
     def test_robots_missing_and_429_stop_same_host_across_arms(self):
         target = address(GH_HOST, META)
         denial = response(status=429, Retry_After="Wed, 18 Nov 2026 14:00:00 GMT")
