@@ -398,12 +398,10 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(len(self.calls), 2)
             self.assertTrue((snapshot / "manifest.json").is_file())
 
-    def test_private_jazzhr_html_is_withheld_and_other_board_exports(self):
+    def test_jazzhr_csrf_inventory_is_withheld_and_other_board_exports(self):
         from career_engine.store.jazzhr import _capture_rejection
 
-        private_page = (b"<html><title>Careers</title><form>"
-                        b"<input name='csrf_token' type='hidden' value='fixture-secret'>"
-                        b"</form></html>")
+        private_page = (Path(__file__).parent / "fixtures/jazzhr/projectable-index.html").read_bytes()
         self.assertEqual(_capture_rejection(private_page), pilot.PRIVATE)
         gh_role = dict(id=1234, title="Policy Analyst",
                        location=dict(name="Washington, DC"),
@@ -429,6 +427,9 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(rejected["status"], "failed")
             self.assertEqual(rejected["reason"], pilot.SOURCE_PRIVATE)
             self.assertEqual(rejected["request_counts"], {"robots": 1, "inventory": 1})
+            self.assertEqual(rejected["sightings"], 0)
+            self.assertEqual(rejected["captures"], [])
+            self.assertEqual(rejected["inventory_receipts"], [])
             self.assertEqual(healthy["received"], 1)
             self.assertEqual(healthy["status"], "ok")
             manifest = json.loads((data / "run/run-manifest.json").read_text())
@@ -439,8 +440,12 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(len((snapshot / "sightings.jsonl").read_text().splitlines()), 1)
             journal = (data / "run/operations.jsonl").read_text()
             self.assertIn('"error": "private_page_withheld"', journal)
-            self.assertNotIn("fixture-secret", journal)
-            self.assertNotIn("fixture-secret", (snapshot / "sightings.jsonl").read_text())
+            for artifact in data.rglob("*"):
+                if artifact.is_file():
+                    content = artifact.read_bytes()
+                    for marker in (b"fictional-meta-state", b"fictional-script-state", b"fictional-form-state",
+                                   b"fictional-search-value", b"AbC01234", b"abC01234"):
+                        self.assertNotIn(marker, content, str(artifact.relative_to(data)))
 
     def test_runtime_robots_for_public_jazzhr_seeds_uses_seeded_budget(self):
         second_host = "second-example.applytojob.com"
