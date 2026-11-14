@@ -52,9 +52,11 @@ class GeographyTests(unittest.TestCase):
     @unittest.skipUnless(os.environ.get("PROSPECT_RUN8_ARCHIVE"), "set PROSPECT_RUN8_ARCHIVE to the original run-8 ZIP")
     def test_original_run8_locations_have_no_false_elsewhere(self):
         path = Path(os.environ["PROSPECT_RUN8_ARCHIVE"])
+        digest = hashlib.sha256()
         with path.open("rb") as source:
-            digest = hashlib.file_digest(source, "sha256").hexdigest()
-        self.assertEqual(digest, "874c61ee40c8114cd27e74a7ab94a3fe768e8bec9e419f755b0c007b8c67dd24")
+            for chunk in iter(lambda: source.read(65536), b""):
+                digest.update(chunk)
+        self.assertEqual(digest.hexdigest(), "874c61ee40c8114cd27e74a7ab94a3fe768e8bec9e419f755b0c007b8c67dd24")
         with zipfile.ZipFile(path) as archive, archive.open("dc-expanded-audit.json") as audit:
             records = json.load(audit)["records"]
         regional = [row["location"] for row in records if row.get("geography") == "dc_dmv" and row.get("location")]
