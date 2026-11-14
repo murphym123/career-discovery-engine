@@ -62,7 +62,11 @@ try:
         st.caption(f'Last collection poll: {counts["last_poll"] or "none recorded"}')
         st.subheader("Recent collection runs")
         if recent:
-            st.dataframe(recent, hide_index=True)
+            st.dataframe(
+                [{key: value for key, value in row.items() if key != "run_id"}
+                 for row in recent],
+                hide_index=True,
+            )
             st.caption("A blank finish time means the run was not finalized in the store.")
         else:
             st.info("No public discovery collection runs are stored yet.")
