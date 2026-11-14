@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from urllib.parse import urlencode
 
 from career_engine.ats import FetchError, board_from_url
@@ -81,6 +81,54 @@ class PilotTests(unittest.TestCase):
             budget.attempt("discovery")
             with self.assertRaisesRegex(FetchError, "request_budget"):
                 budget.attempt("seeded")
+
+    def test_jazzhr_inventory_keeps_private_and_challenge_stops(self):
+        fixture = (FIXTURES / "projectable-index.html").read_text()
+        private_form = (FIXTURES / "private-detail.html").read_text().split("<form>", 1)[1]
+        cases = (
+            ("<form>" + private_form, pilot.SOURCE_PRIVATE, ""),
+            ('<form><input type="password"></form>', pilot.CHALLENGE, ""),
+            ('<h1>Sign in</h1>', pilot.CHALLENGE, ""),
+            ('<form action="/account/login"></form>', pilot.CHALLENGE, ""),
+            ('<script>const applicantId = "fictional-applicant-id";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<div data-applicant-profile="fictional-profile"></div>', pilot.SOURCE_PRIVATE, ""),
+            ('<script>window.accessToken = "fictional-access-token";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<script>window["session-token"] = "fictional-session";</script>', pilot.SOURCE_PRIVATE, ""),
+            ('<script type="application/json">{"applicantProfile":{"name":"Fictional Person"}}</script>',
+             pilot.PRIVATE, pilot.PRIVATE),
+            ('<script type="application/json">{"csrf-token":"\\u0066ictional-configured-value"}</script>',
+             pilot.PRIVATE, pilot.PRIVATE),
+            ('<script type="application/json">{invalid}</script>', "unreadable_public_html", ""),
+            ('<meta content="Bearer fictional-bearer-token">', pilot.PRIVATE, pilot.PRIVATE),
+            ('<a href="https://example.com/?signature=fictional-signed-value">Signed</a>',
+             pilot.PRIVATE, pilot.PRIVATE),
+            ('<a href="/apply/AbC01234/Analyst?signature=fictional-signed-value">Signed</a>',
+             pilot.PRIVATE, pilot.PRIVATE),
+        )
+        for extra, reason, stop in cases:
+            with self.subTest(extra=extra), patch.dict(os.environ, {"PROSPECT_TEST_SECRET": "fictional-configured-value"}):
+                html = fixture.replace("<main>", "<main>" + extra)
+                transport, _ = self.transport(
+                    [robots(JAZZ_HOST), (JAZZ["url"], body(html, "text/html"))],
+                    {(JAZZ_HOST, "/apply")}, JAZZ,
+                )
+                capture = Mock()
+                with self.assertRaisesRegex(FetchError, reason):
+                    transport.get(JAZZ["url"], capture=capture)
+                capture.assert_not_called()
+                self.assertEqual(transport.global_stop_reason(), stop)
+                self.assertEqual(transport.blocked.get(JAZZ_HOST), pilot.CHALLENGE if reason == pilot.CHALLENGE else None)
+                self.assertNotIn("sha256", transport.requests[-1])
+                self.assertNotIn("fictional-", json.dumps(transport.requests))
+
+        with patch.dict(os.environ, {"PROSPECT_TEST_SECRET": "fictional-script-state"}):
+            transport, _ = self.transport(
+                [robots(JAZZ_HOST), (JAZZ["url"], body(fixture, "text/html"))],
+                {(JAZZ_HOST, "/apply")}, JAZZ,
+            )
+            with self.assertRaisesRegex(FetchError, pilot.PRIVATE):
+                transport.get(JAZZ["url"])
+            self.assertEqual(transport.global_stop_reason(), pilot.PRIVATE)
 
     def test_denies_other_tenants_private_endpoints_unknown_queries_and_missing_terms(self):
         t, wire = self.transport(terms={(GH_HOST, JOBS)})

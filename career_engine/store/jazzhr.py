@@ -1,13 +1,13 @@
 """Durable intake for the existing JazzHR public index and per-board detail pass."""
 import re
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 from career_engine.ats import FetchError, PublicTransport, board_from_url
 from career_engine.dc_sources import Document
 from career_engine.jazzhr import DETAIL_CAPTURE_PREFIX, retrieve_jazzhr
 from career_engine.public_sources import public_text
 from career_engine.store.collectors import SKIP_REASONS, _ObservationBatch
-from career_engine.store.privacy import REDACTED, Projection
+from career_engine.store.privacy import AUTH_PATH, REDACTED, Projection
 
 
 ACCESS_TITLE = re.compile(
@@ -18,8 +18,19 @@ PRIVATE_STATE_NAME = re.compile(
     r"(?:(?:csrf|xsrf)(?:[_-]?token)?|(?:access|auth|session|candidate|applicant)[_-]?(?:token|key|id)|"
     r"password|authenticity_token|__requestverificationtoken)", re.I
 )
+GENERIC_CSRF = re.compile(r"_?(?:(?:csrf|xsrf)(?:[_-]?token)?|authenticity_token|__requestverificationtoken)", re.I)
 PRIVATE_STATE_SCRIPT = re.compile(
     rf"""\b{PRIVATE_STATE_NAME.pattern}["']?\s*[:=]\s*["'][^"']+["']""", re.I
+)
+PRIVATE_INVENTORY_STATE = re.compile(
+    r"token|credentials?|api[_-]?key|authorization|secret|refresh[_-]?token|"
+    r"session[_-]?id|(?:candidate|applicant)[_-]?(?:data|profile|resume|email|phone|contact|name)|"
+    r"candidates?|applicants?|private[_-]?key|signed[_-]?url", re.I
+)
+STATE_ASSIGNMENT = re.compile(r"""(?<![\w-])([\w-]+)["']?\s*(?:\]\s*)?[:=]\s*""")
+PRIVATE_INVENTORY_TITLE = re.compile(
+    r"\s*(?:(?:candidate|applicant)\s+(?:portal|profile|dashboard|account)|"
+    r"(?:account|employee)\s+(?:login|sign[ -]?in)|my applications)\b", re.I
 )
 # A prefilled public search/filter form is not applicant data. Keep detecting
 # populated personal fields and private state, regardless of form purpose.
@@ -30,30 +41,53 @@ PERSONAL_FORM_FIELD = re.compile(
 )
 
 
-def _capture_rejection(body):
+def _capture_rejection(body, *, public_inventory=False):
+    def private_name(name, *, csrf_metadata=False):
+        if public_inventory and csrf_metadata and GENERIC_CSRF.fullmatch(name):
+            return False
+        return PRIVATE_STATE_NAME.search(name) or (public_inventory and PRIVATE_INVENTORY_STATE.fullmatch(name))
+
     doc = Document(body.decode("utf-8", errors="replace")).root
+    rejection = None
     for node in doc.walk():
         attrs = node.attrs
+        name = attrs.get("name") or ""
         if ((node.tag in ("title", "h1") and ACCESS_TITLE.match(node.text()))
+                or (public_inventory and node.tag in ("title", "h1", "h2")
+                    and PRIVATE_INVENTORY_TITLE.match(node.text()))
                 or (attrs.get("id") or "").lower() in ("challenge-form", "cf-challenge-running")):
             return "access_challenge_not_bypassed"
-        if node.tag == "meta" and attrs.get("content") and PRIVATE_STATE_NAME.search(attrs.get("name") or ""):
-            return "private_page_state"
-        if node.tag == "script" and any(PRIVATE_STATE_SCRIPT.search(text) for text in node.children
-                                        if isinstance(text, str)):
-            return "private_page_state"
+        if public_inventory and node.tag == "form" and attrs.get("action"):
+            action = unquote(urlsplit(attrs["action"]).path)
+            if any(AUTH_PATH.fullmatch(part) for part in action.split("/")):
+                return "access_challenge_not_bypassed"
+        if node.tag == "meta" and attrs.get("content") and private_name(name, csrf_metadata=True):
+            rejection = "private_page_state"
+        if public_inventory and any(key.startswith("data-") and value and private_name(key[5:], csrf_metadata=True)
+                                    for key, value in attrs.items()):
+            rejection = "private_page_state"
+        if node.tag == "script":
+            script = "".join(child for child in node.children if isinstance(child, str))
+            if (any(private_name(match[1], csrf_metadata=script[match.end():match.end() + 1] not in ("{", "["))
+                    for match in STATE_ASSIGNMENT.finditer(script))
+                    if public_inventory else PRIVATE_STATE_SCRIPT.search(script)):
+                rejection = "private_page_state"
         if node.tag in ("input", "textarea"):
             kind = (attrs.get("type") or "").lower()
             if kind == "password":
-                return "private_page_state"
+                return "access_challenge_not_bypassed" if public_inventory else "private_page_state"
+            if public_inventory and kind == "file" and PERSONAL_FORM_FIELD.search(name):
+                rejection = "private_page_state"
             value = attrs.get("value") if node.tag == "input" else node.text()
-            if value and (PRIVATE_STATE_NAME.search(attrs.get("name") or "")
-                          or (node.closest("form") and
+            if value and (private_name(name, csrf_metadata=node.tag == "input" and kind == "hidden")
+                          or ((public_inventory or node.closest("form")) and
                               (kind in ("email", "tel") or
-                               PERSONAL_FORM_FIELD.search(attrs.get("name") or "") or
+                               PERSONAL_FORM_FIELD.search(name) or
                                node.tag == "textarea" and kind != "search"))):
-                return "private_page_state"
-    return None
+                rejection = "private_page_state"
+        if rejection and not public_inventory:
+            return rejection
+    return rejection
 
 
 class _JazzHRObservationBatch(_ObservationBatch):
@@ -95,7 +129,10 @@ class _JazzHRObservationBatch(_ObservationBatch):
         def inspect(response):
             nonlocal body, rejection
             try:
-                rejection = _capture_rejection(response)
+                final_url = transport.requests[-1]["url"]
+                rejection = _capture_rejection(
+                    response, public_inventory=url == self.board["url"] and final_url in (url, url + "/"),
+                )
             except (ValueError, RecursionError):
                 rejection = "unreadable_public_html"
             if rejection:

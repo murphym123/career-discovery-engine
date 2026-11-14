@@ -1,4 +1,5 @@
 """Exercise the production wire and collect path with adapter-level HTTP fixtures."""
+import hashlib
 import io
 import json
 import os
@@ -398,49 +399,60 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(len(self.calls), 2)
             self.assertTrue((snapshot / "manifest.json").is_file())
 
-    def test_private_jazzhr_html_is_withheld_and_other_board_exports(self):
-        from career_engine.store.jazzhr import _capture_rejection
-
-        private_page = (b"<html><title>Careers</title><form>"
-                        b"<input name='csrf_token' type='hidden' value='fixture-secret'>"
-                        b"</form></html>")
-        self.assertEqual(_capture_rejection(private_page), pilot.PRIVATE)
+    def test_jazzhr_csrf_inventory_exports_after_raw_purge(self):
+        page = (Path(__file__).parent / "fixtures/jazzhr/projectable-index.html").read_bytes()
+        digest = hashlib.sha256(page).hexdigest()
         gh_role = dict(id=1234, title="Policy Analyst",
                        location=dict(name="Washington, DC"),
                        absolute_url=GREEN["url"] + "/jobs/1234",
                        content="Public analyst duties")
         self.scripted([
             self.robots(JAZZ_HOST),
-            (JAZZ["url"], response(private_page, media="text/html")),
+            (JAZZ["url"], response(page, media="text/html")),
             self.robots(GH_HOST),
             (address(GH_HOST, JOBS, {"content": "true"}),
              response(json.dumps({"jobs": [gh_role]}).encode())),
             (address(GH_HOST, META), response(b'{"name":"Example"}')),
+            self.robots(LEVER_HOST),
+            (address(LEVER_HOST, LEV_PATH, LEV_QUERY), response(json.dumps([dict(
+                id="01234567-89ab-cdef-0123-456789abcdef", text="Research Associate",
+                hostedUrl=LEVER["url"] + "/01234567-89ab-cdef-0123-456789abcdef",
+                categories={"location": "Washington, DC"},
+            )]).encode())),
         ])
         raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=0,
                               terms=ads("seeded", JAZZ_HOST, "/apply") +
-                              ads("seeded", GH_HOST, JOBS, META))).encode()
+                              ads("seeded", GH_HOST, JOBS, META) +
+                              ads("seeded", LEVER_HOST, LEV_PATH))).encode()
         with tempfile.TemporaryDirectory() as scratch:
             data = Path(scratch) / "pilot"
-            snapshot = collect(data, [JAZZ, GREEN], b"fixture cohort",
+            snapshot = collect(data, [JAZZ, GREEN, LEVER], b"fixture cohort",
                                raw, *checked_config(raw))
             board_polls = json.loads((data / "run/board-polls.json").read_text())
-            rejected, healthy = board_polls
-            self.assertEqual(rejected["status"], "failed")
-            self.assertEqual(rejected["reason"], pilot.SOURCE_PRIVATE)
-            self.assertEqual(rejected["request_counts"], {"robots": 1, "inventory": 1})
-            self.assertEqual(healthy["received"], 1)
-            self.assertEqual(healthy["status"], "ok")
+            jazz, greenhouse, lever = board_polls
+            self.assertEqual((jazz["status"], jazz["sightings"], jazz["raw_sha"]), ("ok", 2, digest))
+            self.assertEqual(jazz["request_counts"], {"robots": 1, "inventory": 1})
+            self.assertEqual(jazz["inventory_receipts"], [dict(disposition="retained", raw_sha=digest, sightings=2)])
+            self.assertEqual(jazz["captures"], [dict(role="inventory", raw_sha=digest,
+                                                    byte_count=len(page), retained=False)])
+            for board in (greenhouse, lever):
+                self.assertEqual((board["status"], board["sightings"]), ("ok", 1))
             manifest = json.loads((data / "run/run-manifest.json").read_text())
             self.assertIsNone(manifest["stop_reason"])
             self.assertTrue(manifest["raw_bodies_purged"])
-            self.assertEqual(len(self.calls), 5)
+            self.assertEqual(len(self.calls), 7)
             self.assertFalse(list((data / "blobs").rglob("*.gz")))
-            self.assertEqual(len((snapshot / "sightings.jsonl").read_text().splitlines()), 1)
-            journal = (data / "run/operations.jsonl").read_text()
-            self.assertIn('"error": "private_page_withheld"', journal)
-            self.assertNotIn("fixture-secret", journal)
-            self.assertNotIn("fixture-secret", (snapshot / "sightings.jsonl").read_text())
+            sightings = [json.loads(line) for line in (snapshot / "sightings.jsonl").read_text().splitlines()]
+            self.assertEqual(len(sightings), 4)
+            jazz_rows = [row for row in sightings if row["poll_id"] == jazz["poll_id"]]
+            self.assertCountEqual([row["native_id"] for row in jazz_rows], ["AbC01234", "abC01234"])
+            self.assertTrue(all(row["raw_sha"] == digest and row["raw_purged"] for row in jazz_rows))
+            for artifact in data.rglob("*"):
+                if artifact.is_file():
+                    content = artifact.read_bytes()
+                    for marker in (b"fictional-meta-state", b"fictional-script-state", b"fictional-json-state",
+                                   b"fictional-form-state", b"fictional-search-value"):
+                        self.assertNotIn(marker, content, str(artifact.relative_to(data)))
 
     def test_runtime_robots_for_public_jazzhr_seeds_uses_seeded_budget(self):
         second_host = "second-example.applytojob.com"

@@ -17,7 +17,7 @@ from career_engine.jazzhr import jazz_index
 from career_engine.markets import DC_MARKET
 from career_engine.store import timestamp
 from career_engine.store.collectors import collect_greenhouse, collect_lever
-from career_engine.store.jazzhr import _capture_rejection, collect_jazzhr
+from career_engine.store.jazzhr import GENERIC_CSRF, _capture_rejection, collect_jazzhr
 from career_engine.store.privacy import AUTH_PATH, Projection, SECRET_NAME, contains_configured_secret
 from tools.pilot39_http import HTTPSWire, Reply
 from tools.pilot39_robots import RobotsRules
@@ -42,12 +42,18 @@ PRIVATE_FIELD = re.compile(
     r"password|secret|session[_-]?id|(?:candidate|applicant)[_-]?(?:id|email|phone|data|profile)|"
     r"candidates|applicants|cookie|credentials?|private[_-]?key|signature|signed[_-]?url", re.I,
 )
+JAZZHR_JSON_PERSONAL_FIELD = re.compile(
+    r"(?:candidate|applicant)[_-]?(?:resume|contact|name)|resume|cover[_-]?letter|"
+    r"email|phone|first[_-]?name|last[_-]?name|full[_-]?name|ssn", re.I,
+)
 SECRET_ASSIGNMENT = re.compile(
     r"\bBearer\s+[A-Za-z0-9._~+/=-]+|\b(?:gh[pousr]_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|"
     r"AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9_-]{12,}|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)",
     re.I,
 )
 URL_IN_BODY = re.compile(r"""https?://[^\s<>"'\\]+""", re.I)
+TOKEN_ASSIGNMENT = re.compile(r"""\b(?:token|password|sessionid|credential)\s*["']?\s*[:=]""", re.I)
+HTML_ASSIGNMENT = re.compile(r"""(?<![\w-])([\w-]+)\s*["']?\s*[:=]""")
 
 
 def unsafe_body(text):
@@ -634,8 +640,17 @@ class _GuardedTransport:
         # concern. Test it first, even when the same HTML also has form fields.
         if contains_configured_secret(body, self.privacy.secrets) or unsafe_body(body):
             raise FetchError(PRIVATE)
+        jazz_inventory = (
+            reply.status == 200 and media == "text/html" and route == "inventory"
+            and self.board and self.board["provider"] == "jazzhr"
+            and event["url"] in (self.board["url"], self.board["url"] + "/")
+        )
+        if jazz_inventory:
+            # Check structured state before deciding whether generic CSRF is
+            # the only privacy signal. This includes JSON without escapes.
+            self._check_html_state(body, inventory_url=event["url"])
         try:
-            rejection = _capture_rejection(data) if is_html else None
+            rejection = _capture_rejection(data, public_inventory=jazz_inventory) if is_html else None
         except (TypeError, ValueError, RecursionError):
             raise FetchError("unreadable_public_html") from None
         if rejection == PRIVATE and re.search(r"(?i)<input\b[^>]*\btype\s*=\s*['\"]?password", body):
@@ -646,16 +661,13 @@ class _GuardedTransport:
             raise FetchError(SOURCE_PRIVATE if rejection == PRIVATE else rejection)
         if re.search(r"(?i)\b(?:captcha|cf-chl-)[_-]?[a-z0-9-]*\b", body[:4096]) and is_html:
             raise FetchError(CHALLENGE)
-        if is_html and re.search(r"(?i)\b(?:token|password|sessionid|credential)\s*[\"']?\s*[:=]", body):
+        if is_html and TOKEN_ASSIGNMENT.search(body) and (not jazz_inventory or any(
+            TOKEN_ASSIGNMENT.search(match[0]) and not GENERIC_CSRF.fullmatch(match[1])
+            for match in HTML_ASSIGNMENT.finditer(body)
+        )):
             raise FetchError(SOURCE_PRIVATE)
-        if is_html and "\\" in body:
-            try:
-                for node in Document(body).root.walk():
-                    if node.tag == "script" and node.attrs.get("type") == "application/ld+json":
-                        script = "".join(child for child in node.children if isinstance(child, str))
-                        self._check_json_privacy(json.loads(script))
-            except (ValueError, RecursionError):
-                raise FetchError("unreadable_public_html") from None
+        if is_html and not jazz_inventory and "\\" in body:
+            self._check_html_state(body)
         if route == "robots":
             if media != "text/plain" or is_html:
                 raise FetchError("unexpected_content_type")
@@ -687,14 +699,37 @@ class _GuardedTransport:
             self._check_json_privacy(parsed)
         return body, data
 
-    def _check_json_privacy(self, parsed):
+    def _check_html_state(self, body, *, inventory_url=None):
+        try:
+            for node in Document(body).root.walk():
+                if inventory_url:
+                    for attr in ("href", "action", "src", "formaction"):
+                        target = node.attrs.get(attr) or ""
+                        if "?" in target and unsafe_body(urljoin(inventory_url, target)):
+                            raise FetchError(PRIVATE)
+                media = node.attrs.get("type")
+                if inventory_url:
+                    media = (media or "").lower().split(";", 1)[0].strip()
+                if node.tag == "script" and media in (
+                    ("application/ld+json", "application/json") if inventory_url else ("application/ld+json",)
+                ):
+                    script = "".join(child for child in node.children if isinstance(child, str))
+                    self._check_json_privacy(json.loads(script), public_inventory=bool(inventory_url))
+        except (ValueError, RecursionError):
+            raise FetchError("unreadable_public_html") from None
+
+    def _check_json_privacy(self, parsed, *, public_inventory=False):
         pending = [parsed]
         while pending:
             value = pending.pop()
             if isinstance(value, list):
                 pending.extend(value)
             if isinstance(value, dict):
-                if any(PRIVATE_FIELD.fullmatch(key) and item for key, item in value.items()):
+                if any(item and (
+                    (PRIVATE_FIELD.fullmatch(key) and not (
+                        public_inventory and GENERIC_CSRF.fullmatch(key) and isinstance(item, str)
+                    )) or (public_inventory and JAZZHR_JSON_PERSONAL_FIELD.fullmatch(key))
+                ) for key, item in value.items()):
                     raise FetchError(PRIVATE)
                 pending.extend(value)
                 pending.extend(value.values())
