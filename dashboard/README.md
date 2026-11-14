@@ -56,5 +56,5 @@ history, you will see an explicit message rather than invented results.
 ## Test without Streamlit
 
 ```bash
-python -m unittest tests.test_dashboard -v
+python -m unittest discover -s tests -p 'test_dashboard.py' -v
 ```
