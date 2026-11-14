@@ -448,7 +448,7 @@ class _GuardedTransport:
                     self._retry_after(event, retry_after)
                 if str(exc) in (PRIVATE, "response_too_large", "byte_budget"):
                     event["withheld"] = True
-                if str(exc) in (PRIVATE, "byte_budget", REDIRECT) or (
+                if str(exc) in (PRIVATE, "byte_budget") or (
                     str(exc) == "time_budget" and (self.stage == "discovery" or
                                                   self.wire.time >= 1800)
                 ):
