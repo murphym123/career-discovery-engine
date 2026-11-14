@@ -29,15 +29,16 @@ def url_location_hint(slug,market=None):
 
 def public_text(transport,url,**kwargs):
     """Robots-aware public documents; failed rules/challenges are not bypassed."""
-    host=urlsplit(url).hostname
-    if host not in transport.robots:
-        try:
-            text=transport.get('https://'+host+'/robots.txt',max_bytes=100000,kind='robots')
-            rules=RobotFileParser();rules.parse(text.lstrip('\ufeff').splitlines());transport.robots[host]=rules
-        except FetchError as e:transport.robots[host]=True if str(e)=='http_404' else False
-    rules=transport.robots[host]
-    if rules is False or (rules is not True and not rules.can_fetch(USER_AGENT,url)):raise FetchError('robots_disallowed_or_unavailable')
-    if rules is not True and (rules.crawl_delay(USER_AGENT) or 0)>1:raise FetchError('stricter_crawl_delay_skip')
+    if not getattr(transport, "checks_robots", False):
+        host=urlsplit(url).hostname
+        if host not in transport.robots:
+            try:
+                text=transport.get('https://'+host+'/robots.txt',max_bytes=100000,kind='robots')
+                rules=RobotFileParser();rules.parse(text.lstrip('\ufeff').splitlines());transport.robots[host]=rules
+            except FetchError as e:transport.robots[host]=True if str(e)=='http_404' else False
+        rules=transport.robots[host]
+        if rules is False or (rules is not True and not rules.can_fetch(USER_AGENT,url)):raise FetchError('robots_disallowed_or_unavailable')
+        if rules is not True and (rules.crawl_delay(USER_AGENT) or 0)>1:raise FetchError('stricter_crawl_delay_skip')
     text=transport.get(url,**kwargs)
     if re.search(r'<title[^>]*>\s*(?:Just a moment|Please.*(?:robot|verify))',text,re.I):raise FetchError('access_challenge_not_bypassed')
     return text

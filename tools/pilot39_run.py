@@ -12,6 +12,7 @@ import sqlite3
 import stat
 import subprocess
 from contextlib import closing
+from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
 import requests
@@ -22,7 +23,7 @@ from career_engine.markets import DC_MARKET
 from career_engine.public_sources import discover_jazz_sitemap
 from career_engine.relabel import relabel
 from career_engine.store import Store, git_sha, timestamp
-from career_engine.store.blobs import digest, outside_git
+from career_engine.store.blobs import BlobStore, digest, outside_git
 from career_engine.store.privacy import Projection
 from tools import pilot39 as pilot
 
@@ -51,13 +52,16 @@ def seeded_scope(host, path):
     return re.fullmatch(r"[a-z0-9-]+\.applytojob\.com", host) and path in ("/apply", "/apply/{posting}")
 
 
+BOARD_RETENTION = "diagnostic_run_only"
+
+
 class Terms:
     """Allow only reviewed endpoint scopes for this one pass."""
 
     def __init__(self, entries, reviewed_at):
         if not isinstance(entries, list):
             raise ValueError("Expected a list of reviewed terms entries")
-        self.routes = set()
+        self.entries = {}
         for entry in entries:
             if not isinstance(entry, dict) or set(entry) != {
                 "host", "path", "arm", "documentation", "terms", "checked_at", "reviewer",
@@ -77,18 +81,31 @@ class Terms:
                 ))
                 or (arm == "seeded" and seeded_scope(host, path))
             )
-            retention = "digest_only" if arm == "discovery" else "public_18_months"
-            if (not supported or route in self.routes or entry["disposition"] != "allowed"
+            retention = "digest_only" if arm == "discovery" else BOARD_RETENTION
+            if (not supported or route in self.entries
+                    or entry["disposition"] not in {"allowed", "disallowed", "robots_disallowed", "unverified"}
                     or entry["retention"] != retention
                     or not re.fullmatch(r"[A-Za-z0-9 ._-]{1,80}", entry["reviewer"])
-                    or any(Projection().url(entry[field]) != entry[field] for field in ("documentation", "terms"))
+                    or any(entry[field] and Projection().url(entry[field]) != entry[field]
+                           for field in ("documentation", "terms"))
+                    or not (entry["documentation"] or entry["terms"])
                     or timestamp(entry["checked_at"])[:-1] > reviewed_at[:-1]):
                 raise ValueError("Invalid or unreviewed terms scope")
-            self.routes.add(route)
+            self.entries[route] = entry
+        self.routes = {route for route, entry in self.entries.items() if entry["disposition"] == "allowed"}
+
+    def reason(self, host, path, arm):
+        key = (arm, host, path)
+        if arm == "discovery" and host == pilot.INDEX_HOST and path.endswith("-index") and key not in self.entries:
+            key = (arm, host, "/CC-MAIN-{collection}-index")
+        disposition = self.entries.get(key, {}).get("disposition")
+        return {"disallowed": pilot.TERMS_DENIED, "robots_disallowed": "robots_disallowed"}.get(
+            disposition, pilot.POLICY
+        )
 
     def __call__(self, host, path, arm, board):
-        if (arm, host, path) in self.routes:
-            return True
+        if (arm, host, path) in self.entries:
+            return (arm, host, path) in self.routes
         if arm == "discovery" and host == pilot.INDEX_HOST and re.fullmatch(
             r"/CC-MAIN-[0-9]{4}-[0-9]{2}-index", path
         ):
@@ -182,7 +199,15 @@ class Journal:
         event = dict(event, phase=phase)
         # Posting slugs/native IDs and query values are unnecessary for
         # reconciliation. The collectors still get the internal final URL.
-        event.pop("url", None)
+        if phase != "source_access":
+            event.pop("url", None)
+        elif event.get("route") == "detail":
+            event["url"] = f"https://{urlsplit(event['url']).hostname}/apply/{{posting}}"
+        if phase == "source_access" and event.get("rule"):
+            if pilot.unsafe_body(event["rule"]) or pilot.contains_configured_secret(
+                event["rule"], Projection().secrets
+            ):
+                event["rule"] = "[withheld]"
         self.stream.write(json.dumps(event, sort_keys=True, allow_nan=False) + "\n")
         self.stream.flush()
         os.fsync(self.stream.fileno())
@@ -209,11 +234,12 @@ def collect(data, boards, cohort_bytes, config_bytes, code_sha, operator_attempt
                           cohort_file_sha256=pilot.sha(cohort_bytes), development_evidence=True,
                           stage_limits=pilot.STAGE_LIMITS, total_limit=pilot.TOTAL_LIMIT,
                           byte_limit=pilot.BYTE_LIMIT, repeat_enabled=False,
+                          raw_retention=BOARD_RETENTION,
                           python=platform.python_version(), sqlite=sqlite3.sqlite_version,
                           requests=requests.__version__, system=platform.system(),
                           runner_sha256={
                               name: pilot.sha(Path(__file__).with_name(name).read_bytes())
-                              for name in ("pilot39.py", "pilot39_run.py", "pilot39_http.py")
+                              for name in ("pilot39.py", "pilot39_run.py", "pilot39_http.py", "pilot39_robots.py")
                           })
         write_json(run / "provenance.json", provenance)
         with (run / "operations.jsonl").open("x", encoding="utf-8") as stream:
@@ -231,15 +257,33 @@ def collect(data, boards, cohort_bytes, config_bytes, code_sha, operator_attempt
                 journal("stopped", {"reason": "integrity_storage_or_unexpected_failure"})
                 raise
             finally:
-                transport.close()
+                try:
+                    transport.close()
+                finally:
+                    # Covers stopped or interrupted runs as well as successful ones.
+                    purge_diagnostic_bodies(data)
     finally:
         os.umask(previous_umask)
+
+
+def purge_diagnostic_bodies(data):
+    data = outside_git(data)
+    provenance = json.loads((data / "run" / "provenance.json").read_text())
+    if provenance.get("raw_retention") != BOARD_RETENTION:
+        raise ValueError("Expected an issue #44 diagnostic directory")
+    return BlobStore(data).purge("public", older_than=datetime.max.replace(tzinfo=timezone.utc))
 
 
 def execute(data, run, seeded, transport, journal, provenance):
     window_from = timestamp()
     registry = empty_registry()
-    queries = discover_commoncrawl(transport, registry, query_budget=2, include_icims=False)
+    index_template = "/CC-MAIN-{collection}-index"
+    if (isinstance(transport.terms, Terms)
+            and transport.terms.reason(pilot.INDEX_HOST, index_template, "discovery") == "robots_disallowed"):
+        queries = [dict(kind="index_preflight", status="robots_disallowed", new_boards=0,
+                        url=f"https://{pilot.INDEX_HOST}{index_template}")]
+    else:
+        queries = discover_commoncrawl(transport, registry, query_budget=2, include_icims=False)
     feeds = discover_jazz_sitemap(transport, registry, page_budget=2, market=DC_MARKET)
     cold, candidates = pilot.select_cold(registry, seeded)
     with (run / "candidate-ledger.jsonl").open("x", encoding="utf-8") as stream:
@@ -271,7 +315,7 @@ def execute(data, run, seeded, transport, journal, provenance):
             for slot, board in enumerate(boards):
                 transport.stage_for_board(arm, board, int(slot in pilot.DETAIL_SLOTS))
                 entry = dict(arm=arm, slot=slot + 1, provider=board["provider"], board_key=board["key"],
-                             run_id=run_id, dispatched=False, attempted=False)
+                             run_id=run_id, dispatched=False, attempted=False, allowed=False, retrieved=False)
                 if reason := transport.global_stop_reason():
                     entry["reason"] = reason
                 else:
@@ -287,6 +331,23 @@ def execute(data, run, seeded, transport, journal, provenance):
             journal("export_blocked", {"reason": reason})
             raise ValueError("Privacy or endpoint policy stop blocks export")
         relabel(store, "geo", "gazetteer-dc/1")
+        # Materialize labels while raw evidence is available. Export after
+        # deletion so the immutable snapshot describes the evidence it retains.
+        for row in ledger:
+            if "poll_id" not in row:
+                continue
+            row["geography_sightings"] = dict(store.connection.execute("""
+                SELECT value, count(*) FROM label JOIN sighting ON subject_id = sighting_id
+                WHERE subject = 'sighting' AND dimension = 'geo' AND poll_id = ?
+                GROUP BY value
+            """, (row["poll_id"],)))
+            row["uncertain_geography_sightings"] = sum(
+                row["geography_sightings"].get(value, 0) for value in ("unknown", "remote_eligibility_unknown")
+            )
+        purge_diagnostic_bodies(data)
+        for row in ledger:
+            for capture in row.get("captures", ()):
+                capture["retained"] = False
         window_to = store.now()
         backup = store.backup()
         snapshot = export_snapshot(store, data / "exports", code_sha=provenance["code_sha"],
@@ -295,11 +356,25 @@ def execute(data, run, seeded, transport, journal, provenance):
         provenance, window={"from": window_from, "to": window_to}, discovery=safe_discovery(queries + feeds),
         stop_reason=transport.halted or None, operators_terms_attempts=transport.budget.counts["terms"],
         stage_attempts=dict(transport.budget.counts), bytes=transport.budget.bytes,
+        raw_bodies_purged=True,
+        cold_discovered=dict(candidates=len(candidates), new=sum(not row["seed_overlap"] for row in candidates),
+                             selected=len(cold)),
         stopped_hosts=transport.blocked, snapshot_id=snapshot.name, post_replay_backup=backup.name,
         snapshot_manifest_sha256=pilot.sha((snapshot / "manifest.json").read_bytes()),
         board_counts=[
             dict(arm=arm, provider=provider, planned=len(group),
                  dispatched=sum(row["dispatched"] for row in group),
+                 allowed=sum(row["allowed"] for row in group),
+                 retrieved=sum(row["retrieved"] for row in group),
+                 confirmed_empty=sum(row.get("confirmed_empty", False) for row in group),
+                 uncertain_geography_sightings=sum(row.get("uncertain_geography_sightings", 0) for row in group),
+                 potential_false_exclusions=dict(Counter(
+                     row.get("reason", "unknown") for row in group
+                     if row.get("potential_false_exclusion", not row["attempted"])
+                 )),
+                 skipped_by_reason=dict(Counter(
+                     row.get("reason", "unknown") for row in group if not row["attempted"]
+                 )),
                  inventory_attempts=sum(row["attempted"] for row in group),
                  outcomes=dict(Counter(row.get("status", "unattempted").split(":")[0] for row in group)))
             for arm in ("seeded", "cold") for provider in pilot.COLLECTORS
@@ -320,6 +395,7 @@ def safe_discovery(entries):
     fields = ("kind", "provider", "pattern", "collection", "page", "new_boards",
               "index_lines", "board_URLs", "complete_URL_entries", "capped")
     return [{**{key: row[key] for key in fields if key in row},
+             **({"url": row["url"]} if row.get("kind") == "index_preflight" else {}),
              "status": safe_reason(row["status"])} for row in entries]
 
 
@@ -339,7 +415,7 @@ def safe_reason(value):
         "unexpected_content_encoding", "unexpected_content_type", "invalid_encoding",
         "invalid_content_length", "incomplete_response", "unreadable_public_html",
         "provider_total_differs_from_returned_inventory", "duplicate_request",
-        pilot.PRIVATE, pilot.CHALLENGE, pilot.POLICY, pilot.REDIRECT,
+        pilot.PRIVATE, pilot.CHALLENGE, pilot.POLICY, pilot.TERMS_DENIED, pilot.REDIRECT,
     }
     if value.startswith("board_name_"):
         return "board_name_" + safe_reason(value.removeprefix("board_name_"))
@@ -350,6 +426,7 @@ def safe_reason(value):
 
 def poll_board(store, run_id, transport, board):
     before = len(transport.requests)
+    before_access = len(transport.access)
     args = (store, run_id, transport, board)
     if board["provider"] == "jazzhr":
         _, stats = pilot.collect_jazzhr(*args, detail_budget=transport.detail_limit, market=DC_MARKET)
@@ -377,12 +454,28 @@ def poll_board(store, run_id, transport, board):
     rollup = Counter(event["route"] for event in attempts)
     accepted_inventory = [event for event in attempts if event["route"] == "inventory"
                           and event.get("status") == 200 and not event.get("error")]
+    access = [event for event in transport.access[before_access:] if event["route"] == "inventory"]
+    access_reasons = list(dict.fromkeys(event.get("cause", event["decision"]) for event in access
+                                       if event["decision"] != "allowed"))
+    sightings = poll["received"] - poll["unrepresented"]
+    confirmed_empty = poll["status"] == "ok" and inventory["observed_available_items"] == 0
     return dict(
-        dict(poll), **{key: inventory[key] for key in (
+        dict(poll), allowed=any(event["decision"] == "allowed" for event in access),
+        retrieved=bool(sightings) or confirmed_empty, confirmed_empty=confirmed_empty,
+        reason="confirmed_empty" if confirmed_empty else (access_reasons or reasons or (
+            ["unrepresented_rows"] if poll["unrepresented"] else
+            ["inventory_completeness_unverified"] if inventory["metadata_complete"] is not True
+            and poll["status"] == "ok" else [poll["status"]]
+        ))[0],
+        access_reasons=access_reasons,
+        coverage_outcome=("confirmed_empty" if confirmed_empty else poll["status"] if sightings else
+                          (access_reasons or reasons or [poll["status"]])[0]),
+        potential_false_exclusion=bool(poll["status"] != "ok" or poll["unrepresented"]
+                                       or inventory["metadata_complete"] is not True and not confirmed_empty), **{key: inventory[key] for key in (
             "observed_available_items", "metadata_complete", "descriptions_observed",
         )}, attempted=bool(rollup["inventory"]), preflight_only=bool(attempts) and not rollup["inventory"],
         request_count=len(attempts), request_counts=dict(rollup),
-        valid_inventory_responses=len(accepted_inventory), sightings=poll["received"] - poll["unrepresented"],
+        valid_inventory_responses=len(accepted_inventory), sightings=sightings,
         response_bytes=sum(event.get("bytes", 0) for event in attempts),
         inventory_receipts=[dict(receipt) for receipt in receipts],
         captures=[dict(capture, retained=store.blobs.exists(capture["raw_sha"])) for capture in captures],
@@ -447,7 +540,12 @@ def cli():
     collect_parser.add_argument("--owner-approved-config-sha256", required=True)
     inspect_parser = commands.add_parser("inspect")
     inspect_parser.add_argument("--data-dir", required=True, type=Path)
+    purge_parser = commands.add_parser("purge-raw", help="Remove diagnostic response bodies after an unclean stop")
+    purge_parser.add_argument("--data-dir", required=True, type=Path)
     args = parser.parse_args()
+    if args.command == "purge-raw":
+        print(json.dumps({"purged": len(purge_diagnostic_bodies(args.data_dir))}))
+        return
     if args.command == "inspect":
         print(json.dumps(inspect_run(args.data_dir), sort_keys=True, indent=2))
         return
