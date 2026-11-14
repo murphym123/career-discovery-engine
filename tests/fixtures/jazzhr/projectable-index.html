@@ -3,6 +3,16 @@
 <meta name="csrf-token" content="fictional-meta-state">
 <script>const csrfToken = "fictional-script-state";</script>
 <script type="application/json">{"csrf-token":"fictional-json-state"}</script>
+<script>
+  const sessionID = "fictional-anonymous-session";
+  function readFields(fields) {
+    const password = fields.password;
+    return { password: !normalize(password) };
+  }
+  function readPasswordField() {
+    return { "password": $('#password').val() };
+  }
+</script>
 <main>
   <h1>Current openings</h1>
   <form action="/apply" method="get">
