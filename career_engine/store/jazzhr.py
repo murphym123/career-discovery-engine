@@ -21,6 +21,13 @@ PRIVATE_STATE_NAME = re.compile(
 PRIVATE_STATE_SCRIPT = re.compile(
     rf"""\b{PRIVATE_STATE_NAME.pattern}["']?\s*[:=]\s*["'][^"']+["']""", re.I
 )
+# A prefilled public search/filter form is not applicant data. Keep detecting
+# populated personal fields and private state, regardless of form purpose.
+PERSONAL_FORM_FIELD = re.compile(
+    r"email|phone|telephone|(?:first|last|full|middle)[_-]?name|address|"
+    r"date[_-]?of[_-]?birth|birthdate|dob|social[_-]?security|ssn|"
+    r"resume|cover[_-]?letter|candidate|applicant", re.I
+)
 
 
 def _capture_rejection(body):
@@ -41,7 +48,10 @@ def _capture_rejection(body):
                 return "private_page_state"
             value = attrs.get("value") if node.tag == "input" else node.text()
             if value and (PRIVATE_STATE_NAME.search(attrs.get("name") or "")
-                          or (node.closest("form") and kind not in ("submit", "button", "reset", "radio", "checkbox"))):
+                          or (node.closest("form") and
+                              (kind in ("email", "tel") or
+                               PERSONAL_FORM_FIELD.search(attrs.get("name") or "") or
+                               node.tag == "textarea" and kind != "search"))):
                 return "private_page_state"
     return None
 

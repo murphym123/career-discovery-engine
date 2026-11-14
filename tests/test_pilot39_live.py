@@ -376,6 +376,72 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(manifest["board_counts"][0]["potential_false_exclusions"], {"terms_unverified": 1})
             self.assertEqual(len(self.calls), 2)
 
+    def test_public_jazzhr_search_form_does_not_trigger_privacy_rejection(self):
+        from career_engine.store.jazzhr import _capture_rejection
+
+        page = (b"<html><title>Careers</title><form method='get'>"
+                b"<input type='search' name='keyword' value='policy'>"
+                b"<input name='location' value='Washington, DC'>"
+                b"</form><main><h1>Current openings</h1>"
+                b"<p>There are currently no open positions.</p></main></html>")
+        self.assertIsNone(_capture_rejection(page))
+        self.scripted([self.robots(JAZZ_HOST),
+                       (JAZZ["url"], response(page, media="text/html"))])
+        raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=0,
+                              terms=ads("seeded", JAZZ_HOST, "/apply"))).encode()
+        with tempfile.TemporaryDirectory() as scratch:
+            data = Path(scratch) / "pilot"
+            snapshot = collect(data, [JAZZ], b"fixture cohort", raw, *checked_config(raw))
+            ledger = json.loads((data / "run/board-polls.json").read_text())
+            self.assertEqual(ledger[0]["status"], "ok")
+            self.assertTrue(ledger[0]["confirmed_empty"])
+            self.assertEqual(len(self.calls), 2)
+            self.assertTrue((snapshot / "manifest.json").is_file())
+
+    def test_private_jazzhr_html_is_withheld_and_other_board_exports(self):
+        from career_engine.store.jazzhr import _capture_rejection
+
+        private_page = (b"<html><title>Careers</title><form>"
+                        b"<input name='csrf_token' type='hidden' value='fixture-secret'>"
+                        b"</form></html>")
+        self.assertEqual(_capture_rejection(private_page), pilot.PRIVATE)
+        gh_role = dict(id=1234, title="Policy Analyst",
+                       location=dict(name="Washington, DC"),
+                       absolute_url=GREEN["url"] + "/jobs/1234",
+                       content="Public analyst duties")
+        self.scripted([
+            self.robots(JAZZ_HOST),
+            (JAZZ["url"], response(private_page, media="text/html")),
+            self.robots(GH_HOST),
+            (address(GH_HOST, JOBS, {"content": "true"}),
+             response(json.dumps({"jobs": [gh_role]}).encode())),
+            (address(GH_HOST, META), response(b'{"name":"Example"}')),
+        ])
+        raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=0,
+                              terms=ads("seeded", JAZZ_HOST, "/apply") +
+                              ads("seeded", GH_HOST, JOBS, META))).encode()
+        with tempfile.TemporaryDirectory() as scratch:
+            data = Path(scratch) / "pilot"
+            snapshot = collect(data, [JAZZ, GREEN], b"fixture cohort",
+                               raw, *checked_config(raw))
+            board_polls = json.loads((data / "run/board-polls.json").read_text())
+            rejected, healthy = board_polls
+            self.assertEqual(rejected["status"], "failed")
+            self.assertEqual(rejected["reason"], pilot.SOURCE_PRIVATE)
+            self.assertEqual(rejected["request_counts"], {"robots": 1, "inventory": 1})
+            self.assertEqual(healthy["received"], 1)
+            self.assertEqual(healthy["status"], "ok")
+            manifest = json.loads((data / "run/run-manifest.json").read_text())
+            self.assertIsNone(manifest["stop_reason"])
+            self.assertTrue(manifest["raw_bodies_purged"])
+            self.assertEqual(len(self.calls), 5)
+            self.assertFalse(list((data / "blobs").rglob("*.gz")))
+            self.assertEqual(len((snapshot / "sightings.jsonl").read_text().splitlines()), 1)
+            journal = (data / "run/operations.jsonl").read_text()
+            self.assertIn('"error": "private_page_withheld"', journal)
+            self.assertNotIn("fixture-secret", journal)
+            self.assertNotIn("fixture-secret", (snapshot / "sightings.jsonl").read_text())
+
     def test_runtime_robots_for_public_jazzhr_seeds_uses_seeded_budget(self):
         second_host = "second-example.applytojob.com"
         second = pilot.board_from_url(address(second_host, "/apply"))

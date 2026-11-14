@@ -32,7 +32,8 @@ INDEX_HOST = "index.commoncrawl.org"
 FEED_HOST = "app.jazz.co"
 DENIAL = {401, 403, 429}
 CHALLENGE = "access_challenge_not_bypassed"
-PRIVATE = "private_page_state"
+PRIVATE = "private_page_state"  # Confirmed secret/unsafe response: global stop.
+SOURCE_PRIVATE = "private_page_withheld"  # Suspect public HTML: reject only this source.
 REDIRECT = "unsafe_redirect"
 POLICY = "terms_unverified"
 TERMS_DENIED = "terms_disallowed"
@@ -446,7 +447,7 @@ class _GuardedTransport:
                 if str(exc) == CHALLENGE:
                     event["host_stop"] = self.blocked[host] = CHALLENGE
                     self._retry_after(event, retry_after)
-                if str(exc) in (PRIVATE, "response_too_large", "byte_budget"):
+                if str(exc) in (PRIVATE, SOURCE_PRIVATE, "response_too_large", "byte_budget"):
                     event["withheld"] = True
                 if str(exc) in (PRIVATE, "byte_budget") or (
                     str(exc) == "time_budget" and (self.stage == "discovery" or
@@ -567,6 +568,10 @@ class _GuardedTransport:
                 raise FetchError("invalid_encoding") from None
         media = reply.media.split(";", 1)[0].lower()
         is_html = media == "text/html" or body.lstrip("\ufeff \t\r\n").startswith("<") and route != "sitemap"
+        # A known local secret or signed/private URL is a run-wide integrity
+        # concern. Test it first, even when the same HTML also has form fields.
+        if contains_configured_secret(body, self.privacy.secrets) or unsafe_body(body):
+            raise FetchError(PRIVATE)
         try:
             rejection = _capture_rejection(data) if is_html else None
         except (TypeError, ValueError, RecursionError):
@@ -574,12 +579,13 @@ class _GuardedTransport:
         if rejection == PRIVATE and re.search(r"(?i)<input\b[^>]*\btype\s*=\s*['\"]?password", body):
             raise FetchError(CHALLENGE)
         if rejection:
-            raise FetchError(rejection)
+            # No raw body or page content is captured on this path. Quarantine
+            # the HTML page without halting unrelated employer boards.
+            raise FetchError(SOURCE_PRIVATE if rejection == PRIVATE else rejection)
         if re.search(r"(?i)\b(?:captcha|cf-chl-)[_-]?[a-z0-9-]*\b", body[:4096]) and is_html:
             raise FetchError(CHALLENGE)
-        if (contains_configured_secret(body, self.privacy.secrets) or unsafe_body(body)
-                or is_html and re.search(r"(?i)\b(?:token|password|sessionid|credential)\s*[\"']?\s*[:=]", body)):
-            raise FetchError(PRIVATE)
+        if is_html and re.search(r"(?i)\b(?:token|password|sessionid|credential)\s*[\"']?\s*[:=]", body):
+            raise FetchError(SOURCE_PRIVATE)
         if is_html and "\\" in body:
             try:
                 for node in Document(body).root.walk():
@@ -642,7 +648,9 @@ class _GuardedTransport:
                 raise RuntimeError("Pilot evidence callback failed") from exc
             if disposition:
                 event["withheld"] = True
-                raise FetchError(PRIVATE)
+                # A source-local privacy classifier rejects suspect HTML; an
+                # actual secret echo from an evidence callback remains global.
+                raise FetchError(SOURCE_PRIVATE if disposition == PRIVATE else PRIVATE)
             event["sha256"] = sha(data)
         elif route in ("robots", "sitemap", "catalog", "index", "index_count"):
             event["sha256"] = sha(data)
