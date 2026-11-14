@@ -15,7 +15,7 @@ st.set_page_config(page_title="Prospect | Local viewer", page_icon="🔎", layou
 st.title("Prospect")
 st.caption("Local collection viewer · read-only · public discovery records only")
 
-section = st.sidebar.radio("View", ["Overview", "Sources", "Listings"])
+section = st.sidebar.radio("View", ["Overview", "Run explorer", "Sources", "Listings"])
 st.sidebar.caption("No collectors or evaluations are launched from this interface.")
 
 data_dir = os.environ.get("PROSPECT_DATA_DIR", "").strip()
@@ -28,6 +28,26 @@ try:
     with open_store(data_dir) as connection:
         if section == "Overview":
             counts, recent = overview(connection), runs(connection)
+        elif section == "Run explorer":
+            recent = runs(connection)
+            if recent:
+                # The selector displays friendly metadata, not internal IDs.
+                run_labels = {
+                    row["run_id"]: (
+                        f'{row["started_at"]}  ·  {row["arm"]}  ·  '
+                        f'{"finished" if row["finished_at"] else "unfinished"}'
+                    )
+                    for row in recent
+                }
+                run_id = st.selectbox(
+                    "Inspect a collection run",
+                    list(run_labels),
+                    format_func=lambda value: run_labels[value],
+                )
+                selected_run = next(row for row in recent if row["run_id"] == run_id)
+                run_poll_rows = polls(connection, limit=2000, run_id=run_id)
+            else:
+                selected_run, run_poll_rows = None, []
         elif section == "Sources":
             source_rows, poll_rows = sources(connection), polls(connection)
         else:
@@ -50,6 +70,50 @@ try:
             "Registered sources may have zero polls. Posting counts reflect stored IDs "
             "and do not measure market coverage, active vacancies, or recall."
         )
+
+    elif section == "Run explorer":
+        st.subheader("Collection run explorer")
+        if not selected_run:
+            st.info("No stored public discovery runs yet. The dashboard does not launch collectors.")
+        else:
+            completed = bool(selected_run["finished_at"])
+            st.caption(
+                f'Started: {selected_run["started_at"]}  ·  '
+                f'Ended: {selected_run["finished_at"] or "not finalized"}  ·  '
+                f'Trigger: {selected_run["trigger"]}'
+            )
+            if not completed:
+                st.warning(
+                    "This run has not been finalized in the store. "
+                    "Its recorded polls are not necessarily a complete run history."
+                )
+            a, b, c, d = st.columns(4)
+            a.metric("Polls recorded", selected_run["polls"])
+            b.metric("Rows received", selected_run["rows_received"])
+            c.metric("Unrepresented rows", selected_run["unrepresented"])
+            d.metric("Incomplete / skipped", selected_run["incomplete_polls"])
+
+            st.subheader("Poll outcomes")
+            if run_poll_rows:
+                status_options = sorted({row["status"] for row in run_poll_rows})
+                included = st.multiselect(
+                    "Filter poll status", status_options, default=status_options
+                )
+                filtered_polls = [
+                    row for row in run_poll_rows if row["status"] in included
+                ]
+                st.dataframe(filtered_polls, hide_index=True)
+                st.caption(
+                    f"Showing {len(filtered_polls)} of {len(run_poll_rows)} recent recorded polls "
+                    "(maximum 2,000). Counts may include repeated postings."
+                )
+            else:
+                st.info("This run has no public discovery polls.")
+            st.caption(
+                "This page shows persisted polls, not boards that were planned but never "
+                "dispatched or failures recorded only in pilot transport logs. "
+                "It does not measure market recall."
+            )
 
     elif section == "Sources":
         st.subheader("Source boards and feeds")
