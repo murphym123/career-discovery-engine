@@ -315,3 +315,7 @@ Registry state is staged and verified before restore, written atomically, and sa
 `python -m tools.freeze_employer_frame --output-dir work/dc-frame --size 30` freezes a non-personal Open Data DC certified-business frame and a deterministic development batch. `python -m tools.discover_employers --frame work/dc-frame/batch.json --registry data/ats-registry.json --output-dir output/employer-discovery` resolves observed official-site and hiring links, records unknown/unsupported channels, and hands verified supported boards to existing collectors. An optional `--base` preserves the original audit and writes a separate combined capture. No workflow mode or schedule is changed.
 
 See [usage and input schema](docs/issue25/USAGE.md) and [actual results and limits](docs/issue25/RESULTS.md). The measured 30-employer batch corroborated 16 sites but found no supported ATS source; unconventional channel evidence is retained as unknown inventory, not zero jobs or proof of market recall.
+
+### Manual House Employment Bulletin intake
+
+Use `python -m tools.import_house_bulletin bulletin.pdf --output-dir output/house-bulletin` with Poppler installed. The same command accepts an exported `.eml` with attached PDFs. It retains originals, numbered source spans, completeness diagnostics and an annual vacancy ledger. See [usage](docs/issue28/USAGE.md) and [historical validation](docs/issue28/RESULTS.md).

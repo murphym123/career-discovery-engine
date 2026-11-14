@@ -1,0 +1,488 @@
+{
+  "scope": "historical development PDFs; announcement-level metrics, not field accuracy or current coverage",
+  "fixtures": [
+    {
+      "source": "https://content.govdelivery.com/attachments/USCAOHOUSE/2026/04/20/file_attachments/3623742/HVAPS%20Template_Members_2026_04_20_2026.pdf",
+      "artifact_sha256": "160bccba091e5b2b0839d5ec5b32000aa2675264834b35429f9dc8d5845a31cc",
+      "issue_date": "2026-04-20",
+      "expected_issue_date": "2026-04-20",
+      "expected_pages": 31,
+      "extracted_pages": 31,
+      "expected_ids": 27,
+      "observed_occurrences": 27,
+      "retained_ids": 27,
+      "precision": 1.0,
+      "recall": 1.0,
+      "missed_ids": [],
+      "unexpected_ids": [],
+      "span_discrepancies": [],
+      "verified_spans": [
+        {
+          "id": "MEM-130-26",
+          "pages": [
+            1,
+            2
+          ],
+          "raw_span_sha256": "64429b5afe6be9aef507fdcca63e146f4d4a8bf7514c0758a99b8b89f17d50c1"
+        },
+        {
+          "id": "MEM-129-26",
+          "pages": [
+            2,
+            3
+          ],
+          "raw_span_sha256": "e4a17c76231754ad6df705851dd622c0135fe8e01914994f73ca52f4be0b3b46"
+        },
+        {
+          "id": "MEM-128-26",
+          "pages": [
+            3,
+            4
+          ],
+          "raw_span_sha256": "91c2fdd95deeca441a158eb5bf1b76049f3d5cd76e53a2ccb81299cbc6f3ed05"
+        },
+        {
+          "id": "MEM-127-26",
+          "pages": [
+            4,
+            5
+          ],
+          "raw_span_sha256": "ca9f9d9fbc4e2e154b4d3e5885517d3521ab8187d49cadc32ba8e75f730509ac"
+        },
+        {
+          "id": "MEM-126-26",
+          "pages": [
+            5,
+            6
+          ],
+          "raw_span_sha256": "a7f4298af64429cb701f727d7097d303f4350f2da1b2970769798924c5ba3e98"
+        },
+        {
+          "id": "MEM-125-26",
+          "pages": [
+            7,
+            7
+          ],
+          "raw_span_sha256": "6f87de0be754c0fa056ead4afdd6ac0708a7f9fceda9af6fa857cdaac25033c6"
+        },
+        {
+          "id": "MEM-124-26",
+          "pages": [
+            7,
+            9
+          ],
+          "raw_span_sha256": "b51af6a7a754d39b3806d4bb9e937f0c015f599ae98b4c6b85cf2cf8d2d1ab81"
+        },
+        {
+          "id": "MEM-123-26",
+          "pages": [
+            9,
+            10
+          ],
+          "raw_span_sha256": "2326caf8b2e0212d3d61b51fb52f12da861d1ff3ba924871c34fb4e2526893cb"
+        },
+        {
+          "id": "MEM-122-26",
+          "pages": [
+            10,
+            11
+          ],
+          "raw_span_sha256": "95a259c5286b21cb91daed1b18e3a80f3e0159a91a250aef11c17aa4a09d5c3a"
+        },
+        {
+          "id": "MEM-121-26",
+          "pages": [
+            11,
+            12
+          ],
+          "raw_span_sha256": "6f7f1897543538647292373f806cdce17c71cb691d4dd1914e70e9cfb728451f"
+        },
+        {
+          "id": "MEM-120-26",
+          "pages": [
+            13,
+            13
+          ],
+          "raw_span_sha256": "7abe459f783a8fc1566d4654a9e40acc7e01ed8679e540dc4cb67ecd4ed42e01"
+        },
+        {
+          "id": "MEM-119-26",
+          "pages": [
+            13,
+            14
+          ],
+          "raw_span_sha256": "2c4361390ad028d30f8517ec25d0388e76529e04a17b121f6c4239879fd290ae"
+        },
+        {
+          "id": "MEM-117-26",
+          "pages": [
+            14,
+            14
+          ],
+          "raw_span_sha256": "ce798d27798c0363c40d33c39d8b40116af76cacaf9b4fa0d88ce163db11b150"
+        },
+        {
+          "id": "MEM-114-26",
+          "pages": [
+            14,
+            16
+          ],
+          "raw_span_sha256": "f774cbd9d6f5f59c1449a51cd4c9428d430f3d03a089a6ddb361731757bbc86f"
+        },
+        {
+          "id": "MEM-113-26",
+          "pages": [
+            16,
+            16
+          ],
+          "raw_span_sha256": "2a0675160c74cf72dd0afaddc92981f1ac180e940f1c8be34aecd0f63c577ee0"
+        },
+        {
+          "id": "MEM-112-26",
+          "pages": [
+            16,
+            17
+          ],
+          "raw_span_sha256": "4411b51efba375a30f53d8a259b71ed79330473f13642fac1e4070840c0575c3"
+        },
+        {
+          "id": "MEM-111-26",
+          "pages": [
+            17,
+            19
+          ],
+          "raw_span_sha256": "837a7b5253478dfecc63bed5f80947275d86401f79b78a8fff0263103a33f9b0"
+        },
+        {
+          "id": "MEM-109-26",
+          "pages": [
+            19,
+            20
+          ],
+          "raw_span_sha256": "35fbb05293aeadeea0887dc0062ffad9b2b891ed1ccc1d6c9641b7d41829f968"
+        },
+        {
+          "id": "MEM-108-26",
+          "pages": [
+            20,
+            20
+          ],
+          "raw_span_sha256": "c5d4776d024c30ca0e3717b16a21e063c25084fd1474a59400a0f2ca233d09ba"
+        },
+        {
+          "id": "MEM-106-26",
+          "pages": [
+            20,
+            22
+          ],
+          "raw_span_sha256": "499719b5307fc4546f44dafb862df06b6d6552894178845799a53006a650ed53"
+        },
+        {
+          "id": "MEM-105-26",
+          "pages": [
+            22,
+            24
+          ],
+          "raw_span_sha256": "816b3b4111c54ebe2d627450334654b7af4c9379ffb9798e7edceb2c26344caf"
+        },
+        {
+          "id": "MEM-104-26",
+          "pages": [
+            24,
+            25
+          ],
+          "raw_span_sha256": "ad1f32cad3963997bbc9caf2a70ce681131a4caa8bf416bb37df44dc8ef11b2c"
+        },
+        {
+          "id": "MEM-103-26",
+          "pages": [
+            25,
+            27
+          ],
+          "raw_span_sha256": "368acf986174adc3ea258903ee9e56d5da1226eb86583d2a0dbccb19337a8b16"
+        },
+        {
+          "id": "MEM-101-26",
+          "pages": [
+            27,
+            28
+          ],
+          "raw_span_sha256": "31d917c241a3f1491cf34c6c18fabf963daeaf28c2cd4e01d1055ba4294b07dd"
+        },
+        {
+          "id": "MEM-099-26",
+          "pages": [
+            28,
+            29
+          ],
+          "raw_span_sha256": "d451f7acb2978b9b85cfe7100427fe41ec7557d494dca9386558cee896781902"
+        },
+        {
+          "id": "MEM-094-26",
+          "pages": [
+            29,
+            30
+          ],
+          "raw_span_sha256": "b7929666aae7ca915faa16b9192b26d0a1636333b1ce5d502df124bd76f6b743"
+        },
+        {
+          "id": "MEM-088-26",
+          "pages": [
+            30,
+            31
+          ],
+          "raw_span_sha256": "51b5bf86c9203033449207670f490ab94b7c563e3c9892c38f247e9de6b62f69"
+        }
+      ],
+      "completeness": "RECONCILED OBSERVED PDF TEXT",
+      "diagnostics": [],
+      "field_unknown_counts": {
+        "advertised_title": 4,
+        "office": 7,
+        "advertised_worksite": 18,
+        "application_instructions": 2,
+        "published_emails": 3,
+        "application_deadline": 21
+      }
+    },
+    {
+      "source": "https://content.govdelivery.com/attachments/USCAOHOUSE/2026/05/11/file_attachments/3647140/HVAPS%20Template_Members_2026_05_11_2026.pdf",
+      "artifact_sha256": "3573b59b8f246d02b32fcbdbd5d9cf28a52e7867c1f5fba11ea0c26133baa0c7",
+      "issue_date": "2026-05-11",
+      "expected_issue_date": "2026-05-11",
+      "expected_pages": 19,
+      "extracted_pages": 19,
+      "expected_ids": 17,
+      "observed_occurrences": 17,
+      "retained_ids": 17,
+      "precision": 1.0,
+      "recall": 1.0,
+      "missed_ids": [],
+      "unexpected_ids": [],
+      "span_discrepancies": [],
+      "verified_spans": [
+        {
+          "id": "MEM-152-26",
+          "pages": [
+            1,
+            2
+          ],
+          "raw_span_sha256": "967a64d6d53a2cbe0e18e54bb75f2e48a0acc1068a24ef2ffc77d602f5e28c0e"
+        },
+        {
+          "id": "MEM-151-26",
+          "pages": [
+            2,
+            3
+          ],
+          "raw_span_sha256": "fc274c4dcc451b38e679f0e6301414c3fe9e59500fd251ba5df16aba237d9425"
+        },
+        {
+          "id": "MEM-150-26",
+          "pages": [
+            3,
+            4
+          ],
+          "raw_span_sha256": "02465918ab082ade7fb73d3b3c7a19cca5dd8aff9056f5c3c8a093de315b769a"
+        },
+        {
+          "id": "MEM-149-26",
+          "pages": [
+            4,
+            5
+          ],
+          "raw_span_sha256": "df86134e152d0daa5b7d2031a3da1b81636f1c479acf6c4177d260c59f019a8f"
+        },
+        {
+          "id": "MEM-148-26",
+          "pages": [
+            5,
+            6
+          ],
+          "raw_span_sha256": "45d62d33d376abf4bf1397d3052d3a16838ad6481cbd864d0a1d1e6ca44245c6"
+        },
+        {
+          "id": "MEM-147-26",
+          "pages": [
+            6,
+            7
+          ],
+          "raw_span_sha256": "208fb0e21503aab5e132b0aecf5f960822dcb38084a6998333fc440d597cb133"
+        },
+        {
+          "id": "MEM-146-26",
+          "pages": [
+            7,
+            8
+          ],
+          "raw_span_sha256": "f6df26c92949ac5895e26f1228111758203001254077835ba9b4cd5f5d0f2b98"
+        },
+        {
+          "id": "MEM-145-26",
+          "pages": [
+            8,
+            9
+          ],
+          "raw_span_sha256": "a20df2a041c4c562813f031be48a47c96d00d2eb62317e2fbf902c8d92d19985"
+        },
+        {
+          "id": "MEM-144-26",
+          "pages": [
+            10,
+            10
+          ],
+          "raw_span_sha256": "6b066e0be42b1157434e7fc3713de6c2cd3065da582908fcf2ba3d3a9ef8a016"
+        },
+        {
+          "id": "MEM-140-26",
+          "pages": [
+            11,
+            13
+          ],
+          "raw_span_sha256": "b9ccdce099cf439a9c5ab0931047f02551413dc8cfe6c278b9b4ea5de5dc9863"
+        },
+        {
+          "id": "MEM-139-26",
+          "pages": [
+            13,
+            14
+          ],
+          "raw_span_sha256": "3f9935cbad07fc76f8b3e17c524ec93613b6774afd9ab4c653b6e8d52c31c0a7"
+        },
+        {
+          "id": "MEM-134-26",
+          "pages": [
+            14,
+            14
+          ],
+          "raw_span_sha256": "73b4e0cb9c3259dadf630fcb7992f62b4bab80b0d2d306c9d5971e00bf2b51d6"
+        },
+        {
+          "id": "MEM-131-26",
+          "pages": [
+            14,
+            16
+          ],
+          "raw_span_sha256": "67dbe3a0b1748e7058a5c212d59bed0ea1097eb8b5cb96962b310bb48d5ed749"
+        },
+        {
+          "id": "MEM-127-26",
+          "pages": [
+            16,
+            17
+          ],
+          "raw_span_sha256": "59063a63c5af77bc4ce961a6f415bbff2603d796a8dc383d873f32ee3a724a65"
+        },
+        {
+          "id": "MEM-120-26",
+          "pages": [
+            17,
+            18
+          ],
+          "raw_span_sha256": "da78537f1a611c4b5ae45f560f0707cf70d5f483084bc9598e45e0095a76508f"
+        },
+        {
+          "id": "MEM-119-26",
+          "pages": [
+            18,
+            18
+          ],
+          "raw_span_sha256": "e00ae5aa3df4fe742982df6d7a7bc1354d381586e334918fad7f0c2aa1e6a298"
+        },
+        {
+          "id": "MEM-117-26",
+          "pages": [
+            18,
+            19
+          ],
+          "raw_span_sha256": "93716e37269a30e984d5031a714f81dc228f8fb18dbc566946cd44772c3370db"
+        }
+      ],
+      "completeness": "PARTIAL COLLECTION",
+      "diagnostics": [
+        {
+          "code": "possible_text_layer_glyph_loss",
+          "count": 31,
+          "examples": [
+            {
+              "word": "ofice",
+              "offset": 11505,
+              "page": 5,
+              "line": 39
+            },
+            {
+              "word": "ofice",
+              "offset": 11534,
+              "page": 5,
+              "line": 40
+            },
+            {
+              "word": "ofice",
+              "offset": 11625,
+              "page": 5,
+              "line": 41
+            },
+            {
+              "word": "ofice",
+              "offset": 11708,
+              "page": 5,
+              "line": 42
+            },
+            {
+              "word": "ofice",
+              "offset": 11880,
+              "page": 6,
+              "line": 1
+            },
+            {
+              "word": "ofice",
+              "offset": 11953,
+              "page": 6,
+              "line": 3
+            },
+            {
+              "word": "ofice",
+              "offset": 12062,
+              "page": 6,
+              "line": 4
+            },
+            {
+              "word": "ofice",
+              "offset": 12119,
+              "page": 6,
+              "line": 5
+            },
+            {
+              "word": "ofice",
+              "offset": 12270,
+              "page": 6,
+              "line": 10
+            },
+            {
+              "word": "ofice",
+              "offset": 12362,
+              "page": 6,
+              "line": 11
+            }
+          ]
+        }
+      ],
+      "field_unknown_counts": {
+        "advertised_title": 0,
+        "office": 0,
+        "advertised_worksite": 6,
+        "application_instructions": 2,
+        "published_emails": 0,
+        "application_deadline": 13
+      }
+    }
+  ],
+  "cross_issue_ids": [
+    "MEM-117-26",
+    "MEM-119-26",
+    "MEM-120-26",
+    "MEM-127-26"
+  ],
+  "annual_unique_ids": 40,
+  "passed": true
+}
