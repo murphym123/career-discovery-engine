@@ -2,14 +2,14 @@
 
 Based on the saved operator preflight from 2026-11-14 04:48:44–04:49:55 UTC. The 16 requests were for robots and documentation. This reassessment used the saved responses and made zero publisher requests. The original frozen cohort and its order stay in the private inputs.
 
-| Provider | Planned | Earlier robots evidence permits | Robots to check at runtime | Inventory attempted | Retrieved |
+| Provider | Planned | Earlier robots evidence permits | First robots check at runtime | Inventory attempted | Retrieved |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Greenhouse | 8 | 8 | 0 | 0 | 0 |
 | Lever | 5 | 5 | 0 | 0 | 0 |
 | JazzHR | 11 | 3 | 8 | 0 | 0 |
 | **Total** | **24** | **16** | **8** | **0** | **0** |
 
-Zero cold boards discovered, zero confirmed empty boards, and zero explicit seeded inventory denials or technical response failures in the saved preflight. Live endpoint reachability, inventory completeness and geography remain unmeasured. Greenhouse's documentation-path 404 is separate from board availability.
+The runner checks robots at runtime for every requested inventory host, including hosts with earlier observations. The saved preflight found zero explicit seeded inventory denials and made zero inventory requests. Live endpoint reachability, inventory completeness and geography remain unmeasured. Greenhouse's documentation-path 404 is separate from board availability.
 
 ## Seed routes
 

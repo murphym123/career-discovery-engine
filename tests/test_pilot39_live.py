@@ -376,6 +376,32 @@ class LiveTests(unittest.TestCase):
             self.assertEqual(manifest["board_counts"][0]["potential_false_exclusions"], {"terms_unverified": 1})
             self.assertEqual(len(self.calls), 2)
 
+    def test_runtime_robots_for_public_jazzhr_seeds_uses_seeded_budget(self):
+        second_host = "second-example.applytojob.com"
+        second = pilot.board_from_url(address(second_host, "/apply"))
+        rules = ads("seeded", JAZZ_HOST, "/apply") + ads("seeded", second_host, "/apply")
+        self.scripted([
+            self.robots(JAZZ_HOST, b"User-agent: *\nDisallow: /apply\n"),
+            self.robots(second_host, b"User-agent: *\nDisallow: /cb\n"),
+            (second["url"], response(
+                (Path(__file__).parent / "fixtures/jazzhr/empty.html").read_bytes(), media="text/html")),
+        ])
+        raw = json.dumps(dict(code_sha=SHA, terms_get_attempts=16, terms=rules)).encode()
+        with tempfile.TemporaryDirectory() as scratch:
+            data = Path(scratch) / "pilot"
+            collect(data, [JAZZ, second], b"fixture cohort", raw, *checked_config(raw))
+            run = data / "run"
+            denied, allowed = json.loads((run / "board-polls.json").read_text())
+            self.assertEqual(denied["reason"], "robots_disallowed")
+            self.assertEqual(denied["request_counts"], {"robots": 1})
+            self.assertFalse(denied["attempted"])
+            self.assertTrue(allowed["confirmed_empty"])
+            self.assertEqual(allowed["request_counts"], {"robots": 1, "inventory": 1})
+            manifest = json.loads((run / "run-manifest.json").read_text())
+            self.assertEqual(manifest["stage_attempts"], {"terms": 16, "seeded": 3})
+            self.assertIsNone(manifest["stop_reason"])
+            self.assertEqual(len(self.calls), 3)
+
     def test_collect_interruption_keeps_partial_poll_and_prohibits_reuse(self):
         rules = ads("seeded", LEVER_HOST, LEV_PATH)
         listing = dict(id="01234567-89ab-cdef-0123-456789abcdef", text="Analyst",
