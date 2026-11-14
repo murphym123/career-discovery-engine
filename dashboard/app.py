@@ -9,19 +9,23 @@ import sqlite3
 import streamlit as st
 
 from dashboard.activity import activity
+from dashboard.browse import render_browse
 from dashboard.queries import (
-    collection_totals, database_path, listings, open_store, overview, polls, runs, sources,
+    collection_totals, database_path, open_store, overview, polls, runs, sources,
 )
 
 
 st.set_page_config(page_title="Prospect | Local viewer", page_icon="🔎", layout="wide")
 st.title("Prospect")
-st.caption("Local collection viewer · read-only · public discovery records only")
+if os.getenv("PROSPECT_DEMO") == "1":
+    st.warning("DEMO / SYNTHETIC DATA")
 
 section = st.sidebar.radio(
-    "View", ["Overview", "Run explorer", "Sources", "Listings", "Live activity"]
+    "View", ["Browse Jobs", "Overview", "Run explorer", "Sources", "Live activity"]
 )
-auto_refresh = st.sidebar.checkbox("Refresh every 4 seconds", value=True)
+auto_refresh = st.sidebar.checkbox(
+    "Refresh monitoring every 4 seconds", value=True, disabled=section == "Browse Jobs",
+)
 st.sidebar.caption("No collectors or evaluations are launched from this interface.")
 
 data_dir = os.environ.get("PROSPECT_DATA_DIR", "").strip()
@@ -52,8 +56,6 @@ def read_view(data_dir, section, revision, run_id=None):
             return runs(connection) if run_id is None else polls(connection, limit=2000, run_id=run_id)
         if section == "Sources":
             return sources(connection), polls(connection)
-        if section == "Listings":
-            return listings(connection)
         return collection_totals(connection)
 
 
@@ -125,8 +127,6 @@ def render():
                 selected_run, run_poll_rows = None, []
         elif section == "Sources":
             source_rows, poll_rows = read_view(data_dir, section, revision)
-        else:
-            all_rows = read_view(data_dir, section, revision)
     except FileNotFoundError:
         st.error("No prospect.sqlite found in PROSPECT_DATA_DIR.")
         return
@@ -223,28 +223,13 @@ def render():
             "supported request."
         )
 
-    else:
-        st.subheader("Discovered job listings")
-        if all_rows:
-            needle = st.text_input("Filter title, employer, location, or source").casefold().strip()
-            shown = [
-                row for row in all_rows
-                if not needle or any(
-                    needle in str(row[field] or "").casefold()
-                    for field in ("title", "employer", "location", "source")
-                )
-            ]
-            st.caption(
-                f"Showing {len(shown)} of {len(all_rows)} latest observed public postings "
-                "(up to 2,000; not verified as currently open)."
-            )
-            st.dataframe(
-                shown, hide_index=True,
-                column_config={"url": st.column_config.LinkColumn("Public job link")}
-            )
-        else:
-            st.info("No public job listings have been persisted yet.")
-        st.caption("Repeated sightings of the same posting ID appear once.")
 
-
-render()
+if section == "Browse Jobs":
+    try:
+        render_browse(data_dir, store_revision(data_dir))
+    except FileNotFoundError:
+        st.error("No prospect.sqlite found in PROSPECT_DATA_DIR.")
+    except (OSError, sqlite3.DatabaseError, ValueError):
+        st.error("Unable to read the Prospect store. Check its permissions and schema version.")
+else:
+    render()

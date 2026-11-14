@@ -5,12 +5,14 @@ Raw captures and evaluator/reference evidence are intentionally never queried.
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from contextlib import contextmanager
+from functools import lru_cache
 from pathlib import Path
 
-from career_engine.store import DATABASE_NAME
-from career_engine.store.privacy import Projection
+from career_engine.store import DATABASE_NAME, parse_timestamp
+from career_engine.store.privacy import REDACTED, Projection
 
 REQUIRED_TABLES = {"schema_version", "channel", "run", "poll", "posting", "sighting"}
 PUBLIC_DISCOVERY = "c.retention_class = 'public' AND c.evidence_role = 'discovery'"
@@ -174,52 +176,15 @@ def polls(connection: sqlite3.Connection, limit: int = 500, *,
             row["status"] = "skipped:redacted"
     return rows
 
-
-def listings(connection: sqlite3.Connection, limit: int = 2000) -> list[dict]:
-    """Return the latest public-discovery sighting for each stored posting ID."""
-    rows = _rows(connection, f"""
-        WITH observations AS (
-          SELECT s.posting_id, s.title, s.employer_name_raw AS employer,
-                 s.location_raw AS location, s.url, s.canonical_url, c.platform AS source,
-                 s.observed_at, s.posted_at, s.closing_at,
-                 ROW_NUMBER() OVER (
-                   PARTITION BY s.posting_id
-                   ORDER BY rtrim(s.observed_at, 'Z') DESC, s.sighting_id DESC
-                 ) AS row_num
-            FROM sighting s
-            JOIN poll p ON p.poll_id = s.poll_id AND p.channel_id = s.channel_id
-            JOIN channel c ON c.channel_id = p.channel_id
-           WHERE {PUBLIC_DISCOVERY}
-        )
-        SELECT posting_id, title, employer, location, source, observed_at,
-               posted_at, closing_at, url, canonical_url
-          FROM observations
-         WHERE row_num = 1
-         ORDER BY rtrim(observed_at, 'Z') DESC, employer, title, posting_id
-         LIMIT ?
-    """, (min(max(int(limit), 1), 5000),))
-    privacy = Projection()
-    for row in rows:
-        observed_url, _ = privacy.posting_urls(row)
-        row["url"] = None if observed_url == privacy.placeholder(row["posting_id"]) else observed_url
-        del row["posting_id"], row["canonical_url"]
-        row["source"] = privacy.native(row["source"])
-        for field in ("title", "employer", "location"):
-            row[field] = privacy.text(row[field])
-    return rows
-
-
-# The job browser queries the whole public discovery store rather than filtering
-# only the first N rows returned by the diagnostic Listings projection.
+# Rank only public discovery sightings before applying any filter. Filtering
+# before ranking could return obsolete observations of the same posting ID.
 _JOB_LATEST = f"""
-    WITH latest AS (
-      SELECT s.posting_id, s.title, s.employer_name_raw AS employer,
-             s.location_raw AS location, s.url, s.canonical_url,
-             c.platform AS source, s.observed_at, s.posted_at, s.closing_at,
+    WITH ranked AS (
+      SELECT s.sighting_id, s.posting_id, c.platform,
              ROW_NUMBER() OVER (
                PARTITION BY s.posting_id
                ORDER BY rtrim(s.observed_at, 'Z') DESC, s.sighting_id DESC
-             ) AS row_num
+             ) AS recency
         FROM sighting s
         JOIN poll p ON p.poll_id = s.poll_id AND p.channel_id = s.channel_id
         JOIN channel c ON c.channel_id = p.channel_id
@@ -228,75 +193,130 @@ _JOB_LATEST = f"""
 """
 
 _SORT_JOBS = {
-    "recent": "rtrim(observed_at, 'Z') DESC, employer COLLATE NOCASE, title COLLATE NOCASE, posting_id",
-    "employer": "employer COLLATE NOCASE, title COLLATE NOCASE, rtrim(observed_at, 'Z') DESC, posting_id",
-    "title": "title COLLATE NOCASE, employer COLLATE NOCASE, rtrim(observed_at, 'Z') DESC, posting_id",
+    "recent": "rtrim(observed_at, 'Z') DESC NULLS LAST, employer_key NULLS LAST, title_key NULLS LAST, posting_id",
+    "employer": "employer_key NULLS LAST, title_key NULLS LAST, rtrim(observed_at, 'Z') DESC NULLS LAST, posting_id",
+    "title": "title_key NULLS LAST, employer_key NULLS LAST, rtrim(observed_at, 'Z') DESC NULLS LAST, posting_id",
 }
+_UTC_DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z")
 
 
 def job_sources(connection: sqlite3.Connection) -> list[str]:
-    """Sources of latest public discovery observations (not merely registered channels)."""
-    results = connection.execute(
-        _JOB_LATEST + "SELECT DISTINCT source FROM latest WHERE row_num = 1 ORDER BY source"
-    ).fetchall()
+    """Offer only shareable platforms of latest public discovery sightings."""
     privacy = Projection()
-    return [name for (value,) in results if (name := privacy.native(value)) is not None]
+    rows = connection.execute(
+        _JOB_LATEST + "SELECT DISTINCT platform FROM ranked WHERE recency = 1 ORDER BY platform"
+    )
+    return [safe for (platform,) in rows if (safe := privacy.native(platform)) is not None]
 
 
-def browse_jobs(connection: sqlite3.Connection, *, search: str = "",
-                location: str = "", source: str | None = None,
-                sort: str = "recent", page: int = 1, page_size: int = 12) -> tuple[int, list[dict]]:
-    """Search all latest public observations, count matches, and return one page.
+def _job_date(value, privacy):
+    if not value or not _UTC_DATE.fullmatch(value) or privacy.unsafe(value):
+        return None
+    try:
+        parse_timestamp(value)
+    except ValueError:
+        return None
+    return value
 
-    Page filtering/pagination happens in SQLite. Returned fields are projected
-    through Prospect's existing shareable metadata policy before display.
-    This does NOT verify vacancies are active or deduplicate across provider IDs.
-    """
+
+def browse_jobs(connection: sqlite3.Connection, *, search: str = "", employer: str = "",
+                location: str = "", source: str | None = None, sort: str = "recent",
+                page: int = 1, page_size: int = 12) -> tuple[int, int, list[dict]]:
+    """Return the matching count, effective page, and one page of safe metadata."""
     if sort not in _SORT_JOBS:
         raise ValueError("Unsupported job sort order")
-    if source is not None and (not isinstance(source, str) or Projection().native(source) is None):
-        raise ValueError("Unsupported source filter")
-    if not isinstance(page, int) or not 1 <= page <= 100000:
+    if type(page) is not int or not 1 <= page <= 2**63 - 1:
         raise ValueError("Unsupported page")
-    if not isinstance(page_size, int) or not 1 <= page_size <= 50:
+    if type(page_size) is not int or not 1 <= page_size <= 50:
         raise ValueError("Unsupported page size")
-
-    search = " ".join(search.split())[:120]
-    location = " ".join(location.split())[:120]
-    predicates = ["row_num = 1"]
-    params = []
-    if search:
-        predicates.append("""
-            instr(lower(coalesce(title, '') || ' ' || coalesce(employer, '') || ' ' ||
-                        coalesce(location, '') || ' ' || coalesce(source, '')),
-                  lower(?)) > 0
-        """)
-        params.append(search)
-    if location:
-        predicates.append("instr(lower(coalesce(location, '')), lower(?)) > 0")
-        params.append(location)
-    if source:
-        predicates.append("source = ?")
-        params.append(source)
-
-    clause = " WHERE " + " AND ".join(predicates)
-    total = connection.execute(
-        _JOB_LATEST + "SELECT COUNT(*) FROM latest" + clause, params
-    ).fetchone()[0]
-    rows = _rows(connection,
-        _JOB_LATEST +
-        """SELECT posting_id, title, employer, location, source, observed_at,
-                  posted_at, closing_at, url, canonical_url
-             FROM latest""" + clause +
-        " ORDER BY " + _SORT_JOBS[sort] + " LIMIT ? OFFSET ?",
-        (*params, page_size, (page - 1) * page_size),
-    )
     privacy = Projection()
-    for row in rows:
-        safe_url, _ = privacy.posting_urls(row)
-        row["url"] = None if safe_url == privacy.placeholder(row["posting_id"]) else safe_url
-        del row["posting_id"], row["canonical_url"]
-        row["source"] = privacy.native(row["source"])
-        for key in ("title", "employer", "location"):
-            row[key] = privacy.text(row[key])
-    return total, rows
+    if source is not None and (not isinstance(source, str) or privacy.native(source) is None):
+        raise ValueError("Unsupported source filter")
+
+    @lru_cache(maxsize=4096)
+    def public_text(value):
+        safe = privacy.text(value).strip()
+        return safe if safe and safe != REDACTED else None
+
+    connection.create_function("job_text", 1, public_text, deterministic=True)
+    connection.create_function("job_platform", 1, privacy.native, deterministic=True)
+    connection.create_function("job_fold", 1, lambda value: value.casefold() if value else None,
+                               deterministic=True)
+    connection.create_function("job_observed", 1, lambda value: _job_date(value, privacy),
+                               deterministic=True)
+
+    predicates = []
+    params = {"page": page, "size": page_size}
+    search = " ".join(search.split())[:120]
+    for index, term in enumerate(search.casefold().split()):
+        key = f"word{index}"
+        params[key] = term
+        predicates.append(f"""
+            (instr(title_key, :{key}) > 0 OR instr(employer_key, :{key}) > 0
+             OR instr(location_key, :{key}) > 0)
+        """)
+    for field, value in (("employer", employer), ("location", location)):
+        value = value.strip()[:120]
+        if value:
+            params[field] = value.casefold()
+            predicates.append(f"instr({field}_key, :{field}) > 0")
+    if source is not None:
+        params["source"] = source
+        predicates.append("source = :source")
+    where = " AND ".join(predicates) or "1"
+    order = _SORT_JOBS[sort]
+    # All matching and ordering uses projected values. SQLite holds only the
+    # fields needed to rank/count. Read posting URLs after selecting the page.
+    try:
+        result = _rows(connection, _JOB_LATEST + f"""
+            , display AS MATERIALIZED (
+                SELECT r.sighting_id, r.posting_id,
+                       job_text(s.title) AS title, job_text(s.employer_name_raw) AS employer,
+                       job_text(s.location_raw) AS location, job_platform(r.platform) AS source,
+                       job_observed(s.observed_at) AS observed_at
+                  FROM ranked r JOIN sighting s ON s.sighting_id = r.sighting_id
+                 WHERE r.recency = 1
+            ), searchable AS (
+                SELECT *, job_fold(title) AS title_key,
+                       job_fold(employer) AS employer_key,
+                       job_fold(location) AS location_key
+                  FROM display
+            ), matched AS MATERIALIZED (
+                SELECT * FROM searchable WHERE {where}
+            ), tally AS (
+                SELECT COUNT(*) AS total FROM matched
+            ), bounds AS (
+                SELECT total, min(:page, max(1, (total + :size - 1) / :size)) AS page
+                  FROM tally
+            ), selected AS (
+                SELECT * FROM matched ORDER BY {order}
+                 LIMIT :size OFFSET (SELECT (page - 1) * :size FROM bounds)
+            )
+            SELECT bounds.*, selected.*, details.url, details.canonical_url,
+                   details.posted_at, details.closing_at, source_channel.locator
+              FROM bounds LEFT JOIN selected ON 1
+              LEFT JOIN (
+                   SELECT sighting_id, channel_id, url, canonical_url, posted_at, closing_at FROM sighting
+              ) details ON details.sighting_id = selected.sighting_id
+              LEFT JOIN channel source_channel ON source_channel.channel_id = details.channel_id
+             ORDER BY {order}
+        """, params)
+    finally:
+        for name in ("job_text", "job_platform", "job_fold", "job_observed"):
+            connection.create_function(name, 1, None)
+
+    total, effective_page = result[0]["total"], result[0]["page"]
+    jobs = []
+    for row in result:
+        if row["sighting_id"] is None:
+            continue
+        observed_url, _ = privacy.posting_urls(row)
+        jobs.append({
+            "title": row["title"], "employer": row["employer"], "location": row["location"],
+            "source": row["source"], "source_url": privacy.url(row["locator"]),
+            "observed_at": row["observed_at"],
+            "posted_at": _job_date(row["posted_at"], privacy),
+            "closing_at": _job_date(row["closing_at"], privacy),
+            "url": observed_url if observed_url != privacy.placeholder(row["posting_id"]) else None,
+        })
+    return total, effective_page, jobs

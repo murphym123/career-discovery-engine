@@ -1,8 +1,8 @@
 # Prospect local viewer (optional)
 
-An intentionally simple, **read-only** Streamlit UI for inspecting the data
-Prospect has actually persisted. This lives in the producer repository, but is
-not part of its collectors, GitHub workflows, or independent evaluator.
+Prospect opens on **Browse Jobs**, a **read-only** view of jobs in its local
+store. The dashboard is optional and runs separately from collection and
+independent evaluation.
 
 ## Start on your Mac
 
@@ -28,7 +28,30 @@ requirements into that instead of creating a new virtual environment.
 > Do not bind to `0.0.0.0`, expose it through tunnels, or put it on a public host.
 > The data directory and browser session are intended for the approved Mac only.
 
-## What it shows
+## Browse Jobs
+
+Search across the latest public discovery sighting of every stored posting ID.
+Each search word can match a job title, employer, or location. Combine search
+with an employer or location substring and a source platform. Sort by recency,
+employer, or title. **Reset filters** returns to the first page and clears your
+selections.
+
+Each page shows up to 10 results, the total matching posting IDs, and the
+displayed range. Click **View original posting** when a shareable link is
+available. The date and time show when Prospect last observed the listing in UTC.
+Stored observations can be out of date, and separate posting IDs can describe
+the same vacancy.
+
+Search and sorting use the same privacy projection as the cards. The view
+queries SQLite on interaction and does not auto-refresh. Use **Refresh results**
+to pick up newly committed observations while keeping your filters.
+
+For a synthetic database, set `PROSPECT_DEMO=1` before starting the app to show
+the **DEMO / SYNTHETIC DATA** banner. The local `open-dashboard.command` demo
+launcher can set this alongside its synthetic `PROSPECT_DATA_DIR`. Leave the flag
+unset for an approved collection store.
+
+## Monitoring
 
 - **Overview** counts registered public discovery sources, stored polls, distinct
   posting IDs observed, and incomplete or skipped polls. Recent runs include
@@ -44,8 +67,6 @@ requirements into that instead of creating a new virtual environment.
 - **Sources** shows public board and feed locators, platform, poll outcomes,
   received and unrepresented record counts, and last poll time. Received counts
   can include repeat observations.
-- **Listings** shows the most recent public discovery sighting per stored posting
-  ID. You can filter the displayed rows by title, employer, location, or source.
 
 The UI uses an existing SQLite connection opened with `mode=ro` plus
 `PRAGMA query_only=ON` and uses short read transactions. SQLite may
@@ -57,8 +78,8 @@ metadata redaction to displayed text and links. Unsafe locators and links appear
 blank. It makes **no collection network requests** and does not read raw
 captures or the evaluator's sealed reference corpus.
 
-The selected view refreshes every four seconds while the browser session is
-active. Uncheck **Refresh every 4 seconds** to pause. Committed query results are
+The selected monitoring view refreshes every four seconds while the browser
+session is active. Uncheck **Refresh monitoring every 4 seconds** to pause. Committed query results are
 reused briefly until the database or WAL changes. Records appear as polls commit.
 
 Live activity reads `run/cohort.csv`, `run/operations.jsonl`, and
@@ -69,12 +90,10 @@ Missing pilot files are normal for collection outside the pilot. An unfinished
 dispatch or request is the last recorded state. Without a stop or final manifest
 the dashboard cannot establish whether the process is still running.
 
-The tables show up to 1,000 sources, 500 recent general polls, 100 recent runs,
-2,000 per-run polls, and 2,000
-distinct posting IDs. Filters apply within those windows. Listings with different
-stored IDs can still refer to the same vacancy. Poll status describes the
-collector's supported request, and listings record past observations. Coverage,
-current vacancy status, and independent evaluation are outside the viewer's scope.
+Monitoring tables show up to 1,000 sources, 500 recent general polls, 100 recent
+runs, and 2,000 per-run polls. Those filters apply within the displayed windows.
+Poll status describes the collector's supported request. Coverage, current
+vacancy status, and independent evaluation are outside the viewer's scope.
 
 If there is no `PROSPECT_DATA_DIR`, no existing database, or no public collection
 history, you will see an explicit message rather than invented results.
@@ -82,5 +101,8 @@ history, you will see an explicit message rather than invented results.
 ## Test without Streamlit
 
 ```bash
-python -m unittest discover -s tests -p 'test_dashboard.py' -v
+python -m unittest discover -s tests -p 'test_dashboard*.py' -v
 ```
+
+Install the optional dashboard requirements before running the same command to
+include the Streamlit interaction test.

@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from career_engine.store import Store
-from dashboard.queries import listings, open_store, overview, polls, runs, sources
+from dashboard.queries import browse_jobs, job_sources, open_store, overview, polls, runs, sources
 
 START = "2026-11-13T10:00:00Z"
 WHOLE = "2026-11-13T10:01:00Z"
@@ -134,7 +134,12 @@ class DashboardTests(unittest.TestCase):
     def test_latest_public_listing_excludes_newer_private_sightings(self):
         self.populate()
         with open_store(self.data_dir) as connection:
-            found = listings(connection)
+            total, page, found = browse_jobs(connection)
+            self.assertEqual((total, page), (1, 1))
+            self.assertEqual(job_sources(connection), ["greenhouse"])
+            self.assertEqual(browse_jobs(connection, search="First title")[0], 0)
+            self.assertEqual(browse_jobs(connection, search="PRIVATE")[0], 0)
+            self.assertEqual(browse_jobs(connection, search="REFERENCE")[0], 0)
         self.assertEqual(len(found), 1)
         self.assertEqual(found[0]["title"], "Latest public title")
         self.assertEqual(found[0]["observed_at"], FRACTION)
@@ -150,8 +155,8 @@ class DashboardTests(unittest.TestCase):
             sighting(store, poll, "Same title", WHOLE, identity="board:2")
         with open_store(self.data_dir) as connection:
             self.assertEqual(overview(connection)["unique_jobs"], 2)
-            self.assertEqual(len(listings(connection)), 2)
-            self.assertEqual(len(listings(connection, limit=1)), 1)
+            self.assertEqual(len(browse_jobs(connection)[2]), 2)
+            self.assertEqual(len(browse_jobs(connection, page_size=1)[2]), 1)
 
     def test_sensitive_fields_on_public_channels_are_redacted(self):
         with Store(self.path) as store:
@@ -169,8 +174,10 @@ class DashboardTests(unittest.TestCase):
                 self.assertIsNone(polls(connection)[0]["locator"])
                 self.assertEqual(polls(connection)[0]["arm"], "[redacted]")
                 self.assertEqual(runs(connection)[0]["trigger"], "[redacted]")
-                found = {row["title"]: row for row in listings(connection)}
-        self.assertIsNone(found["[redacted]"]["url"])
+                found = {row["title"]: row for row in browse_jobs(connection)[2]}
+                self.assertEqual(browse_jobs(connection, search="private")[0], 0)
+        self.assertIsNone(found[None]["url"])
+        self.assertTrue(all(job["source_url"] is None for job in found.values()))
         self.assertIsNone(found["Unsafe link"]["url"])
         self.assertEqual(found["Public role"]["url"], "https://example.org/job?gh_jid=42")
         self.assertNotIn("canonical_url", found["Public role"])
@@ -206,8 +213,9 @@ class DashboardTests(unittest.TestCase):
             self.assertEqual(overview(connection), dict(
                 sources=0, polls=0, unique_jobs=0, incomplete_polls=0, last_poll=None,
             ))
-            for query in (runs, sources, polls, listings):
+            for query in (runs, sources, polls, job_sources):
                 self.assertEqual(query(connection), [])
+            self.assertEqual(browse_jobs(connection), (0, 1, []))
             self.assertIsNone(connection.execute(
                 "SELECT name FROM sqlite_master WHERE name = 'poll_accounting'"
             ).fetchone())
