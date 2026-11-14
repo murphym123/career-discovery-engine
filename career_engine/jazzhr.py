@@ -248,9 +248,9 @@ def jazz_detail(html,row,market=None):
 def retrieve_jazzhr(transport,board,detail_budget=1,market=None,*,_evidence=None):
     start=len(transport.requests);rows=[]
     stats=dict(board_key=board['key'],status='ok',errors=[],warnings=[],received=0,malformed=0,unlisted_omitted=0,capped=False,requests=0)
-    def read(url):
+    def read(url, *, detail_identity=None):
         if _evidence is not None:
-            return _evidence.read_page(transport, url)
+            return _evidence.read_page(transport, url, detail_identity=detail_identity)
         return public_text(transport, url, max_bytes=1_000_000, kind='public_html'), None
 
     try:
@@ -265,7 +265,7 @@ def retrieve_jazzhr(transport,board,detail_budget=1,market=None,*,_evidence=None
         for choice in plan_inspections(candidates,detail_budget,location_classifier=market.label if market else geography):
             row=byid[choice['identity']]
             try:
-                html, body = read(row['url'])
+                html, body = read(row['url'], detail_identity=row['identity'])
                 if _evidence is not None and posting_key(transport.requests[-1]['url']) != row['identity']:
                     raise ValueError('posting_ID_mismatch')
                 detail = row.copy()
@@ -276,10 +276,16 @@ def retrieve_jazzhr(transport,board,detail_budget=1,market=None,*,_evidence=None
             except (FetchError,ValueError) as e:
                 row['detail_status']=str(e)[:100];stats['errors'].append(str(e)[:100])
                 if any(x in str(e) for x in ('403','429','budget','host_stopped')):break
-        stats['capped']=stats['capped'] or any(not r['description'] for r in candidates)
+        missing_details = [row for row in candidates if not row['description']]
+        stats['capped'] = stats['capped'] or bool(missing_details)
+        if detail_budget and missing_details:
+            for row in missing_details:
+                if row['detail_status'] == 'index_only':
+                    row['detail_status'] = 'detail_skipped'
+            stats['warnings'].append('description_coverage_partial')
     except (FetchError,ValueError) as e:stats['errors'].append(str(e)[:100])
     stats.update(requests=len(transport.requests)-start,unique=len(rows),dc_dmv=sum(r['geography']=='dc_dmv' for r in rows),descriptions=sum(bool(r['description']) for r in rows))
-    stats['status']='partial_failure' if rows and stats['errors'] else 'failed' if stats['errors'] else 'ok'
+    stats['status']='partial_failure' if rows and (stats['errors'] or stats['warnings']) else 'failed' if stats['errors'] else 'ok'
     stats['inventory']={'scope':'one public hosted-career index response','observed_available_items':stats['received'],
         'metadata_retained':len(rows),'metadata_complete':None,'descriptions_observed':stats['descriptions'],
         'description_denominator_observed_records':len(rows),
