@@ -14,8 +14,10 @@ from career_engine.ats import PUBLIC_HOSTS
 from career_engine.ats_registry import CATALOG_KIND, PROVIDER_ORIGINS, empty_registry, upsert_verified_board
 from career_engine.board_catalogs import CATALOG_CAMPAIGN, SOURCES, catalog_source_evidence
 from career_engine.board_discovery_http import Response
-from career_engine.board_indexes import EVIDENCE_KINDS, INDEX_URLS, Page, Plan, board_probe_url, candidate, source_time
-from career_engine.registry_state import read_registry, save_registry
+from career_engine.board_indexes import (
+    EVIDENCE_KINDS, INDEX_URLS, Page, Plan, board_probe_url, candidate, commoncrawl_capture, source_time, wire_cursor,
+)
+from career_engine.registry_state import read_registry, registry_lock, save_registry
 from career_engine.store import Store
 from career_engine.store.blobs import managed_path
 
@@ -35,9 +37,11 @@ CURRENT_CATALOG_VARIANT = """EXISTS (
 # A catalog observation can govern catalog eligibility while independent index
 # evidence remains usable in ordinary discovery.
 INDEX_SCOPE = """(
-    EXISTS (SELECT 1 FROM board_discovery_evidence e WHERE e.board_key=v.board_key)
-    OR NOT EXISTS (SELECT 1 FROM board_catalog_evidence e WHERE e.board_key=v.board_key AND e.variant_url=v.url)
+    EXISTS (SELECT 1 FROM board_discovery_evidence e WHERE e.board_key=v.board_key AND e.eligible=1)
 )"""
+def crawl_window(encoded_plan):
+    plan = json.loads(encoded_plan)
+    return plan["archive_from"], datetime.fromisoformat(plan["through"]).strftime("%Y%m%d%H%M%S")
 
 
 class DiscoveryState:
@@ -45,6 +49,38 @@ class DiscoveryState:
         self.store = store
         self.db = store.connection
         self.db.executescript(Path(__file__).with_name("store").joinpath("board_discovery.sql").read_text())
+        with self.store.transaction() as db:
+            if "out_of_window" not in {column["name"] for column in db.execute("PRAGMA table_info(board_discovery_page)")}:
+                db.execute("ALTER TABLE board_discovery_page ADD COLUMN out_of_window INTEGER NOT NULL DEFAULT 0")
+            if "eligible" not in {column["name"] for column in db.execute("PRAGMA table_info(board_discovery_evidence)")}:
+                db.execute("ALTER TABLE board_discovery_evidence ADD COLUMN eligible INTEGER NOT NULL DEFAULT 1")
+                # Keep legacy evidence inspectable while excluding invalid captures from the queue and registry.
+                db.create_function("prospect_capture", 3, commoncrawl_capture)
+                try:
+                    for campaign, encoded in db.execute("SELECT name, plan FROM board_discovery_campaign"):
+                        db.execute("""
+                            UPDATE board_discovery_evidence SET eligible=0
+                            WHERE stream IN (
+                                SELECT id FROM board_discovery_stream WHERE campaign=? AND source='commoncrawl'
+                            ) AND prospect_capture(source_time, ?, ?) != ''
+                        """, (campaign, *crawl_window(encoded)))
+                finally:
+                    db.create_function("prospect_capture", 3, None)
+            # Previously published HEAD evidence is provisional. Resume at GET, retaining its attempts.
+            db.execute("""
+                UPDATE board_discovery_variant SET status='deferred', method='GET', reason='head_requires_get'
+                WHERE status='validated' AND reason='head_reachable'
+            """)
+            db.execute("""
+                UPDATE board_discovery_variant SET status='candidate'
+                WHERE status='superseded' AND board_key IN (
+                    SELECT board_key FROM board_discovery_board WHERE verification='head_reachable'
+                )
+            """)
+            db.execute("""
+                UPDATE board_discovery_board SET verified_url=NULL, verified_at=NULL, verification=NULL
+                WHERE verification='head_reachable'
+            """)
 
     @contextmanager
     def exclusive(self):
@@ -55,7 +91,29 @@ class DiscoveryState:
                 fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except BlockingIOError:
                 raise RuntimeError("Board discovery is already active for this store") from None
-            yield
+            yield handle.fileno()
+
+    def access_policy(self, routes, *, replace=False):
+        """Pin one policy for all campaigns sharing the validation queue."""
+        encoded = json.dumps(routes)
+        with self.store.transaction() as db:
+            row = db.execute("SELECT denied_routes FROM board_discovery_policy").fetchone()
+            if row and not replace:
+                if routes and row[0] != encoded:
+                    raise ValueError("Discovery restrictions changed. Use --replace-access-policy to replace them.")
+                return tuple(map(tuple, json.loads(row[0])))
+            if row is None and not replace and db.execute(
+                "SELECT 1 FROM board_discovery_campaign WHERE name!=? LIMIT 1", (CATALOG_CAMPAIGN,)
+            ).fetchone():
+                raise ValueError("Legacy campaign has no saved restrictions. Supply the full policy with --replace-access-policy.")
+            db.execute("INSERT OR REPLACE INTO board_discovery_policy VALUES (1, ?)", (encoded,))
+            if replace:
+                for table in ("board_discovery_stream", "board_discovery_variant"):
+                    db.execute(f"""
+                        UPDATE {table} SET status='deferred', reason='operator_policy_recheck'
+                        WHERE status='denied' AND reason='operator_policy'
+                    """)
+        return routes
 
     def setup(self, name: str, plan: Plan):
         if name == CATALOG_CAMPAIGN:
@@ -92,12 +150,14 @@ class DiscoveryState:
     def last_attempt(self) -> int:
         return self.db.execute("SELECT coalesce(max(id), 0) FROM board_discovery_attempt").fetchone()[0]
 
-    def variants(self, origin: str, through: int, *, catalog_only=False):
+    def variants(self, origin: str, through: int, *, catalog_only=False, robots_expired=False):
         scope = CURRENT_CATALOG_VARIANT if catalog_only else f"({CURRENT_CATALOG_VARIANT} OR {INDEX_SCOPE})"
+        robots_denials = "OR (v.status='denied' AND v.reason LIKE 'robots: %')" if robots_expired else ""
         return self.db.execute(f"""
             SELECT v.* FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
-            WHERE v.origin=? AND v.last_attempt<=? AND v.status IN ('candidate', 'deferred', 'failed')
-                AND b.verified_url IS NULL
+            WHERE v.origin=? AND v.last_attempt<=? AND (
+                v.status IN ('candidate', 'deferred', 'failed') {robots_denials}
+            ) AND b.verified_url IS NULL
                 AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
                 AND {scope}
             ORDER BY v.last_attempt, v.id
@@ -116,6 +176,16 @@ class DiscoveryState:
                 stop_reason=coalesce(nullif(stop_reason, ''), excluded.stop_reason)
         """, (origin, not_before, stop))
 
+    def dispatch_after(self, origin):
+        row = self.db.execute("SELECT not_before FROM board_discovery_dispatch WHERE origin=?", (origin,)).fetchone()
+        return row[0] if row else 0
+
+    def set_dispatch_after(self, origin, not_before):
+        self.db.execute("""
+            INSERT INTO board_discovery_dispatch VALUES (?, ?)
+            ON CONFLICT(origin) DO UPDATE SET not_before=excluded.not_before
+        """, (origin, not_before))
+
     def robots(self):
         return self.db.execute("SELECT * FROM board_discovery_robots")
 
@@ -124,11 +194,29 @@ class DiscoveryState:
             INSERT INTO board_discovery_robots VALUES (?, ?, ?, ?)
             ON CONFLICT(origin) DO UPDATE SET expires=excluded.expires, rules=excluded.rules, delay=excluded.delay
         """, (origin, expires, json.dumps(rules.rules), rules.delay))
+        self.db.execute("""
+            UPDATE board_discovery_variant SET status='deferred', reason='robots_recheck'
+            WHERE origin=? AND status='denied' AND reason LIKE 'robots: %'
+        """, (origin,))
+        for source, url in INDEX_URLS.items():
+            if urlsplit(url).hostname == origin:
+                self.db.execute("""
+                    UPDATE board_discovery_stream SET status='deferred', reason='robots_recheck'
+                    WHERE source=? AND status='denied' AND reason LIKE 'robots: %'
+                """, (source,))
 
     def seen_cursor(self, stream, cursor: str) -> bool:
-        return cursor == stream["cursor"] or self.db.execute("""
-            SELECT 1 FROM board_discovery_page WHERE stream=? AND cursor_digest=?
-        """, (stream["id"], cursor_digest(cursor))).fetchone() is not None
+        wire = wire_cursor(stream["source"], cursor)
+        return wire == wire_cursor(stream["source"], stream["cursor"]) or self.db.execute("""
+            SELECT 1 FROM board_discovery_page WHERE stream=? AND cursor_digest IN (?,?)
+        """, (stream["id"], self._position(stream, cursor), cursor_digest(cursor))).fetchone() is not None
+
+    def _position(self, stream, cursor=None):
+        cursor = stream["cursor"] if cursor is None else cursor
+        if stream["source"] == "wayback" and cursor:
+            # Namespace wire digests away from legacy opaque-key digests.
+            return cursor_digest("wayback-wire\0" + wire_cursor("wayback", cursor))
+        return cursor_digest(cursor)
 
     def set_stream(self, stream, status: str, reason: str, *, cursor=None, total=None):
         self.db.execute("""
@@ -148,9 +236,20 @@ class DiscoveryState:
 
     def record_page(self, stream, page: Page, now: str, *, advance=True) -> str:
         db = self.db
+        out_of_window = 0
+        window = None
+        if stream["source"] == "commoncrawl":
+            window = crawl_window(db.execute("SELECT plan FROM board_discovery_campaign WHERE name=?",
+                                             (stream["campaign"],)).fetchone()[0])
         rejected = page.rejected
-        position = cursor_digest(stream["cursor"])
+        position = self._position(stream)
         for url, captured, record in page.rows:
+            if window is not None:
+                rejection = commoncrawl_capture(captured, *window)
+                if rejection:
+                    out_of_window += int(rejection == "out_of_window")
+                    rejected += 1
+                    continue
             result = candidate(url, stream["host"])
             if result is None:
                 rejected += 1
@@ -165,12 +264,13 @@ class DiscoveryState:
             """, (key, stream["id"], observed, source_time(captured), record, position, now))
         if not advance:
             return "failed"
-        db.execute("INSERT INTO board_discovery_page VALUES (?, ?, ?, ?)",
-                   (stream["id"], position, len(page.rows) + page.rejected, rejected))
+        db.execute("""
+            INSERT INTO board_discovery_page(stream,cursor_digest,rows,rejected,out_of_window) VALUES (?, ?, ?, ?, ?)
+        """, (stream["id"], position, len(page.rows) + page.rejected, rejected, out_of_window))
         if page.cursor is not None:
             status = "candidate"
         else:
-            any_evidence = db.execute("SELECT 1 FROM board_discovery_evidence WHERE stream=? LIMIT 1",
+            any_evidence = db.execute("SELECT 1 FROM board_discovery_evidence WHERE stream=? AND eligible=1 LIMIT 1",
                                       (stream["id"],)).fetchone()
             status = "complete" if any_evidence else "empty"
         self.set_stream(stream, status, "page_recorded", cursor=page.cursor)
@@ -244,6 +344,8 @@ class DiscoveryState:
                         """, (row.board_key, row.variant_url, row.board_key))
 
     def set_variant(self, variant, status: str, reason: str, method: str, now: str):
+        if status == "validated" and (method, reason) != ("GET", "get_board_schema"):
+            raise ValueError("Board verification requires a confirmed GET schema")
         self.db.execute("""
             UPDATE board_discovery_variant SET status=?, reason=?, method=? WHERE id=?
         """, (status, reason, method, variant["id"]))
@@ -260,7 +362,7 @@ class DiscoveryState:
     def attempt(self, invocation: str, campaign: str, method: str, endpoint: str, status: str,
                 reason: str, response: Response, now: str, *, stream=None, variant=None, keep_turn=False):
         stream_id = stream["id"] if stream is not None else None
-        position = cursor_digest(stream["cursor"]) if stream is not None else None
+        position = self._position(stream) if stream is not None else None
         attempt = self.db.execute("""
             INSERT INTO board_discovery_attempt(invocation,campaign,stream,cursor_digest,variant,method,endpoint,
                                                 status,reason,http_status,bytes_read,at)
@@ -282,7 +384,8 @@ class DiscoveryState:
             raise ValueError("Unknown board discovery campaign")
         streams = [dict(row) for row in self.db.execute("""
             SELECT s.source,s.host,s.status,s.reason,count(p.stream) pages,
-                   coalesce(sum(p.rows),0) rows,coalesce(sum(p.rejected),0) rejected
+                   coalesce(sum(p.rows),0) rows,coalesce(sum(p.rejected),0) rejected,
+                   coalesce(sum(p.out_of_window),0) out_of_window
             FROM board_discovery_stream s LEFT JOIN board_discovery_page p ON p.stream=s.id
             WHERE s.campaign=? GROUP BY s.id ORDER BY s.id
         """, (campaign,))]
@@ -307,22 +410,32 @@ class DiscoveryState:
                 FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
                 LEFT JOIN board_discovery_origin o USING (origin)
                 WHERE NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
-                AND {scope}
+                  AND {scope}
             ), boards AS (
                 SELECT min(priority) AS status FROM states GROUP BY board_key
             ) SELECT status,count(*) FROM boards GROUP BY status
         """))
         names = ("validated", "candidate", "deferred", "failed", "denied", "missing")
         origins = [dict(row) for row in self.db.execute("""
-            SELECT o.*, a.status AS robots_status, a.reason AS robots_reason, a.at AS robots_checked_at
-            FROM board_discovery_origin o LEFT JOIN board_discovery_attempt a ON a.id=(
-                SELECT max(id) FROM board_discovery_attempt WHERE endpoint='https://' || o.origin || '/robots.txt'
+            WITH origins AS (
+                SELECT origin FROM board_discovery_origin UNION SELECT origin FROM board_discovery_dispatch
+            )
+            SELECT origins.origin, max(coalesce(o.not_before,0),coalesce(d.not_before,0)) AS not_before,
+                   coalesce(o.stop_reason,'') AS stop_reason,
+                   a.status AS robots_status, a.reason AS robots_reason, a.at AS robots_checked_at
+            FROM origins LEFT JOIN board_discovery_origin o USING (origin)
+            LEFT JOIN board_discovery_dispatch d USING (origin)
+            LEFT JOIN board_discovery_attempt a ON a.id=(
+                SELECT max(id) FROM board_discovery_attempt WHERE endpoint='https://' || origins.origin || '/robots.txt'
                     AND stream IS NULL AND variant IS NULL
-            ) ORDER BY o.origin
+            ) ORDER BY origins.origin
         """)]
         result = {"streams": streams, "boards": {name: counts.get(i, 0) for i, name in enumerate(names)},
                   "origins": origins,
-                  "evidence": self.db.execute("SELECT count(*) FROM board_discovery_evidence").fetchone()[0]}
+                  "evidence": self.db.execute("SELECT count(*) FROM board_discovery_evidence WHERE eligible=1").fetchone()[0],
+                  "legacy_ineligible_evidence": self.db.execute(
+                      "SELECT count(*) FROM board_discovery_evidence WHERE eligible=0"
+                  ).fetchone()[0]}
         if catalog_only:
             imports = []
             for row in self.db.execute("SELECT * FROM board_catalog_import ORDER BY id"):
@@ -381,10 +494,16 @@ class DiscoveryState:
     def publish(self, registry_path: Path, *, catalog_only=False) -> dict:
         added = 0
         changed = set()
-        with self.exclusive():
+        with self.exclusive(), registry_lock(registry_path) as registry_path:
             if catalog_only:
                 self.require_catalog_campaign()
             registry = read_registry(registry_path) if registry_path.exists() else empty_registry()
+            pending = 0
+            for entry in registry["boards"].values():
+                verification = entry.get("discovery_verification")
+                if isinstance(verification, dict) and verification.get("method") == "head_reachable":
+                    verification["method"] = "pending_get"
+                    pending += 1
             blocks = dict.fromkeys((row[0] for row in self.db.execute("SELECT board_key FROM board_catalog_block")), True)
             policy = {**registry.get("catalog_blocked_boards", {}), **blocks}
             policy_changed = policy != registry.get("catalog_blocked_boards", {})
@@ -440,10 +559,11 @@ class DiscoveryState:
             for row in self.db.execute("""
                 SELECT b.*,e.id evidence_id,e.observed_url,e.source_time,e.source_record,s.source,s.host,c.plan
                 FROM board_discovery_board b
-                LEFT JOIN board_discovery_evidence e ON e.id=(SELECT min(id) FROM board_discovery_evidence WHERE board_key=b.board_key)
+                LEFT JOIN board_discovery_evidence e ON e.id=(SELECT min(id) FROM board_discovery_evidence
+                       WHERE board_key=b.board_key AND eligible=1)
                 LEFT JOIN board_discovery_stream s ON s.id=e.stream
                 LEFT JOIN board_discovery_campaign c ON c.name=s.campaign
-                WHERE b.verified_url IS NOT NULL
+                WHERE b.verified_url IS NOT NULL AND b.verification='get_board_schema'
                   AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=b.board_key)
                 ORDER BY b.board_key
             """):
@@ -480,6 +600,6 @@ class DiscoveryState:
                 added += new
                 if updated:
                     changed.add(key)
-            if changed or policy_changed or holds_changed or not registry_path.exists():
+            if changed or policy_changed or holds_changed or pending or not registry_path.exists():
                 save_registry(registry_path, registry)
         return {"added": added, "updated": len(changed) - added, "registry_boards": len(registry["boards"])}

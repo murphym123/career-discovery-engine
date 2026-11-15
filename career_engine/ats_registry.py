@@ -175,7 +175,7 @@ def register(registry,url,evidence):
 
 
 def upsert_verified_board(registry, url, evidence, verification, first_seen_at, *, catalog_evidence=()):
-    """Project a verified discovery into v1 without the legacy seeding limits.
+    """Project a schema-verified discovery into v1 without the legacy seeding limits.
 
     Full evidence and attempts stay in the discovery tables. Preserve poll
     fields and prior evidence, and prefer the spelling that passed validation.
@@ -184,6 +184,14 @@ def upsert_verified_board(registry, url, evidence, verification, first_seen_at, 
     if board is None or board['provider'] not in ('greenhouse', 'lever', 'lever_eu', 'ashby'):
         raise ValueError('Invalid verified board')
     previous = registry['boards'].get(board['key'])
+    prior_verification = previous.get('discovery_verification') if previous else None
+    if isinstance(prior_verification, dict) and prior_verification.get('method') == 'get_board_schema':
+        checked_at = prior_verification.get('verified_at')
+        if isinstance(checked_at, str) and checked_at >= verification['verified_at']:
+            # Preserve the stronger existing GET proof and URL, but still merge new
+            # independently attributed catalog observations on an idempotent publish.
+            verification = prior_verification
+            board.update({field: previous[field] for field in board if field in previous})
     entry = {**(previous if previous is not None else {
         'first_seen_at': first_seen_at, 'evidence': [], 'last_checked_run': None,
     }), **board, 'discovery_verification': verification}

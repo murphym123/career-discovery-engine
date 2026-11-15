@@ -25,11 +25,18 @@ def add_validation_options(run):
     run.add_argument("--origin-delay", action="append", default=[], metavar="ORIGIN=SECONDS")
     run.add_argument("--origin-concurrency", action="append", default=[], metavar="ORIGIN=WORKERS")
     run.add_argument("--deny-prefix", action="append", default=[], metavar="HTTPS_URL_PREFIX")
+    run.add_argument("--deny-method-prefix", action="append", default=[], metavar="METHOD=HTTPS_URL_PREFIX",
+                     help="Deny HEAD or GET for a route prefix; repeat as needed")
+    run.add_argument("--replace-access-policy", action="store_true",
+                     help="Replace the store's full saved deny policy with the supplied rules")
 
 
 def run_discovery(state, args, campaign, plan, *, mode, pages):
     delays = {host: float(seconds) for host, seconds in (item.split("=", 1) for item in args.origin_delay)}
     slots = {host: int(count) for host, count in (item.split("=", 1) for item in args.origin_concurrency)}
+    denied_methods = [tuple(item.split("=", 1)) for item in args.deny_method_prefix]
+    if any(len(rule) != 2 or rule[0] not in {"HEAD", "GET"} for rule in denied_methods):
+        raise ValueError("--deny-method-prefix requires HEAD=URL or GET=URL")
     limits = Limits(args.max_requests, pages, concurrency=args.concurrency, bytes=args.max_bytes,
                     response_bytes=args.response_bytes, seconds=args.max_seconds, timeout=args.timeout,
                     idle_seconds=args.idle_seconds, retry_delay=args.retry_delay,
@@ -44,7 +51,9 @@ def run_discovery(state, args, campaign, plan, *, mode, pages):
     try:
         with RequestsTransport(args.contact) as transport:
             return Discovery(state, transport, campaign, plan, limits, mode=mode,
-                             denied_prefixes=args.deny_prefix, stopping=lambda: stopped).run()
+                             denied_prefixes=args.deny_prefix, denied_methods=denied_methods,
+                             replace_access_policy=args.replace_access_policy,
+                             stopping=lambda: stopped).run()
     finally:
         signal.signal(signal.SIGTERM, previous_term)
 

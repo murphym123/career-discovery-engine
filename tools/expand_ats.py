@@ -15,7 +15,7 @@ from career_engine.extract import safe_public_url
 from career_engine.employer_discovery import EmployerTransport,discover_directory,discover_employer_links
 from career_engine.public_sources import retrieve_impact,discover_jazz_sitemap
 from career_engine.regional_selection import select_regional_boards,mark_seen
-from career_engine.registry_state import read_registry,save_registry
+from career_engine.registry_state import read_registry,registry_writer,save_registry
 from career_engine.ats import FetchError
 from career_engine.markets import DC_MARKET
 from career_engine.publication_audit import build_ledger,write_ledger
@@ -58,6 +58,7 @@ def write_capture(path,data):
             w.writerow(values)
 
 
+@registry_writer
 def expand(base_path,registry_path,output_dir,combined_path,board_budget=30,seed_queries=6,imports=None,transport=None,extra_details=20,
            strategy='legacy',employer_budget=0,sitemap_budget=2,candidate_capture=None,as_of=None,market=DC_MARKET,usajobs_pages=6):
     base_path,registry_path,output_dir,combined_path=map(Path,(base_path,registry_path,output_dir,combined_path))

@@ -111,15 +111,15 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(batch["sha256"], sha256(body).hexdigest())
         self.assertEqual(self.cli("publish")[1]["registry_boards"], 0)
 
-        transport = FixtureTransport(lambda *args: wire(status=404) if args[1].path == "/robots.txt" else reached(),
+        transport = FixtureTransport(lambda *args: wire(status=404) if args[1].path == "/robots.txt" else reached(args[0], args[1]),
                                      lambda: self.now)
         with patch("tools.discover_boards.RequestsTransport") as factory:
             factory.return_value.__enter__.return_value = transport
-            _, validated = self.cli("validate", "--contact", CONTACT, "--max-requests", 10_000, "--concurrency", 4,
+            _, validated = self.cli("validate", "--contact", CONTACT, "--max-requests", 25_000, "--concurrency", 4,
                                     "--origin-delay", "api.lever.co=0", "--origin-delay", "api.ashbyhq.com=0",
                                     "--origin-delay", "boards-api.greenhouse.io=0")
         self.assertEqual(validated["boards"]["validated"], 9_935)
-        self.assertEqual(validated["requests"], 9_938)
+        self.assertEqual(validated["requests"], 19_873)
         self.assertEqual(validated["page_requests"], 0)
         self.assertEqual(self.cli("publish")[1]["added"], 9_935)
         self.assertEqual(self.cli("publish")[1]["added"], 0)
@@ -174,8 +174,7 @@ class CatalogTests(unittest.TestCase):
             if url.path == "/robots.txt" or url.path.endswith("/ExampleCo"):
                 return wire(status=404)
             self.assertNotEqual(url.hostname, "api.ashbyhq.com")
-            self.assertEqual(method, "HEAD")
-            return reached()
+            return reached(method, url)
 
         validated, calls = self.validate(handler)
         self.assertEqual(validated["boards"]["validated"], 3)
@@ -204,11 +203,12 @@ class CatalogTests(unittest.TestCase):
 
     def test_archive_queue_is_separate_and_validated_evidence_can_be_reused(self):
         self.state.setup("archive", PLAN)
+        self.state.access_policy((), replace=True)
         stream = next(s for s in self.state.streams("archive") if s["host"] == "boards.greenhouse.io")
         page = Page([(f"https://boards.greenhouse.io/{slug}", "20260101000000", "") for slug in ("shared", "archive")], None)
         self.state.record_page(stream, page, self.store.now())
         variants = list(self.state.variants("boards-api.greenhouse.io", 0))
-        self.state.set_variant(variants[0], "validated", "head_reachable", "HEAD", self.store.now())
+        self.state.set_variant(variants[0], "validated", "get_board_schema", "GET", self.store.now())
         pinned = self.manifest(csv=HEADER + b"greenhouse,Shared,shared,2026-08-01\n")
         result = import_catalogs(self.state, pinned, offline=True)
         self.assertEqual(result["boards"]["validated"], 1)
@@ -248,14 +248,14 @@ class CatalogTests(unittest.TestCase):
         self.assertNotIn("/robots.txt", [call[2] for call in calls])
         attempts = [tuple(row) for row in self.state.db.execute(
             "SELECT status,reason FROM board_discovery_attempt WHERE campaign=?", (CATALOG_CAMPAIGN,))]
-        self.assertIn(("denied", "robots: disallow: /v1/boards/denied"), attempts)
+        self.assertIn(("denied", "robots: disallow"), attempts)
         self.assertIn(("validated", "get_board_schema"), attempts)
         self.assertIn(("missing", "http_410"), attempts)
 
     def test_poll_and_registry_reseeding_preserve_catalog_proof_and_prior_fields(self):
         path = self.manifest(HEADER + b"greenhouse,Test Company,pollable,2026-08-01\n")
         import_catalogs(self.state, path, offline=True)
-        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         self.state.publish(self.registry, catalog_only=True)
         registry = read_registry(self.registry)
         for n in range(24):
@@ -292,7 +292,7 @@ class CatalogTests(unittest.TestCase):
     def test_robots_origin_stop_blocks_published_boards_without_erasing_verification(self):
         csv = HEADER + b"ashby,Known,cached,2026-08-01\n"
         import_catalogs(self.state, self.manifest(csv=csv), offline=True)
-        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         self.state.publish(self.registry, catalog_only=True)
         saved = read_registry(self.registry)["boards"]["ashby:cached"]
 
@@ -335,7 +335,7 @@ class CatalogTests(unittest.TestCase):
         self.now = time.time()
         csv = HEADER + b"lever,Known,cached,2026-08-01\n"
         import_catalogs(self.state, self.manifest(csv=csv), offline=True)
-        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         csv += b"lever,Pending,pending,2026-08-01\n"
         import_catalogs(self.state, self.manifest(csv=csv), offline=True)
         status, calls = self.validate(lambda *_: wire(status=429, retry_after="120"))
@@ -356,7 +356,7 @@ class CatalogTests(unittest.TestCase):
         csv = HEADER + (b"greenhouse,Former employer,withdrawme,2026-08-01\n"
                         b"greenhouse,Other employer,keepme,2026-08-01\n")
         import_catalogs(self.state, self.manifest(csv=csv), offline=True)
-        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         self.state.publish(self.registry, catalog_only=True)
         moon = jsonl(
             {"provider": "greenhouse", "slug": "withdrawme", "status": "withdrawn", "name": 2},
@@ -392,7 +392,7 @@ class CatalogTests(unittest.TestCase):
         rows = [{"provider": "greenhouse", "slug": slug, "status": "ok"} for slug in ("cached", "stale", "shared")]
         old = jsonl(*rows)
         import_catalogs(self.state, self.manifest(moon=old), offline=True)
-        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(), count=2)
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(method, url), count=3)
         self.state.publish(self.registry, catalog_only=True)
         before = read_registry(self.registry)["boards"]["greenhouse:cached"]["discovery_verification"]
 
@@ -406,8 +406,8 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(status["evidence"], 7)
         # Reimporting the identical old pin cannot restore stale candidates.
         self.assertEqual(import_catalogs(self.state, self.manifest(moon=old), offline=True), status)
-        _, calls = self.validate(lambda *_: reached())
-        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/shared")])
+        _, calls = self.validate(lambda method, url, *_: reached(method, url))
+        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/shared"), ("GET", "boards-api.greenhouse.io", "/v1/boards/shared")])
         self.state.publish(self.registry, catalog_only=True)
         registry = read_registry(self.registry)
         entry = registry["boards"]["greenhouse:cached"]
@@ -442,11 +442,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(status["boards"]["candidate"], 1)
         self.assertEqual(status["boards"]["validated"], 0)
         self.assertEqual(self.state.publish(self.registry, catalog_only=True)["added"], 0)
-        status, calls = self.validate(lambda *_: reached())
+        status, calls = self.validate(lambda method, url, *_: reached(method, url))
         self.assertEqual(status["boards"]["validated"], 1)
-        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/returning")])
+        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/returning"), ("GET", "boards-api.greenhouse.io", "/v1/boards/returning")])
         attempts = self.state.db.execute("SELECT status,http_status FROM board_discovery_attempt WHERE variant IS NOT NULL ORDER BY id")
-        self.assertEqual([tuple(row) for row in attempts], [("missing", 404), ("validated", 200)])
+        self.assertEqual([tuple(row) for row in attempts], [("missing", 404), ("deferred", 200), ("validated", 200)])
         self.assertEqual(self.validate(lambda *_: self.fail("Verified board was retried"))[1], [])
 
     def test_moonie_site_and_region_route_lever_to_the_validated_origin(self):
@@ -469,7 +469,7 @@ class CatalogTests(unittest.TestCase):
         status = import_catalogs(self.state, self.manifest(moon=moon), offline=True)
         self.assertEqual(status["imports"][0]["counts"]["rejected"], {"conflicting_board_url": 3, "invalid_board_url": 5})
         self.assertEqual(status["boards"]["candidate"], 3)
-        _, calls = self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached())
+        _, calls = self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         self.assertEqual({(host, path) for method, host, path, *_ in calls if method == "HEAD"}, {
             ("api.eu.lever.co", "/v0/postings/site-eu"), ("api.eu.lever.co", "/v0/postings/explicit-eu"),
             ("api.lever.co", "/v0/postings/site-us"),
@@ -498,7 +498,7 @@ class CatalogTests(unittest.TestCase):
         import_catalogs(self.state, self.manifest(moon=moon), offline=True)
         raw, = self.state.db.execute("SELECT source_evidence FROM board_catalog_evidence").fetchone()
         self.assertEqual(json.loads(raw), {"source_evidence": expected})
-        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached(method, url))
         self.state.publish(self.registry, catalog_only=True)
         proof, = read_registry(self.registry)["boards"]["greenhouse:safe"]["evidence"]
         self.assertEqual(proof["source_evidence"], {"source_evidence": expected})
@@ -508,7 +508,7 @@ class CatalogTests(unittest.TestCase):
                                 for provider, count in (("greenhouse", 627), ("lever", 114)) for n in range(count))
         moon = jsonl({"provider": "lever", "slug": "eu", "status": "ok", "region": "eu"})
         import_catalogs(self.state, self.manifest(csv=csv, moon=moon), offline=True)
-        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached(), count=745)
+        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached(method, url), count=1_500)
         self.assertEqual(self.state.publish(self.registry, catalog_only=True)["added"], 742)
         state = read_registry(self.registry)
         self.assertEqual(Counter(board["provider"] for board in state["boards"].values()),

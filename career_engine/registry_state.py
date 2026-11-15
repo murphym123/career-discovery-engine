@@ -1,6 +1,10 @@
 """Lossless registry validation and atomic publication; observations stay separate."""
+from contextlib import contextmanager
+import fcntl
+from functools import wraps
 import hashlib
 import copy
+from inspect import signature
 import json
 import os
 from pathlib import Path
@@ -68,6 +72,33 @@ def read_registry(path):
         if board_from_url(lead.get('url','')):
             register(state,lead['url'],lead.get('evidence',{'kind':'legacy_observed_public_link'}))
     return state
+
+
+@contextmanager
+def registry_lock(path):
+    """Serialize registry read/modify/write across stores and legacy workflows."""
+    path = Path(path).resolve()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lock = path.with_name(path.name + ".lock")
+    fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        yield path
+    finally:
+        os.close(fd)
+
+
+def registry_writer(write):
+    params = signature(write)
+
+    @wraps(write)
+    def locked(*args, **kwargs):
+        arguments = params.bind(*args, **kwargs)
+        with registry_lock(arguments.arguments["registry_path"]) as path:
+            arguments.arguments["registry_path"] = path
+            return write(*arguments.args, **arguments.kwargs)
+
+    return locked
 
 
 def atomic_bytes(path,body):
