@@ -34,8 +34,8 @@ requirements into that instead of creating a new virtual environment.
 The Shortlist view reads only an explicit `shortlist.json` file, never the
 discovery database. Put it in `PROSPECT_DATA_DIR` or point `PROSPECT_SHORTLIST`
 at it. Each card shows the employer and title, location, working arrangement,
-salary if known, reasons for fit, things to check, the verification status and
-the date it was checked, and links to the original posting. Search and filter
+salary if known, the source board, the fields Prospect pulled from the listing,
+the verification status and the date it was checked, and links to the original posting. Search and filter
 by verification status and priority. Cards keep the file's order. Nothing is
 re-ranked or scored.
 

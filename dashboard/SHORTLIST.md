@@ -35,7 +35,20 @@ the problem and no cards.
       "gaps_to_verify": ["Requirement or unknown worth checking"],
       "review_priority": "prioritize",
       "availability_status": "verified_current",
-      "availability_checked_at": "2026-11-14"
+      "availability_checked_at": "2026-11-14T15:30:00-05:00",
+      "listing": {
+        "source": "targeted_snapshot", "provider": "greenhouse", "board_key": "employer-board",
+        "retrieved_at": "2026-11-14T18:02:11Z", "source_id": "4100",
+        "title": "Policy Analyst", "company": "Employer name", "location": "Washington, DC",
+        "geography": null, "work_arrangement": "Hybrid", "employment_type": "Full-time",
+        "category": null, "posted_at": "2026-11-01", "updated_at": null, "closing_at": null,
+        "record_kind": "job", "detail_status": "fetched", "evidence_status": "public",
+        "description": "Full saved description text…", "description_truncated": false,
+        "description_sha256": null, "description_text_sha256": "<sha256>",
+        "identity": null, "omitted_urls": [],
+        "url": "https://boards.greenhouse.io/employer-board/jobs/4100",
+        "original_posting_url": "https://employer-or-ats.example/jobs/123"
+      }
     }
   ]
 }
@@ -44,18 +57,43 @@ the problem and no cards.
 | Field | Required | Rules |
 | --- | --- | --- |
 | `schema_version` | yes | Must be `1`. Any other value is rejected. |
-| `generated_at` | no | `YYYY-MM-DD` or UTC `YYYY-MM-DDTHH:MM:SSZ`. |
+| `generated_at` | no | `YYYY-MM-DD` or a timezone-aware ISO timestamp. |
 | `demo` | no | `true` shows a **DEMO SHORTLIST** banner and keeps feedback session-only. |
 | `jobs` | yes | Array, at most 200 items. Order is preserved as the display order. |
 | `review_id` | yes | Unique, `[A-Za-z0-9][A-Za-z0-9._-]*`. Same ID as the assessment output. |
 | `title`, `employer`, `location`, `work_arrangement`, `compensation_text` | no | Plain text. Missing values show as "not stated". |
 | `official_url` | no | Exact employer/ATS posting link. Must be public HTTPS. |
 | `application_url` | no | Defaults to `official_url`. |
-| `fit_reasons` | no | 2–3 short, evidence-based strings recommended. At most 5 are shown. |
-| `gaps_to_verify` | no | Requirements or unknowns to check. At most 5 are shown. |
+| `fit_reasons`, `gaps_to_verify` | no | Accepted for compatibility with #75 but not shown on cards. |
+| `listing` | no | What Prospect extracted from the listing: the preferred variant's `data` from the immediate-review export (`career_engine/immediate_review.py`). See below. |
 | `review_priority` | no | `high` or `medium` (Codex #73 shortlisted candidates), or `prioritize`, `consider`, `verify_first`, `deprioritize`, or `unassessed` (rubric bands in `docs/prospect-ai-assessment-v1.md`). Anything else shows as `unassessed`. |
-| `availability_status` | no | `verified_current`, `unverified` or `not_yet_verified`, `closed` or `no_longer_open`. Alternative terms normalize to the same display/filter states; unrecognized values remain `unverified`. |
-| `availability_checked_at` | with `verified_current` | Date the posting was actually checked. `verified_current` without a valid date is shown as **NOT YET VERIFIED**. |
+| `availability_status` | no | `not_yet_verified`, `verified_current`, or `no_longer_open` (the values validated by `tools/prepare_shortlist.py`). Anything else shows as `not_yet_verified`. |
+| `availability_checked_at` | with `verified_current` or `no_longer_open` | When the posting was actually checked: `YYYY-MM-DD` or a timezone-aware ISO timestamp (`Z` or `±HH:MM`), shown in UTC. `null` for `not_yet_verified`. `verified_current` without a valid time is shown as **NOT YET VERIFIED**. |
+
+## Listing data and source
+
+Each card shows everything Prospect captured for the listing, instead of
+model-written reasons. Pass the preferred variant's `data` from the
+immediate-review export unchanged as `listing`.
+
+- **Pulled from the listing** table: `title`, `company`, `location`, `geography`,
+  `work_arrangement`, `employment_type`, `category`, `posted_at`, `updated_at`,
+  `closing_at`, `record_kind`, `detail_status`, `evidence_status`, then any other
+  keys in `listing` (up to 30, keys matching `[A-Za-z0-9][A-Za-z0-9._-]*`).
+- **Source** table: `source`, `provider`, `board_key`, `source_id`, `identity`,
+  `retrieved_at`, `description_truncated`, `description_sha256`,
+  `description_text_sha256`, `omitted_urls`, and links to `url` (the listing as
+  collected) and `original_posting_url`. Links are labelled with their host and
+  open the exact URL; SHA-256 digests show their first 16 characters.
+- **Show full description**: the whole `description` (up to 50,000 characters)
+  with its line breaks, in an expander.
+- Every field is always listed. Null or blank values show as *not captured*.
+  Values hidden by redaction show as *withheld*, so a hidden value is never
+  mistaken for a missing one. Values are shown as captured, not reformatted.
+- In the description only unsafe words (links, email addresses, credentials) are
+  replaced with `[redacted]`; the rest of the text is kept.
+- Without `listing`, the card names the board from the posting link's host
+  (for example Greenhouse) and says the file has no extracted fields.
 
 ## Untrusted data
 

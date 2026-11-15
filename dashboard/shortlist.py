@@ -32,17 +32,43 @@ PRIORITY_LABELS = {
     "prioritize": "Prioritize", "consider": "Consider", "verify_first": "Verify first",
     "deprioritize": "Deprioritize", "unassessed": "Unassessed",
 }
+# Matches availability_status in tools/prepare_shortlist.py (PR #75).
 AVAILABILITY_LABELS = {
-    "verified_current": "Verified current", "unverified": "Not yet verified",
-    "closed": "Closed or unavailable",
+    "verified_current": "Verified current", "not_yet_verified": "Not yet verified",
+    "no_longer_open": "No longer open",
 }
-AVAILABILITY_ALIASES = {
-    "not_yet_verified": "unverified",
-    "no_longer_open": "closed",
+# Every field Prospect's immediate-review export captures per listing (the preferred
+# variant's ``data``; FIELDS plus derived keys in career_engine/immediate_review.py).
+LISTING_FIELDS = {
+    "title": "Title", "company": "Company", "location": "Location", "geography": "Geography",
+    "work_arrangement": "Work arrangement", "employment_type": "Employment type",
+    "category": "Category", "posted_at": "Posted", "updated_at": "Updated",
+    "closing_at": "Closing", "record_kind": "Record kind", "detail_status": "Detail status",
+    "evidence_status": "Evidence status",
+}
+SOURCE_FIELDS = {
+    "source": "Source snapshot", "provider": "Provider", "board_key": "Board",
+    "source_id": "Source job ID", "identity": "Identity", "retrieved_at": "Retrieved",
+    "description_truncated": "Description truncated", "description_sha256": "Description SHA-256",
+    "description_text_sha256": "Description text SHA-256", "omitted_urls": "Omitted links",
+}
+LISTING_LINKS = {"url": "Listing link", "original_posting_url": "Original posting link"}
+KNOWN_LISTING_KEYS = {*LISTING_FIELDS, *SOURCE_FIELDS, *LISTING_LINKS, "description"}
+WITHHELD = "withheld"
+DESCRIPTION_LIMIT = 50_000
+MAX_EXTRA_FIELDS = 30
+# Known job-board hosts, used only to name the source when no listing data is supplied.
+KNOWN_HOSTS = {
+    "greenhouse.io": "Greenhouse", "lever.co": "Lever", "ashbyhq.com": "Ashby",
+    "applytojob.com": "JazzHR", "jazzhr.com": "JazzHR", "icims.com": "iCIMS",
+    "usajobs.gov": "USAJOBS", "myworkdayjobs.com": "Workday", "smartrecruiters.com": "SmartRecruiters",
+    "workable.com": "Workable", "bamboohr.com": "BambooHR",
 }
 FEEDBACK_LABELS = {"would_apply": "Would apply", "maybe": "Maybe", "no": "No"}
 _DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-_TIMESTAMP = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z")
+_TIMESTAMP = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})"
+)
 
 
 class ShortlistError(ValueError):
@@ -88,6 +114,72 @@ def _checked(value):
     return None
 
 
+def _listing_value(privacy, value, limit=200):
+    """Return the captured value as text, WITHHELD when redaction hides it, None when absent."""
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    if isinstance(value, (int, float)):
+        value = str(value)
+    if isinstance(value, list):
+        items = [_listing_value(privacy, item, limit) for item in value[:MAX_LIST_ITEMS * 4]]
+        return ", ".join(item for item in items if item) or "none"
+    if not isinstance(value, str) or not value.strip():
+        return None
+    return _text(privacy, value, limit) or WITHHELD
+
+
+def _description(privacy, value):
+    """Keep the full description as text, redacting only unsafe words, never whole paragraphs."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    lines = []
+    for line in value[:DESCRIPTION_LIMIT].replace("\r\n", "\n").split("\n"):
+        words, previous, redact_next = [], "", False
+        for word in line.split():
+            # Pairs catch "Bearer x"; a redacted "key:" or "key=" also hides the next word.
+            unsafe = (redact_next or privacy.unsafe(word)
+                      or bool(previous and privacy.unsafe(f"{previous} {word}")))
+            redact_next = unsafe and word.endswith((":", "="))
+            words.append(REDACTED if unsafe else word)
+            previous = "" if unsafe else word
+        line = " ".join(words)
+        if line and privacy.unsafe(line):
+            line = REDACTED
+        lines.append(line)
+    text = re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
+    return text or WITHHELD
+
+
+def _listing(privacy, raw):
+    """Project the optional ``listing`` object: everything Prospect captured, as captured."""
+    if not isinstance(raw, dict):
+        return None
+    fields = {key: _listing_value(privacy, raw.get(key)) for key in (*LISTING_FIELDS, *SOURCE_FIELDS)}
+    for key in LISTING_LINKS:
+        value = raw.get(key)
+        fields[key] = _url(privacy, value) or (WITHHELD if isinstance(value, str) and value else None)
+    description = raw.get("description")
+    fields["description"] = _description(privacy, description)
+    fields["description_length"] = len(description) if isinstance(description, str) else None
+    extras = {}
+    for key in sorted(k for k in raw if isinstance(k, str) and k not in KNOWN_LISTING_KEYS):
+        if len(extras) == MAX_EXTRA_FIELDS:
+            break
+        if privacy.native(key) is not None:  # keys are untrusted too
+            extras[key] = _listing_value(privacy, raw[key])
+    fields["extra"] = extras
+    return fields
+
+
+def link_source(url):
+    """Name the job board from a posting link, for files without listing data."""
+    host = (urlsplit(url).hostname or "") if url else ""
+    for suffix, name in KNOWN_HOSTS.items():
+        if host == suffix or host.endswith("." + suffix):
+            return name, host
+    return (None, host) if host else (None, None)
+
+
 def _url(privacy, value):
     """Keep the exact posting URL only when Prospect's URL projection accepts it."""
     if not isinstance(value, str) or len(value) > 2048 or privacy.url(value) is None:
@@ -103,12 +195,11 @@ def _job(privacy, raw, index):
     if not isinstance(review_id, str) or privacy.native(review_id) is None:
         raise ShortlistError(f"jobs[{index}] has a missing or unsafe review_id")
     priority = raw.get("review_priority")
-    status = AVAILABILITY_ALIASES.get(raw.get("availability_status"),
-                                      raw.get("availability_status"))
+    status = raw.get("availability_status")
     checked = _checked(raw.get("availability_checked_at"))
     if status not in AVAILABILITY_LABELS or (status == "verified_current" and checked is None):
         # A verification claim without a real check date is not shown as verified.
-        status = "unverified"
+        status = "not_yet_verified"
     official = _url(privacy, raw.get("official_url"))
     return {
         "review_id": review_id,
@@ -124,6 +215,7 @@ def _job(privacy, raw, index):
         "review_priority": priority if priority in PRIORITY_LABELS else "unassessed",
         "availability_status": status,
         "availability_checked": checked,
+        "listing": _listing(privacy, raw.get("listing")),
     }
 
 
