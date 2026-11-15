@@ -37,22 +37,26 @@ AVAILABILITY_LABELS = {
     "verified_current": "Verified current", "not_yet_verified": "Not yet verified",
     "no_longer_open": "No longer open",
 }
-# Fields Prospect extracts from each listing (the preferred variant's ``data`` in the
-# immediate-review export, career_engine/immediate_review.py in PR #67/#75).
+# Every field Prospect's immediate-review export captures per listing (the preferred
+# variant's ``data``; FIELDS plus derived keys in career_engine/immediate_review.py).
 LISTING_FIELDS = {
     "title": "Title", "company": "Company", "location": "Location", "geography": "Geography",
     "work_arrangement": "Work arrangement", "employment_type": "Employment type",
     "category": "Category", "posted_at": "Posted", "updated_at": "Updated",
     "closing_at": "Closing", "record_kind": "Record kind", "detail_status": "Detail status",
-    "evidence_status": "Evidence status", "source_id": "Source job ID",
-    "description": "Description (opening text)",
+    "evidence_status": "Evidence status",
 }
 SOURCE_FIELDS = {
-    "source": "Source", "provider": "Provider", "board_key": "Board", "retrieved_at": "Retrieved",
+    "source": "Source snapshot", "provider": "Provider", "board_key": "Board",
+    "source_id": "Source job ID", "identity": "Identity", "retrieved_at": "Retrieved",
+    "description_truncated": "Description truncated", "description_sha256": "Description SHA-256",
+    "description_text_sha256": "Description text SHA-256", "omitted_urls": "Omitted links",
 }
 LISTING_LINKS = {"url": "Listing link", "original_posting_url": "Original posting link"}
+KNOWN_LISTING_KEYS = {*LISTING_FIELDS, *SOURCE_FIELDS, *LISTING_LINKS, "description"}
 WITHHELD = "withheld"
-DESCRIPTION_LIMIT = 300
+DESCRIPTION_LIMIT = 50_000
+MAX_EXTRA_FIELDS = 30
 # Known job-board hosts, used only to name the source when no listing data is supplied.
 KNOWN_HOSTS = {
     "greenhouse.io": "Greenhouse", "lever.co": "Lever", "ashbyhq.com": "Ashby",
@@ -110,25 +114,60 @@ def _checked(value):
     return None
 
 
-def _listing_value(privacy, value, limit):
-    """Return the captured text, WITHHELD when redaction hides it, or None when absent."""
-    if isinstance(value, bool) or isinstance(value, (int, float)):
+def _listing_value(privacy, value, limit=200):
+    """Return the captured value as text, WITHHELD when redaction hides it, None when absent."""
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    if isinstance(value, (int, float)):
         value = str(value)
+    if isinstance(value, list):
+        items = [_listing_value(privacy, item, limit) for item in value[:MAX_LIST_ITEMS * 4]]
+        return ", ".join(item for item in items if item) or "none"
     if not isinstance(value, str) or not value.strip():
         return None
     return _text(privacy, value, limit) or WITHHELD
 
 
+def _description(privacy, value):
+    """Keep the full description as text, redacting only unsafe words, never whole paragraphs."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    lines = []
+    for line in value[:DESCRIPTION_LIMIT].replace("\r\n", "\n").split("\n"):
+        words, previous, redact_next = [], "", False
+        for word in line.split():
+            # Pairs catch "Bearer x"; a redacted "key:" or "key=" also hides the next word.
+            unsafe = (redact_next or privacy.unsafe(word)
+                      or bool(previous and privacy.unsafe(f"{previous} {word}")))
+            redact_next = unsafe and word.endswith((":", "="))
+            words.append(REDACTED if unsafe else word)
+            previous = "" if unsafe else word
+        line = " ".join(words)
+        if line and privacy.unsafe(line):
+            line = REDACTED
+        lines.append(line)
+    text = re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
+    return text or WITHHELD
+
+
 def _listing(privacy, raw):
-    """Project the optional ``listing`` object: Prospect's extracted fields, as captured."""
+    """Project the optional ``listing`` object: everything Prospect captured, as captured."""
     if not isinstance(raw, dict):
         return None
-    fields = {key: _listing_value(privacy, raw.get(key),
-                                  DESCRIPTION_LIMIT if key == "description" else 200)
-              for key in (*LISTING_FIELDS, *SOURCE_FIELDS)}
+    fields = {key: _listing_value(privacy, raw.get(key)) for key in (*LISTING_FIELDS, *SOURCE_FIELDS)}
     for key in LISTING_LINKS:
         value = raw.get(key)
         fields[key] = _url(privacy, value) or (WITHHELD if isinstance(value, str) and value else None)
+    description = raw.get("description")
+    fields["description"] = _description(privacy, description)
+    fields["description_length"] = len(description) if isinstance(description, str) else None
+    extras = {}
+    for key in sorted(k for k in raw if isinstance(k, str) and k not in KNOWN_LISTING_KEYS):
+        if len(extras) == MAX_EXTRA_FIELDS:
+            break
+        if privacy.native(key) is not None:  # keys are untrusted too
+            extras[key] = _listing_value(privacy, raw[key])
+    fields["extra"] = extras
     return fields
 
 

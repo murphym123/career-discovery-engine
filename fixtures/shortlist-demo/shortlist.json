@@ -43,7 +43,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4100",
-        "original_posting_url": "https://example.org/demo-jobs/001"
+        "original_posting_url": "https://example.org/demo-jobs/001",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4100",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -83,9 +88,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/sample-transit/jobs/4101",
-        "original_posting_url": "https://example.org/demo-jobs/002"
+        "original_posting_url": "https://example.org/demo-jobs/002",
+        "identity": "native:lever:sample-transit:demo-4101",
+        "description_truncated": false,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -126,9 +136,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/example-housing/jobs/4102",
-        "original_posting_url": "https://example.org/demo-jobs/003"
+        "original_posting_url": "https://example.org/demo-jobs/003",
+        "identity": "native:ashby:example-housing:demo-4102",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -171,7 +186,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/fictional-health/jobs/4103",
-        "original_posting_url": "https://example.org/demo-jobs/004"
+        "original_posting_url": "https://example.org/demo-jobs/004",
+        "identity": "native:jazzhr:fictional-health:demo-4103",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -212,9 +232,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4104",
-        "original_posting_url": "https://example.org/demo-jobs/005"
+        "original_posting_url": "https://example.org/demo-jobs/005",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4104",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -276,7 +301,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/example-housing/jobs/4106",
-        "original_posting_url": "https://example.org/demo-jobs/007"
+        "original_posting_url": "https://example.org/demo-jobs/007",
+        "identity": "native:ashby:example-housing:demo-4106",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -317,9 +347,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/fictional-health/jobs/4107",
-        "original_posting_url": "https://example.org/demo-jobs/008"
+        "original_posting_url": "https://example.org/demo-jobs/008",
+        "identity": "native:jazzhr:fictional-health:demo-4107",
+        "description_truncated": false,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -360,9 +395,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4108",
-        "original_posting_url": "https://example.org/demo-jobs/009"
+        "original_posting_url": "https://example.org/demo-jobs/009",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4108",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -404,7 +444,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/sample-transit/jobs/4109",
-        "original_posting_url": "https://example.org/demo-jobs/010"
+        "original_posting_url": "https://example.org/demo-jobs/010",
+        "identity": "native:lever:sample-transit:demo-4109",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -445,9 +490,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/example-housing/jobs/4110",
-        "original_posting_url": "https://example.org/demo-jobs/011"
+        "original_posting_url": "https://example.org/demo-jobs/011",
+        "identity": "native:ashby:example-housing:demo-4110",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -510,7 +560,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4112",
-        "original_posting_url": "https://example.org/demo-jobs/013"
+        "original_posting_url": "https://example.org/demo-jobs/013",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4112",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -550,9 +605,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/sample-transit/jobs/4113",
-        "original_posting_url": "https://example.org/demo-jobs/014"
+        "original_posting_url": "https://example.org/demo-jobs/014",
+        "identity": "native:lever:sample-transit:demo-4113",
+        "description_truncated": false,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -593,9 +653,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/example-housing/jobs/4114",
-        "original_posting_url": "https://example.org/demo-jobs/015"
+        "original_posting_url": "https://example.org/demo-jobs/015",
+        "identity": "native:ashby:example-housing:demo-4114",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -638,7 +703,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/fictional-health/jobs/4115",
-        "original_posting_url": "https://example.org/demo-jobs/016"
+        "original_posting_url": "https://example.org/demo-jobs/016",
+        "identity": "native:jazzhr:fictional-health:demo-4115",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -679,9 +749,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4116",
-        "original_posting_url": "https://example.org/demo-jobs/017"
+        "original_posting_url": "https://example.org/demo-jobs/017",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4116",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -743,7 +818,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/example-housing/jobs/4118",
-        "original_posting_url": "https://example.org/demo-jobs/019"
+        "original_posting_url": "https://example.org/demo-jobs/019",
+        "identity": "native:ashby:example-housing:demo-4118",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -784,9 +864,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/fictional-health/jobs/4119",
-        "original_posting_url": "https://example.org/demo-jobs/020"
+        "original_posting_url": "https://example.org/demo-jobs/020",
+        "identity": "native:jazzhr:fictional-health:demo-4119",
+        "description_truncated": false,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -827,9 +912,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/demo-civic-lab/jobs/4120",
-        "original_posting_url": "https://example.org/demo-jobs/021"
+        "original_posting_url": "https://example.org/demo-jobs/021",
+        "identity": "native:greenhouse:demo-civic-lab:demo-4120",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {
@@ -871,7 +961,12 @@
         "evidence_status": "public",
         "description": null,
         "url": "https://example.org/demo-boards/sample-transit/jobs/4121",
-        "original_posting_url": "https://example.org/demo-jobs/022"
+        "original_posting_url": "https://example.org/demo-jobs/022",
+        "identity": "native:lever:sample-transit:demo-4121",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": null,
+        "omitted_urls": []
       }
     },
     {
@@ -912,9 +1007,14 @@
         "record_kind": "job",
         "detail_status": "fetched",
         "evidence_status": "public",
-        "description": "Synthetic description: the team studies regional transit access and publishes short policy briefs. The role supports survey design, cleaning, and analysis.",
+        "description": "Synthetic description for a demo listing.\n\nAbout the team\nThe team studies regional transit access and publishes short policy briefs for local agencies.\n\nWhat you will do\n- Design and field short surveys\n- Clean and analyze survey data in R or Python\n- Draft two-page briefs and slides\n\nWhat we are looking for\n- A bachelor's degree or equivalent experience\n- Comfort with spreadsheets and basic statistics\n- Clear writing\n\nThis posting is synthetic and does not describe a real opening.",
         "url": "https://example.org/demo-boards/example-housing/jobs/4122",
-        "original_posting_url": "https://example.org/demo-jobs/023"
+        "original_posting_url": "https://example.org/demo-jobs/023",
+        "identity": "native:ashby:example-housing:demo-4122",
+        "description_truncated": null,
+        "description_sha256": null,
+        "description_text_sha256": "e690598ed37b68803be9ad66d1065c7ca9a88e7992581bb98230632f4808e65b",
+        "omitted_urls": []
       }
     },
     {

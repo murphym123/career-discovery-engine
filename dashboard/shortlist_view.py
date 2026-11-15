@@ -1,4 +1,6 @@
 """Streamlit rendering for the curated Shortlist (data handling lives in shortlist.py)."""
+from urllib.parse import urlsplit
+
 import streamlit as st
 
 from dashboard.browse import markdown_text as browse_markdown
@@ -46,41 +48,63 @@ def record_feedback(target, review_id):
 
 
 def cell(value):
+    if value is None:
+        return "_not captured_"
     return "_withheld (unsafe text)_" if value == WITHHELD else markdown_text(value)
 
 
-def render_source(job):
+def link_cell(value):
+    if value is None:
+        return "_not captured_"
+    if value == WITHHELD:
+        return "_withheld (unsafe link)_"
+    # Show the host so long URLs do not overflow the card; the link is the exact URL.
+    return f"[Open on {markdown_text(urlsplit(value).hostname or 'link')}](<{value}>)"
+
+
+def hash_cell(value):
+    # Digests are long unbroken strings; show a prefix so the table fits the card.
+    if value in (None, WITHHELD) or len(value) <= 16:
+        return cell(value)
+    return f"`{value[:16]}…`"
+
+
+def table(rows):
+    body = "\n".join(f"| {label} | {value} |" for label, value in rows)
+    return "| Field | Value |\n| --- | --- |\n" + body
+
+
+def render_listing(job):
+    """Everything Prospect captured for this listing: fields, source, and full description."""
     listing = job["listing"]
     if listing is None:
         name, host = link_source(job["official_url"])
-        if host:
-            label = f"{name} ({host})" if name else host
-            st.markdown(f"**Source:** {markdown_text(label)} · _from the posting link_")
-        else:
-            st.markdown("**Source:** _not supplied_")
-        return
-    parts = [f"{label} {cell(listing[key])}" for key, label in SOURCE_FIELDS.items()
-             if listing[key]]
-    for key, label in LISTING_LINKS.items():
-        if listing[key] == WITHHELD:
-            parts.append(f"{label} _withheld (unsafe link)_")
-        elif listing[key]:
-            parts.append(f"[{label}](<{listing[key]}>)")
-    st.markdown("**Source:** " + (" · ".join(parts) or "_not captured_"))
-
-
-def render_listing(listing):
-    st.markdown("**Pulled from the listing**")
-    if listing is None:
+        label = (f"{name} ({host})" if name else host) if host else None
+        st.markdown("**Source:** " + (f"{markdown_text(label)} · _from the posting link_"
+                                      if label else "_not supplied_"))
         st.caption("This shortlist file does not include Prospect's extracted listing fields.")
         return
-    captured = [(label, listing[key]) for key, label in LISTING_FIELDS.items() if listing[key]]
-    if captured:
-        rows = "\n".join(f"| {label} | {cell(value)} |" for label, value in captured)
-        st.markdown("| Field | Value |\n| --- | --- |\n" + rows)
-    missing = [label for key, label in LISTING_FIELDS.items() if not listing[key]]
-    if missing:
-        st.caption("Not captured: " + ", ".join(missing))
+    listing_column, source_column = st.columns(2)
+    listing_column.markdown("**Pulled from the listing**")
+    listing_column.markdown(table(
+        [(label, cell(listing[key])) for key, label in LISTING_FIELDS.items()]
+        + [(markdown_text(key), cell(value)) for key, value in listing["extra"].items()]
+    ))
+    source_column.markdown("**Source**")
+    source_column.markdown(table(
+        [(label, hash_cell(listing[key]) if key.endswith("sha256") else cell(listing[key]))
+         for key, label in SOURCE_FIELDS.items()]
+        + [(label, link_cell(listing[key])) for key, label in LISTING_LINKS.items()]
+    ))
+    description = listing["description"]
+    if description is None:
+        st.caption("Description: not captured.")
+    elif description == WITHHELD:
+        st.caption("Description: withheld (unsafe text).")
+    else:
+        length = listing["description_length"]
+        with st.expander(f"Show full description ({length:,} characters as captured)"):
+            st.markdown("  \n".join(markdown_text(line) for line in description.split("\n")))
 
 
 def render_card(job, saved_feedback, target):
@@ -102,8 +126,7 @@ def render_card(job, saved_feedback, target):
         else:
             st.warning(f"NOT YET VERIFIED. Confirm the posting is open · Priority: {priority}")
 
-        render_source(job)
-        render_listing(job["listing"])
+        render_listing(job)
 
         posting, apply, reaction = st.columns([1, 1, 2])
         if job["official_url"]:

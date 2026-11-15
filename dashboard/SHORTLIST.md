@@ -43,7 +43,9 @@ the problem and no cards.
         "geography": null, "work_arrangement": "Hybrid", "employment_type": "Full-time",
         "category": null, "posted_at": "2026-11-01", "updated_at": null, "closing_at": null,
         "record_kind": "job", "detail_status": "fetched", "evidence_status": "public",
-        "description": "Opening text of the saved description…",
+        "description": "Full saved description text…", "description_truncated": false,
+        "description_sha256": null, "description_text_sha256": "<sha256>",
+        "identity": null, "omitted_urls": [],
         "url": "https://boards.greenhouse.io/employer-board/jobs/4100",
         "original_posting_url": "https://employer-or-ats.example/jobs/123"
       }
@@ -70,18 +72,26 @@ the problem and no cards.
 
 ## Listing data and source
 
-Each card shows the **Source** line and a **Pulled from the listing** table
-instead of model-written reasons, so you can see exactly what Prospect captured.
+Each card shows everything Prospect captured for the listing, instead of
+model-written reasons. Pass the preferred variant's `data` from the
+immediate-review export unchanged as `listing`.
 
-- Source line: `source`, `provider`, `board_key`, `retrieved_at`, plus links to
-  `url` (the listing as collected) and `original_posting_url`.
-- Table: `title`, `company`, `location`, `geography`, `work_arrangement`,
-  `employment_type`, `category`, `posted_at`, `updated_at`, `closing_at`,
-  `record_kind`, `detail_status`, `evidence_status`, `source_id`, and the first
-  300 characters of `description`. Values are shown as captured, not reformatted.
-- Fields that are null or blank are listed under **Not captured**. Values hidden by
-  redaction show as *withheld*, so a hidden value is never mistaken for a missing one.
-  Other keys in `listing` are ignored.
+- **Pulled from the listing** table: `title`, `company`, `location`, `geography`,
+  `work_arrangement`, `employment_type`, `category`, `posted_at`, `updated_at`,
+  `closing_at`, `record_kind`, `detail_status`, `evidence_status`, then any other
+  keys in `listing` (up to 30, keys matching `[A-Za-z0-9][A-Za-z0-9._-]*`).
+- **Source** table: `source`, `provider`, `board_key`, `source_id`, `identity`,
+  `retrieved_at`, `description_truncated`, `description_sha256`,
+  `description_text_sha256`, `omitted_urls`, and links to `url` (the listing as
+  collected) and `original_posting_url`. Links are labelled with their host and
+  open the exact URL; SHA-256 digests show their first 16 characters.
+- **Show full description**: the whole `description` (up to 50,000 characters)
+  with its line breaks, in an expander.
+- Every field is always listed. Null or blank values show as *not captured*.
+  Values hidden by redaction show as *withheld*, so a hidden value is never
+  mistaken for a missing one. Values are shown as captured, not reformatted.
+- In the description only unsafe words (links, email addresses, credentials) are
+  replaced with `[redacted]`; the rest of the text is kept.
 - Without `listing`, the card names the board from the posting link's host
   (for example Greenhouse) and says the file has no extracted fields.
 

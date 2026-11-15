@@ -136,7 +136,10 @@ class ShortlistContractTests(unittest.TestCase):
             "provider": "greenhouse", "board_key": "civic", "source": "targeted_snapshot",
             "retrieved_at": "2026-11-14T18:02:11Z", "title": "Policy Analyst",
             "company": "Contact hr@private.example", "posted_at": "2026-11-01", "employment_type": "",
-            "description_truncated": True, "description": "x" * 1000, "unexpected": "ignored",
+            "description_truncated": True, "omitted_urls": ["url"], "unexpected": "kept",
+            "bad key!": "dropped",
+            "description": ("Intro " * 400) + "\n\nApply at https://ats.example/apply or email "
+                           "jobs@private.example\nNote: password: hunter2\nLast line.",
             "url": "https://boards.greenhouse.io/civic/jobs/42",
             "original_posting_url": "javascript:alert(1)",
         })])["jobs"][0]
@@ -146,10 +149,17 @@ class ShortlistContractTests(unittest.TestCase):
         self.assertEqual(listing["company"], WITHHELD)  # redacted, not reported as missing
         self.assertIsNone(listing["employment_type"])
         self.assertIsNone(listing["location"])
-        self.assertLessEqual(len(listing["description"]), 300)
+        # The full description is kept; only unsafe words are redacted.
+        description = listing["description"]
+        self.assertTrue(description.startswith("Intro Intro"))
+        self.assertTrue(description.endswith("Last line."))
+        self.assertIn("Apply at [redacted] or email [redacted]", description)
+        self.assertNotRegex(description, "https|private|hunter2")
+        self.assertGreater(listing["description_length"], 2400)
+        self.assertEqual((listing["description_truncated"], listing["omitted_urls"]), ("yes", "url"))
         self.assertEqual(listing["url"], "https://boards.greenhouse.io/civic/jobs/42")
         self.assertEqual(listing["original_posting_url"], WITHHELD)
-        self.assertNotIn("unexpected", listing)
+        self.assertEqual(listing["extra"], {"unexpected": "kept"})
         self.assertIsNone(self.write([record()])["jobs"][0]["listing"])
 
     def test_link_source_names_known_boards(self):
@@ -223,12 +233,16 @@ class ShortlistAppTests(unittest.TestCase):
         self.assertNotIn("Check before applying", text)
         self.assertIn("**Pulled from the listing**", text)
         self.assertIn("| Source job ID | demo-4100 |", text)
-        self.assertIn("**Source:** Source targeted\\_snapshot · Provider greenhouse · "
-                      "Board demo-civic-lab", text)
+        self.assertIn("| Source snapshot | targeted\\_snapshot |", text)
+        self.assertIn("| Provider | greenhouse |", text)
+        self.assertIn("| Identity | native:greenhouse:demo-civic-lab:demo-4100 |", text)
+        self.assertIn("| Employment type | _not captured_ |", text)
+        self.assertIn("What we are looking for", text)
+        self.assertTrue(any(e.label.startswith("Show full description") for e in app.expander))
         self.assertIn("**Source:** example\\.org · _from the posting link_", text)
         self.assertTrue(any("does not include Prospect's extracted listing fields" in c.value
                             for c in app.caption))
-        self.assertTrue(any(c.value.startswith("Not captured: ") for c in app.caption))
+        self.assertTrue(any(c.value == "Description: not captured." for c in app.caption))
         self.assertTrue(any("session only" in c.value for c in app.caption))
 
         app.multiselect(key="shortlist_availability").set_value(["not_yet_verified"]).run()
