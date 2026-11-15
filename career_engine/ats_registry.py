@@ -69,7 +69,7 @@ def validate_registry(data):
     snapshots=data.get('source_status_snapshots',{})
     if not isinstance(snapshots,dict):raise ValueError('Invalid source snapshots')
     result['source_status_snapshots']={k:v[-3:] for k,v in list(snapshots.items())[:6000] if isinstance(v,list)}
-    for key,b in list(data['boards'].items())[:5000]:
+    for key,b in data['boards'].items():
         if not isinstance(b,dict):continue
         parsed=board_from_url(b.get('url'))
         if parsed and parsed['key']==key:
@@ -93,7 +93,6 @@ def register(registry,url,evidence):
             if not any(r.get('url')==url for r in registry['unsupported']):registry['unsupported'].append(record)
         return False
     if board['key'] not in registry['boards']:
-        if len(registry['boards'])>=5000:return False
         registry['boards'][board['key']]={**board,'first_seen_at':stamp(),'evidence':[],'last_checked_run':None}
     entry=registry['boards'][board['key']]
     if evidence not in entry['evidence']:
@@ -103,6 +102,31 @@ def register(registry,url,evidence):
         entry['evidence']=sorted(entry['evidence'],key=priority)[:20]
     entry['last_discovered_at']=stamp()
     return True
+
+
+def upsert_verified_board(registry, url, evidence, verification, first_seen_at):
+    """Project a schema-verified discovery into v1.
+
+    Full evidence and attempts stay in the discovery tables. Preserve poll
+    fields and prior evidence, and prefer the spelling that passed validation.
+    """
+    board = board_from_url(url)
+    if board is None or board['provider'] not in ('greenhouse', 'lever', 'lever_eu', 'ashby'):
+        raise ValueError('Invalid verified board')
+    previous = registry['boards'].get(board['key'])
+    prior_verification = previous.get('discovery_verification') if previous else None
+    if isinstance(prior_verification, dict) and prior_verification.get('method') == 'get_board_schema':
+        checked_at = prior_verification.get('verified_at')
+        if isinstance(checked_at, str) and checked_at >= verification['verified_at']:
+            return False, False
+    entry = {**(previous if previous is not None else {
+        'first_seen_at': first_seen_at, 'evidence': [], 'last_checked_run': None,
+    }), **board, 'discovery_verification': verification}
+    if evidence not in entry['evidence']:
+        entry['evidence'] = [*entry['evidence'], evidence]
+    entry.setdefault('last_discovered_at', verification['verified_at'])
+    registry['boards'][board['key']] = entry
+    return previous is None, True
 
 
 def source_seeds(registry,records,market=None):

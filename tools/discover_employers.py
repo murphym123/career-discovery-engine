@@ -9,11 +9,12 @@ from career_engine.ats import PublicTransport
 from career_engine.ats_registry import empty_registry
 from career_engine.employer_frame import load_frame
 from career_engine.employer_pipeline import PipelineTransport,run_pipeline
-from career_engine.registry_state import read_registry,save_registry,atomic_json
+from career_engine.registry_state import read_registry,registry_writer,save_registry,atomic_json
 from career_engine.publication_audit import build_ledger,write_ledger
 from tools.expand_ats import write_capture
 
 
+@registry_writer
 def run(frame_path,registry_path,output_dir,base_path=None,discovery_requests=120,collection_requests=60,
         board_cap=15,detail_budget=2,discovery_transport=None,collection_transport=None):
     frame=load_frame(frame_path);registry_path=Path(registry_path);output_dir=Path(output_dir)
