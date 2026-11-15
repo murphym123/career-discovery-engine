@@ -1,6 +1,7 @@
 # Prospect local viewer (optional)
 
-Prospect opens on **Browse Jobs**, a **read-only** view of jobs in its local
+Prospect opens on **Shortlist**, a curated set of jobs from the assessment
+workflow. **Browse Jobs** is a **read-only** view of every job in its local
 store. The dashboard is optional and runs separately from collection and
 independent evaluation.
 
@@ -27,6 +28,28 @@ requirements into that instead of creating a new virtual environment.
 > **Keep it local.** Streamlit is a web server, not an authenticated desktop app.
 > Do not bind to `0.0.0.0`, expose it through tunnels, or put it on a public host.
 > The data directory and browser session are intended for the approved Mac only.
+
+## Shortlist
+
+The Shortlist view reads only an explicit `shortlist.json` file, never the
+discovery database. Put it in `PROSPECT_DATA_DIR` or point `PROSPECT_SHORTLIST`
+at it. Each card shows the employer and title, location, working arrangement,
+salary if known, reasons for fit, things to check, the verification status and
+the date it was checked, and links to the original posting. Search and filter
+by verification status and priority. Cards keep the file's order. Nothing is
+re-ranked or scored.
+
+Without a file the view says **No shortlist yet** instead of showing filler.
+To try it with synthetic data and no database:
+
+```bash
+PROSPECT_SHORTLIST=fixtures/shortlist-demo/shortlist.json \
+  python -m streamlit run dashboard/app.py --server.address 127.0.0.1
+```
+
+The **Your take** control on each card records *would apply / maybe / no* in a
+local `shortlist-feedback.json` beside a real shortlist, never in Git. See
+[SHORTLIST.md](SHORTLIST.md) for the file contract.
 
 ## Browse Jobs
 
