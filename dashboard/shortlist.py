@@ -1,0 +1,235 @@
+"""Read-only Shortlist view fed by an explicit, versioned ``shortlist.json``.
+
+The file is produced by the assessment workflow, not by this dashboard. Every
+field is untrusted: text passes Prospect's metadata redaction, links must be
+ordinary public HTTPS URLs, and unknown or missing values stay unknown.
+The view never reads the discovery database, collectors, or applicant dossiers.
+Contract: dashboard/SHORTLIST.md.
+"""
+from __future__ import annotations
+
+import json
+import os
+import re
+import tempfile
+from datetime import date, datetime, timezone
+from pathlib import Path
+from urllib.parse import urlsplit
+
+from career_engine.store.privacy import REDACTED, Projection
+
+SCHEMA_VERSION = 1
+FEEDBACK_SCHEMA_VERSION = 1
+MAX_JOBS = 200
+MAX_LIST_ITEMS = 5
+MAX_TEXT = 400
+MAX_FILE_BYTES = 2_000_000
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+# Mirrors review_priority bands in docs/prospect-ai-assessment-v1.md (PR #67/#71).
+PRIORITY_LABELS = {
+    "high": "High priority", "medium": "Possible fit",
+    "prioritize": "Prioritize", "consider": "Consider", "verify_first": "Verify first",
+    "deprioritize": "Deprioritize", "unassessed": "Unassessed",
+}
+AVAILABILITY_LABELS = {
+    "verified_current": "Verified current", "unverified": "Not yet verified",
+    "closed": "Closed or unavailable",
+}
+AVAILABILITY_ALIASES = {
+    "not_yet_verified": "unverified",
+    "no_longer_open": "closed",
+}
+FEEDBACK_LABELS = {"would_apply": "Would apply", "maybe": "Maybe", "no": "No"}
+_DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+_TIMESTAMP = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z")
+
+
+class ShortlistError(ValueError):
+    """The shortlist file exists but cannot be shown safely."""
+
+
+def shortlist_path(environ=os.environ) -> Path | None:
+    explicit = environ.get("PROSPECT_SHORTLIST", "").strip()
+    if explicit:
+        return Path(explicit).expanduser()
+    data_dir = environ.get("PROSPECT_DATA_DIR", "").strip()
+    return Path(data_dir).expanduser() / "shortlist.json" if data_dir else None
+
+
+def _text(privacy, value, limit=MAX_TEXT):
+    if not isinstance(value, str):
+        return None
+    value = " ".join(value.split())
+    if not value or privacy.text(value) == REDACTED:
+        return None
+    return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
+
+
+def _texts(privacy, values):
+    if not isinstance(values, list):
+        return []
+    return [text for value in values[:MAX_LIST_ITEMS] if (text := _text(privacy, value))]
+
+
+def _checked(value):
+    """Return a display date for a real check date, or None."""
+    if not isinstance(value, str):
+        return None
+    try:
+        if _DATE.fullmatch(value):
+            checked = date.fromisoformat(value)
+            return f"{checked:%b} {checked.day}, {checked.year}"
+        if _TIMESTAMP.fullmatch(value):
+            checked = datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+            return f"{checked:%b} {checked.day}, {checked.year} at {checked:%H:%M} UTC"
+    except ValueError:
+        return None
+    return None
+
+
+def _url(privacy, value):
+    """Keep the exact posting URL only when Prospect's URL projection accepts it."""
+    if not isinstance(value, str) or len(value) > 2048 or privacy.url(value) is None:
+        return None
+    parts = urlsplit(value)
+    return parts._replace(fragment="").geturl().replace(" ", "%20")
+
+
+def _job(privacy, raw, index):
+    if not isinstance(raw, dict):
+        raise ShortlistError(f"jobs[{index}] is not an object")
+    review_id = raw.get("review_id")
+    if not isinstance(review_id, str) or privacy.native(review_id) is None:
+        raise ShortlistError(f"jobs[{index}] has a missing or unsafe review_id")
+    priority = raw.get("review_priority")
+    status = AVAILABILITY_ALIASES.get(raw.get("availability_status"),
+                                      raw.get("availability_status"))
+    checked = _checked(raw.get("availability_checked_at"))
+    if status not in AVAILABILITY_LABELS or (status == "verified_current" and checked is None):
+        # A verification claim without a real check date is not shown as verified.
+        status = "unverified"
+    official = _url(privacy, raw.get("official_url"))
+    return {
+        "review_id": review_id,
+        "title": _text(privacy, raw.get("title"), 200),
+        "employer": _text(privacy, raw.get("employer"), 200),
+        "location": _text(privacy, raw.get("location"), 200),
+        "work_arrangement": _text(privacy, raw.get("work_arrangement"), 80),
+        "compensation_text": _text(privacy, raw.get("compensation_text"), 200),
+        "official_url": official,
+        "application_url": _url(privacy, raw.get("application_url")) or official,
+        "fit_reasons": _texts(privacy, raw.get("fit_reasons")),
+        "gaps_to_verify": _texts(privacy, raw.get("gaps_to_verify")),
+        "review_priority": priority if priority in PRIORITY_LABELS else "unassessed",
+        "availability_status": status,
+        "availability_checked": checked,
+    }
+
+
+def load_shortlist(path: Path | None) -> dict | None:
+    """Return a validated shortlist, None when no file exists, or raise ShortlistError."""
+    if path is None or not path.is_file():
+        return None
+    if path.stat().st_size > MAX_FILE_BYTES:
+        raise ShortlistError("shortlist.json is larger than 2 MB")
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ShortlistError("shortlist.json is not valid UTF-8 JSON") from error
+    if not isinstance(document, dict):
+        raise ShortlistError("shortlist.json must contain a JSON object")
+    if document.get("schema_version") != SCHEMA_VERSION:
+        raise ShortlistError(f"Unsupported schema_version (expected {SCHEMA_VERSION})")
+    jobs = document.get("jobs")
+    if not isinstance(jobs, list):
+        raise ShortlistError("shortlist.json needs a jobs array")
+    if len(jobs) > MAX_JOBS:
+        raise ShortlistError(f"shortlist.json has more than {MAX_JOBS} jobs")
+    privacy = Projection()
+    records = [_job(privacy, raw, index) for index, raw in enumerate(jobs)]
+    if len({job["review_id"] for job in records}) != len(records):
+        raise ShortlistError("review_id values must be unique")
+    return {
+        "demo": document.get("demo") is True,
+        "generated_at": _checked(document.get("generated_at")),
+        "jobs": records,
+    }
+
+
+def filter_jobs(jobs, *, search="", availability=(), priority=()):
+    """Keep file order; filter only on the supplied fields, never on a score."""
+    terms = " ".join(search.split()).casefold().split()
+    shown = []
+    for job in jobs:
+        if availability and job["availability_status"] not in availability:
+            continue
+        if priority and job["review_priority"] not in priority:
+            continue
+        haystack = " ".join(
+            job[key] or "" for key in ("title", "employer", "location", "work_arrangement")
+        ).casefold()
+        if all(term in haystack for term in terms):
+            shown.append(job)
+    return shown
+
+
+# Local feedback: a sidecar file beside the shortlist, never inside the repo.
+
+def feedback_path(shortlist: Path | None, environ=os.environ) -> Path | None:
+    """Return where feedback may be saved, or None when it must stay session-only."""
+    explicit = environ.get("PROSPECT_SHORTLIST_FEEDBACK", "").strip()
+    if explicit:
+        target = Path(explicit).expanduser()
+    elif shortlist is not None:
+        target = shortlist.with_name("shortlist-feedback.json")
+    else:
+        return None
+    resolved = target.resolve()
+    if resolved == REPO_ROOT or REPO_ROOT in resolved.parents:
+        return None  # Keep private reactions out of Git.
+    return target
+
+
+def load_feedback(path: Path | None) -> dict:
+    if path is None or not path.is_file():
+        return {}
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return {}
+    entries = document.get("entries") if isinstance(document, dict) else None
+    if not isinstance(entries, dict):
+        return {}
+    return {
+        key: value for key, value in entries.items()
+        if isinstance(value, dict) and value.get("decision") in FEEDBACK_LABELS
+    }
+
+
+def save_feedback(path: Path, review_id: str, decision: str | None) -> dict:
+    """Atomically record or clear one decision and return all entries."""
+    if decision is not None and decision not in FEEDBACK_LABELS:
+        raise ValueError("Unsupported feedback decision")
+    entries = load_feedback(path)
+    if decision is None:
+        entries.pop(review_id, None)
+    else:
+        entries[review_id] = {
+            "decision": decision,
+            "recorded_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+    payload = json.dumps(
+        {"schema_version": FEEDBACK_SCHEMA_VERSION, "entries": entries}, indent=2, sort_keys=True,
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle, temporary = tempfile.mkstemp(dir=path.parent, prefix=".shortlist-feedback-")
+    try:
+        with os.fdopen(handle, "w", encoding="utf-8") as stream:
+            stream.write(payload + "\n")
+        os.chmod(temporary, 0o600)
+        os.replace(temporary, path)
+    except BaseException:
+        Path(temporary).unlink(missing_ok=True)
+        raise
+    return entries
