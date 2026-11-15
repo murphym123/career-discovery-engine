@@ -7,6 +7,8 @@ not establish qualifications, job availability or interview probabilities.
 
 ## New: optional discovery of unfamiliar public ATS boards
 
+[Scalable ATS board discovery](docs/prospect-board-discovery.md) provides a separate, resumable CLI for Wayback, recent urlscan, and eligible Common Crawl fallback, with offline publication of verified boards to the existing registry.
+
 The [Issue #21 iCIMS increment](docs/issue21/ASSESSMENT.md) adds robots-aware
 public iCIMS search inventories, observed regional search-form options and
 stable posting identities. It repairs `US-DC` / `US-DC-Washington` aliases
