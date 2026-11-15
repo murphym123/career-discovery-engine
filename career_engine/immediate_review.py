@@ -123,6 +123,19 @@ def normalize_job(job, where, projection):
     return fields
 
 
+def employer(company, board_name, projection):
+    """Name the employer for reviewers without overwriting the job's own company field.
+
+    The fallback is the board-level ``name`` from the saved snapshot, labelled as such and
+    never as verified. Board slugs, providers and URLs are not treated as employer names.
+    """
+    if company:
+        return {"name": company, "source": "job_company"}
+    if board_name and not projection.unsafe(board_name):
+        return {"name": board_name, "source": "board_metadata_name"}
+    return {"name": None, "source": "missing"}
+
+
 def preferred_variant(variant):
     data = variant["data"]
     description = data["description"]
@@ -142,6 +155,7 @@ def group_records(snapshots):
         "board_results", "board_results_with_errors", "source_errors", "observations",
         "observations_with_description", "observations_with_whitespace_only_description",
         "observations_flagged_truncated", "observations_without_native_key",
+        "observations_with_board_employer_fallback", "observations_without_employer",
     ), 0))
     projection = Projection()
     for input_index, (input_sha, boards) in enumerate(snapshots):
@@ -170,6 +184,7 @@ def group_records(snapshots):
             for job_index, job in enumerate(jobs):
                 position = [input_index, board_index, job_index]
                 fields = normalize_job(job, f"{coordinate}, job index {job_index}", projection)
+                fields["employer"] = employer(fields["company"], metadata["name"], projection)
                 native_key = [
                     fields["provider"] or metadata["provider"],
                     fields["board_key"] or metadata["board"],
@@ -199,6 +214,10 @@ def group_records(snapshots):
                 )
                 counts["observations_flagged_truncated"] += fields["description_truncated"] is True
                 counts["observations_without_native_key"] += not has_native_key
+                counts["observations_with_board_employer_fallback"] += (
+                    fields["employer"]["source"] == "board_metadata_name"
+                )
+                counts["observations_without_employer"] += fields["employer"]["name"] is None
                 missing.update(field for field in FIELDS if fields[field] is None
                                and field not in fields["omitted_urls"])
                 omitted_urls.update(fields["omitted_urls"])
