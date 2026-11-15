@@ -147,6 +147,10 @@ class ShortlistAppTests(unittest.TestCase):
     def test_demo_cards_filters_and_session_only_feedback(self):
         app = self.app(PROSPECT_SHORTLIST=str(DEMO))
         self.assertFalse(app.exception)
+        # Nothing sits between the "Shortlist" header and the search bar.
+        main = list(app.main)
+        header = next(i for i, e in enumerate(main) if getattr(e, "value", None) == "Shortlist")
+        self.assertEqual(main[header + 1].text_input[0].key, "shortlist_search")
         self.assertEqual([e.value for e in app.error], ["Closed or unavailable (checked Nov 10, 2026) · Priority: Deprioritize"])
         self.assertTrue(any("DEMO SHORTLIST" in notice.value for notice in app.warning))
         self.assertIn("**Showing 24 of 24 curated jobs** · 16 verified current · Generated "

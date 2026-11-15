@@ -87,10 +87,6 @@ def render_card(job, saved_feedback, target):
 
 def render_shortlist():
     st.header("Shortlist")
-    st.caption(
-        "A curated set chosen by the assessment workflow, not the full collected inventory. "
-        "Read-only: the dashboard does not select, rank, or re-check jobs."
-    )
     path = shortlist_path()
     try:
         shortlist = read_shortlist(path, file_revision(path))
@@ -107,8 +103,6 @@ def render_shortlist():
         )
         st.caption("Place `shortlist.json` in PROSPECT_DATA_DIR or set PROSPECT_SHORTLIST to its path.")
         return
-    if shortlist["demo"]:
-        st.warning("DEMO SHORTLIST: synthetic jobs, not real openings.")
 
     target = None if shortlist["demo"] else feedback_path(path)
     if "shortlist_feedback" not in st.session_state:
@@ -133,6 +127,9 @@ def render_shortlist():
     verified = sum(job["availability_status"] == "verified_current" for job in shortlist["jobs"])
     generated = f' · Generated {shortlist["generated_at"]}' if shortlist["generated_at"] else ""
     st.markdown(f"**Showing {len(jobs)} of {total} curated jobs** · {verified} verified current{generated}")
+    if shortlist["demo"]:
+        # Below the filters so nothing sits between the title and the search bar.
+        st.warning("DEMO SHORTLIST: synthetic jobs, not real openings.")
     if target is None:
         st.caption("Your reactions stay in this browser session only and are not saved.")
     else:
