@@ -6,6 +6,7 @@ Common Crawl URL-index queries. Archive URLs are seeds, never live-job evidence.
 import hashlib
 import json
 import re
+import time
 from collections import defaultdict,deque
 from html import unescape
 from html.parser import HTMLParser
@@ -13,6 +14,7 @@ from urllib.parse import urlsplit
 from datetime import datetime,timezone
 
 from career_engine.ats import board_from_url, stamp, FetchError
+from career_engine.board_indexes import PROBE_TEMPLATES
 from career_engine.extract import safe_public_url
 
 PREFIXES=('*','council*','research*','public*','foundation*','american*','consult*','association*',
@@ -50,9 +52,61 @@ def empty_registry():return {'schema_version':1,'run':0,'query_offset':0,'index_
                              'directory_offset':0,'jazz_sitemap_offset':0,'employer_sites':{},'seen_postings':{},'source_status_snapshots':{}}
 
 
+PROVIDER_ORIGINS = {provider: urlsplit(url).hostname for provider, url in PROBE_TEMPLATES.items()}
+CATALOG_KIND = 'public_ats_catalog'
+
+
+def validate_poll_policy(data):
+    blocks = data.get('catalog_blocked_boards', {})
+    if not isinstance(blocks, dict) or any(
+        value is not True or not isinstance(key, str) or key != key.rstrip() or not re.fullmatch(
+            r'(?:greenhouse|lever|lever_eu|ashby|recruitee|rippling):[a-z0-9][a-z0-9 ._-]{0,99}', key)
+        for key, value in blocks.items()
+    ):
+        raise ValueError('registry_catalog_blocklist')
+    holds = data.get('provider_origin_holds', {})
+    if not isinstance(holds, dict):
+        raise ValueError('registry_provider_origin_holds')
+    for host, hold in holds.items():
+        if host not in PROVIDER_ORIGINS.values() or not isinstance(hold, dict) or set(hold) != {'stop_reason', 'not_before'}:
+            raise ValueError('registry_provider_origin_hold')
+        reason, until = hold['stop_reason'], hold['not_before']
+        if (not isinstance(reason, str) or not re.fullmatch(r'[a-z0-9_]{0,80}', reason)
+                or type(until) not in (int, float) or not 0 <= until < float('inf')):
+            raise ValueError('registry_provider_origin_hold')
+
+
+def validate_catalog_evidence(board, proofs):
+    if 'catalog_inactive' in board and type(board['catalog_inactive']) is not bool:
+        raise ValueError('registry_catalog_status')
+    # Bound the extra history accepted by both readers. Reject an oversized
+    # registry explicitly so a successful round trip never loses attribution.
+    try:
+        if len(proofs) > 512 or sum(len(json.dumps(proof, allow_nan=False)) for proof in proofs) > 1_048_576:
+            raise ValueError
+    except (TypeError, ValueError, RecursionError):
+        raise ValueError('registry_catalog_evidence_limit') from None
+
+
+def registry_poll_block(registry, board, now):
+    if board['key'] in registry.get('catalog_blocked_boards', {}):
+        return 'catalog_withdrawal'
+    hold = registry.get('provider_origin_holds', {}).get(PROVIDER_ORIGINS.get(board['provider']))
+    if hold:
+        if hold['stop_reason']:
+            return 'provider_origin_stopped'
+        if hold['not_before'] > now:
+            return 'provider_origin_cooldown'
+    if board.get('catalog_inactive') and not any(e.get('kind') != CATALOG_KIND for e in board['evidence']):
+        return 'catalog_inactive'
+    return ''
+
+
 def validate_registry(data):
     if not isinstance(data,dict) or data.get('schema_version')!=1 or not isinstance(data.get('boards'),dict):raise ValueError('Invalid ATS registry')
     result=empty_registry()
+    validate_poll_policy(data)
+    result.update({key:data[key] for key in ('catalog_blocked_boards','provider_origin_holds') if key in data})
     result.update({k:data.get(k,result[k]) for k in ('run','query_offset','index_pages','index_counts','host_not_before','unsupported')})
     if not isinstance(result['run'],int) or not isinstance(result['query_offset'],int) or result['run']<0 or result['query_offset']<0:raise ValueError('Invalid registry cursor')
     if not isinstance(result['index_counts'],dict) or not isinstance(result['host_not_before'],dict):raise ValueError('Invalid index/cooldown metadata')
@@ -73,7 +127,20 @@ def validate_registry(data):
         if not isinstance(b,dict):continue
         parsed=board_from_url(b.get('url'))
         if parsed and parsed['key']==key:
-            result['boards'][key]={**b,**parsed,'evidence':b.get('evidence',[])[:20] if isinstance(b.get('evidence'),list) else []}
+            proofs = b.get('evidence')
+            evidence, catalog = [], []
+            ordinary_count = 0
+            for item in proofs if isinstance(proofs, list) else ():
+                if not isinstance(item, dict):
+                    continue
+                if item.get('kind') == CATALOG_KIND:
+                    catalog.append(item)
+                    evidence.append(item)
+                elif ordinary_count < 20:
+                    evidence.append(item)
+                    ordinary_count += 1
+            validate_catalog_evidence(b, catalog)
+            result['boards'][key]={**b,**parsed,'evidence':evidence}
     # Promote previously unsupported iCIMS links without losing their evidence.
     pending=[]
     for lead in result['unsupported']:
@@ -277,9 +344,9 @@ def select_boards(registry,budget=30):
     if not 1<=budget<=100:raise ValueError('Board budget must be 1–100')
     registry['run']+=1;run=registry['run']
     new=[];known=[]
-    blocked=registry.get('catalog_blocked_boards', {})
+    now=time.time()
     for entry in registry['boards'].values():
-        if entry['key'] in blocked:continue
+        if registry_poll_block(registry,entry,now):continue
         # Manual runs only; repeated known failures get a run-based cool-down.
         last=entry.get('last_checked_run')
         if last is None:new.append(entry)

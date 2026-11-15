@@ -7,11 +7,12 @@ import fcntl
 from hashlib import sha256
 import json
 from pathlib import Path
+import time
 from urllib.parse import urlsplit
 
 from career_engine.ats import PUBLIC_HOSTS
-from career_engine.ats_registry import empty_registry, upsert_verified_board
-from career_engine.board_catalogs import CATALOG_CAMPAIGN, SOURCES
+from career_engine.ats_registry import CATALOG_KIND, PROVIDER_ORIGINS, empty_registry, upsert_verified_board
+from career_engine.board_catalogs import CATALOG_CAMPAIGN, SOURCES, catalog_source_evidence
 from career_engine.board_discovery_http import Response
 from career_engine.board_indexes import EVIDENCE_KINDS, INDEX_URLS, Page, Plan, board_probe_url, candidate, source_time
 from career_engine.registry_state import read_registry, save_registry
@@ -27,10 +28,16 @@ def cursor_digest(cursor: str) -> str:
     return sha256(cursor.encode()).hexdigest()
 
 
-CATALOG_SCOPE = """
-    AND EXISTS (SELECT 1 FROM board_catalog_evidence e WHERE e.board_key=v.board_key
-                AND e.variant_url=v.url AND e.disposition='candidate')
-"""
+CURRENT_CATALOG_VARIANT = """EXISTS (
+    SELECT 1 FROM board_catalog_current e WHERE e.board_key=v.board_key
+    AND e.variant_url=v.url AND e.disposition='candidate'
+)"""
+# A catalog observation can govern catalog eligibility while independent index
+# evidence remains usable in ordinary discovery.
+INDEX_SCOPE = """(
+    EXISTS (SELECT 1 FROM board_discovery_evidence e WHERE e.board_key=v.board_key)
+    OR NOT EXISTS (SELECT 1 FROM board_catalog_evidence e WHERE e.board_key=v.board_key AND e.variant_url=v.url)
+)"""
 
 
 class DiscoveryState:
@@ -86,13 +93,13 @@ class DiscoveryState:
         return self.db.execute("SELECT coalesce(max(id), 0) FROM board_discovery_attempt").fetchone()[0]
 
     def variants(self, origin: str, through: int, *, catalog_only=False):
-        scope = CATALOG_SCOPE if catalog_only else ""
+        scope = CURRENT_CATALOG_VARIANT if catalog_only else f"({CURRENT_CATALOG_VARIANT} OR {INDEX_SCOPE})"
         return self.db.execute(f"""
             SELECT v.* FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
             WHERE v.origin=? AND v.last_attempt<=? AND v.status IN ('candidate', 'deferred', 'failed')
                 AND b.verified_url IS NULL
                 AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
-                {scope}
+                AND {scope}
             ORDER BY v.last_attempt, v.id
         """, (origin, through))
 
@@ -195,14 +202,24 @@ class DiscoveryState:
                     metadata["blocklist_url"] = catalog.blocklist.url
                     metadata["blocklist_input"] = "local_file" if catalog.blocklist.file else "github_raw"
                 counts = Counter(row.disposition if row.board_key not in blocked else "blocked" for row in rows)
+                withdrawal_rejections = Counter(row.rejection for row in rows if row.rejection)
                 insert = db.execute("""
                     INSERT OR IGNORE INTO board_catalog_import
                         (source,url,sha256,blocklist_sha256,metadata,imported_at,counts)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, (catalog.source_id, catalog.data.url, data_hash, policy_hash, json.dumps(metadata), now,
                       json.dumps({"rows": len(rows) + sum(rejected.values()), "rejected": rejected,
+                                  "withdrawal_metadata_rejections": withdrawal_rejections,
                                   "providers": Counter(row.provider for row in rows), **counts})))
-                if not insert.rowcount:
+                batch, = db.execute("""
+                    SELECT id FROM board_catalog_import WHERE source=? AND url=? AND sha256=? AND blocklist_sha256=?
+                """, (catalog.source_id, catalog.data.url, data_hash, policy_hash)).fetchone()
+                db.executemany("INSERT OR IGNORE INTO board_catalog_withdrawal VALUES (?, ?, ?, ?)",
+                               ((batch, row.line, row.board_key, row.rejection)
+                                for row in rows if row.disposition == "withdrawn"))
+                if not insert.rowcount or db.execute("""
+                    SELECT 1 FROM board_catalog_import WHERE source=? AND url=? AND sha256=? AND id<?
+                """, (catalog.source_id, catalog.data.url, data_hash, batch)).fetchone():
                     continue
                 for row in rows:
                     if row.board_key in blocked:
@@ -212,11 +229,19 @@ class DiscoveryState:
                             (batch,line,board_key,provider,raw_provider,company,raw_slug,record_date,source_status,
                              disposition,variant_url,observed_url,source_evidence)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (insert.lastrowid, row.line, row.board_key, row.provider, row.raw_provider, row.company,
+                    """, (batch, row.line, row.board_key, row.provider, row.raw_provider, row.company,
                           row.raw_slug, row.record_date, row.source_status, row.disposition, row.variant_url,
                           row.observed_url, json.dumps(row.source_evidence)))
                     if row.disposition == "candidate":
                         self._add_variant({"key": row.board_key, "url": row.variant_url, "provider": row.provider}, now)
+                        # Fresh positive evidence gives a missing route one more
+                        # turn. The previous result remains in the HTTP attempt log.
+                        db.execute("""
+                            UPDATE board_discovery_variant SET status='candidate', reason='', method='HEAD'
+                            WHERE board_key=? AND url=? AND status='missing'
+                              AND EXISTS (SELECT 1 FROM board_discovery_board b
+                                          WHERE b.board_key=? AND b.verified_url IS NULL)
+                        """, (row.board_key, row.variant_url, row.board_key))
 
     def set_variant(self, variant, status: str, reason: str, method: str, now: str):
         self.db.execute("""
@@ -269,7 +294,7 @@ class DiscoveryState:
             elif (stream["source"] == "commoncrawl" and stream["status"] in {"candidate", "deferred", "failed"}
                   and wayback[stream["host"]]["status"] not in {"failed", "denied", "deferred", "empty"}):
                 stream.update(status="standby", reason="wayback_preferred")
-        scope = CATALOG_SCOPE if catalog_only else ""
+        scope = CURRENT_CATALOG_VARIANT if catalog_only else f"({CURRENT_CATALOG_VARIANT} OR {INDEX_SCOPE})"
         counts = dict(self.db.execute(f"""
             WITH states AS (
                 SELECT v.board_key, CASE
@@ -282,7 +307,7 @@ class DiscoveryState:
                 FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
                 LEFT JOIN board_discovery_origin o USING (origin)
                 WHERE NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
-                {scope}
+                AND {scope}
             ), boards AS (
                 SELECT min(priority) AS status FROM states GROUP BY board_key
             ) SELECT status,count(*) FROM boards GROUP BY status
@@ -308,8 +333,22 @@ class DiscoveryState:
             result["evidence"] = self.db.execute("SELECT count(*) FROM board_catalog_evidence").fetchone()[0]
             result["imports"] = imports
             result["blocked_identities"] = self.db.execute("SELECT count(*) FROM board_catalog_block").fetchone()[0]
+            result["withdrawals"] = dict(self.db.execute("""
+                SELECT coalesce(nullif(w.metadata_rejection, ''), 'recorded'),count(*)
+                FROM board_catalog_withdrawal w GROUP BY w.metadata_rejection
+            """))
+            effective = dict(self.db.execute("""
+                SELECT disposition,count(*) FROM (
+                    SELECT CASE WHEN sum(disposition='candidate')>0 THEN 'candidate'
+                                WHEN sum(disposition='dead')>0 THEN 'dead' ELSE 'unsupported' END disposition
+                    FROM board_catalog_current GROUP BY board_key
+                ) GROUP BY disposition
+            """))
+            result["effective_catalog_status"] = {
+                name: effective.get(name, 0) for name in ("candidate", "dead", "unsupported")
+            }
             result["unsupported"] = dict(self.db.execute("""
-                SELECT provider,count(DISTINCT board_key) FROM board_catalog_evidence
+                SELECT provider,count(DISTINCT board_key) FROM board_catalog_current
                 WHERE disposition='unsupported' GROUP BY provider
             """))
         return result
@@ -318,7 +357,7 @@ class DiscoveryState:
         return [dict(row) for row in self.db.execute("""
             SELECT e.board_key,e.provider,e.company,e.raw_slug,e.record_date,e.source_status,e.line,
                    i.source,i.url,i.sha256
-            FROM board_catalog_evidence e JOIN board_catalog_import i ON i.id=e.batch
+            FROM board_catalog_current e JOIN board_catalog_import i ON i.id=e.batch
             WHERE e.disposition='unsupported' ORDER BY e.board_key,e.id
         """)]
 
@@ -328,17 +367,20 @@ class DiscoveryState:
             FROM board_catalog_evidence e JOIN board_catalog_import i ON i.id=e.batch
             WHERE e.board_key=? AND e.disposition='candidate' ORDER BY e.id
         """, (key,)):
-            yield {"kind": "public_ats_catalog", **json.loads(row["metadata"]),
+            refs = json.loads(row["source_evidence"])
+            yield {"kind": CATALOG_KIND, **json.loads(row["metadata"]),
                    "source": row["source"], "url": row["url"], "sha256": row["sha256"],
                    "blocklist_sha256": row["blocklist_sha256"], "source_id": key,
                    "provider": row["provider"], "raw_provider": row["raw_provider"],
                    "company": row["company"], "raw_slug": row["raw_slug"], "record_date": row["record_date"],
                    "source_status": row["source_status"], "board_url": row["variant_url"],
                    "observed_url": row["observed_url"], "source_record": row["line"],
-                   "source_evidence": json.loads(row["source_evidence"]), "catalog_evidence_id": row["id"]}
+                   "source_evidence": catalog_source_evidence(refs),
+                   "catalog_evidence_id": row["id"]}
 
     def publish(self, registry_path: Path, *, catalog_only=False) -> dict:
-        added = changed = 0
+        added = 0
+        changed = set()
         with self.exclusive():
             if catalog_only:
                 self.require_catalog_campaign()
@@ -348,15 +390,53 @@ class DiscoveryState:
             policy_changed = policy != registry.get("catalog_blocked_boards", {})
             if policy_changed:
                 registry["catalog_blocked_boards"] = policy
+            holds = dict(registry.get("provider_origin_holds", {}))
+            now = time.time()
+            for row in self.db.execute("SELECT * FROM board_discovery_origin"):
+                origin = row["origin"]
+                if origin not in PROVIDER_ORIGINS.values():
+                    continue
+                if row["stop_reason"] or row["not_before"] > now:
+                    holds[origin] = {"stop_reason": row["stop_reason"], "not_before": row["not_before"]}
+                else:
+                    holds.pop(origin, None)
+            holds_changed = holds != registry.get("provider_origin_holds", {})
+            if holds_changed:
+                registry["provider_origin_holds"] = holds
+            catalog_status = dict(self.db.execute("""
+                SELECT board_key,max(disposition='candidate') FROM board_catalog_current GROUP BY board_key
+            """))
             for key in policy.keys() & registry["boards"].keys():
                 entry = registry["boards"][key]
-                retained = [proof for proof in entry["evidence"] if proof.get("kind") != "public_ats_catalog"]
+                retained = [proof for proof in entry["evidence"] if proof.get("kind") != CATALOG_KIND]
                 if retained != entry["evidence"]:
                     entry["evidence"] = retained
                     verification = entry.get("discovery_verification")
                     if isinstance(verification, dict) and "catalog_evidence_id" in verification:
                         del entry["discovery_verification"]
-                    changed += 1
+                    changed.add(key)
+            for key, entry in registry["boards"].items():
+                if key in policy:
+                    continue
+                has_catalog = False
+                for index, proof in enumerate(entry["evidence"]):
+                    if proof.get("kind") != CATALOG_KIND:
+                        continue
+                    has_catalog = True
+                    refs = proof.get("source_evidence")
+                    if isinstance(refs, dict):
+                        cleaned = catalog_source_evidence(refs)
+                        if cleaned != refs:
+                            entry["evidence"][index] = {**proof, "source_evidence": cleaned}
+                            changed.add(key)
+                if key in catalog_status and has_catalog:
+                    inactive = not catalog_status[key]
+                    if inactive != entry.get("catalog_inactive", False):
+                        if inactive:
+                            entry["catalog_inactive"] = True
+                        else:
+                            del entry["catalog_inactive"]
+                        changed.add(key)
             for row in self.db.execute("""
                 SELECT b.*,e.id evidence_id,e.observed_url,e.source_time,e.source_record,s.source,s.host,c.plan
                 FROM board_discovery_board b
@@ -365,13 +445,16 @@ class DiscoveryState:
                 LEFT JOIN board_discovery_campaign c ON c.name=s.campaign
                 WHERE b.verified_url IS NOT NULL
                   AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=b.board_key)
-                  AND (?=0 OR EXISTS (SELECT 1 FROM board_catalog_evidence k
-                                       WHERE k.board_key=b.board_key AND k.disposition='candidate'))
                 ORDER BY b.board_key
-            """, (int(catalog_only),)):
-                catalog_proofs = list(self._catalog_proofs(row["board_key"]))
-                if row["board_key"] in policy or (catalog_only and not catalog_proofs):
+            """):
+                key = row["board_key"]
+                origin = PROVIDER_ORIGINS[key.partition(":")[0]]
+                catalog_active = catalog_status.get(key)
+                if (key in policy or holds.get(origin, {}).get("stop_reason")
+                        or catalog_only and not catalog_active
+                        or not catalog_active and not row["source"]):
                     continue
+                catalog_proofs = list(self._catalog_proofs(key)) if catalog_active else []
                 proof = None
                 if row["source"]:
                     endpoint = INDEX_URLS[row["source"]]
@@ -395,7 +478,8 @@ class DiscoveryState:
                                                      verification, row["first_seen_at"],
                                                      catalog_evidence=catalog_proofs)
                 added += new
-                changed += updated
-            if changed or policy_changed or not registry_path.exists():
+                if updated:
+                    changed.add(key)
+            if changed or policy_changed or holds_changed or not registry_path.exists():
                 save_registry(registry_path, registry)
-        return {"added": added, "updated": changed - added, "registry_boards": len(registry["boards"])}
+        return {"added": added, "updated": len(changed) - added, "registry_boards": len(registry["boards"])}

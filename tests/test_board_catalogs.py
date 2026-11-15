@@ -5,16 +5,18 @@ import json
 from pathlib import Path
 import stat
 from tempfile import TemporaryDirectory
+import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+from career_engine.ats import PublicTransport
 from career_engine.ats_registry import register, select_boards, validate_registry
 from career_engine.board_catalogs import CATALOG_CAMPAIGN, DATA_BYTES, POLICY_BYTES, ROBOTS_URL, CatalogTransport, import_catalogs
-from career_engine.board_discovery import DELAYS, Discovery, Limits
+from career_engine.board_discovery import DELAYS, ROBOTS_TTL, Discovery, Limits
 from career_engine.board_discovery_state import DiscoveryState
 from career_engine.board_indexes import Page
 from career_engine.regional_selection import select_regional_boards
-from career_engine.registry_state import read_registry, save_registry
+from career_engine.registry_state import read_registry, save_registry, strict_registry
 from career_engine.store import Store
 from test_board_discovery import FixtureTransport, PLAN, reached, wire
 from tools.expand_ats import expand
@@ -286,6 +288,263 @@ class CatalogTests(unittest.TestCase):
         entry = read_registry(self.registry)["boards"]["greenhouse:pollable"]
         self.assertEqual((entry["last_checked_run"], entry["status"]), (1, "ok"))
         self.assertTrue(any(item["kind"] == "public_ats_catalog" for item in entry["evidence"]))
+
+    def test_robots_origin_stop_blocks_published_boards_without_erasing_verification(self):
+        csv = HEADER + b"ashby,Known,cached,2026-08-01\n"
+        import_catalogs(self.state, self.manifest(csv=csv), offline=True)
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.state.publish(self.registry, catalog_only=True)
+        saved = read_registry(self.registry)["boards"]["ashby:cached"]
+
+        csv += b"ashby,Pending,pending,2026-08-01\n"
+        import_catalogs(self.state, self.manifest(csv=csv), offline=True)
+        self.advance(ROBOTS_TTL + 1)
+        denied, calls = self.validate(lambda *_: wire(status=401))
+        self.assertEqual([call[:3] for call in calls], [("GET", "api.ashbyhq.com", "/robots.txt")])
+        self.assertEqual((denied["boards"]["validated"], denied["boards"]["denied"]), (1, 1))
+        self.store.connection.close()
+        self.open_store()
+        self.assertEqual(self.validate(lambda *_: self.fail("Persistent origin stop was retried"))[1], [])
+        self.state.publish(self.registry, catalog_only=True)
+        clean_path = self.data / "empty-registry.json"
+        self.state.publish(clean_path, catalog_only=True)
+        self.assertEqual(read_registry(clean_path)["boards"], {})
+        state = read_registry(self.registry)
+        self.assertEqual(state["boards"]["ashby:cached"], saved)
+        self.assertEqual(state["provider_origin_holds"]["api.ashbyhq.com"]["stop_reason"], "http_401")
+        self.assertEqual(select_boards(validate_registry(state)), [])
+        self.assertEqual(select_regional_boards(state), [])
+
+        base = self.root / "baseline.json"
+        base.write_text('{"records":[],"stats":{}}')
+        session = Mock(spec=["get"])
+        session.get.side_effect = AssertionError("Legacy poll reached the denied origin")
+        public = PublicTransport(session=session, pause=lambda _: None)
+        audit = expand(base, self.registry, self.root / "audit", self.root / "combined.json",
+                       seed_queries=0, transport=public, extra_details=0)
+        self.assertEqual(audit["discovery"]["attempted_boards"], 0)
+        self.assertEqual(public.requests, [])
+        session.get.assert_not_called()
+
+        # Simulate separately established clearance in the authoritative store.
+        self.state.db.execute("UPDATE board_discovery_origin SET stop_reason='' WHERE origin='api.ashbyhq.com'")
+        self.state.publish(self.registry, catalog_only=True)
+        self.assertEqual([board["key"] for board in select_boards(read_registry(self.registry))], ["ashby:cached"])
+
+    def test_rate_limit_publishes_a_cooldown_with_automatic_expiry(self):
+        self.now = time.time()
+        csv = HEADER + b"lever,Known,cached,2026-08-01\n"
+        import_catalogs(self.state, self.manifest(csv=csv), offline=True)
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        csv += b"lever,Pending,pending,2026-08-01\n"
+        import_catalogs(self.state, self.manifest(csv=csv), offline=True)
+        status, calls = self.validate(lambda *_: wire(status=429, retry_after="120"))
+        self.assertEqual([call[:3] for call in calls], [("HEAD", "api.lever.co", "/v0/postings/pending")])
+        self.assertEqual(status["boards"]["deferred"], 1)
+        self.assertEqual(self.state.publish(self.registry, catalog_only=True)["added"], 1)
+        state = read_registry(self.registry)
+        self.assertEqual(state.get("provider_origin_holds"), {
+            "api.lever.co": {"stop_reason": "", "not_before": self.now + 120}
+        })
+        self.assertEqual(select_boards(state), [])
+        self.assertEqual(select_regional_boards(state), [])
+        with patch("time.time", return_value=self.now + 121):
+            self.assertEqual([b["key"] for b in select_boards(state)], ["lever:cached"])
+            self.assertEqual([b["key"] for b in select_regional_boards(state)], ["lever:cached"])
+
+    def test_withdrawal_blocks_old_csv_and_registry_even_with_malformed_metadata(self):
+        csv = HEADER + (b"greenhouse,Former employer,withdrawme,2026-08-01\n"
+                        b"greenhouse,Other employer,keepme,2026-08-01\n")
+        import_catalogs(self.state, self.manifest(csv=csv), offline=True)
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.state.publish(self.registry, catalog_only=True)
+        moon = jsonl(
+            {"provider": "greenhouse", "slug": "withdrawme", "status": "withdrawn", "name": 2},
+            {"provider": "greenhouse", "slug": "keepme%2f..", "status": "withdrawn"},
+            {"provider": "unknown:greenhouse", "slug": "keepme", "status": "withdrawn"},
+        )
+        manifest = self.manifest(moon=moon)
+        status = import_catalogs(self.state, manifest, offline=True)
+        self.assertEqual(status["blocked_identities"], 1)
+        self.assertEqual(status["withdrawals"], {"invalid_metadata": 1})
+        batch = status["imports"][-1]
+        self.assertEqual(batch["counts"]["rows"], 3)
+        self.assertEqual(batch["counts"]["blocked"], 1)
+        self.assertEqual(batch["counts"]["withdrawal_metadata_rejections"], {"invalid_metadata": 1})
+        self.assertEqual(batch["counts"]["rejected"], {"invalid_slug": 1, "unknown_provider": 1})
+        receipt, = self.state.db.execute("""
+            SELECT w.line,w.board_key,w.metadata_rejection,i.source,i.url,i.sha256
+            FROM board_catalog_withdrawal w JOIN board_catalog_import i ON i.id=w.batch
+        """)
+        self.assertEqual(tuple(receipt), (1, "greenhouse:withdrawme", "invalid_metadata", "moonie",
+                                          MOONIE_BASE.format("main") + "companies.jsonl", sha256(moon).hexdigest()))
+        self.assertEqual(batch["license"], "CC0-1.0")
+        self.assertEqual(import_catalogs(self.state, manifest, offline=True), status)
+        self.state.publish(self.registry, catalog_only=True)
+        for reload in (strict_registry, validate_registry):
+            state = reload(read_registry(self.registry))
+            self.assertEqual(state["catalog_blocked_boards"], {"greenhouse:withdrawme": True})
+            self.assertIn("greenhouse:withdrawme", state["boards"])
+            for select in (select_boards, select_regional_boards):
+                self.assertEqual([entry["key"] for entry in select(state)], ["greenhouse:keepme"])
+
+    def test_latest_status_per_source_suppresses_stale_candidates_and_keeps_http_proof(self):
+        rows = [{"provider": "greenhouse", "slug": slug, "status": "ok"} for slug in ("cached", "stale", "shared")]
+        old = jsonl(*rows)
+        import_catalogs(self.state, self.manifest(moon=old), offline=True)
+        self.validate(lambda method, url, params: wire(status=404) if url.path == "/robots.txt" else reached(), count=2)
+        self.state.publish(self.registry, catalog_only=True)
+        before = read_registry(self.registry)["boards"]["greenhouse:cached"]["discovery_verification"]
+
+        other = HEADER + b"greenhouse,Independent source,shared,2026-08-01\n"
+        dead = jsonl(*(dict(row, status="dead") for row in rows))
+        status = import_catalogs(self.state, self.manifest(csv=other, moon=dead), offline=True)
+        for catalog_only in (True, False):
+            pending = self.state.variants("boards-api.greenhouse.io", self.state.last_attempt(), catalog_only=catalog_only)
+            self.assertEqual([row["board_key"] for row in pending], ["greenhouse:shared"])
+        self.assertEqual(status["effective_catalog_status"], {"candidate": 1, "dead": 2, "unsupported": 0})
+        self.assertEqual(status["evidence"], 7)
+        # Reimporting the identical old pin cannot restore stale candidates.
+        self.assertEqual(import_catalogs(self.state, self.manifest(moon=old), offline=True), status)
+        _, calls = self.validate(lambda *_: reached())
+        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/shared")])
+        self.state.publish(self.registry, catalog_only=True)
+        registry = read_registry(self.registry)
+        entry = registry["boards"]["greenhouse:cached"]
+        self.assertTrue(entry["catalog_inactive"])
+        self.assertEqual(entry["discovery_verification"], before)
+        self.assertEqual(entry["evidence"][0]["license"], "CC0-1.0")
+        self.assertEqual([board["key"] for board in select_boards(registry)], ["greenhouse:shared"])
+        clean = self.data / "fresh-registry.json"
+        self.state.publish(clean, catalog_only=True)
+        self.assertEqual(set(read_registry(clean)["boards"]), {"greenhouse:shared"})
+
+        positive = jsonl(dict(rows[0], status="unconfirmed", verified_at="2026-08-03"))
+        import_catalogs(self.state, self.manifest(moon=positive), offline=True)
+        self.assertEqual(self.validate(lambda *_: self.fail("Existing HTTP verification was discarded"))[1], [])
+        self.state.publish(self.registry, catalog_only=True)
+        entry = read_registry(self.registry)["boards"]["greenhouse:cached"]
+        self.assertNotIn("catalog_inactive", entry)
+        self.assertEqual(entry["discovery_verification"], before)
+
+    def test_new_positive_snapshot_reopens_a_missing_variant_exactly_once(self):
+        row = {"provider": "greenhouse", "slug": "returning", "status": "ok"}
+        old = jsonl(row)
+        manifest = self.manifest(moon=old)
+        import_catalogs(self.state, manifest, offline=True)
+        self.assertEqual(self.validate(lambda *_: wire(status=404))[0]["boards"]["missing"], 1)
+        for blocklist in (b"", b"# Same data, different blocklist\n"):
+            status = import_catalogs(self.state, self.manifest(moon=old, blocklist=blocklist), offline=True)
+            self.assertEqual(status["boards"]["missing"], 1)
+            self.assertEqual(self.validate(lambda *_: self.fail("Unchanged data requeued a 404"))[1], [])
+        manifest = self.manifest(moon=jsonl(dict(row, status="unconfirmed", verified_at="2026-08-03")))
+        status = import_catalogs(self.state, manifest, offline=True)
+        self.assertEqual(status["boards"]["candidate"], 1)
+        self.assertEqual(status["boards"]["validated"], 0)
+        self.assertEqual(self.state.publish(self.registry, catalog_only=True)["added"], 0)
+        status, calls = self.validate(lambda *_: reached())
+        self.assertEqual(status["boards"]["validated"], 1)
+        self.assertEqual([call[:3] for call in calls], [("HEAD", "boards-api.greenhouse.io", "/v1/boards/returning")])
+        attempts = self.state.db.execute("SELECT status,http_status FROM board_discovery_attempt WHERE variant IS NOT NULL ORDER BY id")
+        self.assertEqual([tuple(row) for row in attempts], [("missing", 404), ("validated", 200)])
+        self.assertEqual(self.validate(lambda *_: self.fail("Verified board was retried"))[1], [])
+
+    def test_moonie_site_and_region_route_lever_to_the_validated_origin(self):
+        def row(slug, **fields):
+            return {"provider": "lever", "slug": slug, "status": "ok", **fields}
+
+        moon = jsonl(
+            row("site-eu", site="https://jobs.eu.lever.co/site-eu?token=fixture#hidden"),
+            row("explicit-eu", region="EU"),
+            row("site-us", site="https://jobs.lever.co/site-us", region="us"),
+            row("conflict", site="https://jobs.eu.lever.co/conflict", region="us"),
+            row("wrong", site="https://jobs.ashbyhq.com/wrong"),
+            row("different", site="https://jobs.eu.lever.co/someone-else"),
+            row("arbitrary", site="https://example.org/arbitrary"),
+            row("credentials", site="https://user:pass@jobs.eu.lever.co/credentials"),
+            row("http", site="http://jobs.eu.lever.co/http"),
+            row("deep", site="https://jobs.eu.lever.co/deep/job"),
+            row("two", site="https://jobs.eu.lever.co/two", board_url="https://jobs.lever.co/two"),
+        )
+        status = import_catalogs(self.state, self.manifest(moon=moon), offline=True)
+        self.assertEqual(status["imports"][0]["counts"]["rejected"], {"conflicting_board_url": 3, "invalid_board_url": 5})
+        self.assertEqual(status["boards"]["candidate"], 3)
+        _, calls = self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.assertEqual({(host, path) for method, host, path, *_ in calls if method == "HEAD"}, {
+            ("api.eu.lever.co", "/v0/postings/site-eu"), ("api.eu.lever.co", "/v0/postings/explicit-eu"),
+            ("api.lever.co", "/v0/postings/site-us"),
+        })
+        self.state.publish(self.registry, catalog_only=True)
+        proof, = read_registry(self.registry)["boards"]["lever_eu:site-eu"]["evidence"]
+        self.assertEqual(proof["observed_url"], "https://jobs.eu.lever.co/site-eu")
+        self.assertEqual(proof["source_evidence"]["site"], proof["observed_url"])
+
+    def test_nested_provenance_sanitizes_relative_absolute_and_network_urls(self):
+        refs = {
+            "endpoint": "/careers?token=fixture#fragment",
+            "evidence_url": "roles?token=fixture#fragment",
+            "source_urls": ["//example.org/jobs?token=fixture#fragment", "../team#fragment"],
+            "source": {"board_url": "/careers/team?token=fixture", "site": "/employer#fragment"},
+            "sources": [{"url": "https://user:pass@example.org/private?token=fixture",
+                         "source_url": "https://example.org/careers?a=secret#fragment", "kind": "employer"}],
+        }
+        expected = {
+            "endpoint": "/careers", "evidence_url": "roles",
+            "source_urls": ["//example.org/jobs", "../team"],
+            "source": {"board_url": "/careers/team", "site": "/employer"},
+            "sources": [{"url": "", "source_url": "https://example.org/careers", "kind": "employer"}],
+        }
+        moon = jsonl({"provider": "greenhouse", "slug": "safe", "status": "ok", "source_evidence": refs})
+        import_catalogs(self.state, self.manifest(moon=moon), offline=True)
+        raw, = self.state.db.execute("SELECT source_evidence FROM board_catalog_evidence").fetchone()
+        self.assertEqual(json.loads(raw), {"source_evidence": expected})
+        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached())
+        self.state.publish(self.registry, catalog_only=True)
+        proof, = read_registry(self.registry)["boards"]["greenhouse:safe"]["evidence"]
+        self.assertEqual(proof["source_evidence"], {"source_evidence": expected})
+
+    def test_live_like_742_registry_roundtrips_keep_policy_and_late_attribution(self):
+        csv = HEADER + b"".join(f"{provider},Company {n},{provider}-{n},2026-08-01\n".encode()
+                                for provider, count in (("greenhouse", 627), ("lever", 114)) for n in range(count))
+        moon = jsonl({"provider": "lever", "slug": "eu", "status": "ok", "region": "eu"})
+        import_catalogs(self.state, self.manifest(csv=csv, moon=moon), offline=True)
+        self.validate(lambda method, url, _: wire(status=404) if url.path == "/robots.txt" else reached(), count=745)
+        self.assertEqual(self.state.publish(self.registry, catalog_only=True)["added"], 742)
+        state = read_registry(self.registry)
+        self.assertEqual(Counter(board["provider"] for board in state["boards"].values()),
+                         {"greenhouse": 627, "lever": 114, "lever_eu": 1})
+        board = state["boards"]["lever_eu:eu"]
+        catalog, = board["evidence"]
+        ordinary = [{"kind": "source_audit_link", "source_id": str(i)} for i in range(24)]
+        board["evidence"] = ordinary + [catalog]
+        # Keep the prior board and its polling state when a later pin withdraws it.
+        key = "greenhouse:greenhouse-0"
+        save_registry(self.registry, state)
+        moon += jsonl({"provider": "greenhouse", "slug": "greenhouse-0", "status": "withdrawn"})
+        import_catalogs(self.state, self.manifest(moon=moon), offline=True)
+        self.state.publish(self.registry, catalog_only=True)
+        state = read_registry(self.registry)
+        proofs = state["boards"]["lever_eu:eu"]["evidence"][24:]
+        self.assertEqual(len(proofs), 2)
+        self.assertEqual(proofs[0], catalog)
+        for validate, retained in ((strict_registry, ordinary), (validate_registry, ordinary[:20])):
+            loaded = validate(state)
+            self.assertEqual(len(loaded["boards"]), 742)
+            self.assertEqual(loaded["catalog_blocked_boards"], {key: True})
+            self.assertEqual(loaded["boards"]["lever_eu:eu"]["evidence"], retained + proofs)
+            self.assertEqual((catalog["license"], catalog["attribution"]), ("CC0-1.0", "moonie0201"))
+            # Put the withdrawn board in a two-board pool so absence cannot be
+            # explained by the normal selection budget.
+            loaded["boards"] = {k: loaded["boards"][k] for k in (key, "lever_eu:eu")}
+            for select in (select_boards, select_regional_boards):
+                self.assertEqual([b["key"] for b in select(loaded, 2)], ["lever_eu:eu"])
+            with self.assertRaisesRegex(ValueError, "registry_catalog_blocklist"):
+                validate({**loaded, "catalog_blocked_boards": {key: 1}})
+            with self.assertRaisesRegex(ValueError, "registry_provider_origin_hold"):
+                validate({**loaded, "provider_origin_holds": {"api.lever.co": {"stop_reason": "", "not_before": -1}}})
+            oversized = {**board, "evidence": [{**catalog, "source_evidence": {"url": "x" * 1_048_576}}]}
+            with self.assertRaisesRegex(ValueError, "registry_catalog_evidence_limit"):
+                validate({**loaded, "boards": {"lever_eu:eu": oversized}})
 
     def test_manifest_pins_reject_mismatch_in_either_object_and_unsafe_inputs(self):
         good = self.manifest(HEADER + b"lever,Example,one,2026-08-01\n", jsonl({"ats": "ashby", "slug": "two", "status": "ok"}))

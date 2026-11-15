@@ -112,9 +112,23 @@ CREATE TABLE IF NOT EXISTS board_catalog_evidence (
     UNIQUE (batch, line)
 );
 CREATE INDEX IF NOT EXISTS board_catalog_evidence_board ON board_catalog_evidence(board_key, variant_url, disposition);
+CREATE INDEX IF NOT EXISTS board_catalog_evidence_version ON board_catalog_evidence(board_key, batch);
+CREATE VIEW IF NOT EXISTS board_catalog_current AS
+SELECT e.* FROM board_catalog_evidence e JOIN board_catalog_import i ON i.id=e.batch
+WHERE NOT EXISTS (
+    SELECT 1 FROM board_catalog_evidence newer JOIN board_catalog_import j ON j.id=newer.batch
+    WHERE newer.board_key=e.board_key AND newer.batch>e.batch AND j.source=i.source
+);
 CREATE TABLE IF NOT EXISTS board_catalog_block (
     board_key TEXT PRIMARY KEY,
     source_url TEXT NOT NULL,
     sha256 TEXT NOT NULL,
     recorded_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS board_catalog_withdrawal (
+    batch INTEGER NOT NULL REFERENCES board_catalog_import(id),
+    line INTEGER NOT NULL,
+    board_key TEXT NOT NULL,
+    metadata_rejection TEXT NOT NULL,
+    PRIMARY KEY (batch, line)
 );

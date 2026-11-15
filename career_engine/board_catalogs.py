@@ -29,9 +29,12 @@ UNSUPPORTED = {"recruitee", "rippling"}
 PROVIDERS = SUPPORTED | UNSUPPORTED
 CSV_FIELDS = {"ats_vendor", "company_name", "board_slug", "last_crawled"}
 STATUSES = {"ok", "dead", "unconfirmed", "withdrawn"}
-BOARD_URL_FIELDS = ("board_url", "url", "careers_url", "job_board_url")
+BOARD_URL_FIELDS = ("board_url", "url", "careers_url", "job_board_url", "site")
 SOURCE_FIELDS = ("source", "sources", "source_url", "source_urls", "evidence", "evidence_url",
                  "source_evidence", *BOARD_URL_FIELDS)
+URL_REF_FIELDS = {*BOARD_URL_FIELDS, "source_url", "source_urls", "evidence_url", "endpoint"}
+REF_FIELDS = dict.fromkeys((*SOURCE_FIELDS, "endpoint", "kind", "id", "name", "type", "date",
+                           "timestamp", "method", "status", "http_status", "checked_at"))
 
 
 @dataclass(frozen=True)
@@ -232,8 +235,9 @@ def _board_url(value, token):
         return None
     try:
         parsed = urlsplit(value)
-        if parsed.netloc in PUBLIC_HOSTS and parsed.scheme == "https":
-            result = candidate(value, parsed.netloc)
+        if (parsed.hostname in PUBLIC_HOSTS and parsed.scheme == "https"
+                and re.fullmatch(r"/[^/]+/?", parsed.path)):
+            result = candidate(value, parsed.hostname)
             if result and result[0]["token"].lower() == token.lower():
                 return result
     except ValueError:
@@ -241,26 +245,39 @@ def _board_url(value, token):
     return None
 
 
-def _source_refs(value, depth=0):
+def _source_refs(value, key="", depth=0):
     """Retain bounded provenance fields, without query strings or blob copies."""
     if depth < 3 and isinstance(value, (dict, list)):
         if isinstance(value, list):
-            return [_source_refs(item, depth + 1) for item in value[:20]]
-        keys = ("url", "source_url", "endpoint", "kind", "id", "name", "type", "source", "date",
-                "timestamp", "method", "status", "http_status", "checked_at")
-        return {key: _source_refs(value[key], depth + 1) for key in keys if key in value}
-    if type(value) is int and 0 <= value <= 999:
+            return [_source_refs(item, key, depth + 1) for item in value[:20]]
+        return {field: _source_refs(value[field], field, depth + 1) for field in REF_FIELDS if field in value}
+    if key not in URL_REF_FIELDS and type(value) is int and 0 <= value <= 999:
         return value
     try:
         value = _text(value, 2048)
-        if "://" in value:
-            if not safe_public_url(value):
+        if (key in URL_REF_FIELDS or "://" in value or value.startswith(("/", "./", "../"))
+                or key in SOURCE_FIELDS and ("?" in value or "#" in value)):
+            if "\\" in value or any(char.isspace() for char in value):
                 return ""
             parsed = urlsplit(value)
+            if parsed.scheme or parsed.netloc:
+                absolute = "https:" + value if not parsed.scheme else value
+                if "@" in parsed.netloc or not safe_public_url(absolute):
+                    return ""
+            elif value.startswith("//") or "://" in value:
+                return ""
             return parsed._replace(query="", fragment="").geturl()
         return value
     except ValueError:
         return ""
+
+
+def catalog_source_evidence(row):
+    refs = {key: _source_refs(row[key], key) for key in SOURCE_FIELDS if key in row}
+    region = _source_refs(row.get("region"))
+    if isinstance(region, str) and region.lower() in {"us", "eu", "global"}:
+        refs["region"] = region.lower()
+    return refs
 
 
 @dataclass(frozen=True)
@@ -277,6 +294,45 @@ class Observation:
     variant_url: str
     observed_url: str
     source_evidence: dict
+    rejection: str = ""
+
+
+def _route(row, provider, token):
+    if provider not in SUPPORTED:
+        return provider, ""
+    observed = []
+    for field in BOARD_URL_FIELDS:
+        value = _first(row, field)
+        if value is None:
+            continue
+        result = _board_url(value, token)
+        if result is None:
+            raise ValueError("invalid_board_url")
+        observed.append(result)
+    region = _text(row.get("region"), 32).lower()
+    expected = {provider}
+    if provider in {"lever", "lever_eu"}:
+        if region not in {"", "us", "eu", "global"} or (provider == "lever_eu" and region == "us"):
+            raise ValueError("invalid_region")
+        expected = {"lever_eu"} if provider == "lever_eu" or region == "eu" else {"lever"}
+        if provider == "lever" and region in {"", "global"}:
+            expected.add("lever_eu")
+    routes = {board["provider"] for board, _ in observed}
+    if len(routes) > 1 or routes - expected:
+        raise ValueError("conflicting_board_url")
+    if observed:
+        board, url = observed[0]
+        return board["provider"], url
+    return ("lever_eu" if provider == "lever" and region == "eu" else provider), ""
+
+
+def _variant_url(provider, token):
+    if provider not in SUPPORTED:
+        return ""
+    url = public_board_url(provider, token)
+    if not candidate(url, urlsplit(url).netloc):
+        raise ValueError("invalid_slug")
+    return url
 
 
 def _observation(source_id, line, row):
@@ -285,7 +341,7 @@ def _observation(source_id, line, row):
     if source_id == "last-round-ai":
         raw_provider, raw_slug, company, date = (row[field] for field in
                                                  ("ats_vendor", "board_slug", "company_name", "last_crawled"))
-        status, region, refs, supplied_url = "not_reported", "", {}, None
+        status = "not_reported"
     else:
         raw_provider = _first(row, "ats", "provider", "ats_vendor", "platform", "ats_type")
         raw_slug = _first(row, "slug", "board_slug", "board_token", "token")
@@ -295,36 +351,35 @@ def _observation(source_id, line, row):
         status = _text(row.get("status"), 32).lower()
         if status not in STATUSES:
             raise ValueError("invalid_status")
-        region = _text(row.get("region"), 32).lower()
-        supplied_url = _first(row, *BOARD_URL_FIELDS)
-        refs = {key: _source_refs(row[key]) for key in SOURCE_FIELDS if key in row}
-        if region:
-            refs["region"] = region
     provider = _text(raw_provider, 32).lower().replace("-", "_")
     if provider not in PROVIDERS:
         raise ValueError("unknown_provider")
     token = _slug(raw_slug)
-    observed = _board_url(supplied_url, token)
-    if provider in {"lever", "lever_eu"}:
-        if region not in {"", "us", "eu", "global"}:
-            raise ValueError("invalid_region")
-        if region == "eu" or (region in {"", "global"} and observed and observed[0]["provider"] == "lever_eu"):
-            provider = "lever_eu"
-        if provider == "lever_eu" and region == "us":
-            raise ValueError("invalid_region")
-    variant_url = observed_url = ""
-    disposition = "unsupported" if provider in UNSUPPORTED else "candidate"
-    if provider in SUPPORTED:
-        variant_url = public_board_url(provider, token)
-        if not candidate(variant_url, urlsplit(variant_url).netloc):
-            raise ValueError("invalid_slug")
-        observed_url = observed[1] if observed and observed[0]["provider"] == provider else ""
-        if status == "dead":
-            disposition = "dead"
+    variant_url = _variant_url(provider, token)
+    rejection = observed_url = ""
+    refs = {}
+    if source_id != "last-round-ai":
+        try:
+            routed_provider, observed_url = _route(row, provider, token)
+            variant_url = _variant_url(routed_provider, token)
+            provider = routed_provider
+        except ValueError as error:
+            if status != "withdrawn":
+                raise
+            rejection = str(error)
+        refs = catalog_source_evidence(row)
+    disposition = "unsupported" if provider in UNSUPPORTED else "dead" if status == "dead" else "candidate"
     if status == "withdrawn":
         disposition = "withdrawn"
-    return Observation(line, f"{provider}:{token.lower()}", provider, raw_provider, _text(company, 512),
-                       raw_slug, _text(date, 100), status, disposition, variant_url, observed_url, refs)
+    try:
+        company, date = _text(company, 512), _text(date, 100)
+    except ValueError as error:
+        if status != "withdrawn":
+            raise
+        rejection = rejection or str(error)
+        company = date = ""
+    return Observation(line, f"{provider}:{token.lower()}", provider, raw_provider, company,
+                       raw_slug, date, status, disposition, variant_url, observed_url, refs, rejection)
 
 
 def _records(body, source_id):
@@ -354,7 +409,8 @@ def observations(body, source_id):
             except (UnicodeError, ValueError) as error:
                 reason = str(error)
                 rejected[reason if reason in {"invalid_row", "invalid_status", "invalid_slug", "unknown_provider",
-                                             "invalid_region", "invalid_metadata"} else "invalid_row"] += 1
+                                             "invalid_region", "invalid_metadata", "invalid_board_url",
+                                             "conflicting_board_url"} else "invalid_row"] += 1
     except csv.Error:
         raise ValueError("Malformed LastRound AI CSV") from None
     return rows, rejected
