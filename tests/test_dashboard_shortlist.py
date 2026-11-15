@@ -48,7 +48,7 @@ class ShortlistContractTests(unittest.TestCase):
             self.assertTrue(job["official_url"].startswith("https://example.org/"))
             self.assertTrue(2 <= len(job["fit_reasons"]) <= 3)
         statuses = {job["availability_status"] for job in shortlist["jobs"]}
-        self.assertEqual(statuses, {"verified_current", "unverified", "closed"})
+        self.assertEqual(statuses, {"verified_current", "not_yet_verified", "no_longer_open"})
 
     def test_missing_file_and_empty_list_are_empty_states(self):
         self.assertIsNone(load_shortlist(None))
@@ -69,7 +69,7 @@ class ShortlistContractTests(unittest.TestCase):
         self.assertEqual(job["fit_reasons"], ["ok"])
         self.assertEqual(job["review_priority"], "unassessed")
         # A verification claim with no real check date is shown as not verified.
-        self.assertEqual(job["availability_status"], "unverified")
+        self.assertEqual(job["availability_status"], "not_yet_verified")
 
     def test_exact_safe_posting_url_is_kept(self):
         url = "https://jobs.lever.co/example/abc-123?lever-origin=applied"
@@ -89,13 +89,13 @@ class ShortlistContractTests(unittest.TestCase):
 
     def test_filters_keep_file_order(self):
         jobs = self.write([
-            record(review_id="a", review_priority="consider", availability_status="unverified"),
+            record(review_id="a", review_priority="consider", availability_status="not_yet_verified"),
             record(review_id="b", employer="Transit Council"),
             record(review_id="c"),
         ])["jobs"]
         ids = lambda shown: [job["review_id"] for job in shown]
         self.assertEqual(ids(filter_jobs(jobs, priority=["prioritize"])), ["b", "c"])
-        self.assertEqual(ids(filter_jobs(jobs, availability=["unverified"])), ["a"])
+        self.assertEqual(ids(filter_jobs(jobs, availability=["not_yet_verified"])), ["a"])
         self.assertEqual(ids(filter_jobs(jobs, search="transit  council")), ["b"])
 
     def test_first_real_shortlist_priority_and_availability_contract(self):
@@ -113,9 +113,23 @@ class ShortlistContractTests(unittest.TestCase):
         self.assertEqual([x["review_priority"] for x in jobs],
                          ["high", "medium", "high"])
         self.assertEqual([x["availability_status"] for x in jobs],
-                         ["verified_current", "unverified", "closed"])
+                         ["verified_current", "not_yet_verified", "no_longer_open"])
         self.assertEqual(len(filter_jobs(jobs, priority=["high"])), 2)
-        self.assertEqual(len(filter_jobs(jobs, availability=["unverified"])), 1)
+        self.assertEqual(len(filter_jobs(jobs, availability=["not_yet_verified"])), 1)
+
+    def test_old_status_names_are_not_accepted(self):
+        jobs = self.write([
+            record(review_id="old-open", availability_status="unverified", availability_checked_at=None),
+            record(review_id="old-closed", availability_status="closed"),
+        ])["jobs"]
+        self.assertEqual([x["availability_status"] for x in jobs], ["not_yet_verified"] * 2)
+
+    def test_timezone_aware_check_times_are_shown_in_utc(self):
+        job = self.write([record(availability_checked_at="2026-11-15T01:30:00-07:00")])["jobs"][0]
+        self.assertEqual(job["availability_status"], "verified_current")
+        self.assertEqual(job["availability_checked"], "Nov 15, 2026 at 08:30 UTC")
+        naive = self.write([record(availability_checked_at="2026-11-15T01:30:00")])["jobs"][0]
+        self.assertEqual(naive["availability_status"], "not_yet_verified")
 
     def test_path_resolution(self):
         self.assertIsNone(shortlist_path({}))
@@ -170,7 +184,7 @@ class ShortlistAppTests(unittest.TestCase):
         main = list(app.main)
         header = next(i for i, e in enumerate(main) if getattr(e, "value", None) == "Shortlist")
         self.assertEqual(main[header + 1].text_input[0].key, "shortlist_search")
-        self.assertEqual([e.value for e in app.error], ["Closed or unavailable (checked Nov 10, 2026) · Priority: Deprioritize"])
+        self.assertEqual([e.value for e in app.error], ["No longer open (checked Nov 10, 2026) · Priority: Deprioritize"])
         self.assertTrue(any("DEMO SHORTLIST" in notice.value for notice in app.warning))
         self.assertIn("**Showing 24 of 24 curated jobs** · 16 verified current · Generated "
                       "Nov 15, 2026 at 00:00 UTC", [m.value for m in app.markdown])
@@ -179,7 +193,7 @@ class ShortlistAppTests(unittest.TestCase):
         self.assertTrue(any("\\$58k" in c.value for c in app.caption))
         self.assertTrue(any("session only" in c.value for c in app.caption))
 
-        app.multiselect(key="shortlist_availability").set_value(["unverified"]).run()
+        app.multiselect(key="shortlist_availability").set_value(["not_yet_verified"]).run()
         app.multiselect(key="shortlist_priority").set_value(["verify_first"]).run()
         self.assertIn("**Showing 4 of 24 curated jobs**", " ".join(m.value for m in app.markdown))
         app.radio(key="feedback_demo-003").set_value("would_apply").run()

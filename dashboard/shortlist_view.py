@@ -58,9 +58,9 @@ def render_card(job, saved_feedback, target):
         priority = PRIORITY_LABELS[job["review_priority"]]
         if job["availability_status"] == "verified_current":
             st.success(f'Verified current on {job["availability_checked"]} · Priority: {priority}')
-        elif job["availability_status"] == "closed":
+        elif job["availability_status"] == "no_longer_open":
             checked = f' (checked {job["availability_checked"]})' if job["availability_checked"] else ""
-            st.error(f"Closed or unavailable{checked} · Priority: {priority}")
+            st.error(f"No longer open{checked} · Priority: {priority}")
         else:
             st.warning(f"NOT YET VERIFIED. Confirm the posting is open · Priority: {priority}")
 

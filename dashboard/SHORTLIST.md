@@ -35,7 +35,7 @@ the problem and no cards.
       "gaps_to_verify": ["Requirement or unknown worth checking"],
       "review_priority": "prioritize",
       "availability_status": "verified_current",
-      "availability_checked_at": "2026-11-14"
+      "availability_checked_at": "2026-11-14T15:30:00-05:00"
     }
   ]
 }
@@ -44,7 +44,7 @@ the problem and no cards.
 | Field | Required | Rules |
 | --- | --- | --- |
 | `schema_version` | yes | Must be `1`. Any other value is rejected. |
-| `generated_at` | no | `YYYY-MM-DD` or UTC `YYYY-MM-DDTHH:MM:SSZ`. |
+| `generated_at` | no | `YYYY-MM-DD` or a timezone-aware ISO timestamp. |
 | `demo` | no | `true` shows a **DEMO SHORTLIST** banner and keeps feedback session-only. |
 | `jobs` | yes | Array, at most 200 items. Order is preserved as the display order. |
 | `review_id` | yes | Unique, `[A-Za-z0-9][A-Za-z0-9._-]*`. Same ID as the assessment output. |
@@ -54,8 +54,8 @@ the problem and no cards.
 | `fit_reasons` | no | 2–3 short, evidence-based strings recommended. At most 5 are shown. |
 | `gaps_to_verify` | no | Requirements or unknowns to check. At most 5 are shown. |
 | `review_priority` | no | `high` or `medium` (Codex #73 shortlisted candidates), or `prioritize`, `consider`, `verify_first`, `deprioritize`, or `unassessed` (rubric bands in `docs/prospect-ai-assessment-v1.md`). Anything else shows as `unassessed`. |
-| `availability_status` | no | `verified_current`, `unverified` or `not_yet_verified`, `closed` or `no_longer_open`. Alternative terms normalize to the same display/filter states; unrecognized values remain `unverified`. |
-| `availability_checked_at` | with `verified_current` | Date the posting was actually checked. `verified_current` without a valid date is shown as **NOT YET VERIFIED**. |
+| `availability_status` | no | `not_yet_verified`, `verified_current`, or `no_longer_open` (the values validated by `tools/prepare_shortlist.py`). Anything else shows as `not_yet_verified`. |
+| `availability_checked_at` | with `verified_current` or `no_longer_open` | When the posting was actually checked: `YYYY-MM-DD` or a timezone-aware ISO timestamp (`Z` or `±HH:MM`), shown in UTC. `null` for `not_yet_verified`. `verified_current` without a valid time is shown as **NOT YET VERIFIED**. |
 
 ## Untrusted data
 

@@ -59,7 +59,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "verify_first",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -118,7 +118,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "deprioritize",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -178,7 +178,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "verify_first",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -237,7 +237,7 @@
         "Synthetic gap: posting does not state the salary range."
       ],
       "review_priority": "deprioritize",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -296,7 +296,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "verify_first",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -355,7 +355,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "deprioritize",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -415,7 +415,7 @@
         "Synthetic gap: confirm whether a writing sample is required."
       ],
       "review_priority": "verify_first",
-      "availability_status": "unverified",
+      "availability_status": "not_yet_verified",
       "availability_checked_at": null
     },
     {
@@ -474,7 +474,7 @@
         "Synthetic gap: posting does not state the salary range."
       ],
       "review_priority": "deprioritize",
-      "availability_status": "closed",
+      "availability_status": "no_longer_open",
       "availability_checked_at": "2026-11-10"
     }
   ]

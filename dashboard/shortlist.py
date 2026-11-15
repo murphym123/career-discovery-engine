@@ -32,17 +32,16 @@ PRIORITY_LABELS = {
     "prioritize": "Prioritize", "consider": "Consider", "verify_first": "Verify first",
     "deprioritize": "Deprioritize", "unassessed": "Unassessed",
 }
+# Matches availability_status in tools/prepare_shortlist.py (PR #75).
 AVAILABILITY_LABELS = {
-    "verified_current": "Verified current", "unverified": "Not yet verified",
-    "closed": "Closed or unavailable",
-}
-AVAILABILITY_ALIASES = {
-    "not_yet_verified": "unverified",
-    "no_longer_open": "closed",
+    "verified_current": "Verified current", "not_yet_verified": "Not yet verified",
+    "no_longer_open": "No longer open",
 }
 FEEDBACK_LABELS = {"would_apply": "Would apply", "maybe": "Maybe", "no": "No"}
 _DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
-_TIMESTAMP = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z")
+_TIMESTAMP = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})"
+)
 
 
 class ShortlistError(ValueError):
@@ -103,12 +102,11 @@ def _job(privacy, raw, index):
     if not isinstance(review_id, str) or privacy.native(review_id) is None:
         raise ShortlistError(f"jobs[{index}] has a missing or unsafe review_id")
     priority = raw.get("review_priority")
-    status = AVAILABILITY_ALIASES.get(raw.get("availability_status"),
-                                      raw.get("availability_status"))
+    status = raw.get("availability_status")
     checked = _checked(raw.get("availability_checked_at"))
     if status not in AVAILABILITY_LABELS or (status == "verified_current" and checked is None):
         # A verification claim without a real check date is not shown as verified.
-        status = "unverified"
+        status = "not_yet_verified"
     official = _url(privacy, raw.get("official_url"))
     return {
         "review_id": review_id,
