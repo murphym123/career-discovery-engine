@@ -3,8 +3,8 @@ import streamlit as st
 
 from dashboard.browse import markdown_text as browse_markdown
 from dashboard.shortlist import (
-    AVAILABILITY_LABELS, FEEDBACK_LABELS, PRIORITY_LABELS, ShortlistError,
-    feedback_path, filter_jobs, load_feedback, load_shortlist, save_feedback, shortlist_path,
+    AVAILABILITY_LABELS, FEEDBACK_LABELS, LISTING_FIELDS, LISTING_LINKS, PRIORITY_LABELS,
+    SOURCE_FIELDS, WITHHELD, ShortlistError, feedback_path, link_source, filter_jobs, load_feedback, load_shortlist, save_feedback, shortlist_path,
 )
 
 NO_FEEDBACK = "none"
@@ -45,6 +45,44 @@ def record_feedback(target, review_id):
         st.session_state.shortlist_feedback_error = True
 
 
+def cell(value):
+    return "_withheld (unsafe text)_" if value == WITHHELD else markdown_text(value)
+
+
+def render_source(job):
+    listing = job["listing"]
+    if listing is None:
+        name, host = link_source(job["official_url"])
+        if host:
+            label = f"{name} ({host})" if name else host
+            st.markdown(f"**Source:** {markdown_text(label)} · _from the posting link_")
+        else:
+            st.markdown("**Source:** _not supplied_")
+        return
+    parts = [f"{label} {cell(listing[key])}" for key, label in SOURCE_FIELDS.items()
+             if listing[key]]
+    for key, label in LISTING_LINKS.items():
+        if listing[key] == WITHHELD:
+            parts.append(f"{label} _withheld (unsafe link)_")
+        elif listing[key]:
+            parts.append(f"[{label}](<{listing[key]}>)")
+    st.markdown("**Source:** " + (" · ".join(parts) or "_not captured_"))
+
+
+def render_listing(listing):
+    st.markdown("**Pulled from the listing**")
+    if listing is None:
+        st.caption("This shortlist file does not include Prospect's extracted listing fields.")
+        return
+    captured = [(label, listing[key]) for key, label in LISTING_FIELDS.items() if listing[key]]
+    if captured:
+        rows = "\n".join(f"| {label} | {cell(value)} |" for label, value in captured)
+        st.markdown("| Field | Value |\n| --- | --- |\n" + rows)
+    missing = [label for key, label in LISTING_FIELDS.items() if not listing[key]]
+    if missing:
+        st.caption("Not captured: " + ", ".join(missing))
+
+
 def render_card(job, saved_feedback, target):
     with st.container(border=True):
         st.markdown("### " + markdown_text(job["title"] or "Job title unavailable"))
@@ -64,13 +102,8 @@ def render_card(job, saved_feedback, target):
         else:
             st.warning(f"NOT YET VERIFIED. Confirm the posting is open · Priority: {priority}")
 
-        fit, gaps = st.columns(2)
-        fit.markdown("**Why it fits**")
-        fit.markdown("\n".join(f"- {markdown_text(reason)}" for reason in job["fit_reasons"])
-                     or "_No fit evidence supplied._")
-        gaps.markdown("**Check before applying**")
-        gaps.markdown("\n".join(f"- {markdown_text(gap)}" for gap in job["gaps_to_verify"])
-                      or "_No open questions supplied._")
+        render_source(job)
+        render_listing(job["listing"])
 
         posting, apply, reaction = st.columns([1, 1, 2])
         if job["official_url"]:

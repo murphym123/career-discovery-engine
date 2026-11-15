@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from dashboard.shortlist import (
-    ShortlistError, feedback_path, filter_jobs, load_feedback, load_shortlist, save_feedback,
+    WITHHELD, ShortlistError, link_source, feedback_path, filter_jobs, load_feedback, load_shortlist, save_feedback,
     shortlist_path,
 )
 
@@ -131,6 +131,33 @@ class ShortlistContractTests(unittest.TestCase):
         naive = self.write([record(availability_checked_at="2026-11-15T01:30:00")])["jobs"][0]
         self.assertEqual(naive["availability_status"], "not_yet_verified")
 
+    def test_listing_fields_are_shown_as_captured_or_marked_missing_or_withheld(self):
+        job = self.write([record(listing={
+            "provider": "greenhouse", "board_key": "civic", "source": "targeted_snapshot",
+            "retrieved_at": "2026-11-14T18:02:11Z", "title": "Policy Analyst",
+            "company": "Contact hr@private.example", "posted_at": "2026-11-01", "employment_type": "",
+            "description_truncated": True, "description": "x" * 1000, "unexpected": "ignored",
+            "url": "https://boards.greenhouse.io/civic/jobs/42",
+            "original_posting_url": "javascript:alert(1)",
+        })])["jobs"][0]
+        listing = job["listing"]
+        self.assertEqual((listing["provider"], listing["board_key"], listing["title"]),
+                         ("greenhouse", "civic", "Policy Analyst"))
+        self.assertEqual(listing["company"], WITHHELD)  # redacted, not reported as missing
+        self.assertIsNone(listing["employment_type"])
+        self.assertIsNone(listing["location"])
+        self.assertLessEqual(len(listing["description"]), 300)
+        self.assertEqual(listing["url"], "https://boards.greenhouse.io/civic/jobs/42")
+        self.assertEqual(listing["original_posting_url"], WITHHELD)
+        self.assertNotIn("unexpected", listing)
+        self.assertIsNone(self.write([record()])["jobs"][0]["listing"])
+
+    def test_link_source_names_known_boards(self):
+        self.assertEqual(link_source("https://job-boards.greenhouse.io/x/jobs/1"),
+                         ("Greenhouse", "job-boards.greenhouse.io"))
+        self.assertEqual(link_source("https://careers.example.org/1"), (None, "careers.example.org"))
+        self.assertEqual(link_source(None), (None, None))
+
     def test_path_resolution(self):
         self.assertIsNone(shortlist_path({}))
         self.assertEqual(shortlist_path({"PROSPECT_DATA_DIR": "/d"}), Path("/d/shortlist.json"))
@@ -191,6 +218,17 @@ class ShortlistAppTests(unittest.TestCase):
         self.assertTrue(any("NOT YET VERIFIED" in notice.value for notice in app.warning))
         self.assertTrue(any("Verified current on Nov 1, 2026" in s.value for s in app.success))
         self.assertTrue(any("\\$58k" in c.value for c in app.caption))
+        text = " ".join(m.value for m in app.markdown)
+        self.assertNotIn("Why it fits", text)
+        self.assertNotIn("Check before applying", text)
+        self.assertIn("**Pulled from the listing**", text)
+        self.assertIn("| Source job ID | demo-4100 |", text)
+        self.assertIn("**Source:** Source targeted\\_snapshot · Provider greenhouse · "
+                      "Board demo-civic-lab", text)
+        self.assertIn("**Source:** example\\.org · _from the posting link_", text)
+        self.assertTrue(any("does not include Prospect's extracted listing fields" in c.value
+                            for c in app.caption))
+        self.assertTrue(any(c.value.startswith("Not captured: ") for c in app.caption))
         self.assertTrue(any("session only" in c.value for c in app.caption))
 
         app.multiselect(key="shortlist_availability").set_value(["not_yet_verified"]).run()

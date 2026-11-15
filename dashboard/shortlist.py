@@ -37,6 +37,29 @@ AVAILABILITY_LABELS = {
     "verified_current": "Verified current", "not_yet_verified": "Not yet verified",
     "no_longer_open": "No longer open",
 }
+# Fields Prospect extracts from each listing (the preferred variant's ``data`` in the
+# immediate-review export, career_engine/immediate_review.py in PR #67/#75).
+LISTING_FIELDS = {
+    "title": "Title", "company": "Company", "location": "Location", "geography": "Geography",
+    "work_arrangement": "Work arrangement", "employment_type": "Employment type",
+    "category": "Category", "posted_at": "Posted", "updated_at": "Updated",
+    "closing_at": "Closing", "record_kind": "Record kind", "detail_status": "Detail status",
+    "evidence_status": "Evidence status", "source_id": "Source job ID",
+    "description": "Description (opening text)",
+}
+SOURCE_FIELDS = {
+    "source": "Source", "provider": "Provider", "board_key": "Board", "retrieved_at": "Retrieved",
+}
+LISTING_LINKS = {"url": "Listing link", "original_posting_url": "Original posting link"}
+WITHHELD = "withheld"
+DESCRIPTION_LIMIT = 300
+# Known job-board hosts, used only to name the source when no listing data is supplied.
+KNOWN_HOSTS = {
+    "greenhouse.io": "Greenhouse", "lever.co": "Lever", "ashbyhq.com": "Ashby",
+    "applytojob.com": "JazzHR", "jazzhr.com": "JazzHR", "icims.com": "iCIMS",
+    "usajobs.gov": "USAJOBS", "myworkdayjobs.com": "Workday", "smartrecruiters.com": "SmartRecruiters",
+    "workable.com": "Workable", "bamboohr.com": "BambooHR",
+}
 FEEDBACK_LABELS = {"would_apply": "Would apply", "maybe": "Maybe", "no": "No"}
 _DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 _TIMESTAMP = re.compile(
@@ -87,6 +110,37 @@ def _checked(value):
     return None
 
 
+def _listing_value(privacy, value, limit):
+    """Return the captured text, WITHHELD when redaction hides it, or None when absent."""
+    if isinstance(value, bool) or isinstance(value, (int, float)):
+        value = str(value)
+    if not isinstance(value, str) or not value.strip():
+        return None
+    return _text(privacy, value, limit) or WITHHELD
+
+
+def _listing(privacy, raw):
+    """Project the optional ``listing`` object: Prospect's extracted fields, as captured."""
+    if not isinstance(raw, dict):
+        return None
+    fields = {key: _listing_value(privacy, raw.get(key),
+                                  DESCRIPTION_LIMIT if key == "description" else 200)
+              for key in (*LISTING_FIELDS, *SOURCE_FIELDS)}
+    for key in LISTING_LINKS:
+        value = raw.get(key)
+        fields[key] = _url(privacy, value) or (WITHHELD if isinstance(value, str) and value else None)
+    return fields
+
+
+def link_source(url):
+    """Name the job board from a posting link, for files without listing data."""
+    host = (urlsplit(url).hostname or "") if url else ""
+    for suffix, name in KNOWN_HOSTS.items():
+        if host == suffix or host.endswith("." + suffix):
+            return name, host
+    return (None, host) if host else (None, None)
+
+
 def _url(privacy, value):
     """Keep the exact posting URL only when Prospect's URL projection accepts it."""
     if not isinstance(value, str) or len(value) > 2048 or privacy.url(value) is None:
@@ -122,6 +176,7 @@ def _job(privacy, raw, index):
         "review_priority": priority if priority in PRIORITY_LABELS else "unassessed",
         "availability_status": status,
         "availability_checked": checked,
+        "listing": _listing(privacy, raw.get("listing")),
     }
 
 
