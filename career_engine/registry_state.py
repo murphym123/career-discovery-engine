@@ -25,6 +25,9 @@ def strict_registry(data):
         if type(value) is not type(default):raise ValueError('registry_field_type')
         if isinstance(default,int) and value<0:raise ValueError('registry_negative_cursor')
     result={**empty_registry(),**data}
+    blocked=result.get('catalog_blocked_boards',{})
+    if not isinstance(blocked,dict) or any(value is not True for value in blocked.values()):
+        raise ValueError('registry_catalog_blocklist')
     for key,board in result['boards'].items():
         if not isinstance(board,dict):raise ValueError('registry_board_type')
         parsed=board_from_url(board.get('url'))

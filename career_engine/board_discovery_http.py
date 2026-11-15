@@ -32,10 +32,12 @@ class Transport(Protocol):
 
 
 class RequestsTransport:
+    origins = ORIGINS
+
     def __init__(self, contact: str):
         if not contact or any(not 32 < ord(c) < 127 for c in contact):
             raise ValueError("Provide a public operator contact without spaces")
-        self.sessions = {origin: requests.Session() for origin in ORIGINS}
+        self.sessions = {origin: requests.Session() for origin in self.origins}
         for session in self.sessions.values():
             session.trust_env = False  # no proxy configuration or netrc authentication
             session.headers.update({"User-Agent": f"{USER_AGENT}/1.0 (contact: {contact})",

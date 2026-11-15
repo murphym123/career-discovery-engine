@@ -1,4 +1,5 @@
 """Transactions for discovery checkpoints in Prospect's existing SQLite store."""
+from collections import Counter
 from contextlib import contextmanager
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -10,6 +11,7 @@ from urllib.parse import urlsplit
 
 from career_engine.ats import PUBLIC_HOSTS
 from career_engine.ats_registry import empty_registry, upsert_verified_board
+from career_engine.board_catalogs import CATALOG_CAMPAIGN, SOURCES
 from career_engine.board_discovery_http import Response
 from career_engine.board_indexes import EVIDENCE_KINDS, INDEX_URLS, Page, Plan, board_probe_url, candidate, source_time
 from career_engine.registry_state import read_registry, save_registry
@@ -23,6 +25,12 @@ def utc(epoch: float) -> str:
 
 def cursor_digest(cursor: str) -> str:
     return sha256(cursor.encode()).hexdigest()
+
+
+CATALOG_SCOPE = """
+    AND EXISTS (SELECT 1 FROM board_catalog_evidence e WHERE e.board_key=v.board_key
+                AND e.variant_url=v.url AND e.disposition='candidate')
+"""
 
 
 class DiscoveryState:
@@ -43,6 +51,8 @@ class DiscoveryState:
             yield
 
     def setup(self, name: str, plan: Plan):
+        if name == CATALOG_CAMPAIGN:
+            raise ValueError("Use the public catalog CLI for the reserved catalog campaign")
         encoded = json.dumps({**asdict(plan), "through": plan.through.astimezone(timezone.utc).isoformat()},
                              sort_keys=True)
         with self.store.transaction() as db:
@@ -75,11 +85,15 @@ class DiscoveryState:
     def last_attempt(self) -> int:
         return self.db.execute("SELECT coalesce(max(id), 0) FROM board_discovery_attempt").fetchone()[0]
 
-    def variants(self, origin: str, through: int):
-        return self.db.execute("""
+    def variants(self, origin: str, through: int, *, catalog_only=False):
+        scope = CATALOG_SCOPE if catalog_only else ""
+        return self.db.execute(f"""
             SELECT v.* FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
             WHERE v.origin=? AND v.last_attempt<=? AND v.status IN ('candidate', 'deferred', 'failed')
-                AND b.verified_url IS NULL ORDER BY v.last_attempt, v.id
+                AND b.verified_url IS NULL
+                AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
+                {scope}
+            ORDER BY v.last_attempt, v.id
         """, (origin, through))
 
     def origin(self, origin: str) -> tuple[float, str]:
@@ -115,6 +129,16 @@ class DiscoveryState:
                 total=coalesce(?,total) WHERE id=?
         """, (status, reason, cursor, total, stream["id"]))
 
+    def _add_variant(self, board, now):
+        self.db.execute("""
+            INSERT OR IGNORE INTO board_discovery_board(board_key, first_seen_at) VALUES (?, ?)
+        """, (board["key"], now))
+        self.db.execute("""
+            INSERT OR IGNORE INTO board_discovery_variant(board_key, url, origin, status)
+            SELECT board_key, ?, ?, CASE WHEN verified_url IS NULL THEN 'candidate' ELSE 'superseded' END
+            FROM board_discovery_board WHERE board_key=?
+        """, (board["url"], urlsplit(board_probe_url(board)).hostname, board["key"]))
+
     def record_page(self, stream, page: Page, now: str, *, advance=True) -> str:
         db = self.db
         rejected = page.rejected
@@ -126,15 +150,7 @@ class DiscoveryState:
                 continue
             board, observed = result
             key = board["key"]
-            origin = urlsplit(board_probe_url(board)).hostname
-            db.execute("""
-                INSERT OR IGNORE INTO board_discovery_board(board_key, first_seen_at) VALUES (?, ?)
-            """, (key, now))
-            db.execute("""
-                INSERT OR IGNORE INTO board_discovery_variant(board_key, url, origin, status)
-                SELECT board_key, ?, ?, CASE WHEN verified_url IS NULL THEN 'candidate' ELSE 'superseded' END
-                FROM board_discovery_board WHERE board_key=?
-            """, (board["url"], origin, key))
+            self._add_variant(board, now)
             db.execute("""
                 INSERT OR IGNORE INTO board_discovery_evidence
                     (board_key, stream, observed_url, source_time, source_record, cursor_digest, first_seen_at)
@@ -152,6 +168,55 @@ class DiscoveryState:
             status = "complete" if any_evidence else "empty"
         self.set_stream(stream, status, "page_recorded", cursor=page.cursor)
         return status
+
+    def require_catalog_campaign(self):
+        if self.db.execute("SELECT 1 FROM board_discovery_campaign WHERE name=?",
+                           (CATALOG_CAMPAIGN,)).fetchone() is None:
+            raise ValueError("Import a catalog manifest before running catalog validation")
+
+    def record_catalogs(self, batches, blocks):
+        """Record verified object hashes, policy and candidate evidence atomically."""
+        now = self.store.now()
+        with self.store.transaction() as db:
+            db.execute("INSERT OR IGNORE INTO board_discovery_campaign VALUES (?, ?)",
+                       (CATALOG_CAMPAIGN, '{"kind":"public_catalog"}'))
+            db.executemany("INSERT OR IGNORE INTO board_catalog_block VALUES (?, ?, ?, ?)",
+                           ((key, *proof, now) for key, proof in sorted(blocks.items())))
+            blocked = {row[0] for row in db.execute("SELECT board_key FROM board_catalog_block")}
+            db.executemany("DELETE FROM board_catalog_evidence WHERE board_key=?", ((key,) for key in blocks))
+            for catalog, data_hash, policy_hash, rows, rejected in batches:
+                source = SOURCES[catalog.source_id]
+                metadata = {"source_name": source.name, "revision": catalog.revision, "license": source.license,
+                            "license_url": source.license_url, "attribution": source.attribution,
+                            "attribution_url": source.attribution_url,
+                            "data_input": "local_file" if catalog.data.file else "github_raw",
+                            "changes": "Prospect normalized and deduplicated catalog observations."}
+                if catalog.blocklist:
+                    metadata["blocklist_url"] = catalog.blocklist.url
+                    metadata["blocklist_input"] = "local_file" if catalog.blocklist.file else "github_raw"
+                counts = Counter(row.disposition if row.board_key not in blocked else "blocked" for row in rows)
+                insert = db.execute("""
+                    INSERT OR IGNORE INTO board_catalog_import
+                        (source,url,sha256,blocklist_sha256,metadata,imported_at,counts)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (catalog.source_id, catalog.data.url, data_hash, policy_hash, json.dumps(metadata), now,
+                      json.dumps({"rows": len(rows) + sum(rejected.values()), "rejected": rejected,
+                                  "providers": Counter(row.provider for row in rows), **counts})))
+                if not insert.rowcount:
+                    continue
+                for row in rows:
+                    if row.board_key in blocked:
+                        continue
+                    db.execute("""
+                        INSERT INTO board_catalog_evidence
+                            (batch,line,board_key,provider,raw_provider,company,raw_slug,record_date,source_status,
+                             disposition,variant_url,observed_url,source_evidence)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (insert.lastrowid, row.line, row.board_key, row.provider, row.raw_provider, row.company,
+                          row.raw_slug, row.record_date, row.source_status, row.disposition, row.variant_url,
+                          row.observed_url, json.dumps(row.source_evidence)))
+                    if row.disposition == "candidate":
+                        self._add_variant({"key": row.board_key, "url": row.variant_url, "provider": row.provider}, now)
 
     def set_variant(self, variant, status: str, reason: str, method: str, now: str):
         self.db.execute("""
@@ -187,6 +252,7 @@ class DiscoveryState:
             return self._summary(campaign)
 
     def _summary(self, campaign: str) -> dict:
+        catalog_only = campaign == CATALOG_CAMPAIGN
         if self.db.execute("SELECT 1 FROM board_discovery_campaign WHERE name=?", (campaign,)).fetchone() is None:
             raise ValueError("Unknown board discovery campaign")
         streams = [dict(row) for row in self.db.execute("""
@@ -203,7 +269,8 @@ class DiscoveryState:
             elif (stream["source"] == "commoncrawl" and stream["status"] in {"candidate", "deferred", "failed"}
                   and wayback[stream["host"]]["status"] not in {"failed", "denied", "deferred", "empty"}):
                 stream.update(status="standby", reason="wayback_preferred")
-        counts = dict(self.db.execute("""
+        scope = CATALOG_SCOPE if catalog_only else ""
+        counts = dict(self.db.execute(f"""
             WITH states AS (
                 SELECT v.board_key, CASE
                     WHEN b.verified_url IS NOT NULL THEN 0
@@ -214,6 +281,8 @@ class DiscoveryState:
                     WHEN v.status='failed' THEN 3 ELSE 4 END priority
                 FROM board_discovery_variant v JOIN board_discovery_board b USING (board_key)
                 LEFT JOIN board_discovery_origin o USING (origin)
+                WHERE NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=v.board_key)
+                {scope}
             ), boards AS (
                 SELECT min(priority) AS status FROM states GROUP BY board_key
             ) SELECT status,count(*) FROM boards GROUP BY status
@@ -226,35 +295,107 @@ class DiscoveryState:
                     AND stream IS NULL AND variant IS NULL
             ) ORDER BY o.origin
         """)]
-        return {"streams": streams, "boards": {name: counts.get(i, 0) for i, name in enumerate(names)},
-                "origins": origins,
-                "evidence": self.db.execute("SELECT count(*) FROM board_discovery_evidence").fetchone()[0]}
+        result = {"streams": streams, "boards": {name: counts.get(i, 0) for i, name in enumerate(names)},
+                  "origins": origins,
+                  "evidence": self.db.execute("SELECT count(*) FROM board_discovery_evidence").fetchone()[0]}
+        if catalog_only:
+            imports = []
+            for row in self.db.execute("SELECT * FROM board_catalog_import ORDER BY id"):
+                entry = dict(row)
+                entry.update(json.loads(entry.pop("metadata")))
+                entry["counts"] = json.loads(entry["counts"])
+                imports.append(entry)
+            result["evidence"] = self.db.execute("SELECT count(*) FROM board_catalog_evidence").fetchone()[0]
+            result["imports"] = imports
+            result["blocked_identities"] = self.db.execute("SELECT count(*) FROM board_catalog_block").fetchone()[0]
+            result["unsupported"] = dict(self.db.execute("""
+                SELECT provider,count(DISTINCT board_key) FROM board_catalog_evidence
+                WHERE disposition='unsupported' GROUP BY provider
+            """))
+        return result
 
-    def publish(self, registry_path: Path) -> dict:
+    def unsupported_catalogs(self):
+        return [dict(row) for row in self.db.execute("""
+            SELECT e.board_key,e.provider,e.company,e.raw_slug,e.record_date,e.source_status,e.line,
+                   i.source,i.url,i.sha256
+            FROM board_catalog_evidence e JOIN board_catalog_import i ON i.id=e.batch
+            WHERE e.disposition='unsupported' ORDER BY e.board_key,e.id
+        """)]
+
+    def _catalog_proofs(self, key):
+        for row in self.db.execute("""
+            SELECT e.*,i.source,i.url,i.sha256,i.blocklist_sha256,i.metadata
+            FROM board_catalog_evidence e JOIN board_catalog_import i ON i.id=e.batch
+            WHERE e.board_key=? AND e.disposition='candidate' ORDER BY e.id
+        """, (key,)):
+            yield {"kind": "public_ats_catalog", **json.loads(row["metadata"]),
+                   "source": row["source"], "url": row["url"], "sha256": row["sha256"],
+                   "blocklist_sha256": row["blocklist_sha256"], "source_id": key,
+                   "provider": row["provider"], "raw_provider": row["raw_provider"],
+                   "company": row["company"], "raw_slug": row["raw_slug"], "record_date": row["record_date"],
+                   "source_status": row["source_status"], "board_url": row["variant_url"],
+                   "observed_url": row["observed_url"], "source_record": row["line"],
+                   "source_evidence": json.loads(row["source_evidence"]), "catalog_evidence_id": row["id"]}
+
+    def publish(self, registry_path: Path, *, catalog_only=False) -> dict:
         added = changed = 0
         with self.exclusive():
+            if catalog_only:
+                self.require_catalog_campaign()
             registry = read_registry(registry_path) if registry_path.exists() else empty_registry()
+            blocks = dict.fromkeys((row[0] for row in self.db.execute("SELECT board_key FROM board_catalog_block")), True)
+            policy = {**registry.get("catalog_blocked_boards", {}), **blocks}
+            policy_changed = policy != registry.get("catalog_blocked_boards", {})
+            if policy_changed:
+                registry["catalog_blocked_boards"] = policy
+            for key in policy.keys() & registry["boards"].keys():
+                entry = registry["boards"][key]
+                retained = [proof for proof in entry["evidence"] if proof.get("kind") != "public_ats_catalog"]
+                if retained != entry["evidence"]:
+                    entry["evidence"] = retained
+                    verification = entry.get("discovery_verification")
+                    if isinstance(verification, dict) and "catalog_evidence_id" in verification:
+                        del entry["discovery_verification"]
+                    changed += 1
             for row in self.db.execute("""
                 SELECT b.*,e.id evidence_id,e.observed_url,e.source_time,e.source_record,s.source,s.host,c.plan
                 FROM board_discovery_board b
-                JOIN board_discovery_evidence e ON e.id=(SELECT min(id) FROM board_discovery_evidence WHERE board_key=b.board_key)
-                JOIN board_discovery_stream s ON s.id=e.stream
-                JOIN board_discovery_campaign c ON c.name=s.campaign
-                WHERE b.verified_url IS NOT NULL ORDER BY b.board_key
-            """):
-                endpoint = INDEX_URLS[row["source"]]
-                if row["source"] == "commoncrawl":
-                    endpoint += json.loads(row["plan"])["commoncrawl"] + "-index"
-                proof = {"kind": EVIDENCE_KINDS[row["source"]], "source": row["source"],
-                         "url": endpoint, "pattern": row["host"],
-                         "observed_url": row["observed_url"], "archive_timestamp": row["source_time"],
-                         "source_record": row["source_record"], "source_id": row["board_key"]}
+                LEFT JOIN board_discovery_evidence e ON e.id=(SELECT min(id) FROM board_discovery_evidence WHERE board_key=b.board_key)
+                LEFT JOIN board_discovery_stream s ON s.id=e.stream
+                LEFT JOIN board_discovery_campaign c ON c.name=s.campaign
+                WHERE b.verified_url IS NOT NULL
+                  AND NOT EXISTS (SELECT 1 FROM board_catalog_block q WHERE q.board_key=b.board_key)
+                  AND (?=0 OR EXISTS (SELECT 1 FROM board_catalog_evidence k
+                                       WHERE k.board_key=b.board_key AND k.disposition='candidate'))
+                ORDER BY b.board_key
+            """, (int(catalog_only),)):
+                catalog_proofs = list(self._catalog_proofs(row["board_key"]))
+                if row["board_key"] in policy or (catalog_only and not catalog_proofs):
+                    continue
+                proof = None
+                if row["source"]:
+                    endpoint = INDEX_URLS[row["source"]]
+                    if row["source"] == "commoncrawl":
+                        endpoint += json.loads(row["plan"])["commoncrawl"] + "-index"
+                    proof = {"kind": EVIDENCE_KINDS[row["source"]], "source": row["source"],
+                             "url": endpoint, "pattern": row["host"], "observed_url": row["observed_url"],
+                             "archive_timestamp": row["source_time"], "source_record": row["source_record"],
+                             "source_id": row["board_key"]}
+                if not proof and not catalog_proofs:
+                    continue
                 verification = {"verified_at": row["verified_at"], "method": row["verification"],
-                                "url": row["verified_url"], "evidence_id": row["evidence_id"]}
+                                "url": row["verified_url"]}
+                if proof:
+                    verification["evidence_id"] = row["evidence_id"]
+                else:
+                    selected = next((item for item in catalog_proofs if item["board_url"] == row["verified_url"]),
+                                    catalog_proofs[0])
+                    verification["catalog_evidence_id"] = selected["catalog_evidence_id"]
                 new, updated = upsert_verified_board(registry, row["verified_url"], proof,
-                                                     verification, row["first_seen_at"])
+                                                     verification, row["first_seen_at"],
+                                                     catalog_evidence=catalog_proofs)
                 added += new
                 changed += updated
-            if changed or not registry_path.exists():
+            if changed or policy_changed or not registry_path.exists():
                 save_registry(registry_path, registry)
         return {"added": added, "updated": changed - added, "registry_boards": len(registry["boards"])}

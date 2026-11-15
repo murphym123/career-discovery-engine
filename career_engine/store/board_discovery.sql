@@ -81,3 +81,40 @@ CREATE TABLE IF NOT EXISTS board_discovery_attempt (
 );
 CREATE INDEX IF NOT EXISTS board_discovery_attempt_robots ON board_discovery_attempt(endpoint, id)
     WHERE stream IS NULL AND variant IS NULL;
+
+-- Static catalogs are source evidence, independent of URL index campaigns.
+CREATE TABLE IF NOT EXISTS board_catalog_import (
+    id INTEGER PRIMARY KEY,
+    source TEXT NOT NULL,
+    url TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    blocklist_sha256 TEXT NOT NULL,
+    metadata TEXT NOT NULL,
+    imported_at TEXT NOT NULL,
+    counts TEXT NOT NULL,
+    UNIQUE (source, url, sha256, blocklist_sha256)
+);
+CREATE TABLE IF NOT EXISTS board_catalog_evidence (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    batch INTEGER NOT NULL REFERENCES board_catalog_import(id),
+    line INTEGER NOT NULL,
+    board_key TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    raw_provider TEXT NOT NULL,
+    company TEXT NOT NULL,
+    raw_slug TEXT NOT NULL,
+    record_date TEXT NOT NULL,
+    source_status TEXT NOT NULL,
+    disposition TEXT NOT NULL CHECK (disposition IN ('candidate', 'dead', 'unsupported')),
+    variant_url TEXT NOT NULL,
+    observed_url TEXT NOT NULL,
+    source_evidence TEXT NOT NULL,
+    UNIQUE (batch, line)
+);
+CREATE INDEX IF NOT EXISTS board_catalog_evidence_board ON board_catalog_evidence(board_key, variant_url, disposition);
+CREATE TABLE IF NOT EXISTS board_catalog_block (
+    board_key TEXT PRIMARY KEY,
+    source_url TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    recorded_at TEXT NOT NULL
+);

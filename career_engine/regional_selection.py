@@ -34,8 +34,15 @@ def select_regional_boards(registry,budget=30,exploration_fraction=.2,market=Non
     if not .2<=exploration_fraction<=1:raise ValueError('At least 20% non-targeted exploration is required')
     legacy=select_boards(registry,budget)  # Same eligibility/run progression, retained comparison strategy.
     run=registry['run']
-    eligible=[e for e in registry['boards'].values() if e.get('last_checked_run') is None or
-              (isinstance(e.get('last_checked_run'),int) and run-e['last_checked_run']>=(7 if e.get('status')=='failed' else 1))]
+    blocked=registry.get('catalog_blocked_boards', {})
+    eligible=[
+        e for e in registry['boards'].values()
+        if e['key'] not in blocked and (
+            e.get('last_checked_run') is None or
+            (isinstance(e.get('last_checked_run'), int) and
+             run-e['last_checked_run'] >= (7 if e.get('status') == 'failed' else 1))
+        )
+    ]
     def hashed(e):return hashlib.sha256((str(run)+'|'+e['key']).encode()).hexdigest()
     # No evidence/industry/title/score weighting in this reserved sample.
     platform=lambda e:e['provider'].removesuffix('_eu')

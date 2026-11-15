@@ -69,7 +69,7 @@ def validate_registry(data):
     snapshots=data.get('source_status_snapshots',{})
     if not isinstance(snapshots,dict):raise ValueError('Invalid source snapshots')
     result['source_status_snapshots']={k:v[-3:] for k,v in list(snapshots.items())[:6000] if isinstance(v,list)}
-    for key,b in list(data['boards'].items())[:5000]:
+    for key,b in data['boards'].items():
         if not isinstance(b,dict):continue
         parsed=board_from_url(b.get('url'))
         if parsed and parsed['key']==key:
@@ -92,20 +92,22 @@ def register(registry,url,evidence):
             record={'url':url,'evidence':evidence,'status':'unsupported_platform_not_requested'}
             if not any(r.get('url')==url for r in registry['unsupported']):registry['unsupported'].append(record)
         return False
+    if board['key'] in registry.get('catalog_blocked_boards', {}):
+        return False
     if board['key'] not in registry['boards']:
-        if len(registry['boards'])>=5000:return False
         registry['boards'][board['key']]={**board,'first_seen_at':stamp(),'evidence':[],'last_checked_run':None}
     entry=registry['boards'][board['key']]
     if evidence not in entry['evidence']:
-        entry['evidence'].append(evidence)
+        catalog_evidence=[item for item in entry['evidence'] if item.get('kind')=='public_ats_catalog']
+        prior=[item for item in entry['evidence'] if item.get('kind')!='public_ats_catalog']
         def priority(e):
             return (0 if e.get('kind') in ('source_audit_link','regional_employer_public_link') else 1 if e.get('geography_hint') in ('dc_dmv','in_market','possible_market') else 2)
-        entry['evidence']=sorted(entry['evidence'],key=priority)[:20]
+        entry['evidence']=sorted([*prior,evidence],key=priority)[:20]+catalog_evidence
     entry['last_discovered_at']=stamp()
     return True
 
 
-def upsert_verified_board(registry, url, evidence, verification, first_seen_at):
+def upsert_verified_board(registry, url, evidence, verification, first_seen_at, *, catalog_evidence=()):
     """Project a verified discovery into v1 without the legacy seeding limits.
 
     Full evidence and attempts stay in the discovery tables. Preserve poll
@@ -115,14 +117,16 @@ def upsert_verified_board(registry, url, evidence, verification, first_seen_at):
     if board is None or board['provider'] not in ('greenhouse', 'lever', 'lever_eu', 'ashby'):
         raise ValueError('Invalid verified board')
     previous = registry['boards'].get(board['key'])
-    if previous is not None and previous.get('discovery_verification') == verification:
-        return False, False
     entry = {**(previous if previous is not None else {
         'first_seen_at': first_seen_at, 'evidence': [], 'last_checked_run': None,
     }), **board, 'discovery_verification': verification}
-    if evidence not in entry['evidence']:
-        entry['evidence'] = [*entry['evidence'], evidence]
+    proofs = [evidence] if evidence else []
+    additions = [item for item in (*proofs, *catalog_evidence) if item not in entry['evidence']]
+    if additions:
+        entry['evidence'] = [*entry['evidence'], *additions]
     entry.setdefault('last_discovered_at', verification['verified_at'])
+    if entry == previous:
+        return False, False
     registry['boards'][board['key']] = entry
     return previous is None, True
 
@@ -273,7 +277,9 @@ def select_boards(registry,budget=30):
     if not 1<=budget<=100:raise ValueError('Board budget must be 1–100')
     registry['run']+=1;run=registry['run']
     new=[];known=[]
+    blocked=registry.get('catalog_blocked_boards', {})
     for entry in registry['boards'].values():
+        if entry['key'] in blocked:continue
         # Manual runs only; repeated known failures get a run-based cool-down.
         last=entry.get('last_checked_run')
         if last is None:new.append(entry)

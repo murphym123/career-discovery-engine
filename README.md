@@ -9,6 +9,8 @@ not establish qualifications, job availability or interview probabilities.
 
 [Scalable ATS board discovery](docs/prospect-board-discovery.md) provides a separate, resumable CLI for Wayback, recent urlscan, and eligible Common Crawl fallback, with offline publication of verified boards to the existing registry.
 
+[Public ATS catalog import](docs/prospect-board-catalogs.md) ports pinned LastRound AI and moonie0201 snapshots into the same validation queue and registry, with source attribution and a record of takedowns.
+
 The [Issue #21 iCIMS increment](docs/issue21/ASSESSMENT.md) adds robots-aware
 public iCIMS search inventories, observed regional search-form options and
 stable posting identities. It repairs `US-DC` / `US-DC-Washington` aliases

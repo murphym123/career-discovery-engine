@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 from uuid import uuid4
 
 from career_engine.ats import board_from_url
+from career_engine.board_catalogs import CATALOG_CAMPAIGN
 from career_engine.board_discovery_http import ORIGINS, USER_AGENT, Response, Transport, access_stop, retry_seconds
 from career_engine.board_discovery_state import DiscoveryState, utc
 from career_engine.board_indexes import INDEX_URLS, Plan, board_probe_url, index_url, parse_page
@@ -65,11 +66,15 @@ class Work:
 
 
 class Discovery:
-    def __init__(self, state: DiscoveryState, transport: Transport, campaign: str, plan: Plan,
+    def __init__(self, state: DiscoveryState, transport: Transport, campaign: str, plan: Plan | None,
                  limits: Limits, *, mode="both", denied_prefixes=(), clock=time.time,
                  monotonic=time.monotonic, sleep=time.sleep, stopping: Callable[[], bool] = lambda: False):
         if mode not in {"both", "index", "validate"}:
             raise ValueError("Invalid discovery mode")
+        if campaign == CATALOG_CAMPAIGN and (plan is not None or mode != "validate"):
+            raise ValueError("Public catalogs only support validation")
+        if plan is None and campaign != CATALOG_CAMPAIGN:
+            raise ValueError("Index campaigns require a discovery plan")
         if any(not prefix.startswith(tuple(f"https://{host}/" for host in ORIGINS)) for prefix in denied_prefixes):
             raise ValueError("Deny prefixes must start with an HTTPS discovery origin and /")
         self.state, self.transport, self.campaign, self.plan = state, transport, campaign, plan
@@ -99,7 +104,8 @@ class Discovery:
                 return Work("GET", url, stream=stream)
         if self.mode != "index":
             active_keys = {work.variant["board_key"] for work in active if work.variant is not None}
-            for variant in self.state.variants(origin, self.attempt_checkpoint):
+            for variant in self.state.variants(origin, self.attempt_checkpoint,
+                                               catalog_only=self.campaign == CATALOG_CAMPAIGN):
                 if variant["board_key"] not in active_keys:
                     return Work(variant["method"], board_probe_url(board_from_url(variant["url"])), variant=variant)
         return None
@@ -377,7 +383,10 @@ class Discovery:
 
     def run(self) -> dict:
         with self.state.exclusive(), ThreadPoolExecutor(max_workers=self.limits.concurrency) as pool:
-            self.state.setup(self.campaign, self.plan)
+            if self.campaign == CATALOG_CAMPAIGN:
+                self.state.require_catalog_campaign()
+            else:
+                self.state.setup(self.campaign, self.plan)
             self.attempt_checkpoint = self.state.last_attempt()
             for cached in self.state.robots():
                 rules = RobotsRules("", USER_AGENT)

@@ -2,7 +2,7 @@
 
 Issue [#60](https://github.com/murphym123/career-discovery-engine/issues/60) adds `python -m tools.discover_boards`, an opt-in path for discovering and verifying public boards. It uses Wayback's CDX URL index for both Greenhouse hosts, both Lever regions and Ashby. The recent urlscan query complements Wayback with public scans. An explicitly selected Common Crawl collection can supply fallback URL evidence for a host whose Wayback stream fails, is unavailable or finishes without eligible leads. Issue [#44](https://github.com/murphym123/career-discovery-engine/issues/44) recorded a robots denial on Common Crawl's index route. The fallback checks the current route before making even a page-count request.
 
-The domain-wide discovery, urlscan supplementation, slug filter and HEAD probe strategy adapt [Matt Herzog's `job-boards` source at `da7885c`](https://github.com/mherzog4/job-boards/blob/da7885cff552c513319318f2f31ed23f049f426e/job_boards.py). The [MIT notice](../LICENSES/job-boards-MIT.txt) accompanies the adaptation. This implementation imports neither the upstream seed catalog nor a third-party dataset.
+The domain-wide discovery, urlscan supplementation, slug filter and HEAD probe strategy adapt [Matt Herzog's `job-boards` source at `da7885c`](https://github.com/mherzog4/job-boards/blob/da7885cff552c513319318f2f31ed23f049f426e/job_boards.py). The [MIT notice](../LICENSES/job-boards-MIT.txt) accompanies the adaptation. [Public ATS catalog import](prospect-board-catalogs.md) uses its own CLI with the shared validation queue and registry.
 
 ## Run and resume
 
