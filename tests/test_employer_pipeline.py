@@ -243,6 +243,17 @@ class PipelineIntegrationTests(unittest.TestCase):
         t=collection();data=run_pipeline({'rows':[frame_row()]},r,discovery(site_mapping()),t)
         self.assertFalse(t.requests)
 
+    def test_published_origin_stop_blocks_inventory_of_a_cached_employer_board(self):
+        registry=empty_registry()
+        run_pipeline({'rows':[frame_row()]},registry,discovery(site_mapping()),collection())
+        registry['provider_origin_holds']={'boards-api.greenhouse.io':{'stop_reason':'http_401','not_before':0}}
+        collector=collection()
+        data=run_pipeline({'rows':[frame_row()]},registry,discovery(site_mapping()),collector)
+        self.assertFalse(collector.session.calls)
+        self.assertEqual(data['metrics']['inventories_attempted'],0)
+        channel,=(c for c in data['employers'][0]['channels'] if c.get('board_key')=='greenhouse:syntheticcivic')
+        self.assertEqual(channel['access_state'],'provider_origin_stopped')
+
     def test_secondary_html_pdf_and_email_are_useful_leads_not_empty_successful_inventories(self):
         m=site_mapping('<title>Synthetic Civic</title><a href="/jobs.pdf">Jobs PDF</a><a href="https://www.idealist.org/jobs/example">Jobs</a><a href="mailto:jobs@civic.example">Apply</a>')
         r=empty_registry();t=collection();data=run_pipeline({'rows':[frame_row()]},r,discovery(m),t)

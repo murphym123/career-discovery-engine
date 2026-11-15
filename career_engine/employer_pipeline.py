@@ -6,12 +6,13 @@ Unknown identity and inventory states are useful outputs, never zero vacancies.
 import copy
 import hashlib
 import re
+import time
 from datetime import datetime,timezone,timedelta
 from urllib.parse import urlsplit,urljoin,unquote,urlunsplit
 from urllib.robotparser import RobotFileParser
 
 from career_engine.ats import board_from_url,retrieve_board,FetchError,stamp
-from career_engine.ats_registry import register,observed_ats_urls,UNSUPPORTED
+from career_engine.ats_registry import register,observed_ats_urls,registry_poll_block,UNSUPPORTED
 from career_engine.dc_sources import Document
 from career_engine.employer_discovery import EmployerTransport,website_url
 from career_engine.extract import safe_public_url,strip_html,USER_AGENT
@@ -224,6 +225,7 @@ def finalize_evidence(employers):
 def run_pipeline(frame,registry,discovery_transport,collection_transport,page_cap=3,board_cap=15,detail_budget=2):
     if not 1<=len(frame['rows'])<=40 or not 1<=page_cap<=3 or not 0<=board_cap<=40 or not 0<=detail_budget<=30:raise ValueError('Invalid employer discovery bounds')
     prior=copy.deepcopy(registry);employers=[];board_entities={};records=[];inventories=[];active_cooldowns=set()
+    policy_blocks={}
     for h,until in registry.get('host_not_before',{}).items():
         try:
             if datetime.fromisoformat(until)>datetime.now(timezone.utc):
@@ -261,6 +263,11 @@ def run_pipeline(frame,registry,discovery_transport,collection_transport,page_ca
                      'frame_source_sha256':row['source_sha256'],'location':'Washington, DC','geography_hint':'employer_headquarters_only',
                      'note':'External frame + corroborated website. Employer headquarters does not establish a job worksite.'})
             key=c['board_key']
+            board=registry['boards'].get(key) or board_from_url(c['url'])
+            block=registry_poll_block(registry,board,time.time())
+            if block:
+                policy_blocks[key]=block
+                continue
             if key not in registry['boards']:
                 c['access_state']='registry_capacity_not_registered';continue
             board_entities.setdefault(key,set()).add(row['frame_id'])
@@ -299,7 +306,7 @@ def run_pipeline(frame,registry,discovery_transport,collection_transport,page_ca
         for c in e['channels']:
             if c['kind']!='supported_ats' or not c['identity_verified']:continue
             stats=stats_by_key.get(c['board_key'])
-            c['access_state']=stats['status'] if stats else 'not_attempted_within_collection_cap'
+            c['access_state']=stats['status'] if stats else policy_blocks.get(c['board_key'],'not_attempted_within_collection_cap')
             c['inventory_attempted']=bool(stats);c['index_records']=stats['unique'] if stats else None
             c['described_records']=stats['descriptions'] if stats else None
             c['regional_records']=stats['dc_dmv'] if stats else None

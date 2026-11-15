@@ -11,7 +11,7 @@ from pathlib import Path
 import tempfile
 
 from career_engine.ats import board_from_url
-from career_engine.ats_registry import empty_registry
+from career_engine.ats_registry import CATALOG_KIND, empty_registry, validate_catalog_evidence, validate_poll_policy
 
 
 def strict_registry(data):
@@ -29,6 +29,7 @@ def strict_registry(data):
         if type(value) is not type(default):raise ValueError('registry_field_type')
         if isinstance(default,int) and value<0:raise ValueError('registry_negative_cursor')
     result={**empty_registry(),**data}
+    validate_poll_policy(result)
     for key,board in result['boards'].items():
         if not isinstance(board,dict):raise ValueError('registry_board_type')
         parsed=board_from_url(board.get('url'))
@@ -36,6 +37,7 @@ def strict_registry(data):
             raise ValueError('registry_board_identity')
         if not isinstance(board.get('evidence'),list) or any(not isinstance(e,dict) for e in board['evidence']):
             raise ValueError('registry_board_evidence')
+        validate_catalog_evidence(board, [e for e in board['evidence'] if e.get('kind') == CATALOG_KIND])
         checked=board.get('last_checked_run')
         if checked is not None and (type(checked) is not int or checked<0):raise ValueError('registry_board_cursor')
     for field in ('index_pages','index_counts'):

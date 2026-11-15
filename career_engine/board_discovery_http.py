@@ -36,10 +36,12 @@ class Transport(Protocol):
 
 
 class RequestsTransport:
+    origins = ORIGINS
+
     def __init__(self, contact: str):
         if not contact or any(not 32 < ord(c) < 127 for c in contact):
             raise ValueError("Provide a public operator contact without spaces")
-        self.sessions = {origin: requests.Session() for origin in ORIGINS}
+        self.sessions = {origin: requests.Session() for origin in self.origins}
         self._lock = Lock()
         self._active = 0
         self._closed = False
