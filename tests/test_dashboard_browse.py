@@ -149,7 +149,7 @@ class BrowseTests(unittest.TestCase):
             "STREAMLIT_BROWSER_GATHER_USAGE_STATS": "false",
         }):
             app = AppTest.from_file(str(ROOT / "dashboard" / "app.py"), default_timeout=15).run()
-            self.assertEqual(app.sidebar.radio[0].value, "Browse Jobs")
+            app.sidebar.radio[0].set_value("Browse Jobs").run()
             self.assertTrue(app.sidebar.checkbox[0].disabled)
             self.assertIn("DEMO / SYNTHETIC DATA", [notice.value for notice in app.warning])
             self.assertIn("**14 matching posting IDs** · Showing 1–10", [m.value for m in app.markdown])

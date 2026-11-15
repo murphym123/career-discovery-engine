@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "demo": true,
+  "generated_at": "2026-11-15T00:00:00Z",
+  "jobs": [
+    {
+      "review_id": "demo-001",
+      "title": "Research Assistant (demo)",
+      "employer": "Demo Civic Lab",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$58k–$68k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/001",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-01"
+    },
+    {
+      "review_id": "demo-002",
+      "title": "Policy Analyst (demo)",
+      "employer": "Sample Transit Council",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$59k–$69k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/002",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-02"
+    },
+    {
+      "review_id": "demo-003",
+      "title": "Program Associate (demo)",
+      "employer": "Example Housing Institute",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$60k–$70k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/003",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "verify_first",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-004",
+      "title": "Data Analyst (demo)",
+      "employer": "Fictional Health Policy Center",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/004",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-04"
+    },
+    {
+      "review_id": "demo-005",
+      "title": "Communications Coordinator (demo)",
+      "employer": "Placeholder Education Fund",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$62k–$72k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/005",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-05"
+    },
+    {
+      "review_id": "demo-006",
+      "title": "Evaluation Associate (demo)",
+      "employer": "Synthetic Climate Forum",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$63k–$73k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/006",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "deprioritize",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-007",
+      "title": "Grants Coordinator (demo)",
+      "employer": "Demo Civic Lab",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$64k–$74k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/007",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-07"
+    },
+    {
+      "review_id": "demo-008",
+      "title": "Research Associate (demo)",
+      "employer": "Sample Transit Council",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/008",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-08"
+    },
+    {
+      "review_id": "demo-009",
+      "title": "Research Assistant (demo)",
+      "employer": "Example Housing Institute",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$66k–$76k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/009",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "verify_first",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-010",
+      "title": "Policy Analyst (demo)",
+      "employer": "Fictional Health Policy Center",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$67k–$77k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/010",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-10"
+    },
+    {
+      "review_id": "demo-011",
+      "title": "Program Associate (demo)",
+      "employer": "Placeholder Education Fund",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$68k–$78k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/011",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-11"
+    },
+    {
+      "review_id": "demo-012",
+      "title": "Data Analyst (demo)",
+      "employer": "Synthetic Climate Forum",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/012",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "deprioritize",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-013",
+      "title": "Communications Coordinator (demo)",
+      "employer": "Demo Civic Lab",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$70k–$80k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/013",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-13"
+    },
+    {
+      "review_id": "demo-014",
+      "title": "Evaluation Associate (demo)",
+      "employer": "Sample Transit Council",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$71k–$81k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/014",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-14"
+    },
+    {
+      "review_id": "demo-015",
+      "title": "Grants Coordinator (demo)",
+      "employer": "Example Housing Institute",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$72k–$82k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/015",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "verify_first",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-016",
+      "title": "Research Associate (demo)",
+      "employer": "Fictional Health Policy Center",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/016",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-02"
+    },
+    {
+      "review_id": "demo-017",
+      "title": "Research Assistant (demo)",
+      "employer": "Placeholder Education Fund",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$74k–$84k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/017",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-03"
+    },
+    {
+      "review_id": "demo-018",
+      "title": "Policy Analyst (demo)",
+      "employer": "Synthetic Climate Forum",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$75k–$85k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/018",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "deprioritize",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-019",
+      "title": "Program Associate (demo)",
+      "employer": "Demo Civic Lab",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$76k–$86k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/019",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-05"
+    },
+    {
+      "review_id": "demo-020",
+      "title": "Data Analyst (demo)",
+      "employer": "Sample Transit Council",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/020",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-06"
+    },
+    {
+      "review_id": "demo-021",
+      "title": "Communications Coordinator (demo)",
+      "employer": "Example Housing Institute",
+      "location": "Washington, DC",
+      "work_arrangement": "Hybrid (3 days on site)",
+      "compensation_text": "$78k–$88k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/021",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "verify_first",
+      "availability_status": "unverified",
+      "availability_checked_at": null
+    },
+    {
+      "review_id": "demo-022",
+      "title": "Evaluation Associate (demo)",
+      "employer": "Fictional Health Policy Center",
+      "location": "Baltimore, MD",
+      "work_arrangement": "On site",
+      "compensation_text": "$79k–$89k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/022",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "prioritize",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-08"
+    },
+    {
+      "review_id": "demo-023",
+      "title": "Grants Coordinator (demo)",
+      "employer": "Placeholder Education Fund",
+      "location": "Remote (US)",
+      "work_arrangement": "Remote",
+      "compensation_text": "$80k–$90k per year (synthetic)",
+      "official_url": "https://example.org/demo-jobs/023",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting.",
+        "Synthetic reason: team works on regional transportation questions."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required."
+      ],
+      "review_priority": "consider",
+      "availability_status": "verified_current",
+      "availability_checked_at": "2026-11-09"
+    },
+    {
+      "review_id": "demo-024",
+      "title": "Research Associate (demo)",
+      "employer": "Synthetic Climate Forum",
+      "location": "Arlington, VA",
+      "work_arrangement": "Hybrid",
+      "compensation_text": null,
+      "official_url": "https://example.org/demo-jobs/024",
+      "fit_reasons": [
+        "Synthetic reason: duties centre on survey analysis and short policy memos.",
+        "Synthetic reason: entry-level scope with mentoring described in the posting."
+      ],
+      "gaps_to_verify": [
+        "Synthetic gap: confirm whether a writing sample is required.",
+        "Synthetic gap: posting does not state the salary range."
+      ],
+      "review_priority": "deprioritize",
+      "availability_status": "closed",
+      "availability_checked_at": "2026-11-10"
+    }
+  ]
+}

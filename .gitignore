@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 data/
 output/
+# Real shortlists and private reactions stay out of Git (demo fixture excepted).
+shortlist.json
+shortlist-feedback.json
+!fixtures/shortlist-demo/shortlist.json
