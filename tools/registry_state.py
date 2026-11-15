@@ -9,7 +9,7 @@ import tempfile
 # Immutable pre-Issue-23 workflow blob: the only unsealed migration format.
 LEGACY_WORKFLOW_BLOB='8f43f1f9257547fa1dadb002cf7c2dddc849ac02'
 
-from career_engine.registry_state import atomic_bytes,atomic_json,read_registry,verify_snapshot,seal_snapshot
+from career_engine.registry_state import atomic_bytes,atomic_json,read_registry,registry_writer,verify_snapshot,seal_snapshot
 
 
 def gh(*args):
@@ -17,6 +17,7 @@ def gh(*args):
     return subprocess.run(['gh',*args],capture_output=True,text=True,check=True).stdout
 
 
+@registry_writer
 def restore(registry_path,diagnostic_path,repository,branch,run_id,runner=gh):
     had_state=Path(registry_path).exists()
     result={'state_restored_from':None,'status':'not_restored','attempts':[],

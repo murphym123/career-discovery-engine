@@ -2,6 +2,10 @@
 CREATE TABLE IF NOT EXISTS board_discovery_campaign (
     name TEXT PRIMARY KEY, plan TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS board_discovery_policy (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    denied_routes TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS board_discovery_stream (
     id INTEGER PRIMARY KEY,
     campaign TEXT NOT NULL REFERENCES board_discovery_campaign(name),
@@ -19,6 +23,7 @@ CREATE TABLE IF NOT EXISTS board_discovery_page (
     cursor_digest TEXT NOT NULL,
     rows INTEGER NOT NULL,
     rejected INTEGER NOT NULL,
+    out_of_window INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (stream, cursor_digest)
 );
 CREATE TABLE IF NOT EXISTS board_discovery_board (
@@ -50,6 +55,7 @@ CREATE TABLE IF NOT EXISTS board_discovery_evidence (
     source_record TEXT NOT NULL,
     cursor_digest TEXT NOT NULL,
     first_seen_at TEXT NOT NULL,
+    eligible INTEGER NOT NULL DEFAULT 1,
     UNIQUE (board_key, stream, observed_url, source_time, source_record)
 );
 CREATE INDEX IF NOT EXISTS board_discovery_evidence_stream ON board_discovery_evidence(stream);
@@ -63,6 +69,10 @@ CREATE TABLE IF NOT EXISTS board_discovery_origin (
     origin TEXT PRIMARY KEY,
     not_before REAL NOT NULL DEFAULT 0,
     stop_reason TEXT NOT NULL DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS board_discovery_dispatch (
+    origin TEXT PRIMARY KEY,
+    not_before REAL NOT NULL
 );
 CREATE TABLE IF NOT EXISTS board_discovery_attempt (
     id INTEGER PRIMARY KEY,

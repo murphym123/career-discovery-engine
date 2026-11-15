@@ -75,7 +75,7 @@ def index_url(plan: Plan, source: str, host: str, cursor: str, total: int | None
             params["from"] = plan.archive_from
         if cursor:
             # CDX returns an already form-encoded key. Encode it exactly once.
-            params["resumeKey"] = unquote_plus(cursor)
+            params["resumeKey"] = wire_cursor(source, cursor)
     elif source == "urlscan":
         start = through - timedelta(days=plan.recent_days)
         dates = f"[{start:%Y-%m-%dT%H:%M:%SZ} TO {through:%Y-%m-%dT%H:%M:%SZ}]"
@@ -89,6 +89,10 @@ def index_url(plan: Plan, source: str, host: str, cursor: str, total: int | None
                   "filter": "status:200", "pageSize": 1}
         params.update({"showNumPages": "true"} if total is None else {"page": cursor})
     return endpoint + "?" + urlencode(params)
+
+
+def wire_cursor(source: str, cursor: str) -> str:
+    return unquote_plus(cursor) if source == "wayback" else cursor
 
 
 def board_probe_url(board: dict) -> str:
@@ -199,3 +203,15 @@ def source_time(value: object) -> str:
     if isinstance(value, str) and re.fullmatch(r"\d{14}|\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?Z", value):
         return value
     return ""
+
+
+def commoncrawl_capture(value: object, start: str, through: str) -> str:
+    """Classify a compact CDX timestamp against the campaign's UTC window."""
+    if not isinstance(value, str) or len(value) != 14 or not value.isascii() or not value.isdigit():
+        return "invalid"
+    try:
+        datetime(int(value[:4]), int(value[4:6]), int(value[6:8]),
+                 int(value[8:10]), int(value[10:12]), int(value[12:14]))
+    except ValueError:
+        return "invalid"
+    return "" if start <= value <= through else "out_of_window"

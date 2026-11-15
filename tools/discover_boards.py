@@ -32,12 +32,16 @@ def main(argv=None):
     run.add_argument("--max-bytes", type=int, default=256_000_000)
     run.add_argument("--response-bytes", type=int, default=4_000_000)
     run.add_argument("--max-seconds", type=float, default=3600)
-    run.add_argument("--timeout", type=float, default=30)
+    run.add_argument("--timeout", type=float, default=30, help="Maximum elapsed time for a request result")
     run.add_argument("--idle-seconds", type=float, default=5)
     run.add_argument("--retry-delay", type=float, default=60, help="Minimum cooldown for 429 or 503")
     run.add_argument("--origin-delay", action="append", default=[], metavar="ORIGIN=SECONDS")
     run.add_argument("--origin-concurrency", action="append", default=[], metavar="ORIGIN=WORKERS")
     run.add_argument("--deny-prefix", action="append", default=[], metavar="HTTPS_URL_PREFIX")
+    run.add_argument("--deny-method-prefix", action="append", default=[], metavar="METHOD=HTTPS_URL_PREFIX",
+                     help="Deny HEAD or GET for a route prefix; repeat as needed")
+    run.add_argument("--replace-access-policy", action="store_true",
+                     help="Replace the store's full saved deny policy with the supplied rules")
     status = subparsers.add_parser("status", help="Show checkpoint and outcomes without network access")
     status.add_argument("--campaign", required=True)
     publish = subparsers.add_parser("publish", help="Merge verified boards into the v1 registry without network access")
@@ -59,6 +63,9 @@ def main(argv=None):
                             args.recent_days, args.page_size, args.urlscan_size, args.commoncrawl)
                 delays = {host: float(seconds) for host, seconds in (item.split("=", 1) for item in args.origin_delay)}
                 slots = {host: int(count) for host, count in (item.split("=", 1) for item in args.origin_concurrency)}
+                denied_methods = [tuple(item.split("=", 1)) for item in args.deny_method_prefix]
+                if any(len(rule) != 2 or rule[0] not in {"HEAD", "GET"} for rule in denied_methods):
+                    raise ValueError("--deny-method-prefix requires HEAD=URL or GET=URL")
                 limits = Limits(args.max_requests, args.max_pages, concurrency=args.concurrency, bytes=args.max_bytes,
                                 response_bytes=args.response_bytes, seconds=args.max_seconds, timeout=args.timeout,
                                 idle_seconds=args.idle_seconds, retry_delay=args.retry_delay,
@@ -73,7 +80,9 @@ def main(argv=None):
                 try:
                     with RequestsTransport(args.contact) as transport:
                         result = Discovery(state, transport, args.campaign, plan, limits, mode=args.mode,
-                                           denied_prefixes=args.deny_prefix, stopping=lambda: stopped).run()
+                                           denied_prefixes=args.deny_prefix, denied_methods=denied_methods,
+                                           replace_access_policy=args.replace_access_policy,
+                                           stopping=lambda: stopped).run()
                 finally:
                     signal.signal(signal.SIGTERM, previous_term)
             except (ValueError, RuntimeError) as exc:
