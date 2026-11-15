@@ -219,6 +219,40 @@ class ImmediateReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "outside a Git checkout"):
             export_snapshots([source], self.directory / "forbidden")
 
+    def employers(self, boards):
+        target, manifest = export_snapshots([self.snapshot(boards)], self.output)
+        records = self.verify_bundle(target, manifest)
+        found = {r["variants"][0]["data"]["source_id"]: r["variants"][0]["data"] for r in records}
+        return found, manifest["counts"]
+
+    def test_missing_job_company_falls_back_to_labelled_board_name(self):
+        data, counts = self.employers([board([job("1")], name="Example Employer")])
+        self.assertEqual(data["1"]["employer"],
+                         {"name": "Example Employer", "source": "board_metadata_name"})
+        self.assertIsNone(data["1"]["company"])
+        self.assertEqual(counts["observations_with_board_employer_fallback"], 1)
+        self.assertEqual(counts["observations_without_employer"], 0)
+
+    def test_job_company_wins_over_board_name(self):
+        data, counts = self.employers([board([job("1", company="Job Supplied Co")],
+                                             name="Board Label")])
+        self.assertEqual(data["1"]["employer"], {"name": "Job Supplied Co", "source": "job_company"})
+        self.assertEqual(data["1"]["company"], "Job Supplied Co")
+        self.assertEqual(counts["observations_with_board_employer_fallback"], 0)
+
+    def test_missing_employer_stays_explicitly_unknown_without_slug_or_url_guess(self):
+        url = "https://public.example.org/example-tenant/jobs/1"
+        data, counts = self.employers([
+            board([job("1", url=url, company="   ")], name="  "),
+            board([job("2")], board="other-tenant"),
+            board([job("3")], board="third-tenant", name="token=synthetic-secret"),
+        ])
+        for source_id in ("1", "2", "3"):
+            self.assertEqual(data[source_id]["employer"], {"name": None, "source": "missing"})
+        self.assertEqual(data["1"]["url"], url)
+        self.assertEqual(counts["observations_without_employer"], 3)
+        self.assertEqual(counts["review_records"], 3)
+
     def test_cli_prints_only_aggregates_and_safe_errors(self):
         source = self.snapshot([board([job("1", description="private-job-body")])], "private-input.json")
         command = [sys.executable, "-m", "tools.export_immediate_review",
