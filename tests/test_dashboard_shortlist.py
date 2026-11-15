@@ -98,6 +98,25 @@ class ShortlistContractTests(unittest.TestCase):
         self.assertEqual(ids(filter_jobs(jobs, availability=["unverified"])), ["a"])
         self.assertEqual(ids(filter_jobs(jobs, search="transit  council")), ["b"])
 
+    def test_first_real_shortlist_priority_and_availability_contract(self):
+        jobs = self.write([
+            record(review_id="first", review_priority="high",
+                   availability_status="verified_current",
+                   availability_checked_at="2026-11-15T07:51:13Z"),
+            record(review_id="second", review_priority="medium",
+                   availability_status="not_yet_verified",
+                   availability_checked_at=None),
+            record(review_id="third", review_priority="high",
+                   availability_status="no_longer_open",
+                   availability_checked_at="2026-11-15T07:51:13Z"),
+        ])["jobs"]
+        self.assertEqual([x["review_priority"] for x in jobs],
+                         ["high", "medium", "high"])
+        self.assertEqual([x["availability_status"] for x in jobs],
+                         ["verified_current", "unverified", "closed"])
+        self.assertEqual(len(filter_jobs(jobs, priority=["high"])), 2)
+        self.assertEqual(len(filter_jobs(jobs, availability=["unverified"])), 1)
+
     def test_path_resolution(self):
         self.assertIsNone(shortlist_path({}))
         self.assertEqual(shortlist_path({"PROSPECT_DATA_DIR": "/d"}), Path("/d/shortlist.json"))

@@ -28,12 +28,17 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # Mirrors review_priority bands in docs/prospect-ai-assessment-v1.md (PR #67/#71).
 PRIORITY_LABELS = {
+    "high": "High priority", "medium": "Possible fit",
     "prioritize": "Prioritize", "consider": "Consider", "verify_first": "Verify first",
     "deprioritize": "Deprioritize", "unassessed": "Unassessed",
 }
 AVAILABILITY_LABELS = {
     "verified_current": "Verified current", "unverified": "Not yet verified",
     "closed": "Closed or unavailable",
+}
+AVAILABILITY_ALIASES = {
+    "not_yet_verified": "unverified",
+    "no_longer_open": "closed",
 }
 FEEDBACK_LABELS = {"would_apply": "Would apply", "maybe": "Maybe", "no": "No"}
 _DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
@@ -98,7 +103,8 @@ def _job(privacy, raw, index):
     if not isinstance(review_id, str) or privacy.native(review_id) is None:
         raise ShortlistError(f"jobs[{index}] has a missing or unsafe review_id")
     priority = raw.get("review_priority")
-    status = raw.get("availability_status")
+    status = AVAILABILITY_ALIASES.get(raw.get("availability_status"),
+                                      raw.get("availability_status"))
     checked = _checked(raw.get("availability_checked_at"))
     if status not in AVAILABILITY_LABELS or (status == "verified_current" and checked is None):
         # A verification claim without a real check date is not shown as verified.

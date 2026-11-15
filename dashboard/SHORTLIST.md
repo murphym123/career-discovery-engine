@@ -53,8 +53,8 @@ the problem and no cards.
 | `application_url` | no | Defaults to `official_url`. |
 | `fit_reasons` | no | 2–3 short, evidence-based strings recommended. At most 5 are shown. |
 | `gaps_to_verify` | no | Requirements or unknowns to check. At most 5 are shown. |
-| `review_priority` | no | `prioritize`, `consider`, `verify_first`, `deprioritize`, or `unassessed` (the bands in `docs/prospect-ai-assessment-v1.md`). Anything else shows as `unassessed`. |
-| `availability_status` | no | `verified_current`, `unverified`, or `closed`. Anything else is `unverified`. |
+| `review_priority` | no | `high` or `medium` (Codex #73 shortlisted candidates), or `prioritize`, `consider`, `verify_first`, `deprioritize`, or `unassessed` (rubric bands in `docs/prospect-ai-assessment-v1.md`). Anything else shows as `unassessed`. |
+| `availability_status` | no | `verified_current`, `unverified` or `not_yet_verified`, `closed` or `no_longer_open`. Alternative terms normalize to the same display/filter states; unrecognized values remain `unverified`. |
 | `availability_checked_at` | with `verified_current` | Date the posting was actually checked. `verified_current` without a valid date is shown as **NOT YET VERIFIED**. |
 
 ## Untrusted data
