@@ -11,6 +11,7 @@ import streamlit as st
 from dashboard.activity import activity
 from dashboard.browse import render_browse
 from dashboard.shortlist_view import render_shortlist
+from dashboard.reviewed_jobs_view import render_reviewed_jobs
 from dashboard.queries import (
     collection_totals, database_path, open_store, overview, polls, runs, sources,
 )
@@ -22,16 +23,21 @@ if os.getenv("PROSPECT_DEMO") == "1":
     st.warning("DEMO / SYNTHETIC DATA")
 
 section = st.sidebar.radio(
-    "View", ["Shortlist", "Browse Jobs", "Overview", "Run explorer", "Sources", "Live activity"]
+    "View", ["Shortlist", "Reviewed Jobs", "Browse Jobs", "Overview", "Run explorer", "Sources", "Live activity"]
 )
 auto_refresh = st.sidebar.checkbox(
-    "Refresh monitoring every 4 seconds", value=True, disabled=section in ("Shortlist", "Browse Jobs"),
+    "Refresh monitoring every 4 seconds", value=True, disabled=section in ("Shortlist", "Reviewed Jobs", "Browse Jobs"),
 )
 st.sidebar.caption("No collectors or evaluations are launched from this interface.")
 
 if section == "Shortlist":
     # The shortlist is a separate file; it never opens the discovery database.
     render_shortlist()
+    st.stop()
+
+if section == "Reviewed Jobs":
+    # Privately assessed records are read without opening the discovery database.
+    render_reviewed_jobs()
     st.stop()
 
 data_dir = os.environ.get("PROSPECT_DATA_DIR", "").strip()
