@@ -1,0 +1,30 @@
+<!doctype html>
+<title>Program Associate</title>
+<meta name="csrf-token" content="synthetic-public-nonce">
+<script type="application/json">{"csrfToken":"synthetic-public-nonce","email":"","applicantProfile":null}</script>
+<script>
+  const csrfToken = "synthetic-public-nonce";
+  function readFields(fields) {
+    const password = fields.password;
+    return {password: !normalize(password)};
+  }
+</script>
+<main>
+  <h1>Program Associate</h1>
+  <div id="job-description">
+    <p>Coordinate civic education programs and maintain the session calendar.</p>
+    <h2>Qualifications</h2>
+    <ul><li>Experience writing for public audiences.</li><li>Strong project coordination skills.</li></ul>
+  </div>
+  <form method="post" action="/apply/AbC01234/Program-Associate">
+    <input type="hidden" name="csrf_token" value="synthetic-public-nonce">
+    <input name="first_name" autocomplete="given-name" value="">
+    <input type="email" name="email" placeholder="Email address">
+    <input type="tel" name="phone">
+    <input type="file" name="resume">
+    <textarea name="cover_letter"></textarea>
+    <input type="radio" name="applicant_eligibility" value="yes">
+    <input type="radio" name="applicant_eligibility" value="no">
+    <input type="submit" value="Apply">
+  </form>
+</main>

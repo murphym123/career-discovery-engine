@@ -97,7 +97,7 @@ class JazzHRStoreTests(StoreTestCase):
         self.assertEqual(poll["raw_sha"], sha)
         self.assertEqual(self.store.blobs.get(sha), page.encode())
 
-    def test_public_script_exceptions_are_limited_to_inventory(self):
+    def test_session_id_exception_is_limited_to_inventory(self):
         script = '<script>const sessionID = "fictional-anonymous-session";</script>'
         _, stats, poll, transport, _ = self.collect(
             Response(None, 404), html_response(fixture("index")),
@@ -264,7 +264,7 @@ class JazzHRStoreTests(StoreTestCase):
         wrong = POST.replace("AbC01234", "abC01234")
         mismatched = html_response(fixture("detail").replace(POST, wrong))
         private_redirect = redirect(POST + "?access_token=synthetic-private-redirect")
-        private_script = html_response(fixture("detail") + '<script>const csrfToken = "synthetic-state";</script>')
+        private_script = html_response(fixture("detail") + '<script>const csrfToken = {email: "fixture"};</script>')
         cases = ((Response(None, 503),), (mismatched,), (redirect(wrong), html_response(fixture("detail"))),
                  (private_redirect,), (html_response(fixture("challenge")),), (private_script,))
         for responses in cases:
@@ -276,6 +276,25 @@ class JazzHRStoreTests(StoreTestCase):
         sightings = read_rows(self.export(), "sightings")
         self.assertEqual(len(sightings), 18)
         self.assertTrue(all(row["description_sha"] is None for row in sightings))
+
+    def test_unselected_details_are_partial_when_enrichment_is_requested(self):
+        index = fixture("index").replace("London, UK", "Washington, DC")
+        rows, stats, poll, _, session = self.collect(
+            Response(None, 404), html_response(index), html_response(fixture("public-application-detail")),
+            detail_budget=1,
+        )
+        self.assertEqual([row["detail_status"] for row in rows], ["public_description_observed", "detail_skipped"])
+        self.assertNotIn("synthetic-public-nonce", json.dumps(rows))
+        self.assertEqual((stats["unique"], stats["descriptions"], stats["status"]), (2, 1, "partial_failure"))
+        self.assertEqual(stats["warnings"], ["description_coverage_partial"])
+        self.assertEqual((poll["status"], poll["received"], len(session.calls)), ("partial", 3, 3))
+
+    def test_signed_index_link_does_not_authorize_detail_request(self):
+        index = fixture("index").replace("Program-Associate\">", "Program-Associate?signature=fixture\">")
+        rows, stats, poll, _, session = self.collect(Response(None, 404), html_response(index), detail_budget=1)
+        self.assertEqual((len(rows), poll["received"], poll["status"]), (2, 3, "partial"))
+        self.assertEqual(stats["errors"], ["unsafe_public_job_url"])
+        self.assertEqual(len(session.calls), 2)
 
     def test_replay_keeps_conflicting_index_and_detail_locations_uncertain(self):
         conflicting = fixture("detail").replace('"addressLocality": "Washington", "addressRegion": "DC"',

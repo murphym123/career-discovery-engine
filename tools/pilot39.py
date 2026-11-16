@@ -46,6 +46,7 @@ JAZZHR_JSON_PERSONAL_FIELD = re.compile(
     r"(?:candidate|applicant)[_-]?(?:resume|contact|name)|resume|cover[_-]?letter|"
     r"email|phone|first[_-]?name|last[_-]?name|full[_-]?name|ssn", re.I,
 )
+JAZZHR_DETAIL_PRIVATE_FIELD = re.compile(r"session|applicant|candidate|telephone|addressLine[12]|streetAddress", re.I)
 SECRET_ASSIGNMENT = re.compile(
     r"\bBearer\s+[A-Za-z0-9._~+/=-]+|\b(?:gh[pousr]_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|"
     r"AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9_-]{12,}|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)",
@@ -644,11 +645,20 @@ class _GuardedTransport:
             and self.board and self.board["provider"] == "jazzhr"
             and event["url"] in (self.board["url"], self.board["url"] + "/")
         )
-        if jazz_inventory:
-            # Structured state and URL checks precede the inventory HTML classifier.
-            self._check_html_state(body, inventory_url=event["url"])
+        jazz_detail = (
+            reply.status == 200 and media == "text/html" and route == "detail"
+            and self.board and self.board["provider"] == "jazzhr"
+            and urlsplit(event["url"]).hostname == urlsplit(self.board["url"]).hostname
+            and urlsplit(event["url"]).path.rstrip("/") in self.details
+        )
+        if jazz_inventory or jazz_detail:
+            # Check decoded structured state and relative URLs before capture.
+            self._check_html_state(body, jazz_page_url=event["url"], public_detail=jazz_detail)
         try:
-            rejection = _capture_rejection(data, public_inventory=jazz_inventory) if is_html else None
+            rejection = _capture_rejection(
+                data, public_inventory=jazz_inventory,
+                detail_url=event["url"] if jazz_detail else None,
+            ) if is_html else None
         except (TypeError, ValueError, RecursionError):
             raise FetchError("unreadable_public_html") from None
         if rejection == PRIVATE and re.search(r"(?i)<input\b[^>]*\btype\s*=\s*['\"]?password", body):
@@ -659,9 +669,9 @@ class _GuardedTransport:
             raise FetchError(SOURCE_PRIVATE if rejection == PRIVATE else rejection)
         if re.search(r"(?i)\b(?:captcha|cf-chl-)[_-]?[a-z0-9-]*\b", body[:4096]) and is_html:
             raise FetchError(CHALLENGE)
-        if is_html and not jazz_inventory and TOKEN_ASSIGNMENT.search(body):
+        if is_html and not (jazz_inventory or jazz_detail) and TOKEN_ASSIGNMENT.search(body):
             raise FetchError(SOURCE_PRIVATE)
-        if is_html and not jazz_inventory and "\\" in body:
+        if is_html and not (jazz_inventory or jazz_detail) and "\\" in body:
             self._check_html_state(body)
         if route == "robots":
             if media != "text/plain" or is_html:
@@ -694,26 +704,28 @@ class _GuardedTransport:
             self._check_json_privacy(parsed)
         return body, data
 
-    def _check_html_state(self, body, *, inventory_url=None):
+    def _check_html_state(self, body, *, jazz_page_url=None, public_detail=False):
         try:
             for node in Document(body).root.walk():
-                if inventory_url:
+                if jazz_page_url:
                     for attr in ("href", "action", "src", "formaction"):
                         target = node.attrs.get(attr) or ""
-                        if "?" in target and unsafe_body(urljoin(inventory_url, target)):
+                        if ("?" in target or public_detail and target.startswith("//")) and unsafe_body(
+                                urljoin(jazz_page_url, target)):
                             raise FetchError(PRIVATE)
                 media = node.attrs.get("type")
-                if inventory_url:
+                if jazz_page_url:
                     media = (media or "").lower().split(";", 1)[0].strip()
                 if node.tag == "script" and media in (
-                    ("application/ld+json", "application/json") if inventory_url else ("application/ld+json",)
+                    ("application/ld+json", "application/json") if jazz_page_url else ("application/ld+json",)
                 ):
                     script = "".join(child for child in node.children if isinstance(child, str))
-                    self._check_json_privacy(json.loads(script), public_inventory=bool(inventory_url))
+                    self._check_json_privacy(json.loads(script), public_jazzhr=bool(jazz_page_url),
+                                             public_detail=public_detail and media == "application/json")
         except (ValueError, RecursionError):
             raise FetchError("unreadable_public_html") from None
 
-    def _check_json_privacy(self, parsed, *, public_inventory=False):
+    def _check_json_privacy(self, parsed, *, public_jazzhr=False, public_detail=False):
         pending = [parsed]
         while pending:
             value = pending.pop()
@@ -722,8 +734,9 @@ class _GuardedTransport:
             if isinstance(value, dict):
                 if any(item and (
                     (PRIVATE_FIELD.fullmatch(key) and not (
-                        public_inventory and GENERIC_CSRF.fullmatch(key) and isinstance(item, str)
-                    )) or (public_inventory and JAZZHR_JSON_PERSONAL_FIELD.fullmatch(key))
+                        public_jazzhr and GENERIC_CSRF.fullmatch(key) and isinstance(item, str)
+                    )) or (public_jazzhr and JAZZHR_JSON_PERSONAL_FIELD.fullmatch(key))
+                    or (public_detail and JAZZHR_DETAIL_PRIVATE_FIELD.fullmatch(key))
                 ) for key, item in value.items()):
                     raise FetchError(PRIVATE)
                 pending.extend(value)
